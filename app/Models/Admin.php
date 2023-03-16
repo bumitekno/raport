@@ -3,16 +3,16 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Notifications\Notifiable;
-use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Admin extends Authenticatable
+class Admin extends Model
 {
     use HasFactory;
-    use Notifiable;
 
-    protected $guarded = [];
-    protected $hidden = [
-        'password', 'remember_token',
-    ];
+    use SoftDeletes;
+
+    protected $table = "admins";
+
+   	protected $dates = ['deleted_at'];
 }

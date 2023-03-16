@@ -1,32 +1,223 @@
-<div id="m_ver_menu" class="m-aside-menu  m-aside-menu--skin-dark m-aside-menu--submenu-skin-dark " m-menu-vertical="1"
-    m-menu-scrollable="0" m-menu-dropdown-timeout="500">
-    <ul class="m-menu__nav ">
-        <li class="m-menu__section m-menu__section--first">
-            <h4 class="m-menu__section-text">Departments</h4>
-            <i class="m-menu__section-icon flaticon-more-v2"></i>
-        </li>
-        <li class="m-menu__item " aria-haspopup="true"><a href="index.html" class="m-menu__link "><span
-                    class="m-menu__item-here"></span><i class="m-menu__link-icon flaticon-line-graph"></i><span
-                    class="m-menu__link-text">Dashboard</span></a></li>
-        <li class="m-menu__item  m-menu__item--submenu m-menu__item--open m-menu__item--expanded" aria-haspopup="true"
-            m-menu-submenu-toggle="hover"><a href="javascript:;" class="m-menu__link m-menu__toggle"><span
-                    class="m-menu__item-here"></span><i class="m-menu__link-icon flaticon-layers"></i><span
-                    class="m-menu__link-text">User</span><i class="m-menu__ver-arrow la la-angle-right"></i></a>
-            <div class="m-menu__submenu "><span class="m-menu__arrow"></span>
-                <ul class="m-menu__subnav">
-                    <li class="m-menu__item  m-menu__item--parent" aria-haspopup="true"><span class="m-menu__link"><span
-                                class="m-menu__item-here"></span><span class="m-menu__link-text">Resources</span></span>
-                    </li>
-                    <li class="m-menu__item  m-menu__item--active" aria-haspopup="true"><a href="inner.html"
-                            class="m-menu__link "><i
-                                class="m-menu__link-bullet m-menu__link-bullet--dot"><span></span></i><span
-                                class="m-menu__link-text">Siswa</span></a></li>
-                    <li class="m-menu__item " aria-haspopup="true" m-menu-link-redirect="1"><a href="inner.html"
-                            class="m-menu__link "><i
-                                class="m-menu__link-bullet m-menu__link-bullet--dot"><span></span></i><span
-                                class="m-menu__link-text">Admin</span></a></li>
-                </ul>
+<div class="sidebar-wrapper sidebar-theme">
+
+    <nav id="sidebar">
+        <div class="profile-info">
+            <figure class="user-cover-image"></figure>
+            <div class="user-info">
+                <img src="{{ asset('asset/img/90x90.jpg') }}" alt="avatar">
+                <h6 class="">Sonia Shaw</h6>
+                <p class="">Project Leader</p>
             </div>
-        </li>
-    </ul>
+        </div>
+        <div class="shadow-bottom"></div>
+        <ul class="list-unstyled menu-categories" id="accordionExample">
+            <li class="menu">
+                <div class="form-group mb-4">
+                    <label for="exampleFormControlSelect1">PILIH KURIKULUM</label>
+                    <select class="form-control" id="exampleFormControlSelect1">
+                        <option>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                        <option>4</option>
+                        <option>5</option>
+                    </select>
+                </div>
+            </li>
+            <li class="menu">
+                <a href="javascript:void(0);" aria-expanded="false" class="dropdown-toggle">
+                    <div class="">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round">
+                            <rect x="3" y="3" width="7" height="7"></rect>
+                            <rect x="14" y="3" width="7" height="7"></rect>
+                            <rect x="14" y="14" width="7" height="7"></rect>
+                            <rect x="3" y="14" width="7" height="7"></rect>
+                        </svg>
+                        <span> Dashboard</span>
+                    </div>
+                </a>
+            </li>
+
+            <li class="menu">
+                <a href="#submenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                    <div class="">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round">
+                            <polygon points="14 2 18 6 7 17 3 17 3 13 14 2"></polygon>
+                            <line x1="3" y1="22" x2="21" y2="22"></line>
+                        </svg>
+                        <span> Pengaturan Nilai</span>
+                    </div>
+                    <div>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" class="feather feather-chevron-right">
+                            <polyline points="9 18 15 12 9 6"></polyline>
+                        </svg>
+                    </div>
+                </a>
+                <ul class="collapse submenu list-unstyled" id="submenu" data-parent="#accordionExample">
+                    <li>
+                        <a href="javascript:void(0);"> Capaian Kompetensi </a>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0);"> Deskripsi CP </a>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0);"> Bobot Penilaian </a>
+                    </li>
+                </ul>
+            </li>
+
+            <li class="menu">
+                <a href="javascript:void(0);" aria-expanded="false" class="dropdown-toggle">
+                    <div class="">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round">
+                            <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="8.5" cy="7" r="4"></circle>
+                            <polyline points="17 11 19 13 23 9"></polyline>
+                        </svg>
+                        <span> Kelola P5</span>
+                    </div>
+                </a>
+            </li>
+
+            <li class="menu">
+                <a href="javascript:void(0);" aria-expanded="false" class="dropdown-toggle">
+                    <div class="">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round">
+                            <polygon
+                                points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2">
+                            </polygon>
+                        </svg>
+                        <span> Ekstrakurikuler</span>
+                    </div>
+                </a>
+            </li>
+
+            <li class="menu">
+                <a href="#submenu2" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                    <div class="">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="3"></circle>
+                            <path
+                                d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z">
+                            </path>
+                        </svg>
+                        <span> Setelan</span>
+                    </div>
+                    <div>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" class="feather feather-chevron-right">
+                            <polyline points="9 18 15 12 9 6"></polyline>
+                        </svg>
+                    </div>
+                </a>
+                <ul class="collapse submenu list-unstyled" id="submenu2" data-parent="#accordionExample">
+                    <li>
+                        <a href="javascript:void(0);"> Konfigurasi</a>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0);"> Sampul</a>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0);"> KOP Surat</a>
+                    </li>
+                    <li>
+                        <a href="javascript:void(0);"> Template Raport</a>
+                    </li>
+
+                </ul>
+            </li>
+
+            <li class="menu">
+                {{-- <li class="menu active"> --}}
+                <a href="#starter-kit" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                    <div class="">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round">
+                            <path d="M11 21H4a2 2 0 0 1-2-2V5c0-1.1.9-2 2-2h5l2 3h9a2 2 0 0 1 2 2v2M19 15v6M16 18h6" />
+                        </svg>
+                        <span>Master</span>
+                    </div>
+                    <div>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" class="feather feather-chevron-right">
+                            <polyline points="9 18 15 12 9 6"></polyline>
+                        </svg>
+                    </div>
+                </a>
+                {{-- <ul class="collapse submenu recent-submenu mini-recent-submenu list-unstyled show" id="starter-kit"
+                    data-parent="#accordionExample"> --}}
+                <ul class="collapse submenu list-unstyled" id="starter-kit" data-parent="#accordionExample">
+                    <li>
+                        {{-- <li class="active"> --}}
+                        <a href="starter_kit_blank_page.html"> Tahun Ajar </a>
+                    </li>
+                    <li>
+                        <a href="starter_kit_boxed.html"> Jurusan </a>
+                    </li>
+                    <li>
+                        <a href="starter_kit_collapsible_menu.html"> Tingkat</a>
+                    </li>
+                    <li>
+                        <a href="starter_kit_collapsible_menu.html"> Rombel</a>
+                    </li>
+                    <li>
+                        <a href="starter_kit_collapsible_menu.html"> Mata Pelajaran</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="menu">
+                <a href="#starter-kit" data-toggle="collapse" aria-expanded="true" class="dropdown-toggle">
+                    <div class="">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="9" cy="7" r="4"></circle>
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                        </svg>
+
+                        <span>User</span>
+                    </div>
+                    <div>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" class="feather feather-chevron-right">
+                            <polyline points="9 18 15 12 9 6"></polyline>
+                        </svg>
+                    </div>
+                </a>
+                <ul class="collapse submenu recent-submenu mini-recent-submenu list-unstyled show" id="starter-kit"
+                    data-parent="#accordionExample">
+                    <li class="active">
+                        <a href="{{ route('admins.index') }}"> Admin</a>
+                    </li>
+                    <li>
+                        <a href="starter_kit_boxed.html"> Guru </a>
+                    </li>
+                    <li>
+                        <a href="starter_kit_collapsible_menu.html"> Siswa</a>
+                    </li>
+
+                </ul>
+            </li>
+
+        </ul>
+
+    </nav>
+
 </div>

@@ -1,32 +1,18 @@
 @extends('layout.admin.v_main')
 @section('content')
-    <div class="m-subheader ">
-        <div class="d-flex align-items-center">
-            <div class="mr-auto">
-                <h3 class="m-subheader__title m-subheader__title--separator">Inner Page</h3>
-                <ul class="m-subheader__breadcrumbs m-nav m-nav--inline">
-                    <li class="m-nav__item m-nav__item--home">
-                        <a href="#" class="m-nav__link m-nav__link--icon">
-                            <i class="m-nav__link-icon la la-home"></i>
-                        </a>
-                    </li>
-                    <li class="m-nav__separator">-</li>
-                    <li class="m-nav__item">
-                        <a href="" class="m-nav__link">
-                            <span class="m-nav__link-text">Resources</span>
-                        </a>
-                    </li>
-                    <li class="m-nav__separator">-</li>
-                    <li class="m-nav__item">
-                        <a href="" class="m-nav__link">
-                            <span class="m-nav__link-text">Timesheet</span>
-                        </a>
-                    </li>
-                </ul>
+    <div class="row layout-top-spacing">
+        <div class="col-xl-12 col-lg-12 col-md-12 col-12 layout-spacing">
+            <div class="widget-content-area br-4">
+                <div class="widget-one">
+
+                    <h6>Blank Page - Kick Start you new project with ease!</h6>
+
+                    <p class="">With CORK starter kit, you can begin your work without any hassle. The starter page is
+                        highly optimized which gives you freedom to start with minimal code and add only the desired
+                        components and plugins required for your project.</p>
+
+                </div>
             </div>
         </div>
-    </div>
-    <div class="m-content">
-        Inner page content goes here
     </div>
 @endsection
