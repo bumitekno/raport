@@ -25,11 +25,12 @@
                     <table id="table-list" class="table dt-table-hover w-100">
                         <thead>
                             <tr>
-                                <th class="checkbox-column"></th>
-                                <th>Posts</th>
-                                <th>Date</th>
-                                <th>Status</th>
-                                <th class="no-content text-center">Action</th>
+                                <th></th>
+                                <th>Nama</th>
+                                <th>Email</th>
+                                <th>Alamat</th>
+                                <th>Telepon</th>
+                                <th class="no-content text-center">Aksi</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -45,8 +46,9 @@
         <script>
             $(function() {
                 var table = $('#table-list').DataTable({
-                    processing: false,
-                    serverSide: false,
+                    processing: true,
+                    serverSide: true,
+                    responsive: true,
                     ajax: "",
                     dom: "<'inv-list-top-section'<'row'<'col-sm-12 col-md-6 d-flex justify-content-md-start justify-content-center'l<'dt-action-buttons align-self-center'B>><'col-sm-12 col-md-6 d-flex justify-content-md-end justify-content-center mt-md-0 mt-3'f<'toolbar align-self-center'>>>>" +
                         "<'table-responsive'tr>" +
@@ -59,20 +61,26 @@
                         }
                     }],
                     columns: [{
+                        data: 'DT_RowIndex',
+                        name: 'DT_RowIndex',
+                        orderable: false,
+                        searchable: false,
+                        className: 'align-middle'
+                    }, {
                         data: 'name',
                         name: 'name',
-                    }, {
-                        data: 'phone',
-                        name: 'phone',
-                    }, {
-                        data: 'phone',
-                        name: 'phone',
                     }, {
                         data: 'email',
                         name: 'email',
                     }, {
-                        data: 'last_login',
-                        name: 'last_login',
+                        data: 'address',
+                        name: 'address',
+                    }, {
+                        data: 'phone',
+                        name: 'phone',
+                    }, {
+                        data: 'action',
+                        name: 'action',
                     }, ]
                 });
 

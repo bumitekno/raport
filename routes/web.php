@@ -15,5 +15,7 @@ Route::prefix('auth')->name('auth.')->group(function () {
 
 // Route::middleware('auth:user,admin')->group(function () {
 Route::get('dashboard', [DashboardController::class, 'admin'])->name('dashboard');
-Route::resource('admins', AdminController::class);
+Route::resource('admins', AdminController::class)->parameters([
+    'admins' => 'admins:slug',
+]);;
 // });

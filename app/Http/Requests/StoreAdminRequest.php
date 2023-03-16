@@ -28,8 +28,8 @@ class StoreAdminRequest extends FormRequest
         return [
             'email' => ['required', 'unique:admins,email,' . optional($this->admin)->id,],
             'name' => ['required'],
-            'password' => (empty($this->admin->password)) ? ['required', Password::defaults()] : '',
-            'address' => ['required'],
+            'password' => (empty($this->admin->password)) ? ['required', Password::defaults(), 'required_with:password_confirmation', 'same:password_confirmation'] : '',
+            'password_confirmation' => ['min:8']
         ];
     }
 
