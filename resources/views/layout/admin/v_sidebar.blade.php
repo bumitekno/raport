@@ -207,7 +207,7 @@
                         <a href="{{ route('admins.index') }}"> Admin</a>
                     </li>
                     <li>
-                        <a href="starter_kit_boxed.html"> Guru </a>
+                        <a href="{{ route('teachers.index') }}"> Guru </a>
                     </li>
                     <li>
                         <a href="starter_kit_collapsible_menu.html"> Siswa</a>

@@ -46,23 +46,23 @@ return [
         ],
 
         'admin' => [
-          'driver' => 'session',
-          'provider' => 'admin',
-        ],
-
-        'admin-api' => [
-            'driver' => 'token',
+            'driver' => 'session',
             'provider' => 'admin',
         ],
 
         'user' => [
-          'driver' => 'session',
-          'provider' => 'user',
+            'driver' => 'session',
+            'provider' => 'user',
         ],
 
-        'user-api' => [
-            'driver' => 'token',
-            'provider' => 'user',
+        'teacher' => [
+            'driver' => 'session',
+            'provider' => 'teacher',
+        ],
+
+        'parent' => [
+            'driver' => 'session',
+            'provider' => 'parent',
         ],
     ],
 
@@ -84,7 +84,7 @@ return [
     */
 
     'providers' => [
-        'users' => [
+        'user' => [
             'driver' => 'eloquent',
             'model' => App\Models\User::class,
         ],
@@ -92,7 +92,17 @@ return [
         'admin' => [
             'driver' => 'eloquent',
             'model' => App\Models\Admin::class,
-          ],
+        ],
+
+        'teacher' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Teacher::class,
+        ],
+
+        'parent' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\UserParent::class,
+        ],
     ],
 
     /*

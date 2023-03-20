@@ -13,24 +13,20 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('parents', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('slug')->nullable();
-            $table->string('nis')->nullable();
-            $table->string('nisn')->nullable();
+            $table->string('nik')->nullable();
             $table->string('name');
-            $table->enum('gender', ['male', 'female']);
+            $table->string('password');
             $table->string('religion')->nullable();
-            $table->string('file')->nullable();
             $table->string('phone')->nullable();
             $table->string('email')->nullable();
-            $table->string('place_of_birth')->nullable();
-            $table->date('date_of_birth')->nullable();
-            $table->text('address')->nullable();
-            $table->string('password');
-            $table->string('tahun_angkatan')->nullable();
+            $table->string('job')->nullable();
+            $table->string('file')->nullable();
+            $table->bigInteger('id_user');
             $table->dateTimeTz('last_login')->nullable();
-            $table->tinyInteger('status')->default(1);
+            $table->integer('status')->default(1);
             $table->timestamps();
             $table->softDeletes();
         });
@@ -43,6 +39,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('parents');
     }
 };

@@ -19,30 +19,40 @@ class AuthController extends Controller
         // Helper::alert('success', 'Congrats', 'kamu berhasil');
         // Helper::toast('kamu berhasil', 'error');
         // return redirect()->back();
-        // $this->validate($request, [
-        //     'username' => 'required',
-        //     'password' => 'required'
-        // ]);
+        $this->validate($request, [
+            'username' => 'required',
+            'password' => 'required'
+        ]);
+        // dd($request);
 
-        // if (Auth::guard('admin')->attempt($this->check_credentials($request), $request->filled('remember'))) {
-        //     return response()->json([
-        //         'message' =>  'Login sebagai admin berhasil',
-        //         'status' =>  true,
-        //         'target_url' =>  route('admin.dashboard'),
-        //     ]);
-        // } else if (Auth::guard('user')->attempt($this->check_credentials($request), $request->filled('remember'))) {
-        //     return response()->json([
-        //         'message' =>  'Login sebagai Pengguna berhasil',
-        //         'status' =>  true,
-        //         'target_url' =>  route('user.dashboard'),
-        //     ]);
-        // }
+        if (Auth::guard('admin')->attempt($this->check_credentials($request), $request->filled('remember'))) {
+            Helper::alert('success', 'Selamat Datang !', 'Berhasil Login');
+            return redirect()->intended('/dashboard');
+        } else if (Auth::guard('teacher')->attempt($this->check_credentials($request), $request->filled('remember'))) {
+            return response()->json([
+                'message' =>  'Login sebagai Pengguna berhasil',
+                'status' =>  true,
+                'target_url' =>  route('user.dashboard'),
+            ]);
+        } else if (Auth::guard('user')->attempt($this->check_credentials($request), $request->filled('remember'))) {
+            return response()->json([
+                'message' =>  'Login sebagai Pengguna berhasil',
+                'status' =>  true,
+                'target_url' =>  route('user.dashboard'),
+            ]);
+        } else if (Auth::guard('parent')->attempt($this->check_credentials($request), $request->filled('remember'))) {
+            return response()->json([
+                'message' =>  'Login sebagai Pengguna berhasil',
+                'status' =>  true,
+                'target_url' =>  route('user.dashboard'),
+            ]);
+        }
 
-        // return response()->json([
-        //     'message' =>  'Anda tidak mempunyai akses untuk login',
-        //     'status' =>  false,
-        //     'target_url' =>  route('auth.login'),
-        // ]);
+        return response()->json([
+            'message' =>  'Anda tidak mempunyai akses untuk login',
+            'status' =>  false,
+            'target_url' =>  route('auth.login'),
+        ]);
     }
 
     protected function check_credentials(Request $request)
@@ -59,8 +69,12 @@ class AuthController extends Controller
             Auth::guard('admin')->logout();
         } elseif (Auth::guard('user')->check()) {
             Auth::guard('user')->logout();
+        } elseif (Auth::guard('teacher')->check()) {
+            Auth::guard('teacher')->logout();
+        } elseif (Auth::guard('parent')->check()) {
+            Auth::guard('parent')->logout();
         }
-
+        Helper::alert('error', 'Anda sudah Logout', '');
         return redirect()->route('auth.login');
     }
 }

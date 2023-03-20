@@ -21,7 +21,7 @@
 
                         <h1 class="">Log In to <a href="index.html"><span class="brand-name">CORK</span></a></h1>
                         <p class="signup-link">New Here? <a href="auth_register.html">Create an account</a></p>
-                        <form class="text-left" action="{{ route('auth.verify_login') }}" method="POST">
+                        <form class="text-left" action="{{ route('auth.verify') }}" method="POST">
                             @csrf
                             <div class="form">
 
@@ -91,47 +91,6 @@
     </div>
     @include('layout.admin.v_foot')
     <script src="{{ asset('asset/js/form-1.js') }}"></script>
-
-    <script>
-        $(function() {
-            $.ajaxSetup({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            });
-
-            // $('#formLogin').on('submit', function(event) {
-            //     event.preventDefault();
-            //     $("#btnSubmit").addClass('m-loader m-loader--light m-loader--right');
-            //     $("#btnSubmit").attr("disabled", true);
-            //     $.ajax({
-            //         url: "{{ route('auth.verify_login') }}",
-            //         method: "POST",
-            //         data: $(this).serialize(),
-            //         dataType: "json",
-            //         success: function(data) {
-            //             if (data.status == true) {
-            //                 swal("Login Berhasil!", data.message, "success")
-            //                 window.location.href = data.target_url
-            //             } else {
-            //                 swal("Login Gagal!", data.message, "error")
-            //                 $('#btnSubmit').removeClass(
-            //                     'm-loader m-loader--light m-loader--right');
-            //                 $("#btnSubmit").attr("disabled", false);
-            //             }
-
-            //         },
-            //         error: function(data) {
-            //             const res = data.responseJSON;
-            //             toastr.error(res.message, "GAGAL");
-            //             console.log(data);
-            //             $('#btnSubmit').removeClass('m-loader m-loader--light m-loader--right');
-            //             $("#btnSubmit").attr("disabled", false);
-            //         }
-            //     });
-            // });
-        })
-    </script>
 
 </body>
 
