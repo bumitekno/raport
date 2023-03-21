@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\Helper;
+use App\Helpers\ImageHelper;
 use App\Models\Admin;
 use App\Http\Requests\StoreAdminRequest;
 use App\Http\Requests\UpdateAdminRequest;
@@ -67,24 +68,16 @@ class AdminController extends Controller
      */
     public function store(StoreAdminRequest $request)
     {
-        // $validator = Validator::make($request->all(), $request
-        //     ->rules(), $request->messages());
-        // if ($validator->fails()) {
-        //     Helper::alert('error', 'Gagal Menyimpan !', $validator);
-        //     return redirect()->back()->withInput();
-        // }
-
-        // $validated = $request->validated();
-        // $messages = $validated->errors()->toArray();
-        // dd($messages);
-        // dd($request);
-
-        $attr = $request->toArray();
-
-        Admin::create($request->all());
+        $data = $request->toArray();
+        if ($request->hasFile('file')) {
+            $data = ImageHelper::upload_asset($request, 'file', 'profile', $data);
+        }
+        unset($data['_token'], $data['password_confirmation']);
+        // dd($data);
+        Admin::create($data);
 
         Helper::toast('kamu berhasil', 'success');
-        return redirect()->back();
+        return redirect()->route('admins.index');
     }
 
     /**
@@ -118,9 +111,27 @@ class AdminController extends Controller
      * @param  \App\Models\Admin  $admin
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateAdminRequest $request, Admin $admin)
+    public function update(UpdateAdminRequest $request, Admin $admin, $slug)
     {
-        //
+        // $validated = $request->validated();
+        // $user = Admin::where('slug', $slug)->update($validated);
+
+        $data = $request->toArray();
+        if ($request->hasFile('file')) {
+            $data = ImageHelper::upload_asset($request, 'file', 'profile', $data);
+        }
+        unset($data['_token'], $data['_method'], $data['password_confirmation']);
+        if($request->password){
+            $user->update([
+                'password' => Hash::make($request->password),
+            ]);
+        }
+        Admin::where('slug', $slug)->update($data);
+        // $admin->update([
+        //     'name' => $request->name,
+        //     'email' => $request->email,
+        //     'updated_at' => now()
+        // ]);
     }
 
     /**

@@ -47,12 +47,8 @@ class AuthController extends Controller
                 'target_url' =>  route('user.dashboard'),
             ]);
         }
-
-        return response()->json([
-            'message' =>  'Anda tidak mempunyai akses untuk login',
-            'status' =>  false,
-            'target_url' =>  route('auth.login'),
-        ]);
+        Helper::alert('error', 'Anda tidak mempunyai akses untuk login', '');
+        return redirect()->back()->withInput($request->input());
     }
 
     protected function check_credentials(Request $request)

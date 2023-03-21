@@ -13,6 +13,7 @@ class Admin extends Authenticatable
     use SoftDeletes;
 
     protected $table = "admins";
+    protected $guarded = [];
 
     protected $dates = ['deleted_at'];
 

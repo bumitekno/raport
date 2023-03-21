@@ -2,9 +2,10 @@
 @section('content')
     @push('styles')
         @include('package.loader.loader_css')
-        @include('package.preview.preview_css')
+        @include('package.dropify.dropify_css')
         @include('package.switches.switches_css')
         @include('package.flatpickr.flatpickr_css')
+        <link rel="stylesheet" type="text/css" href="{{ asset('asset/custom/account-setting.css') }}">
     @endpush
     <div class="middle-content container-xxl p-0">
 
@@ -21,12 +22,10 @@
         </div>
         {{-- {{dd($admin['id'])}} --}}
         @if (isset($admin))
-            {{ Form::model($admin, ['route' => ['admins.update', $admin->id], 'method' => 'patch']) }}
+            {{ Form::model($admin, ['route' => ['admins.update', $admin->slug], 'method' => 'patch', 'files' => true]) }}
         @else
-            {{ Form::open(['route' => 'admins.store']) }}
+            {{ Form::open(['route' => 'admins.store', 'files' => true]) }}
         @endif
-        {{-- <form action="{{ route('admins.store') }}" class="simple-example" method="post" enctype="multipart/form-data"> --}}
-        @csrf
         <div class="row mb-4 layout-spacing layout-top-spacing">
 
             <div class="col-md-9">
@@ -53,7 +52,9 @@
                                 <option value="female" {{ old('gender') == 'female' ? 'selected' : '' }}>Perempuan
                                 </option>
                             </select>
-
+                            @error('gender')
+                                <div class="invalid-feedback d-block">{{ $message }}</div>
+                            @enderror
                         </div>
                     </div>
 
@@ -72,7 +73,10 @@
                         <div class="col-sm-12">
                             <label>Telepon</label>
                             <input type="text" name="phone" class="form-control" id="inputEmail3"
-                                value="{{ isset($admin) ? $admin->phone : old('phone')  }}">
+                                value="{{ isset($admin) ? $admin->phone : old('phone') }}">
+                            @error('phone')
+                                <div class="invalid-feedback d-block">{{ $message }}</div>
+                            @enderror
                         </div>
                     </div>
 
@@ -81,6 +85,9 @@
                             <label>Alamat</label>
                             <textarea class="form-control" name="address" id="exampleFormControlTextarea1" rows="3">{{ old('address') }}</textarea>
                         </div>
+                        @error('address')
+                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                        @enderror
                     </div>
 
                     <div class="row mb-4">
@@ -88,31 +95,35 @@
                             <label>Tempat Lahir</label>
                             <input type="text" class="form-control" name="place_of_birth" id="inputEmail3"
                                 value="{{ old('place_of_birth') }}">
+                            @error('place_of_birth')
+                                <div class="invalid-feedback d-block">{{ $message }}</div>
+                            @enderror
                         </div>
                         <div class="col-sm-6">
                             <label>Tanggal Lahir</label>
                             <input value="{{ old('date_of_birth', now()) }}" class="form-control basicPicker active"
                                 type="text" name="date_of_birth" placeholder="Select Date..">
+                            @error('date_of_birth')
+                                <div class="invalid-feedback d-block">{{ $message }}</div>
+                            @enderror
                         </div>
                     </div>
 
                     <div class="row">
-                        <div class="col-md-8">
-                            <div class="custom-file-container" data-upload-id="myFirstImage">
-                                <label class="d-flex justify-content-between" style="color: #acb0c3 !important">Profile
-                                    <a href="javascript:void(0)" class="custom-file-container__image-clear text-red"
-                                        title="Clear Image">x</a></label>
-                                <label class="custom-file-container__custom-file">
-                                    <input type="file" class="custom-file-container__custom-file__custom-file-input"
-                                        accept="image/*" name="file">
-                                    <input type="hidden" name="MAX_FILE_SIZE" value="10485760" />
-                                    <span class="custom-file-container__custom-file__custom-file-control"></span>
-                                </label>
-                                <div class="custom-file-container__image-preview"></div>
+                        <div class="col-md-12">
+                            @error('file')
+                                <div class="invalid-feedback d-block">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <div class="col-md-4 info">
+                            <label>Avatar</label>
+                            <div class="upload pr-md-4">
+                                <input type="file" name="file" id="input-file-max-fs" class="dropify"
+                                    data-default-file="{{ asset('asset/img/200x200.jpg') }}" data-max-file-size="2M" />
                             </div>
                         </div>
 
-                        <div class="col-md-4 text-center">
+                        <div class="col-md-8 text-center my-auto">
                             <div class="field-wrapper toggle-pass d-flex justify-content-end">
                                 <label class="switch s-icons s-outline  s-outline-primary  mb-4 mr-2">
                                     <input type="checkbox" name="status" value="1" checked>
@@ -196,7 +207,7 @@
     </div>
     @push('scripts')
         @include('package.flatpickr.flatpickr_js')
-        @include('package.preview.preview_js')
+        @include('package.dropify.dropify_js')
         <script>
             $(function() {
                 $("form").submit(function() {

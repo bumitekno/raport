@@ -33,7 +33,7 @@
                                         <circle cx="12" cy="7" r="4"></circle>
                                     </svg>
                                     <input id="username" name="username" type="text" class="form-control"
-                                        placeholder="Username">
+                                        placeholder="Username" value="{{ old('username') }}">
                                 </div>
 
                                 <div id="password-field" class="field-wrapper input mb-2">
