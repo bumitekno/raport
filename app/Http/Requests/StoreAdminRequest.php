@@ -28,8 +28,17 @@ class StoreAdminRequest extends FormRequest
         return [
             'email' => ['required', 'unique:admins,email,' . optional($this->admin)->id,],
             'name' => ['required'],
+            'phone' => 'required|numeric',
             'password' => (empty($this->admin->password)) ? ['required', Password::defaults(), 'required_with:password_confirmation', 'same:password_confirmation'] : '',
-            'password_confirmation' => ['min:8']
+            'password_confirmation' => ['min:8'],
+            'slug' => 'required|string',
+            'file'  => [
+                'nullable',
+                'image',
+                'mimes:jpg,png,jpeg,gif,svg',
+                'max:2048',
+            ],
+
         ];
     }
 
@@ -42,9 +51,17 @@ class StoreAdminRequest extends FormRequest
         ];
     }
 
-    public function response(array $errors)
+    // public function response(array $errors)
+    // {
+    //     return parent::response($errors);
+    // }
+
+    protected function getValidatorInstance()
     {
-        // dd($errors);
-        return parent::response($errors);
+        $data = $this->all();
+        $data['slug'] = str_slug($data['name']);
+        $this->getInputSource()->replace($data);
+
+        return parent::getValidatorInstance();
     }
 }

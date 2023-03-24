@@ -5,17 +5,15 @@
     @endpush
     <div class="middle-content container-xxl p-0">
 
-        <!-- BREADCRUMB -->
         <div class="page-meta mt-3">
             <nav class="breadcrumb-style-one" aria-label="breadcrumb">
                 <ol class="breadcrumb bg-transparent">
                     <li class="breadcrumb-item"><a href="#">User</a></li>
-                    <li class="breadcrumb-item"><a href="{{ route('admins.index') }}">Admin</a></li>
+                    <li class="breadcrumb-item"><a href="{{ route('teachers.index') }}">Guru</a></li>
                     <li class="breadcrumb-item active" aria-current="page">List</li>
                 </ol>
             </nav>
         </div>
-        <!-- /BREADCRUMB -->
 
         <div class="row" id="cancel-row">
 
@@ -27,10 +25,10 @@
                             <tr>
                                 <th></th>
                                 <th>Nama</th>
+                                <th>NIP</th>
                                 <th>Email</th>
-                                <th>Alamat</th>
-                                <th>Telepon</th>
-                                <th class="no-content text-center">Aksi</th>
+                                <th>Status Akun</th>
+                                <th class="no-content text-center"></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -57,7 +55,7 @@
                         text: 'Tambah Baru',
                         className: 'btn btn-primary',
                         action: function(e, dt, node, config) {
-                            window.location = '{{ route('admins.create') }}';
+                            window.location = '{{ route('teachers.create') }}';
                         }
                     }],
                     columns: [{

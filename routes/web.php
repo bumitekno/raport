@@ -16,9 +16,14 @@ Route::prefix('auth')->name('auth.')->group(function () {
 
 Route::middleware('auth:user,admin,parent,teacher')->group(function () {
     Route::get('dashboard', [DashboardController::class, 'admin'])->name('dashboard');
+
     Route::resource('admins', AdminController::class)->parameters([
         'admins' => 'admins:slug',
+    ])->only([
+        'index', 'create', 'edit', 'store', 'update'
     ]);
+    Route::get('admins/destroy/{slug}', [AdminController::class, 'destroy'])->name('admins.destroy');
+
     Route::resource('teachers', TeacherController::class)->parameters([
         'teachers' => 'teachers:slug',
     ]);

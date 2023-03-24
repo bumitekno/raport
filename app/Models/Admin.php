@@ -13,7 +13,10 @@ class Admin extends Authenticatable
     use SoftDeletes;
 
     protected $table = "admins";
-    protected $guarded = [];
+    // protected $guarded = ['password_confirmation'];
+    protected $fillable = [
+        'name', 'email', 'gender', 'phone', 'address', 'file', 'place_of_birth', 'date_of_birth', 'password', 'status'
+    ];
 
     protected $dates = ['deleted_at'];
 

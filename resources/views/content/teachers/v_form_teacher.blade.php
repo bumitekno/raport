@@ -8,19 +8,20 @@
         <link rel="stylesheet" type="text/css" href="{{ asset('asset/custom/account-setting.css') }}">
     @endpush
     <div class="middle-content container-xxl p-0">
+
         <div class="page-meta mt-3">
             <nav class="breadcrumb-style-one" aria-label="breadcrumb">
                 <ol class="breadcrumb bg-transparent">
                     <li class="breadcrumb-item"><a href="#">User</a></li>
-                    <li class="breadcrumb-item"><a href="{{ route('admins.index') }}">Admin</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">{{ isset($admin) ? 'Edit' : 'Tambah' }}</li>
+                    <li class="breadcrumb-item"><a href="{{ route('teachers.index') }}">Guru</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">{{ isset($teacher) ? 'Edit' : 'Tambah' }}</li>
                 </ol>
             </nav>
         </div>
-        @if (isset($admin))
-            {{ Form::model($admin, ['route' => ['admins.update', $admin->slug], 'method' => 'patch', 'files' => true]) }}
+        @if (isset($teacher))
+            {{ Form::model($teacher, ['route' => ['teachers.update', $teacher->slug], 'method' => 'patch', 'files' => true]) }}
         @else
-            {{ Form::open(['route' => 'admins.store', 'files' => true]) }}
+            {{ Form::open(['route' => 'teachers.store', 'files' => true]) }}
         @endif
         <div class="row mb-4 layout-spacing layout-top-spacing">
 
@@ -30,41 +31,47 @@
 
                     <div class="row mb-4">
                         <div class="col-sm-12">
-                            {{-- {{ Form::text('name', Request::old('name')) }} --}}
-                            <input type="text" class="form-control" id="inputEmail3" placeholder="Nama Admin"
-                                value="{{ isset($admin) ? old('name', $admin->name) : old('name') }}" name="name">
+                            <input type="text" class="form-control" id="inputEmail3" placeholder="Nama Guru"
+                                value="{{ isset($teacher) ? old('name', $teacher->name) : old('name') }}" name="name">
                             @error('name')
                                 <div class="invalid-feedback d-block">{{ $message }}</div>
                             @enderror
                         </div>
                     </div>
 
-                    <div class="row mb-4">
-                        <div class="col-sm-12">
-                            <label>Jenis Kelamin</label>
-                            <select class="form-control" name="gender" id="exampleFormControlSelect1">
-                                {{-- {{ (old() ? old('field_name', false) : $model->field_name ?? false) ? 'checked' : '' }} --}}
-                                <option value="male"
-                                    {{ isset($admin) && old('gender', $admin->gender) == 'male' ? 'selected' : (old('gender') == 'male' ? 'selected' : '') }}>
-                                    Laki - laki
-                                    {{-- <option value="male" {{ old('gender') == 'male' ? 'selected' : '' }}>Laki - laki --}}
-                                </option>
-                                <option value="female"
-                                    {{ isset($admin) && old('gender', $admin->gender) == 'female' ? 'selected' : (old('gender') == 'female' ? 'selected' : '') }}>
-                                    Perempuan
-                                </option>
-                            </select>
-                            @error('gender')
+                    <div class="row">
+                        <div class="col-md-6 mb-4">
+                            <label>NIK</label>
+                            <input type="text" class="form-control" placeholder="NIK"
+                                value="{{ isset($teacher) ? old('nik', $teacher->nik) : old('nik') }}" name="nik">
+                            @error('nik')
+                                <div class="invalid-feedback d-block">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <label>NUPTK</label>
+                            <input type="text" class="form-control" placeholder="NUPTK"
+                                value="{{ isset($teacher) ? old('nuptk', $teacher->nuptk) : old('nuptk') }}" name="nuptk">
+                            @error('nuptk')
                                 <div class="invalid-feedback d-block">{{ $message }}</div>
                             @enderror
                         </div>
                     </div>
 
-                    <div class="row mb-4">
-                        <div class="col-sm-12">
+                    <div class="row">
+                        <div class="col-md-6 mb-4">
+                            <label>NIP</label>
+                            <input type="text" class="form-control" placeholder="NIP"
+                                value="{{ isset($teacher) ? old('nip', $teacher->nip) : old('nip') }}" name="nip">
+                            @error('nip')
+                                <div class="invalid-feedback d-block">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <div class="col-md-6 mb-4">
                             <label>Email</label>
-                            <input type="email" name="email" class="form-control"
-                                value="{{ isset($admin) ? old('email', $admin->email) : old('email') }}">
+                            <input type="text" class="form-control" placeholder="Email"
+                                value="{{ isset($teacher) ? old('email', $teacher->email) : old('email') }}"
+                                name="email">
                             @error('email')
                                 <div class="invalid-feedback d-block">{{ $message }}</div>
                             @enderror
@@ -75,7 +82,7 @@
                         <div class="col-sm-12">
                             <label>Telepon</label>
                             <input type="text" name="phone" class="form-control" id="inputEmail3"
-                                value="{{ isset($admin) ? old('phone', $admin->phone) : old('phone') }}">
+                                value="{{ isset($teacher) ? old('phone', $teacher->phone) : old('phone') }}">
                             @error('phone')
                                 <div class="invalid-feedback d-block">{{ $message }}</div>
                             @enderror
@@ -85,29 +92,56 @@
                     <div class="row mb-4">
                         <div class="col-sm-12">
                             <label>Alamat</label>
-                            <textarea class="form-control" name="address" id="exampleFormControlTextarea1" rows="3">{{ isset($admin) ? old('address', $admin->address) : old('address') }}</textarea>
+                            <textarea class="form-control" name="address" id="exampleFormControlTextarea1" rows="3">{{ isset($teacher) ? old('address', $teacher->address) : old('address') }}</textarea>
                         </div>
                         @error('address')
                             <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror
                     </div>
 
-                    <div class="row mb-4">
-                        <div class="col-sm-6">
+                    <div class="row">
+                        <div class="col-md-6 mb-4">
                             <label>Tempat Lahir</label>
                             <input type="text" class="form-control" name="place_of_birth" id="inputEmail3"
-                                value="{{ isset($admin) ? old('place_of_birth', $admin->place_of_birth) : old('place_of_birth') }}">
+                                value="{{ isset($teacher) ? old('place_of_birth', $teacher->place_of_birth) : old('place_of_birth') }}">
                             @error('place_of_birth')
                                 <div class="invalid-feedback d-block">{{ $message }}</div>
                             @enderror
                         </div>
-                        <div class="col-sm-6">
+                        <div class="col-md-6 mb-4">
                             <label>Tanggal Lahir</label>
                             <input
-                                value="{{ isset($admin) ? old('date_of_birth', $admin->date_of_birth) : old('date_of_birth', now()) }}"
+                                value="{{ isset($teacher) ? old('date_of_birth', $teacher->date_of_birth) : old('date_of_birth', now()) }}"
                                 class="form-control basicPicker active" type="text" name="date_of_birth"
                                 placeholder="Select Date..">
                             @error('date_of_birth')
+                                <div class="invalid-feedback d-block">{{ $message }}</div>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-4">
+                            <label>Jenis Kelamin</label>
+                            <div class="n-chk p-2 my-auto">
+                                <label class="new-control new-radio radio-classic-primary mb-0 mr-2">
+                                    <input type="radio" class="new-control-input" name="custom-radio-2">
+                                    <span class="new-control-indicator"></span>Laki - laki
+                                </label>
+                                <label class="new-control new-radio radio-classic-primary mb-0">
+                                    <input type="radio" class="new-control-input" name="custom-radio-2">
+                                    <span class="new-control-indicator"></span>Perempuan
+                                </label>
+                            </div>
+                            @error('place_of_birth')
+                                <div class="invalid-feedback d-block">{{ $message }}</div>
+                            @enderror
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <label>Agama</label>
+                            <select name="religion" id="religion" class="form-control">
+                                <option value="islam">Islam</option>
+                            </select>
+                            @error('religion')
                                 <div class="invalid-feedback d-block">{{ $message }}</div>
                             @enderror
                         </div>
@@ -124,8 +158,8 @@
                             <div class="upload pr-md-4">
                                 @php
                                     $file = asset('asset/img/200x200.jpg');
-                                    if (isset($admin) && $admin->file) {
-                                        $file = asset($admin->file);
+                                    if (isset($teacher) && $teacher->file) {
+                                        $file = asset($teacher->file);
                                     }
                                 @endphp
                                 <input type="file" name="file" id="input-file-max-fs" class="dropify"
@@ -137,7 +171,7 @@
                             <div class="field-wrapper toggle-pass d-flex justify-content-end">
                                 @php
                                     $check = 'checked';
-                                    if (isset($admin) && $admin->status == 0) {
+                                    if (isset($teacher) && $teacher->status == 0) {
                                         $check = '';
                                     }
                                 @endphp
@@ -145,7 +179,7 @@
                                     <input type="checkbox" name="status" value="1" {{ $check }}>
                                     <span class="slider round"></span>
                                 </label>
-                                <p class="d-inline-block">Status Admin</p>
+                                <p class="d-inline-block">Status Guru</p>
                             </div>
                         </div>
 

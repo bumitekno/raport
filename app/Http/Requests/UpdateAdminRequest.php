@@ -24,18 +24,17 @@ class UpdateAdminRequest extends FormRequest
      */
     public function rules()
     {
-        $slug = str_slug($this->name).'-'. Helper::str_random(5);
         return [
             'email' => 'required|email',
             'name' => 'required',
-            'slug' => $slug,
             'phone' => 'required|numeric',
             'gender' => 'required',
             'address' => 'sometimes',
             'place_of_birth' => 'sometimes',
             'date_of_birth' => 'date_format:Y-m-d|before:today',
             'file' => 'sometimes | mimes:jpeg,jpg,png | max:5000',
-            'password' => 'sometimes',
+            'slug' => 'required|string',
+            'password' => 'nullable',
             'password_confirmation' => 'same:password'
         ];
     }
@@ -52,5 +51,14 @@ class UpdateAdminRequest extends FormRequest
     {
         // dd($errors);
         return parent::response($errors);
+    }
+
+    protected function getValidatorInstance()
+    {
+        $data = $this->all();
+        $data['slug'] = str_slug($data['name']).'-'. Helper::str_random(5);
+        $this->getInputSource()->replace($data);
+
+        return parent::getValidatorInstance();
     }
 }
