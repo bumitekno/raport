@@ -9,7 +9,7 @@
             <nav class="breadcrumb-style-one" aria-label="breadcrumb">
                 <ol class="breadcrumb bg-transparent">
                     <li class="breadcrumb-item"><a href="#">User</a></li>
-                    <li class="breadcrumb-item"><a href="{{ route('teachers.index') }}">Guru</a></li>
+                    <li class="breadcrumb-item"><a href="{{ route('users.index') }}">Siswa</a></li>
                     <li class="breadcrumb-item active" aria-current="page">List</li>
                 </ol>
             </nav>
@@ -27,13 +27,12 @@
                         </div>
                     </div>
                     <div class="widget-content widget-content-area br-8">
-
                         <table id="table-list" class="table dt-table-hover w-100">
                             <thead>
                                 <tr>
                                     <th></th>
                                     <th>Nama</th>
-                                    <th>NIP</th>
+                                    <th>NISN</th>
                                     <th>Email</th>
                                     <th>Status Akun</th>
                                     <th class="no-content text-center"></th>
@@ -64,7 +63,7 @@
                         text: 'Tambah Baru',
                         className: 'btn btn-primary',
                         action: function(e, dt, node, config) {
-                            window.location = '{{ route('teachers.create') }}';
+                            window.location = '{{ route('users.create') }}';
                         }
                     }],
                     columns: [{

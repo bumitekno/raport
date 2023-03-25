@@ -81,7 +81,7 @@
                     <div class="row mb-4">
                         <div class="col-sm-12">
                             <label>Telepon</label>
-                            <input type="text" name="phone" class="form-control" id="inputEmail3"
+                            <input type="text" name="phone" class="form-control" id="inputEmail3" placeholder="Telepon"
                                 value="{{ isset($teacher) ? old('phone', $teacher->phone) : old('phone') }}">
                             @error('phone')
                                 <div class="invalid-feedback d-block">{{ $message }}</div>
@@ -92,7 +92,7 @@
                     <div class="row mb-4">
                         <div class="col-sm-12">
                             <label>Alamat</label>
-                            <textarea class="form-control" name="address" id="exampleFormControlTextarea1" rows="3">{{ isset($teacher) ? old('address', $teacher->address) : old('address') }}</textarea>
+                            <textarea class="form-control" name="address" id="exampleFormControlTextarea1" rows="3" placeholder="Alamat">{{ isset($teacher) ? old('address', $teacher->address) : old('address') }}</textarea>
                         </div>
                         @error('address')
                             <div class="invalid-feedback d-block">{{ $message }}</div>
@@ -102,7 +102,7 @@
                     <div class="row">
                         <div class="col-md-6 mb-4">
                             <label>Tempat Lahir</label>
-                            <input type="text" class="form-control" name="place_of_birth" id="inputEmail3"
+                            <input type="text" class="form-control" name="place_of_birth" id="inputEmail3" placeholder="Tempat Lahir"
                                 value="{{ isset($teacher) ? old('place_of_birth', $teacher->place_of_birth) : old('place_of_birth') }}">
                             @error('place_of_birth')
                                 <div class="invalid-feedback d-block">{{ $message }}</div>
@@ -124,11 +124,11 @@
                             <label>Jenis Kelamin</label>
                             <div class="n-chk p-2 my-auto">
                                 <label class="new-control new-radio radio-classic-primary mb-0 mr-2">
-                                    <input type="radio" class="new-control-input" name="custom-radio-2">
+                                    <input type="radio" class="new-control-input" value="male" checked name="gender">
                                     <span class="new-control-indicator"></span>Laki - laki
                                 </label>
                                 <label class="new-control new-radio radio-classic-primary mb-0">
-                                    <input type="radio" class="new-control-input" name="custom-radio-2">
+                                    <input type="radio" class="new-control-input" value="female" name="gender">
                                     <span class="new-control-indicator"></span>Perempuan
                                 </label>
                             </div>
@@ -140,6 +140,12 @@
                             <label>Agama</label>
                             <select name="religion" id="religion" class="form-control">
                                 <option value="islam">Islam</option>
+                                <option value="protestan">Protestan</option>
+                                <option value="katolik">Katolik</option>
+                                <option value="hindu">Hindu</option>
+                                <option value="budha">Budha</option>
+                                <option value="konghucu">Konghucu</option>
+                                <option value="lainnya">Lainnya</option>
                             </select>
                             @error('religion')
                                 <div class="invalid-feedback d-block">{{ $message }}</div>

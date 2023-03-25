@@ -14,6 +14,12 @@ class Teacher extends Authenticatable
 
     protected $table = "teachers";
 
+    protected $guarded = ['password_confirmation'];
+
+    protected $fillable = [
+        'slug', 'name', 'nik', 'nuptk', 'nip', 'email', 'phone', 'address', 'place_of_birth', 'date_of_birth', 'gender', 'religion', 'password', 'status'
+    ];
+
     protected $dates = ['deleted_at'];
 
     public function setPasswordAttribute($password)

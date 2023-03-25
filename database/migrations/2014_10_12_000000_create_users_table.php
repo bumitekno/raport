@@ -28,7 +28,7 @@ return new class extends Migration
             $table->date('date_of_birth')->nullable();
             $table->text('address')->nullable();
             $table->string('password');
-            $table->string('tahun_angkatan')->nullable();
+            $table->string('entry_year')->nullable();
             $table->dateTimeTz('last_login')->nullable();
             $table->tinyInteger('status')->default(1);
             $table->timestamps();

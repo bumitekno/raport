@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\TeacherController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [AuthController::class, 'login'])->name('first_page');
@@ -26,5 +27,15 @@ Route::middleware('auth:user,admin,parent,teacher')->group(function () {
 
     Route::resource('teachers', TeacherController::class)->parameters([
         'teachers' => 'teachers:slug',
+    ])->only([
+        'index', 'create', 'edit', 'store', 'update'
     ]);
+    Route::get('teachers/destroy/{slug}', [TeacherController::class, 'destroy'])->name('teachers.destroy');
+
+    Route::resource('users', UserController::class)->parameters([
+        'users' => 'users:slug',
+    ])->only([
+        'index', 'create', 'edit', 'store', 'update'
+    ]);
+    Route::get('users/destroy/{slug}', [UserController::class, 'destroy'])->name('users.destroy');
 });

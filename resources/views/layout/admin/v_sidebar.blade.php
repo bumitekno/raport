@@ -210,7 +210,7 @@
                         <a href="{{ route('teachers.index') }}"> Guru </a>
                     </li>
                     <li>
-                        <a href="starter_kit_collapsible_menu.html"> Siswa</a>
+                        <a href="{{ route('users.index') }}"> Siswa</a>
                     </li>
 
                 </ul>

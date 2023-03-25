@@ -14,6 +14,10 @@ class User extends Authenticatable
 
     protected $table = "users";
 
+    protected $fillable = [
+        'slug', 'nis', 'nisn', 'name', 'gender', 'religion', 'phone', 'email', 'address', 'place_of_birth', 'date_of_birth', 'password', 'status', 'file'
+    ];
+
     protected $dates = ['deleted_at'];
 
     public function setPasswordAttribute($password)

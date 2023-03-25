@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Helpers\Helper;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rules\Password;
 
@@ -51,15 +52,10 @@ class StoreAdminRequest extends FormRequest
         ];
     }
 
-    // public function response(array $errors)
-    // {
-    //     return parent::response($errors);
-    // }
-
     protected function getValidatorInstance()
     {
         $data = $this->all();
-        $data['slug'] = str_slug($data['name']);
+        $data['slug'] = str_slug($data['name']).'-'. Helper::str_random(5);
         $this->getInputSource()->replace($data);
 
         return parent::getValidatorInstance();

@@ -20,6 +20,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('password');
             $table->string('religion')->nullable();
+            $table->enum('type', ['father', 'mother', 'guardian', 'other']);
             $table->string('phone')->nullable();
             $table->string('email')->nullable();
             $table->string('job')->nullable();

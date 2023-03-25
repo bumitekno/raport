@@ -4,20 +4,18 @@ namespace App\Http\Controllers;
 
 use App\Helpers\Helper;
 use App\Helpers\ImageHelper;
-use App\Http\Requests\StoreTeacherRequest;
-use App\Http\Requests\UpdateTeacherRequest;
-use App\Models\Teacher;
+use App\Http\Requests\StoreUserRequest;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
-use Illuminate\Support\Facades\Hash;
 
-class TeacherController extends Controller
+class UserController extends Controller
 {
     public function index(Request $request)
     {
-        session()->put('title', 'LIST GURU');
+        session()->put('title', 'LIST SISWA');
         if ($request->ajax()) {
-            $data = Teacher::select('*');
+            $data = User::select('*');
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function ($row) {
@@ -48,29 +46,30 @@ class TeacherController extends Controller
                 ->rawColumns(['action', 'name'])
                 ->make(true);
         }
-        return view('content.teachers.v_teacher');
+        return view('content.users.v_user');
     }
 
     public function create()
     {
-        return view('content.teachers.v_form_teacher');
+        return view('content.users.v_form_user');
     }
 
-    public function store(StoreTeacherRequest $request)
+    public function store(StoreUserRequest $request)
     {
+        // dd($request);
         $data = $request->toArray();
         if ($request->hasFile('file')) {
             $data = ImageHelper::upload_asset($request, 'file', 'profile', $data);
         }
-        Teacher::create($data);
-        Helper::toast('Berhasil menambah guru', 'success');
-        return redirect()->route('teachers.index');
+        User::create($data);
+        Helper::toast('Berhasil menambah siswa', 'success');
+        return redirect()->route('users.index');
     }
 
-    public function edit(Teacher $teacher, $slug)
+    public function edit(User $user, $slug)
     {
-        $teacher = Teacher::where('slug', $slug)->firstOrFail();
-        return view('content.teachers.v_form_teacher', compact('teacher'));
+        $user = User::where('slug', $slug)->firstOrFail();
+        return view('content.users.v_form_user', compact('user'));
     }
 
     public function update(UpdateTeacherRequest $request, $slug)

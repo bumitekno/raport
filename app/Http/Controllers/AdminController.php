@@ -21,6 +21,7 @@ class AdminController extends Controller
      */
     public function index(Request $request)
     {
+        session()->put('title', 'LIST ADMIN');
         if ($request->ajax()) {
             $data = Admin::select('*');
             return Datatables::of($data)
@@ -68,7 +69,6 @@ class AdminController extends Controller
 
     public function store(StoreAdminRequest $request)
     {
-        $request->except('_token');
         $data = $request->toArray();
         if ($request->hasFile('file')) {
             $data = ImageHelper::upload_asset($request, 'file', 'profile', $data);
