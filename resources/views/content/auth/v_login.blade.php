@@ -34,6 +34,9 @@
                                     </svg>
                                     <input id="username" name="username" type="text" class="form-control"
                                         placeholder="Username" value="{{ old('username') }}">
+                                    @error('username')
+                                        <div class="invalid-feedback d-block">{{ $message }}</div>
+                                    @enderror
                                 </div>
 
                                 <div id="password-field" class="field-wrapper input mb-2">
@@ -46,6 +49,9 @@
                                     </svg>
                                     <input id="password" name="password" type="password" class="form-control"
                                         placeholder="Password">
+                                    @error('password')
+                                        <div class="invalid-feedback d-block">{{ $message }}</div>
+                                    @enderror
                                 </div>
                                 <div class="d-sm-flex justify-content-between">
                                     <div class="field-wrapper toggle-pass">

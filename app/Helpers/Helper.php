@@ -50,4 +50,18 @@ class Helper
         $result = Alert::toast($message, $status);
         return $result;
     }
+
+    public static function pure_slug($slug)
+    {
+        $result = explode('-', $slug);
+        array_pop($result);
+        return implode('-', $result);
+    }
+
+    public static function code_slug($slug)
+    {
+        $result = explode('-', $slug);
+        // dd($result);
+        return last($result);
+    }
 }

@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\Admin;
 
 use App\Helpers\Helper;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rules\Password;
 
-class StoreTeacherRequest extends FormRequest
+class StoreAdminRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,11 +25,12 @@ class StoreTeacherRequest extends FormRequest
      */
     public function rules()
     {
+        // dd('rules');
         return [
-            'email' => ['required', 'unique:teachers,email,' . optional($this->teacher)->id,],
+            'email' => ['required', 'unique:admins,email,' . optional($this->admin)->id,],
             'name' => ['required'],
             'phone' => 'required|numeric',
-            'password' => (empty($this->teacher->password)) ? ['required', Password::defaults(), 'required_with:password_confirmation', 'same:password_confirmation'] : '',
+            'password' => (empty($this->admin->password)) ? ['required', Password::defaults(), 'required_with:password_confirmation', 'same:password_confirmation'] : '',
             'password_confirmation' => ['min:8'],
             'slug' => 'required|string',
             'file'  => [
@@ -54,7 +55,7 @@ class StoreTeacherRequest extends FormRequest
     protected function getValidatorInstance()
     {
         $data = $this->all();
-        $data['slug'] = str_slug($data['name']) . '-' . Helper::str_random(5);
+        $data['slug'] = str_slug($data['name']).'-'. Helper::str_random(5);
         $this->getInputSource()->replace($data);
 
         return parent::getValidatorInstance();

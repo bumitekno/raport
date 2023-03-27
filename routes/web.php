@@ -3,6 +3,8 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\LevelController;
+use App\Http\Controllers\MajorController;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -38,4 +40,18 @@ Route::middleware('auth:user,admin,parent,teacher')->group(function () {
         'index', 'create', 'edit', 'store', 'update'
     ]);
     Route::get('users/destroy/{slug}', [UserController::class, 'destroy'])->name('users.destroy');
+
+    Route::resource('majors', MajorController::class)->parameters([
+        'majors' => 'majors:slug',
+    ])->only([
+        'index', 'create', 'edit', 'store', 'update'
+    ]);
+    Route::get('majors/destroy/{slug}', [MajorController::class, 'destroy'])->name('majors.destroy');
+
+    Route::resource('levels', LevelController::class)->parameters([
+        'levels' => 'levels:slug',
+    ])->only([
+        'index', 'create', 'edit', 'store', 'update'
+    ]);
+    Route::get('levels/destroy/{slug}', [LevelController::class, 'destroy'])->name('levels.destroy');
 });

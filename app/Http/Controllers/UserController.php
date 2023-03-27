@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Helpers\Helper;
 use App\Helpers\ImageHelper;
-use App\Http\Requests\StoreUserRequest;
+use App\Http\Requests\User\StoreUserRequest;
+use App\Http\Requests\User\UpdateUserRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 use Yajra\DataTables\DataTables;
 
 class UserController extends Controller
@@ -26,8 +28,8 @@ class UserController extends Controller
                     </a>
 
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink-3">
-                        <a class="dropdown-item" href="' . route('teachers.edit', $row['slug']) . '"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="16 3 21 8 8 21 3 21 3 16 16 3"></polygon></svg> Edit</a>
-                        <a class="dropdown-item"  onclick="' . $alert . '" href="' . route('teachers.destroy', $row['slug']) . '"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg> Hapus</a>
+                        <a class="dropdown-item" href="' . route('users.edit', $row['slug']) . '"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="16 3 21 8 8 21 3 21 3 16 16 3"></polygon></svg> Edit</a>
+                        <a class="dropdown-item"  onclick="' . $alert . '" href="' . route('users.destroy', $row['slug']) . '"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg> Hapus</a>
                     </div>
                 </div> ';
                 })
@@ -69,35 +71,31 @@ class UserController extends Controller
     public function edit(User $user, $slug)
     {
         $user = User::where('slug', $slug)->firstOrFail();
+        // dd(date("m", strtotime($user->date_of_birth)));
         return view('content.users.v_form_user', compact('user'));
     }
 
-    public function update(UpdateTeacherRequest $request, $slug)
+    public function update(UpdateUserRequest $request, User $user, $slug)
     {
-        $admin = Teacher::where('slug', $slug);
-        $remove = [
-            '_token', '_method', 'password_confirmation'
-        ];
+        $user = User::where('slug', $slug)->firstOrFail();
         if ($request->password) {
-            $admin->update([
+            $user->update([
                 'password' => Hash::make($request->password),
             ]);
-        } else {
-            array_push($remove, 'password');
         }
-        $data = $request->except($remove);
+        $data = $request->input();
         if ($request->hasFile('file')) {
             $data = ImageHelper::upload_asset($request, 'file', 'profile', $data);
         }
-        $admin->update($data);
-        Helper::toast('Berhasil mengupdate guru', 'success');
-        return redirect()->route('teachers.index');
+        $user->fill($data)->save();
+        Helper::toast('Berhasil mengupdate siswa', 'success');
+        return redirect()->route('users.index');
     }
 
     public function destroy($slug)
     {
-        Teacher::where('slug', $slug)->delete();
-        Helper::toast('Berhasil menghapus guru', 'success');
-        return redirect()->route('teachers.index');
+        User::where('slug', $slug)->delete();
+        Helper::toast('Berhasil menghapus siswa', 'success');
+        return redirect()->route('users.index');
     }
 }

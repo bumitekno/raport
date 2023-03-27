@@ -3,46 +3,48 @@
     @push('styles')
         @include('package.datatable.datatable_css')
     @endpush
-    <div class="middle-content container-xxl p-0">
+    <div class="layout-px-spacing">
+        <div class="middle-content container-xxl p-0">
 
-        <!-- BREADCRUMB -->
-        <div class="page-meta mt-3">
-            <nav class="breadcrumb-style-one" aria-label="breadcrumb">
-                <ol class="breadcrumb bg-transparent">
-                    <li class="breadcrumb-item"><a href="#">User</a></li>
-                    <li class="breadcrumb-item"><a href="{{ route('admins.index') }}">Admin</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">List</li>
-                </ol>
-            </nav>
-        </div>
-        <!-- /BREADCRUMB -->
+            <!-- BREADCRUMB -->
+            <div class="page-meta mt-3">
+                <nav class="breadcrumb-style-one" aria-label="breadcrumb">
+                    <ol class="breadcrumb bg-transparent">
+                        <li class="breadcrumb-item"><a href="#">User</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('admins.index') }}">Admin</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">List</li>
+                    </ol>
+                </nav>
+            </div>
+            <!-- /BREADCRUMB -->
 
-        <div class="row" id="cancel-row">
+            <div class="row" id="cancel-row">
 
-            <div class="col-xl-12 col-lg-12 col-sm-12 layout-top-spacing layout-spacing">
-                <div class="widget">
-                    <div class="widget-header">
-                        <div class="row">
-                            <div class="col-xl-12 col-md-12 col-sm-12 col-12">
-                                <h4>{{ session('title') }}</h4>
+                <div class="col-xl-12 col-lg-12 col-sm-12 layout-top-spacing layout-spacing">
+                    <div class="widget">
+                        <div class="widget-header">
+                            <div class="row">
+                                <div class="col-xl-12 col-md-12 col-sm-12 col-12">
+                                    <h4>{{ session('title') }}</h4>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="widget-content widget-content-area br-8">
-                        <table id="table-list" class="table dt-table-hover w-100">
-                            <thead>
-                                <tr>
-                                    <th></th>
-                                    <th>Nama</th>
-                                    <th>Email</th>
-                                    <th>Alamat</th>
-                                    <th>Telepon</th>
-                                    <th class="no-content text-center">Aksi</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            </tbody>
-                        </table>
+                        <div class="widget-content widget-content-area br-8">
+                            <table id="table-list" class="table dt-table-hover w-100">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>Nama</th>
+                                        <th>Email</th>
+                                        <th>Alamat</th>
+                                        <th>Telepon</th>
+                                        <th class="no-content text-center">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>

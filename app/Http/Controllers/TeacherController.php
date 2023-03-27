@@ -4,8 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Helpers\Helper;
 use App\Helpers\ImageHelper;
-use App\Http\Requests\StoreTeacherRequest;
-use App\Http\Requests\UpdateTeacherRequest;
+use App\Http\Requests\Teacher\StoreTeacherRequest;
+use App\Http\Requests\Teacher\UpdateTeacherRequest;
 use App\Models\Teacher;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
@@ -75,22 +75,17 @@ class TeacherController extends Controller
 
     public function update(UpdateTeacherRequest $request, $slug)
     {
-        $admin = Teacher::where('slug', $slug);
-        $remove = [
-            '_token', '_method', 'password_confirmation'
-        ];
+        $teacher = Teacher::where('slug', $slug)->firstOrFail();
         if ($request->password) {
-            $admin->update([
+            $teacher->update([
                 'password' => Hash::make($request->password),
             ]);
-        } else {
-            array_push($remove, 'password');
         }
-        $data = $request->except($remove);
+        $data = $request->input();
         if ($request->hasFile('file')) {
             $data = ImageHelper::upload_asset($request, 'file', 'profile', $data);
         }
-        $admin->update($data);
+        $teacher->fill($data)->save();
         Helper::toast('Berhasil mengupdate guru', 'success');
         return redirect()->route('teachers.index');
     }

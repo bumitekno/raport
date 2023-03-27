@@ -4,13 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Helpers\Helper;
 use App\Helpers\ImageHelper;
+use App\Http\Requests\Admin\StoreAdminRequest;
+use App\Http\Requests\Admin\UpdateAdminRequest;
 use App\Models\Admin;
-use App\Http\Requests\StoreAdminRequest;
-use App\Http\Requests\UpdateAdminRequest;
 use Illuminate\Http\Request;
 use DataTables;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
 
 class AdminController extends Controller
 {

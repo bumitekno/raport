@@ -166,10 +166,10 @@
                         <a href="starter_kit_blank_page.html"> Tahun Ajar </a>
                     </li>
                     <li>
-                        <a href="starter_kit_boxed.html"> Jurusan </a>
+                        <a href="{{ route('majors.index') }}"> Jurusan </a>
                     </li>
                     <li>
-                        <a href="starter_kit_collapsible_menu.html"> Tingkat</a>
+                        <a href="{{ route('levels.index') }}"> Tingkat</a>
                     </li>
                     <li>
                         <a href="starter_kit_collapsible_menu.html"> Rombel</a>

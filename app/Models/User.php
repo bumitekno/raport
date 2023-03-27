@@ -15,7 +15,7 @@ class User extends Authenticatable
     protected $table = "users";
 
     protected $fillable = [
-        'slug', 'nis', 'nisn', 'name', 'gender', 'religion', 'phone', 'email', 'address', 'place_of_birth', 'date_of_birth', 'password', 'status', 'file'
+        'slug', 'nis', 'nisn', 'name', 'gender', 'religion', 'phone', 'email', 'address', 'place_of_birth', 'date_of_birth', 'password', 'entry_year', 'status', 'file'
     ];
 
     protected $dates = ['deleted_at'];

@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreParentRequest;
-use App\Http\Requests\UpdateParentRequest;
+use App\Http\Requests\Parent\StoreParentRequest;
+use App\Http\Requests\Parent\UpdateParentRequest;
 use App\Models\UserParent;
 use Illuminate\Http\Request;
 

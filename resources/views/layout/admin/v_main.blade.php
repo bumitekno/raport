@@ -124,12 +124,10 @@
 
         <!--  BEGIN CONTENT AREA  -->
         <div id="content" class="main-content">
-            <div class="layout-px-spacing">
-                <!-- CONTENT AREA -->
-                @yield('content')
-                <!-- CONTENT AREA -->
+            {{-- <div class="layout-px-spacing"> --}}
+            @yield('content')
 
-            </div>
+            {{-- </div> --}}
             <div class="footer-wrapper">
                 <div class="footer-section f-section-1">
                     <p class="">Copyright © 2020 <a target="_blank"

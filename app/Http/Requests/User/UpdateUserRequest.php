@@ -1,18 +1,14 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Http\Requests\User;
 
 use App\Helpers\Helper;
+use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rules\Password;
+use Illuminate\Validation\Rule;
 
-class StoreUserRequest extends FormRequest
+class UpdateUserRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
     public function authorize()
     {
         return true;
@@ -20,17 +16,15 @@ class StoreUserRequest extends FormRequest
 
     public function rules()
     {
-        // dd($this->request);
+        $user = User::where('slug', $this->users)->firstOrFail();
         return [
             'day' => ['required'],
             'month' => ['required'],
-            'year' => ['required', 'before:today_year'],
+            'year' => ['required'],
             'date_of_birth' => 'required|date',
-            'email' => ['required', 'unique:users,email,' . optional($this->user)->id,],
+            'email' => ['sometimes', 'required','email:rfc,dns', ($user->email === $this->email) ? '' : 'unique:users,email', 'max:255'],
             'name' => ['required'],
             'phone' => 'required|numeric',
-            'password' => (empty($this->user->password)) ? ['required', Password::defaults(), 'required_with:password_confirmation', 'same:password_confirmation'] : '',
-            'password_confirmation' => ['min:8'],
             'slug' => 'required|string',
             'entry_year' => 'digits:4|integer|min:1900|max:' . (date('Y') + 1),
             'file'  => [
@@ -39,7 +33,8 @@ class StoreUserRequest extends FormRequest
                 'mimes:jpg,png,jpeg,gif,svg',
                 'max:2048',
             ],
-
+            'password' => 'nullable',
+            'password_confirmation' => 'same:password'
         ];
     }
 
@@ -48,14 +43,15 @@ class StoreUserRequest extends FormRequest
         return [
             'email.required' => 'Email is required!',
             'name.required' => 'Name is required!',
-            'password.required' => 'Password is required!'
         ];
     }
 
     protected function getValidatorInstance()
     {
         $data = $this->all();
-        $data['slug'] = str_slug($data['name']) . '-' . Helper::str_random(5);
+        // dd($this->rules('email'));
+        // $data['slug'] = str_slug($data['name']);
+        $data['slug'] = str_slug($data['name']) . '-' . Helper::code_slug($this->users);
         $data['date_of_birth'] = $this->year . '-' . $this->month . '-' . $this->day;
         $this->getInputSource()->replace($data);
 
