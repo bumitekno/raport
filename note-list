@@ -1,2 +1,9 @@
 - php artisan make:model Admin -a
 - php artisan make:model Banana -mcr
+
+
+jurusan
+-rombel
+
+Tingkat
+-rombel

@@ -19,8 +19,9 @@
                         <thead>
                             <tr>
                                 <th></th>
-                                <th>Level</th>
-                                <th>Fase</th>
+                                <th>Nama</th>
+                                <th>Tingkat</th>
+                                <th>Jurusan</th>
                                 <th>Status</th>
                                 <th class="no-content text-center"></th>
                             </tr>
@@ -47,7 +48,7 @@
                         text: '<svg xmlns="http://www.w3.org/2000/svg" width="69" height="69" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>',
                         className: 'btn btn-primary',
                         action: function(e, dt, node, config) {
-                            window.location = '{{ route('levels.create') }}';
+                            window.location = '{{ route('classes.create') }}';
                         }
                     }],
                     columns: [{
@@ -59,11 +60,12 @@
                     }, {
                         data: 'name',
                         name: 'name',
-                        className: 'text-center'
                     }, {
-                        data: 'fase',
-                        name: 'fase',
-                        className: 'text-center'
+                        data: 'level.name',
+                        name: 'level.name',
+                    }, {
+                        data: 'major.name',
+                        name: 'major.name',
                     }, {
                         data: 'status',
                         name: 'status',

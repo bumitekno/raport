@@ -15,24 +15,32 @@
             </div>
             <div class="widget-content widget-content-area">
                 @if (isset($level))
-                    {{ Form::model($level, ['route' => ['levels.update', $level->slug], 'method' => 'patch']) }}
+                    {{ Form::model($course, ['route' => ['courses.update', $course->slug], 'method' => 'patch']) }}
                 @else
-                    {{ Form::open(['route' => 'levels.store']) }}
+                    {{ Form::open(['route' => 'courses.store']) }}
                 @endif
+                <div class="form-group mb-4">
+                    <label for="inputAddress">Nama Mata Pelajaran</label>
+                    <input type="text" placeholder="Nama Mata Pelajaran" class="form-control" name="name"
+                        value="{{ isset($course) ? old('name', $course->name) : old('name') }}">
+                    @error('name')
+                        <div class="invalid-feedback d-block">{{ $message }}</div>
+                    @enderror
+                </div>
                 <div class="form-row mb-4">
-                    <div class="form-group col-md-8">
-                        <label for="inputEmail4">Nama</label>
-                        <input type="text" class="form-control" name="name" placeholder="Level"
-                            value="{{ isset($level) ? old('name', $level->name) : old('name') }}">
-                        @error('name')
+                    <div class="form-group col-md-6">
+                        <label for="inputEmail4">Kode Mapel</label>
+                        <input type="text" class="form-control" name="code" placeholder="Kode Mapel"
+                            value="{{ isset($course) ? old('code', $course->code) : old('code') }}">
+                        @error('code')
                             <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror
                     </div>
-                    <div class="form-group col-md-4">
-                        <label for="inputPassword4">Fase</label>
-                        <input type="text" class="form-control" name="fase" placeholder="Fase"
-                            value="{{ isset($level) ? old('fase', $level->fase) : old('fase') }}">
-                        @error('fase')
+                    <div class="form-group col-md-6">
+                        <label for="inputPassword4">Kelompok Mapel</label>
+                        <input type="text" class="form-control" name="group" placeholder="Kelompok Mapel"
+                            value="{{ isset($course) ? old('group', $course->group) : old('group') }}">
+                        @error('group')
                             <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror
                     </div>

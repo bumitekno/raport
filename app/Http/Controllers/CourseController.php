@@ -2,19 +2,22 @@
 
 namespace App\Http\Controllers;
 
-use App\Helpers\Helper;
-use App\Http\Requests\Level\LevelRequest;
-use App\Models\Level;
+use App\Models\Course;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 
-class LevelController extends Controller
+class CourseController extends Controller
 {
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function index(Request $request)
     {
-        session()->put('title', 'Daftar Tingkat');
+        session()->put('title', 'Daftar Mata Pelajaran');
         if ($request->ajax()) {
-            $data = Level::select('*');
+            $data = Course::select('*');
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function ($row) {
@@ -43,41 +46,73 @@ class LevelController extends Controller
                 ->rawColumns(['action', 'status'])
                 ->make(true);
         }
-        return view('content.levels.v_level');
+        return view('content.courses.v_course');
     }
 
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function create()
     {
-        session()->put('title', 'Tambah Tingkat');
-        return view('content.levels.v_form_level');
+        session()->put('title', 'Tambah Mata Pelajaran');
+        return view('content.courses.v_form_course');
     }
 
-    public function store(LevelRequest $request)
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
     {
-        Level::create($request->toArray());
-        Helper::toast('Berhasil menambah tingkat', 'success');
-        return redirect()->route('levels.index');
+        //
     }
 
-    public function edit(Level $level, $slug)
+    /**
+     * Display the specified resource.
+     *
+     * @param  \App\Models\Course  $course
+     * @return \Illuminate\Http\Response
+     */
+    public function show(Course $course)
     {
-        session()->put('title', 'Edit Tingkat');
-        $level = Level::where('slug', $slug)->firstOrFail();
-        return view('content.levels.v_form_level', compact('level'));
+        //
     }
 
-    public function update(LevelRequest $request, $slug)
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  \App\Models\Course  $course
+     * @return \Illuminate\Http\Response
+     */
+    public function edit(Course $course)
     {
-        $level = Level::where('slug', $slug)->firstOrFail();
-        $level->fill($request->input())->save();
-        Helper::toast('Berhasil mengupdate tingkat', 'success');
-        return redirect()->route('levels.index');
+        //
     }
 
-    public function destroy($slug)
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\Models\Course  $course
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, Course $course)
     {
-        Level::where('slug', $slug)->delete();
-        Helper::toast('Berhasil menghapus tingkat', 'success');
-        return redirect()->route('levels.index');
+        //
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\Models\Course  $course
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(Course $course)
+    {
+        //
     }
 }

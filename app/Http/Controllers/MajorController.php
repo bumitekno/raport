@@ -18,7 +18,7 @@ class MajorController extends Controller
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function ($row) {
-                    $alert = "confirm('Apa kamu yakin?')";
+                    $alert = "return confirm('Apa kamu yakin?')";
                     return '<div class="dropdown dropup  custom-dropdown-icon">
                     <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink-3" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-more-vertical"><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg>
@@ -59,7 +59,7 @@ class MajorController extends Controller
         return redirect()->route('majors.index');
     }
 
-    public function edit(Major $major, $slug)
+    public function edit($slug)
     {
         session()->put('title', 'Edit Jurusan');
         $major = Major::where('slug', $slug)->firstOrFail();

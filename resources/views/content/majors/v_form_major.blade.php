@@ -17,7 +17,7 @@
                 @if (isset($major))
                     {{ Form::model($major, ['route' => ['majors.update', $major->slug], 'method' => 'patch']) }}
                 @else
-                    {{ Form::open(['route' => 'majors.store', 'files' => true]) }}
+                    {{ Form::open(['route' => 'majors.store']) }}
                 @endif
                 <div class="form-row">
                     <div class="col-md-12 mb-4">

@@ -172,10 +172,10 @@
                         <a href="{{ route('levels.index') }}"> Tingkat</a>
                     </li>
                     <li>
-                        <a href="starter_kit_collapsible_menu.html"> Rombel</a>
+                        <a href="{{ route('classes.index') }}"> Rombel</a>
                     </li>
                     <li>
-                        <a href="starter_kit_collapsible_menu.html"> Mata Pelajaran</a>
+                        <a href="{{ route('courses.index') }}"> Mata Pelajaran</a>
                     </li>
                 </ul>
             </li>

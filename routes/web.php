@@ -2,9 +2,11 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CourseController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LevelController;
 use App\Http\Controllers\MajorController;
+use App\Http\Controllers\StudyClassController;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -54,4 +56,18 @@ Route::middleware('auth:user,admin,parent,teacher')->group(function () {
         'index', 'create', 'edit', 'store', 'update'
     ]);
     Route::get('levels/destroy/{slug}', [LevelController::class, 'destroy'])->name('levels.destroy');
+
+    Route::resource('classes', StudyClassController::class)->parameters([
+        'classes' => 'classes:slug',
+    ])->only([
+        'index', 'create', 'edit', 'store', 'update'
+    ]);
+    Route::get('classes/destroy/{slug}', [StudyClassController::class, 'destroy'])->name('classes.destroy');
+
+    Route::resource('courses', CourseController::class)->parameters([
+        'courses' => 'courses:slug',
+    ])->only([
+        'index', 'create', 'edit', 'store', 'update'
+    ]);
+    Route::get('courses/destroy/{slug}', [CourseController::class, 'destroy'])->name('courses.destroy');
 });
