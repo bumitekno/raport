@@ -24,7 +24,7 @@
                 </div>
             </li>
             <li class="menu">
-                <a href="javascript:void(0);" aria-expanded="false" class="dropdown-toggle">
+                <a href="javascript:void(0);" aria-expanded="true" class="dropdown-toggle">
                     <div class="">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                             fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"

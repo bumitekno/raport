@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Helpers\Helper;
 use App\Http\Requests\Course\CourseRequest;
 use App\Models\Course;
+use App\Models\StudyClass;
+use App\Models\Teacher;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 
@@ -30,7 +32,7 @@ class CourseController extends Controller
                     </a>
 
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink-3">
-                        <a class="dropdown-item" href="' . route('courses.show', $row['slug']) . '"><svg xmlns="http://www.w3.org/2000/svg" width="69" height="69" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg> Detail</a>
+                        <a class="dropdown-item" href="' . route('courses.show', $row['slug']) . '"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><polyline points="17 11 19 13 23 9"></polyline></svg> Guru Pelajaran</a>
                         <a class="dropdown-item" href="' . route('courses.edit', $row['slug']) . '"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="16 3 21 8 8 21 3 21 3 16 16 3"></polygon></svg> Edit</a>
                         <a class="dropdown-item"  onclick="' . $alert . '" href="' . route('courses.destroy', $row['slug']) . '"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg> Hapus</a>
                     </div>
@@ -100,8 +102,9 @@ class CourseController extends Controller
     {
         session()->put('title', 'Detail Mata Pelajaran');
         $course = Course::where('slug', $slug)->firstOrFail();
-        // dd($course);
-        return view('content.courses.v_info_course', compact('course'));
+        $classes = StudyClass::where('status', 1)->get();
+        $teachers = Teacher::where('status', 1)->get();
+        return view('content.courses.v_info_course', compact('course', 'classes', 'teachers'));
     }
 
     public function edit($slug)

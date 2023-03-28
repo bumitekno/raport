@@ -44,9 +44,17 @@ class SubjectTeacherController extends Controller
      * @param  \App\Models\SubjectTeacher  $subjectTeacher
      * @return \Illuminate\Http\Response
      */
-    public function show(SubjectTeacher $subjectTeacher)
+    public function storeOrUpdateItem(Request $request, $id = null)
     {
-        //
+        $item = $id ? Item::findOrFail($id) : new Item();
+
+        $item->name = $request->name;
+        $item->description = $request->description;
+        $item->save();
+
+        session()->flash('success', $id ? 'Data berhasil diupdate.' : 'Data berhasil disimpan.');
+
+        return redirect()->back();
     }
 
     /**

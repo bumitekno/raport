@@ -124,10 +124,7 @@
 
         <!--  BEGIN CONTENT AREA  -->
         <div id="content" class="main-content">
-            {{-- <div class="layout-px-spacing"> --}}
             @yield('content')
-
-            {{-- </div> --}}
             <div class="footer-wrapper">
                 <div class="footer-section f-section-1">
                     <p class="">Copyright © 2020 <a target="_blank"
@@ -145,8 +142,8 @@
                 </div>
             </div>
         </div>
-
     </div>
+    @stack('modals')
     @include('layout.admin.v_foot')
 </body>
 

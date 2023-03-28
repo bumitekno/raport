@@ -8,6 +8,7 @@ use App\Http\Controllers\LevelController;
 use App\Http\Controllers\MajorController;
 use App\Http\Controllers\SchoolYearController;
 use App\Http\Controllers\StudyClassController;
+use App\Http\Controllers\SubjectTeacherController;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -67,8 +68,7 @@ Route::middleware('auth:user,admin,parent,teacher')->group(function () {
     ])->except(['show', 'destroy']);
     Route::get('school_years/destroy/{slug}', [SchoolYearController::class, 'destroy'])->name('school-years.destroy');
 
-    // Route::resource('subject-teacher', SchoolYearController::class)->parameters([
-    //     'school_years' => 'school_years:slug',
-    // ]);
-    // Route::get('subject-teacher/destroy/{slug}', [SchoolYearController::class, 'destroy'])->name('subject-teacher.destroy');
+    Route::prefix('subject-teacher')->name('subject_teachers.')->group(function () {
+        Route::post('updateOrCreate', [SubjectTeacherController::class, 'storeOrUpdateItem'])->name('updateOrCreate');
+    });
 });
