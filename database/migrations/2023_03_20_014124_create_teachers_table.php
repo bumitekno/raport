@@ -29,6 +29,8 @@ return new class extends Migration
             $table->string('place_of_birth')->nullable();
             $table->date('date_of_birth')->nullable();
             $table->text('address')->nullable();
+            $table->enum('type', ['homeroom', 'teacher', 'other']);
+            $table->integer('id_class')->nullable();
             $table->string('password');
             $table->dateTimeTz('last_login')->nullable();
             $table->tinyInteger('status')->default(1);

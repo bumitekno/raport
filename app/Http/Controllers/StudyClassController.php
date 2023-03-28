@@ -12,11 +12,7 @@ use Yajra\DataTables\DataTables;
 
 class StudyClassController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index(Request $request)
     {
         session()->put('title', 'Daftar Kelas');

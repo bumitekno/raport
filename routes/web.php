@@ -6,6 +6,7 @@ use App\Http\Controllers\CourseController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LevelController;
 use App\Http\Controllers\MajorController;
+use App\Http\Controllers\SchoolYearController;
 use App\Http\Controllers\StudyClassController;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\UserController;
@@ -22,52 +23,52 @@ Route::prefix('auth')->name('auth.')->group(function () {
 Route::middleware('auth:user,admin,parent,teacher')->group(function () {
     Route::get('dashboard', [DashboardController::class, 'admin'])->name('dashboard');
 
+
+    // User
     Route::resource('admins', AdminController::class)->parameters([
         'admins' => 'admins:slug',
-    ])->only([
-        'index', 'create', 'edit', 'store', 'update'
-    ]);
+    ])->except(['show', 'destroy']);
     Route::get('admins/destroy/{slug}', [AdminController::class, 'destroy'])->name('admins.destroy');
 
     Route::resource('teachers', TeacherController::class)->parameters([
         'teachers' => 'teachers:slug',
-    ])->only([
-        'index', 'create', 'edit', 'store', 'update'
-    ]);
+    ])->except(['show', 'destroy']);
     Route::get('teachers/destroy/{slug}', [TeacherController::class, 'destroy'])->name('teachers.destroy');
 
     Route::resource('users', UserController::class)->parameters([
         'users' => 'users:slug',
-    ])->only([
-        'index', 'create', 'edit', 'store', 'update'
-    ]);
+    ])->except(['show', 'destroy']);
     Route::get('users/destroy/{slug}', [UserController::class, 'destroy'])->name('users.destroy');
 
+
+    // Master
     Route::resource('majors', MajorController::class)->parameters([
         'majors' => 'majors:slug',
-    ])->only([
-        'index', 'create', 'edit', 'store', 'update'
-    ]);
+    ])->except(['show', 'destroy']);
     Route::get('majors/destroy/{slug}', [MajorController::class, 'destroy'])->name('majors.destroy');
 
     Route::resource('levels', LevelController::class)->parameters([
         'levels' => 'levels:slug',
-    ])->only([
-        'index', 'create', 'edit', 'store', 'update'
-    ]);
+    ])->except(['show', 'destroy']);
     Route::get('levels/destroy/{slug}', [LevelController::class, 'destroy'])->name('levels.destroy');
 
     Route::resource('classes', StudyClassController::class)->parameters([
         'classes' => 'classes:slug',
-    ])->only([
-        'index', 'create', 'edit', 'store', 'update'
-    ]);
+    ])->except(['show', 'destroy']);
     Route::get('classes/destroy/{slug}', [StudyClassController::class, 'destroy'])->name('classes.destroy');
 
     Route::resource('courses', CourseController::class)->parameters([
         'courses' => 'courses:slug',
-    ])->only([
-        'index', 'create', 'edit', 'store', 'update'
-    ]);
+    ])->except(['destroy']);
     Route::get('courses/destroy/{slug}', [CourseController::class, 'destroy'])->name('courses.destroy');
+
+    Route::resource('school-years', SchoolYearController::class)->parameters([
+        'school_years' => 'school_years:slug',
+    ])->except(['show', 'destroy']);
+    Route::get('school_years/destroy/{slug}', [SchoolYearController::class, 'destroy'])->name('school-years.destroy');
+
+    // Route::resource('subject-teacher', SchoolYearController::class)->parameters([
+    //     'school_years' => 'school_years:slug',
+    // ]);
+    // Route::get('subject-teacher/destroy/{slug}', [SchoolYearController::class, 'destroy'])->name('subject-teacher.destroy');
 });

@@ -14,7 +14,7 @@
                 </div>
             </div>
             <div class="widget-content widget-content-area">
-                @if (isset($level))
+                @if (isset($course))
                     {{ Form::model($course, ['route' => ['courses.update', $course->slug], 'method' => 'patch']) }}
                 @else
                     {{ Form::open(['route' => 'courses.store']) }}

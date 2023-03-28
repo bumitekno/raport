@@ -17,7 +17,7 @@ class Teacher extends Authenticatable
     protected $guarded = ['password_confirmation'];
 
     protected $fillable = [
-        'slug', 'name', 'nik', 'nuptk', 'nip', 'email', 'phone', 'address', 'place_of_birth', 'date_of_birth', 'gender', 'religion', 'password', 'status'
+        'slug', 'name', 'nik', 'nuptk', 'nip', 'email', 'phone', 'address', 'place_of_birth', 'date_of_birth', 'gender', 'religion', 'password', 'status', 'type', 'id_class'
     ];
 
     protected $dates = ['deleted_at'];

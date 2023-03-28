@@ -1,7 +1,6 @@
 @extends('layout.admin.v_master')
 @section('master')
     @push('styles')
-        <link rel="stylesheet" type="text/css" href="{{ asset('asset/custom/avatar.css') }}">
         @include('package.switches.switches_css')
         @include('package.datatable.datatable_css')
     @endpush
@@ -20,10 +19,9 @@
                         <thead>
                             <tr>
                                 <th></th>
-                                <th>Mapel</th>
-                                <th>Guru Mapel</th>
-                                <th>Kelas yang diajarkan</th>
-                                <th>Status</th>
+                                <th>Tahun Ajar</th>
+                                <th>Semester</th>
+                                <th>Aktif</th>
                                 <th class="no-content text-center"></th>
                             </tr>
                         </thead>
@@ -49,7 +47,7 @@
                         text: '<svg xmlns="http://www.w3.org/2000/svg" width="69" height="69" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>',
                         className: 'btn btn-primary',
                         action: function(e, dt, node, config) {
-                            window.location = '{{ route('courses.create') }}';
+                            window.location = '{{ route('school-years.create') }}';
                         }
                     }],
                     columns: [{
@@ -59,17 +57,13 @@
                         searchable: false,
                         className: 'align-middle'
                     }, {
-                        data: 'name',
-                        name: 'name',
+                        data: 'school_year',
+                        name: 'school_year',
                         className: 'text-center'
                     }, {
-                        data: 'teacher',
-                        name: 'teacher',
+                        data: 'semester',
+                        name: 'semester',
                         className: 'text-center'
-                    }, {
-                        data: 'classes',
-                        name: 'classes',
-                        className: 'align-middle text-center'
                     }, {
                         data: 'status',
                         name: 'status',

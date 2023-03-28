@@ -57,4 +57,20 @@ class StatusHelper
                 break;
         }
     }
+
+    public static function semester($param)
+    {
+        switch ($param) {
+            case 1:
+                return 'Ganjil';
+                break;
+            case 2:
+                return 'Genap';
+                break;
+
+            default:
+                return 'Error';
+                break;
+        }
+    }
 }

@@ -64,4 +64,13 @@ class Helper
         // dd($result);
         return last($result);
     }
+
+    public static function get_inital($string)
+    {
+        $initial = "";
+        foreach (explode(' ', $string) as $str) {
+            $initial .= strtoupper(substr($str, 0, 1));
+        }
+        return $initial;
+    }
 }

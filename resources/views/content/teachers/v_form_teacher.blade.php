@@ -166,7 +166,7 @@
                                     <div class="invalid-feedback d-block">{{ $message }}</div>
                                 @enderror
                             </div>
-                            <div class="col-md-4 info">
+                            <div class="col-md-6 info">
                                 <label>Avatar</label>
                                 <div class="upload pr-md-4">
                                     @php
@@ -179,8 +179,32 @@
                                         data-default-file="{{ $file }}" data-max-file-size="2M" />
                                 </div>
                             </div>
+                            <div class="col-md-6">
+                                <div class="form-row">
+                                    <div class="form-group col-md-12">
+                                        <label>Type Guru</label>
+                                        <select name="type" id="type" class="form-control">
+                                            <option value="teacher">Pengajar</option>
+                                            <option value="homeroom">Wali kelas</option>
+                                            <option value="other">Lainnya</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-12">
+                                        <label>Kelas yang di bimbing</label>
+                                        <div class="n-chk px-2 my-auto">
+                                            @foreach ($classes as $class)
+                                                <label class="new-control new-radio radio-classic-primary mb-0 mr-2">
+                                                    <input type="radio" class="new-control-input"
+                                                        value="{{ $class['id'] }}" name="id_class">
+                                                    <span class="new-control-indicator"></span>{{ $class['name'] }}
+                                                </label>
+                                            @endforeach
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
 
-                            <div class="col-md-8 text-center my-auto">
+                            <div class="col-md-6 text-center my-auto">
                                 <div class="field-wrapper toggle-pass d-flex justify-content-end">
                                     @php
                                         $check = 'checked';

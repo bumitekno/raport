@@ -13,13 +13,9 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('school_years', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('slug')->nullable();
-            $table->string('name');
-            $table->integer('status')->default(2);
+        Schema::create('subject_teachers', function (Blueprint $table) {
+            $table->id();
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 
@@ -30,6 +26,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('school_years');
+        Schema::dropIfExists('subject_teachers');
     }
 };

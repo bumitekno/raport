@@ -139,9 +139,11 @@
                 </ul>
             </li>
 
-            <li class="menu">
-                {{-- <li class="menu active"> --}}
-                <a href="#starter-kit" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+            <li
+                class="menu {{ Route::is('majors.*') || Route::is('levels.*') || Route::is('classes.*') || Route::is('courses.*') || Route::is('school-years.*') ? 'active' : '' }}">
+                <a href="#side-master" data-toggle="collapse"
+                    aria-expanded="{{ Route::is('majors.*') || Route::is('levels.*') || Route::is('classes.*') || Route::is('courses.*') || Route::is('school-years.*') ? 'true' : 'false' }}"
+                    class="dropdown-toggle">
                     <div class="">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                             fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -158,29 +160,30 @@
                         </svg>
                     </div>
                 </a>
-                {{-- <ul class="collapse submenu recent-submenu mini-recent-submenu list-unstyled show" id="starter-kit"
-                    data-parent="#accordionExample"> --}}
-                <ul class="collapse submenu list-unstyled" id="starter-kit" data-parent="#accordionExample">
-                    <li>
-                        {{-- <li class="active"> --}}
-                        <a href="starter_kit_blank_page.html"> Tahun Ajar </a>
+                <ul class="collapse submenu list-unstyled {{ Route::is('majors.*') || Route::is('levels.*') || Route::is('classes.*') || Route::is('courses.*') || Route::is('school-years.*') ? 'recent-submenu mini-recent-submenu show' : '' }}"
+                    id="side-master" data-parent="#accordionExample">
+                    <li class="{{ Route::is('school-years.*') ? 'active' : '' }}">
+                        <a href="{{ route('school-years.index') }}"> Tahun Ajar </a>
                     </li>
-                    <li>
+                    <li class="{{ Route::is('majors.*') ? 'active' : '' }}">
                         <a href="{{ route('majors.index') }}"> Jurusan </a>
                     </li>
-                    <li>
+                    <li class="{{ Route::is('levels.*') ? 'active' : '' }}">
                         <a href="{{ route('levels.index') }}"> Tingkat</a>
                     </li>
-                    <li>
+                    <li class="{{ Route::is('classes.*') ? 'active' : '' }}">
                         <a href="{{ route('classes.index') }}"> Rombel</a>
                     </li>
-                    <li>
+                    <li class="{{ Route::is('courses.*') ? 'active' : '' }}">
                         <a href="{{ route('courses.index') }}"> Mata Pelajaran</a>
                     </li>
                 </ul>
             </li>
-            <li class="menu">
-                <a href="#starter-kit" data-toggle="collapse" aria-expanded="true" class="dropdown-toggle">
+            <li
+                class="menu {{ Route::is('admins.*') || Route::is('teachers.*') || Route::is('users.*') ? 'active' : '' }}">
+                <a href="#side-user" data-toggle="collapse"
+                    aria-expanded="{{ Route::is('admins.*') || Route::is('teachers.*') || Route::is('users.*') ? 'true' : 'false' }}"
+                    class="dropdown-toggle">
                     <div class="">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                             fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -201,15 +204,15 @@
                         </svg>
                     </div>
                 </a>
-                <ul class="collapse submenu recent-submenu mini-recent-submenu list-unstyled show" id="starter-kit"
-                    data-parent="#accordionExample">
-                    <li class="active">
+                <ul class="collapse submenu list-unstyled {{ Route::is('admins.*') || Route::is('teachers.*') || Route::is('users.*') ? 'recent-submenu mini-recent-submenu show' : '' }}"
+                    id="side-user" data-parent="#accordionExample">
+                    <li class="{{ Route::is('admins.*') ? 'active' : '' }}">
                         <a href="{{ route('admins.index') }}"> Admin</a>
                     </li>
-                    <li>
+                    <li class="{{ Route::is('teachers.*') ? 'active' : '' }}">
                         <a href="{{ route('teachers.index') }}"> Guru </a>
                     </li>
-                    <li>
+                    <li class="{{ Route::is('users.*') ? 'active' : '' }}">
                         <a href="{{ route('users.index') }}"> Siswa</a>
                     </li>
 

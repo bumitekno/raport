@@ -6,6 +6,7 @@ use App\Helpers\Helper;
 use App\Helpers\ImageHelper;
 use App\Http\Requests\Teacher\StoreTeacherRequest;
 use App\Http\Requests\Teacher\UpdateTeacherRequest;
+use App\Models\StudyClass;
 use App\Models\Teacher;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
@@ -53,7 +54,8 @@ class TeacherController extends Controller
 
     public function create()
     {
-        return view('content.teachers.v_form_teacher');
+        $classes = StudyClass::where('status', 1)->get();
+        return view('content.teachers.v_form_teacher', compact('classes'));
     }
 
     public function store(StoreTeacherRequest $request)
