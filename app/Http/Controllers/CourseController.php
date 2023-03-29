@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Helpers\Helper;
 use App\Http\Requests\Course\CourseRequest;
+use App\Http\Resources\Master\SchoolYearResource;
 use App\Models\Course;
+use App\Models\SchoolYear;
 use App\Models\StudyClass;
+use App\Models\SubjectTeacher;
 use App\Models\Teacher;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
@@ -103,8 +106,12 @@ class CourseController extends Controller
         session()->put('title', 'Detail Mata Pelajaran');
         $course = Course::where('slug', $slug)->firstOrFail();
         $classes = StudyClass::where('status', 1)->get();
+        $years = SchoolYear::all();
+        $years = SchoolYearResource::collection($years)->toArray(request());
         $teachers = Teacher::where('status', 1)->get();
-        return view('content.courses.v_info_course', compact('course', 'classes', 'teachers'));
+        $subject_teachers = SubjectTeacher::where('id_course', $course->id)->get();
+        dd($subject_teachers);
+        return view('content.courses.v_info_course', compact('course', 'classes', 'teachers', 'years'));
     }
 
     public function edit($slug)

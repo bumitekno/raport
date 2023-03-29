@@ -31,6 +31,24 @@
 
                     <div class="widget-content widget-content-area ecommerce-create-section">
 
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="field-wrapper toggle-pass d-flex justify-content-end">
+                                    @php
+                                        $check = 'checked';
+                                        if (isset($teacher) && $teacher->status == 0) {
+                                            $check = '';
+                                        }
+                                    @endphp
+                                     <p class="d-inline-block">Status Guru</p>
+                                    <label class="switch s-icons s-outline  s-outline-primary  mb-4 ml-2">
+                                        <input type="checkbox" name="status" value="1" {{ $check }}>
+                                        <span class="slider round"></span>
+                                    </label>
+
+                                </div>
+                            </div>
+                        </div>
                         <div class="row mb-4">
                             <div class="col-sm-12">
                                 <input type="text" class="form-control" id="inputEmail3" placeholder="Nama Guru"
@@ -189,7 +207,7 @@
                                             <option value="other">Lainnya</option>
                                         </select>
                                     </div>
-                                    <div class="form-group col-md-12">
+                                    <div class="form-group col-md-12 d-none" id="showClass">
                                         <label>Kelas yang di bimbing</label>
                                         <div class="n-chk px-2 my-auto">
                                             @foreach ($classes as $class)
@@ -201,22 +219,6 @@
                                             @endforeach
                                         </div>
                                     </div>
-                                </div>
-                            </div>
-
-                            <div class="col-md-6 text-center my-auto">
-                                <div class="field-wrapper toggle-pass d-flex justify-content-end">
-                                    @php
-                                        $check = 'checked';
-                                        if (isset($teacher) && $teacher->status == 0) {
-                                            $check = '';
-                                        }
-                                    @endphp
-                                    <label class="switch s-icons s-outline  s-outline-primary  mb-4 mr-2">
-                                        <input type="checkbox" name="status" value="1" {{ $check }}>
-                                        <span class="slider round"></span>
-                                    </label>
-                                    <p class="d-inline-block">Status Guru</p>
                                 </div>
                             </div>
 
@@ -304,6 +306,16 @@
                     $('#btnLoader').removeClass('d-none');
                     $('#btnSubmit').addClass('d-none');
                 });
+
+                $('#type').on('change', function() {
+                    if ($(this).val() === 'homeroom') {
+                        $('#showClass').removeClass('d-none');
+                    } else {
+                        $('#showClass').addClass('d-none');
+                    }
+                });
+
+
             });
 
             function showPassword(element) {

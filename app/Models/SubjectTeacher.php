@@ -15,18 +15,8 @@ class SubjectTeacher extends Model
     protected $table = "subject_teachers";
 
     protected $fillable = [
-        'slug', 'name', 'id_major', 'id_level', 'status'
+        'slug', 'id_teacher', 'id_course', 'id_school_year', 'id_study_class', 'status'
     ];
 
     protected $dates = ['deleted_at'];
-
-    public function major()
-    {
-        return $this->belongsTo(Major::class, 'id_major', 'id');
-    }
-
-    public function level()
-    {
-        return $this->belongsTo(Level::class, 'id_level', 'id');
-    }
 }

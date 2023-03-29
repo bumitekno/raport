@@ -307,10 +307,15 @@
                         </div>
                         <div class="modal-body">
                             <div class="form-row">
+                                <input type="hidden" name="id_course" value="{{ $course->id }}">
                                 <input type="hidden" name="id" id="id_subject_teacher">
                                 <div class="form-group col-md-6">
                                     <label for="inputEmail4">Tahun Ajaran</label>
-                                    <input type="email" class="form-control" id="inputEmail4" placeholder="Email">
+                                    <select name="id_school_year" id="id_school_year" class="form-control">
+                                        @foreach ($years as $year)
+                                            <option value="{{ $year['id'] }}">{{ $year['school_year'] }}</option>
+                                        @endforeach
+                                    </select>
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label for="inputPassword4">Status</label>
@@ -322,7 +327,7 @@
                             </div>
                             <div class="form-group mb-4">
                                 <label class="control-label">Pilih Guru:</label>
-                                <select class="selectpicker form-control" data-live-search="true">
+                                <select class="selectpicker form-control" name="id_teacher" id="" data-live-search="true">
                                     @foreach ($teachers as $teacher)
                                         <option value="{{ $teacher->id }}">{{ $teacher->name }}</option>
                                     @endforeach
@@ -330,17 +335,22 @@
                             </div>
                             <div class="form-group mb-4">
                                 <label class="control-label">Pilih Kelas:</label>
-                                <select class="selectpicker form-control" multiple data-live-search="true">
+                                <select class="selectpicker form-control" name="id_class[]" multiple data-live-search="true">
                                     @foreach ($classes as $class)
                                         <option data-content="<span class='badge badge-primary'>{{ $class->name }}</span>">
-                                            {{ $class->name }}</option>
+                                            {{ $class->id }}</option>
                                     @endforeach
                                 </select>
                             </div>
                         </div>
                         <div class="modal-footer md-button">
                             <button class="btn" data-dismiss="modal"><i class="flaticon-cancel-12"></i> Discard</button>
-                            <button type="button" class="btn btn-primary">Save</button>
+                            <button type="submit" id="btnSubmit" class="btn btn-primary">Save</button>
+                            <button class="btn btn-primary d-none" id="btnLoader">
+                                <div class="spinner-grow text-white mr-2 align-self-center loader-sm">
+                                    Loading...</div>
+                                Loading
+                            </button>
                         </div>
                     </form>
                 </div>
@@ -352,6 +362,12 @@
         @include('package.bootstrap-select.bootstrap-select_js')
         <script>
             $(function() {
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+
                 $("form").submit(function() {
                     $('#btnLoader').removeClass('d-none');
                     $('#btnSubmit').addClass('d-none');
@@ -366,25 +382,19 @@
                 });
 
                 $('#formSubmit').on('submit', function(e) {
-                    var url = $(this).attr('action');
-
-                    // ambil method HTTP dari form
-                    var method = $(this).attr('method');
+                    e.preventDefault();
 
                     // ambil data form
                     var data = $(this).serialize();
 
                     // kirim request AJAX untuk submit form
                     $.ajax({
-                        url: url,
-                        method: method,
+                        url: "{{ route('subject_teachers.updateOrCreate') }}",
+                        method: 'POST',
                         data: data,
                         success: function(response) {
-                            // tampilkan notifikasi sukses
-                            alert('Data berhasil disimpan.');
-
-                            // tutup modal
-                            $('#item-modal').modal('hide');
+                            // alert('Data berhasil disimpan.');
+                            // $('#item-modal').modal('hide');
 
                             // reload halaman
                             window.location.reload();
@@ -398,14 +408,32 @@
             });
 
             function addData() {
-                $('#formSubmit').reset();
-                $('#modalTitle').html('Edit Pengampu');
+                $('#formSubmit').trigger("reset");
+                $('#modalTitle').html('Tambah Guru Pengampu');
                 $('#modalAjax').modal('show');
             }
 
-            function editData(id) {
-                $('#modalTitle').html('Edit Pengampu');
-                $('#modalAjax').modal('show');
+            function editData(slug) {
+                $.ajax({
+                    url: "{{ route('subject_teachers.show') }}",
+                    data: {
+                        slug
+                    },
+                    beforeSend: function() {
+                        $(loader).html(
+                            '<i class="fa fa-spin fa-spinner"></i>');
+                    },
+                    success: function(data) {
+                        $('#modalTitle').html('Edit Guru Pengampu');
+                        $('#modalAjax').modal('show');
+                        $('#id_tahun_ajaran').val(data.id);
+                        $('#tahun_ajaran').val(data.start_year);
+                        $('#tahun_ajaran2').val(data.end_year);
+                        $('#semester').val(data.angka_semester).trigger("change");
+                    }
+                });
+
+
             }
         </script>
     @endpush

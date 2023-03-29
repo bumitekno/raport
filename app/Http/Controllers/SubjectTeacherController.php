@@ -2,92 +2,33 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\Helper;
+use App\Http\Requests\SubjectTeacher\SubjectTeacherRequest;
 use App\Models\SubjectTeacher;
 use Illuminate\Http\Request;
 
 class SubjectTeacherController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+
+    public function storeOrUpdateItem(SubjectTeacherRequest $request)
     {
-        //
-    }
+        // dd(json_encode($request->id_class));
+        $subject_teacher = $request->id ? SubjectTeacher::findOrFail($request->id) : new SubjectTeacher();
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+        $subject_teacher->id_teacher = $request->id_teacher;
+        $subject_teacher->id_course = $request->id_course;
+        $subject_teacher->id_school_year = $request->id_school_year;
+        $subject_teacher->id_study_class =  json_encode($request->id_class);
+        $subject_teacher->status = $request->status;
+        $subject_teacher->save();
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\SubjectTeacher  $subjectTeacher
-     * @return \Illuminate\Http\Response
-     */
-    public function storeOrUpdateItem(Request $request, $id = null)
-    {
-        $item = $id ? Item::findOrFail($id) : new Item();
-
-        $item->name = $request->name;
-        $item->description = $request->description;
-        $item->save();
-
-        session()->flash('success', $id ? 'Data berhasil diupdate.' : 'Data berhasil disimpan.');
-
+        // session()->flash('success', $id ? 'Data berhasil diupdate.' : 'Data berhasil disimpan.');
+        Helper::toast($request->id ? 'Berhasil mengedit pembimbing' : 'Berhasil menambah pembimbing', 'success');
         return redirect()->back();
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\SubjectTeacher  $subjectTeacher
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(SubjectTeacher $subjectTeacher)
+    public function show(Request $request)
     {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\SubjectTeacher  $subjectTeacher
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, SubjectTeacher $subjectTeacher)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\SubjectTeacher  $subjectTeacher
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(SubjectTeacher $subjectTeacher)
-    {
-        //
     }
 }

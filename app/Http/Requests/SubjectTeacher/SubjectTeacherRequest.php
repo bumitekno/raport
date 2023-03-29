@@ -6,34 +6,30 @@ use Illuminate\Foundation\Http\FormRequest;
 
 class SubjectTeacherRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
+
     public function authorize()
     {
         return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, mixed>
-     */
     public function rules()
     {
         return [
-            'name' => 'required|max:255',
-            'description' => 'nullable',
+            'id_school_year' => 'required',
+            'id_class' => 'required|array',
+            'id_class.*' => 'required',
+            'id_course' => 'required',
+            'id_teacher' => 'required',
+            'status' => 'required',
         ];
     }
 
     public function messages()
     {
         return [
-            'name.required' => 'Kolom nama wajib diisi.',
-            'name.max' => 'Kolom nama maksimal :max karakter.',
+            'id_school_year.required' => 'Kolom tahun ajaran wajib diisi.',
+            'id_class.required' => 'Kolom kelas wajib diisi.',
+            'id_teacher.required' => 'Kolom guru wajib diisi.',
         ];
     }
 }

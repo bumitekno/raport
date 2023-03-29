@@ -1,6 +1,9 @@
 - php artisan make:model Admin -a
 - php artisan make:model Banana -mcr
 
+$products = Produk::whereJsonContains('harga', ['jenis' => 'retail', 'nilai' => 10000])
+                  ->get();
+
 
 jurusan
 -rombel

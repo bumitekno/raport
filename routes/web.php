@@ -70,5 +70,6 @@ Route::middleware('auth:user,admin,parent,teacher')->group(function () {
 
     Route::prefix('subject-teacher')->name('subject_teachers.')->group(function () {
         Route::post('updateOrCreate', [SubjectTeacherController::class, 'storeOrUpdateItem'])->name('updateOrCreate');
+        Route::get('show', [SubjectTeacherController::class, 'show'])->name('show');
     });
 });
