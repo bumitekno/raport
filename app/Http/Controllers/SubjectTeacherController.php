@@ -12,7 +12,6 @@ class SubjectTeacherController extends Controller
 
     public function storeOrUpdateItem(SubjectTeacherRequest $request)
     {
-        // dd(json_encode($request->id_class));
         $subject_teacher = $request->id ? SubjectTeacher::findOrFail($request->id) : new SubjectTeacher();
 
 
@@ -23,12 +22,21 @@ class SubjectTeacherController extends Controller
         $subject_teacher->status = $request->status;
         $subject_teacher->save();
 
-        // session()->flash('success', $id ? 'Data berhasil diupdate.' : 'Data berhasil disimpan.');
         Helper::toast($request->id ? 'Berhasil mengedit pembimbing' : 'Berhasil menambah pembimbing', 'success');
         return redirect()->back();
     }
 
     public function show(Request $request)
     {
+        $subjectTeacher = SubjectTeacher::findOrFail($request->id);
+        return response()->json($subjectTeacher);
+    }
+
+    public function destroy($id)
+    {
+        $subjectTeacher = SubjectTeacher::findOrFail($id);
+        $subjectTeacher->delete();
+        Helper::toast('Berhasil menghapus guru pengampu', 'success');
+        return redirect()->back();
     }
 }

@@ -124,7 +124,7 @@
                 </a>
                 <ul class="collapse submenu list-unstyled" id="submenu2" data-parent="#accordionExample">
                     <li>
-                        <a href="javascript:void(0);"> Konfigurasi</a>
+                        <a href="{{ route('configs.index') }}"> Konfigurasi</a>
                     </li>
                     <li>
                         <a href="javascript:void(0);"> Sampul</a>

@@ -19,4 +19,9 @@ class SubjectTeacher extends Model
     ];
 
     protected $dates = ['deleted_at'];
+
+    public function classes()
+    {
+        return $this->belongsToMany(StudyClass::class, 'subject_teachers', 'id_study_class', 'id');
+    }
 }

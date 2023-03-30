@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ConfigController;
+use App\Http\Controllers\CoverController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LevelController;
@@ -71,5 +73,17 @@ Route::middleware('auth:user,admin,parent,teacher')->group(function () {
     Route::prefix('subject-teacher')->name('subject_teachers.')->group(function () {
         Route::post('updateOrCreate', [SubjectTeacherController::class, 'storeOrUpdateItem'])->name('updateOrCreate');
         Route::get('show', [SubjectTeacherController::class, 'show'])->name('show');
+        Route::get('destroy/{id}', [SubjectTeacherController::class, 'destroy'])->name('destroy');
+    });
+
+    // setelan
+    Route::prefix('config')->name('configs.')->group(function () {
+        Route::get('/', [ConfigController::class, 'index'])->name('index');
+        Route::post('updateOrCreate', [ConfigController::class, 'updateOrCreate'])->name('updateOrCreate');
+    });
+   
+    Route::prefix('cover')->name('covers.')->group(function () {
+        Route::get('/', [CoverController::class, 'index'])->name('index');
+        Route::post('updateOrCreate', [CoverController::class, 'updateOrCreate'])->name('updateOrCreate');
     });
 });

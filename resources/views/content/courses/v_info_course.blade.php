@@ -101,182 +101,80 @@
                                         <div class="col-md-12">
 
                                             <div class="searchable-items">
-                                                <div class="items">
-                                                    <div class="user-profile">
-                                                        <img src="{{ asset('asset/img/90x90.jpg') }}" alt="avatar">
-                                                    </div>
-                                                    <div class="user-name">
-                                                        <p class="">Alan Green</p>
-                                                    </div>
-                                                    <div class="user-email">
-                                                        <p>alan@mail.com</p>
-                                                    </div>
-                                                    <div class="user-status">
-                                                        <span class="badge badge-primary">Active</span>
-                                                    </div>
-                                                    <div class="dropdown dropup  custom-dropdown-icon">
-                                                        <a class="dropdown-toggle" href="#" role="button"
-                                                            id="dropdownMenuLink-3" data-toggle="dropdown"
-                                                            aria-haspopup="true" aria-expanded="false">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24"
-                                                                height="24" viewBox="0 0 24 24" fill="none"
-                                                                stroke="currentColor" stroke-width="2"
-                                                                stroke-linecap="round" stroke-linejoin="round"
-                                                                class="feather feather-more-horizontal">
-                                                                <circle cx="12" cy="12" r="1">
-                                                                </circle>
-                                                                <circle cx="19" cy="12" r="1">
-                                                                </circle>
-                                                                <circle cx="5" cy="12" r="1">
-                                                                </circle>
-                                                            </svg>
-                                                        </a>
-                                                        <div class="dropdown-menu dropdown-menu-right"
-                                                            aria-labelledby="dropdownMenuLink-3">
-                                                            <a class="dropdown-item"
-                                                                href="' . route('courses.edit', $row['slug']) . '"><svg
-                                                                    xmlns="http://www.w3.org/2000/svg" width="24"
-                                                                    height="24" viewBox="0 0 24 24" fill="none"
-                                                                    stroke="currentColor" stroke-width="2"
-                                                                    stroke-linecap="round" stroke-linejoin="round">
-                                                                    <polygon points="16 3 21 8 8 21 3 21 3 16 16 3">
-                                                                    </polygon>
-                                                                </svg> Edit</a>
-                                                            <a class="dropdown-item" onclick="' . $alert . '"
-                                                                href="' . route('courses.destroy', $row['slug']) . '"><svg
-                                                                    xmlns="http://www.w3.org/2000/svg" width="24"
-                                                                    height="24" viewBox="0 0 24 24" fill="none"
-                                                                    stroke="currentColor" stroke-width="2"
-                                                                    stroke-linecap="round" stroke-linejoin="round">
-                                                                    <polyline points="3 6 5 6 21 6"></polyline>
-                                                                    <path
-                                                                        d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
-                                                                    </path>
-                                                                    <line x1="10" y1="11" x2="10"
-                                                                        y2="17"></line>
-                                                                    <line x1="14" y1="11" x2="14"
-                                                                        y2="17"></line>
-                                                                </svg> Hapus</a>
+                                                @if (collect($resultTeacher)->isEmpty())
+                                                @else
+                                                    @foreach ($resultTeacher as $teacher)
+                                                        <div class="items">
+                                                            <div class="user-profile">
+                                                                <img src="{{ $teacher->teacher_file ? asset($teacher->teacher_file) : asset('asset/img/90x90.jpg') }}"
+                                                                    alt="avatar">
+                                                            </div>
+                                                            <div class="user-name">
+                                                                <p class="">{{ $teacher->teacher_name }}</p>
+                                                            </div>
+                                                            <div class="user-status">
+                                                                @foreach ($teacher->class_names as $class)
+                                                                    <span
+                                                                        class="badge badge-primary">{{ $class }}</span>
+                                                                @endforeach
+                                                            </div>
+                                                            <div class="dropdown dropup  custom-dropdown-icon">
+                                                                <a class="dropdown-toggle" href="#" role="button"
+                                                                    id="dropdownMenuLink-3" data-toggle="dropdown"
+                                                                    aria-haspopup="true" aria-expanded="false">
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                        height="24" viewBox="0 0 24 24" fill="none"
+                                                                        stroke="currentColor" stroke-width="2"
+                                                                        stroke-linecap="round" stroke-linejoin="round"
+                                                                        class="feather feather-more-horizontal">
+                                                                        <circle cx="12" cy="12"
+                                                                            r="1">
+                                                                        </circle>
+                                                                        <circle cx="19" cy="12"
+                                                                            r="1">
+                                                                        </circle>
+                                                                        <circle cx="5" cy="12"
+                                                                            r="1">
+                                                                        </circle>
+                                                                    </svg>
+                                                                </a>
+                                                                <div class="dropdown-menu dropdown-menu-right"
+                                                                    aria-labelledby="dropdownMenuLink-3">
+                                                                    <a class="dropdown-item" href="javascript:void(0)"
+                                                                        onclick="editData({{ $teacher->id }})"><svg
+                                                                            xmlns="http://www.w3.org/2000/svg"
+                                                                            width="24" height="24"
+                                                                            viewBox="0 0 24 24" fill="none"
+                                                                            stroke="currentColor" stroke-width="2"
+                                                                            stroke-linecap="round"
+                                                                            stroke-linejoin="round">
+                                                                            <polygon
+                                                                                points="16 3 21 8 8 21 3 21 3 16 16 3">
+                                                                            </polygon>
+                                                                        </svg> Edit</a>
+                                                                    <a class="dropdown-item"
+                                                                        onclick="return confirm('Apa kamu yakin?')"
+                                                                        href="{{ route('subject_teachers.destroy', $teacher->id) }}"><svg
+                                                                            xmlns="http://www.w3.org/2000/svg"
+                                                                            width="24" height="24"
+                                                                            viewBox="0 0 24 24" fill="none"
+                                                                            stroke="currentColor" stroke-width="2"
+                                                                            stroke-linecap="round"
+                                                                            stroke-linejoin="round">
+                                                                            <polyline points="3 6 5 6 21 6"></polyline>
+                                                                            <path
+                                                                                d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
+                                                                            </path>
+                                                                            <line x1="10" y1="11"
+                                                                                x2="10" y2="17"></line>
+                                                                            <line x1="14" y1="11"
+                                                                                x2="14" y2="17"></line>
+                                                                        </svg> Hapus</a>
+                                                                </div>
+                                                            </div>
                                                         </div>
-                                                    </div>
-                                                </div>
-
-                                                <div class="items">
-                                                    <div class="user-profile">
-                                                        <img src="assets/img/90x90.jpg" alt="avatar">
-                                                    </div>
-                                                    <div class="user-name">
-                                                        <p class="">Linda Nelson</p>
-                                                    </div>
-                                                    <div class="user-email">
-                                                        <p>Linda@mail.com</p>
-                                                    </div>
-                                                    <div class="user-status">
-                                                        <span class="badge badge-danger">Busy</span>
-                                                    </div>
-                                                    <div class="action-btn">
-                                                        <p><svg xmlns="http://www.w3.org/2000/svg" width="24"
-                                                                height="24" viewBox="0 0 24 24" fill="none"
-                                                                stroke="currentColor" stroke-width="2"
-                                                                stroke-linecap="round" stroke-linejoin="round"
-                                                                class="feather feather-more-horizontal">
-                                                                <circle cx="12" cy="12" r="1">
-                                                                </circle>
-                                                                <circle cx="19" cy="12" r="1">
-                                                                </circle>
-                                                                <circle cx="5" cy="12" r="1">
-                                                                </circle>
-                                                            </svg></p>
-                                                    </div>
-                                                </div>
-
-                                                <div class="items">
-                                                    <div class="user-profile">
-                                                        <img src="assets/img/90x90.jpg" alt="avatar">
-                                                    </div>
-                                                    <div class="user-name">
-                                                        <p class="">Lila Perry</p>
-                                                    </div>
-                                                    <div class="user-email">
-                                                        <p>Lila@mail.com</p>
-                                                    </div>
-                                                    <div class="user-status">
-                                                        <span class="badge badge-warning">Closed</span>
-                                                    </div>
-                                                    <div class="action-btn">
-                                                        <p><svg xmlns="http://www.w3.org/2000/svg" width="24"
-                                                                height="24" viewBox="0 0 24 24" fill="none"
-                                                                stroke="currentColor" stroke-width="2"
-                                                                stroke-linecap="round" stroke-linejoin="round"
-                                                                class="feather feather-more-horizontal">
-                                                                <circle cx="12" cy="12" r="1">
-                                                                </circle>
-                                                                <circle cx="19" cy="12" r="1">
-                                                                </circle>
-                                                                <circle cx="5" cy="12" r="1">
-                                                                </circle>
-                                                            </svg></p>
-                                                    </div>
-                                                </div>
-
-
-                                                <div class="items">
-                                                    <div class="user-profile">
-                                                        <img src="assets/img/90x90.jpg" alt="avatar">
-                                                    </div>
-                                                    <div class="user-name">
-                                                        <p class="">Andy King</p>
-                                                    </div>
-                                                    <div class="user-email">
-                                                        <p>Andy@mail.com</p>
-                                                    </div>
-                                                    <div class="user-status">
-                                                        <span class="badge badge-primary">Active</span>
-                                                    </div>
-                                                    <div class="action-btn">
-                                                        <p><svg xmlns="http://www.w3.org/2000/svg" width="24"
-                                                                height="24" viewBox="0 0 24 24" fill="none"
-                                                                stroke="currentColor" stroke-width="2"
-                                                                stroke-linecap="round" stroke-linejoin="round"
-                                                                class="feather feather-more-horizontal">
-                                                                <circle cx="12" cy="12" r="1">
-                                                                </circle>
-                                                                <circle cx="19" cy="12" r="1">
-                                                                </circle>
-                                                                <circle cx="5" cy="12" r="1">
-                                                                </circle>
-                                                            </svg></p>
-                                                    </div>
-                                                </div>
-
-                                                <div class="items">
-                                                    <div class="user-profile">
-                                                        <img src="assets/img/90x90.jpg" alt="avatar">
-                                                    </div>
-                                                    <div class="user-name">
-                                                        <p class="">Jesse Cory</p>
-                                                    </div>
-                                                    <div class="user-email">
-                                                        <p>Jesse@mail.com</p>
-                                                    </div>
-                                                    <div class="user-status">
-                                                        <span class="badge badge-danger">Busy</span>
-                                                    </div>
-                                                    <div class="action-btn">
-                                                        <p><svg xmlns="http://www.w3.org/2000/svg" width="24"
-                                                                height="24" viewBox="0 0 24 24" fill="none"
-                                                                stroke="currentColor" stroke-width="2"
-                                                                stroke-linecap="round" stroke-linejoin="round"
-                                                                class="feather feather-more-horizontal">
-                                                                <circle cx="12" cy="12" r="1">
-                                                                </circle>
-                                                                <circle cx="19" cy="12" r="1">
-                                                                </circle>
-                                                                <circle cx="5" cy="12" r="1">
-                                                                </circle>
-                                                            </svg></p>
-                                                    </div>
-                                                </div>
+                                                    @endforeach
+                                                @endif
                                             </div>
                                         </div>
                                     </div>
@@ -327,7 +225,8 @@
                             </div>
                             <div class="form-group mb-4">
                                 <label class="control-label">Pilih Guru:</label>
-                                <select class="selectpicker form-control" name="id_teacher" id="" data-live-search="true">
+                                <select class="selectpicker form-control" name="id_teacher" id="id_teacher"
+                                    data-live-search="true">
                                     @foreach ($teachers as $teacher)
                                         <option value="{{ $teacher->id }}">{{ $teacher->name }}</option>
                                     @endforeach
@@ -335,7 +234,8 @@
                             </div>
                             <div class="form-group mb-4">
                                 <label class="control-label">Pilih Kelas:</label>
-                                <select class="selectpicker form-control" name="id_class[]" multiple data-live-search="true">
+                                <select class="selectpicker form-control" id="id_study_class" name="id_class[]" multiple
+                                    data-live-search="true">
                                     @foreach ($classes as $class)
                                         <option data-content="<span class='badge badge-primary'>{{ $class->name }}</span>">
                                             {{ $class->id }}</option>
@@ -344,8 +244,8 @@
                             </div>
                         </div>
                         <div class="modal-footer md-button">
-                            <button class="btn" data-dismiss="modal"><i class="flaticon-cancel-12"></i> Discard</button>
-                            <button type="submit" id="btnSubmit" class="btn btn-primary">Save</button>
+                            <button class="btn" data-dismiss="modal"><i class="flaticon-cancel-12"></i> Batalkan</button>
+                            <button type="submit" id="btnSubmit" class="btn btn-primary">Simpan</button>
                             <button class="btn btn-primary d-none" id="btnLoader">
                                 <div class="spinner-grow text-white mr-2 align-self-center loader-sm">
                                     Loading...</div>
@@ -393,14 +293,9 @@
                         method: 'POST',
                         data: data,
                         success: function(response) {
-                            // alert('Data berhasil disimpan.');
-                            // $('#item-modal').modal('hide');
-
-                            // reload halaman
                             window.location.reload();
                         },
                         error: function(xhr) {
-                            // tampilkan notifikasi error
                             alert('Terjadi kesalahan saat menyimpan data.');
                         }
                     });
@@ -409,27 +304,28 @@
 
             function addData() {
                 $('#formSubmit').trigger("reset");
+                $('#id_teacher').val('').selectpicker('refresh')
+                $('#id_study_class').val('').selectpicker('refresh')
+                $('#id_subject_teacher').val("");
                 $('#modalTitle').html('Tambah Guru Pengampu');
                 $('#modalAjax').modal('show');
             }
 
-            function editData(slug) {
+            function editData(id) {
                 $.ajax({
                     url: "{{ route('subject_teachers.show') }}",
                     data: {
-                        slug
-                    },
-                    beforeSend: function() {
-                        $(loader).html(
-                            '<i class="fa fa-spin fa-spinner"></i>');
+                        id
                     },
                     success: function(data) {
                         $('#modalTitle').html('Edit Guru Pengampu');
                         $('#modalAjax').modal('show');
-                        $('#id_tahun_ajaran').val(data.id);
-                        $('#tahun_ajaran').val(data.start_year);
-                        $('#tahun_ajaran2').val(data.end_year);
-                        $('#semester').val(data.angka_semester).trigger("change");
+                        $('#id_school_year').val(data.id_school_year).trigger('change');
+                        $('#id_subject_teacher').val(data.id);
+                        $('#status').val(data.status).trigger('change');
+                        $('#id_teacher').val(data.id_teacher).selectpicker('refresh');
+                        var studyClassArray = JSON.parse(data.id_study_class);
+                        $('#id_study_class').val(studyClassArray).selectpicker('refresh');
                     }
                 });
 

@@ -13,12 +13,16 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('courses', function (Blueprint $table) {
+        Schema::create('covers', function (Blueprint $table) {
             $table->increments('id');
             $table->string('slug')->nullable();
-            $table->string('code')->nullable();
-            $table->string('name');
-            $table->string('group');
+            $table->string('title')->nullable();
+            $table->string('sub_title')->nullable();
+            $table->string('footer')->nullable();
+            $table->text('instruction')->nullable();
+            $table->string('left_logo')->nullable();
+            $table->string('right_logo')->nullable();
+            $table->integer('id_school_year');
             $table->tinyInteger('status')->default(1);
             $table->timestamps();
             $table->softDeletes();
@@ -32,6 +36,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('courses');
+        Schema::dropIfExists('covers');
     }
 };

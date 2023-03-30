@@ -20,7 +20,7 @@ return new class extends Migration
             $table->integer('id_course');
             $table->integer('id_school_year');
             $table->json('id_study_class');
-            $table->integer('status')->default(1);
+            $table->tinyInteger('status')->default(1);
             $table->timestamps();
             $table->softDeletes();
         });

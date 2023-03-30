@@ -27,7 +27,7 @@ return new class extends Migration
             $table->string('file')->nullable();
             $table->bigInteger('id_user');
             $table->dateTimeTz('last_login')->nullable();
-            $table->integer('status')->default(1);
+            $table->tinyInteger('status')->default(1);
             $table->timestamps();
             $table->softDeletes();
         });

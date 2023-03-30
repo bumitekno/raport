@@ -11,6 +11,7 @@ use App\Models\StudyClass;
 use App\Models\SubjectTeacher;
 use App\Models\Teacher;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\DataTables;
 
 class CourseController extends Controller
@@ -109,9 +110,45 @@ class CourseController extends Controller
         $years = SchoolYear::all();
         $years = SchoolYearResource::collection($years)->toArray(request());
         $teachers = Teacher::where('status', 1)->get();
-        $subject_teachers = SubjectTeacher::where('id_course', $course->id)->get();
-        dd($subject_teachers);
-        return view('content.courses.v_info_course', compact('course', 'classes', 'teachers', 'years'));
+        $subjectTeachers = DB::table('subject_teachers')
+            ->select('subject_teachers.*', 'teachers.name as teacher_name', 'teachers.email as teacher_email', 'teachers.file as teacher_file', 'teachers.status as teacher_status')
+            ->leftJoin('teachers', 'subject_teachers.id_teacher', '=', 'teachers.id')
+            ->where('subject_teachers.id_course', $course->id)
+            ->whereNull('subject_teachers.deleted_at');
+
+        $idStudyClasses = json_decode($subjectTeachers->pluck('id_study_class'), true);
+        if ($idStudyClasses) {
+            foreach ($idStudyClasses as $index => $idStudyClass) {
+                $studyClassAlias = 'study_classes_' . $index;
+                $subjectTeachers->leftJoin(DB::raw("(SELECT id, name FROM study_classes) as $studyClassAlias"), function ($join) use ($idStudyClass, $studyClassAlias, $index) {
+                    $join->on(DB::raw("JSON_EXTRACT(subject_teachers.id_study_class, '$[$index]')"), '=', DB::raw("$studyClassAlias.id"));
+                });
+            }
+        }
+
+        $subjectTeachers = $subjectTeachers->get();
+
+        // membuat variabel baru untuk menampung hasil akhir
+        $resultTeacher = [];
+
+        foreach ($subjectTeachers as $subjectTeacher) {
+            // mengambil data class_names dari id_study_class
+            $idStudyClass = json_decode($subjectTeacher->id_study_class, true);
+            $classNames = [];
+
+            foreach ($idStudyClass as $id) {
+                $studyClass = DB::table('study_classes')->find($id);
+                if ($studyClass) {
+                    $classNames[] = $studyClass->name;
+                }
+            }
+
+            // menambahkan class_names ke dalam array data yang akan di-return
+            $subjectTeacher->class_names = $classNames;
+            $resultTeacher[] = $subjectTeacher;
+        }
+        // dd($resultTeacher);
+        return view('content.courses.v_info_course', compact('course', 'classes', 'teachers', 'years', 'resultTeacher'));
     }
 
     public function edit($slug)
