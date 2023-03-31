@@ -29,11 +29,8 @@ class AuthController extends Controller
             Helper::alert('success', 'Selamat Datang !', 'Berhasil Login');
             return redirect()->intended('/dashboard');
         } else if (Auth::guard('teacher')->attempt($this->check_credentials($request), $request->filled('remember'))) {
-            return response()->json([
-                'message' =>  'Login sebagai Pengguna berhasil',
-                'status' =>  true,
-                'target_url' =>  route('user.dashboard'),
-            ]);
+            Helper::alert('success', 'Selamat Datang !', 'Berhasil Login');
+            return redirect()->route('teacher.dashboard');
         } else if (Auth::guard('user')->attempt($this->check_credentials($request), $request->filled('remember'))) {
             return response()->json([
                 'message' =>  'Login sebagai Pengguna berhasil',

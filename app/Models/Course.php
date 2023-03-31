@@ -19,4 +19,9 @@ class Course extends Model
     ];
 
     protected $dates = ['deleted_at'];
+
+    public function subjectTeacher()
+    {
+        return $this->hasMany(SubjectTeacher::class, 'id_course');
+    }
 }

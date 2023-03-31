@@ -9,6 +9,7 @@ class DashboardController extends Controller
 {
     public function admin()
     {
+        dd('admin');
         $school_year = SchoolYear::where('status', 1)->first();
         if ($school_year) {
             session()->put('id_school_year', $school_year->id);
@@ -21,5 +22,11 @@ class DashboardController extends Controller
     public function user()
     {
         return view('content-users.dashboard.v_dashboard');
+    }
+
+    public function teacher()
+    {
+        // dd('teacher');
+        return view('content.dashboard.v_teacher');
     }
 }

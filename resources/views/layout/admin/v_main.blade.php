@@ -75,23 +75,25 @@
                             <a href="apps_mailbox.html">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                     viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                    stroke-linecap="round" stroke-linejoin="round" class="feather feather-inbox">
-                                    <polyline points="22 12 16 12 14 15 10 15 8 12 2 12"></polyline>
-                                    <path
-                                        d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z">
-                                    </path>
-                                </svg> <span>My Inbox</span>
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M5.52 19c.64-2.2 1.84-3 3.22-3h6.52c1.38 0 2.58.8 3.22 3" />
+                                    <circle cx="12" cy="10" r="3" />
+                                    <circle cx="12" cy="12" r="10" />
+                                </svg>
+                                <span>Wali Kelas</span>
                             </a>
                         </div>
                         <div class="dropdown-item">
                             <a href="auth_lockscreen.html">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                     viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                    stroke-linecap="round" stroke-linejoin="round" class="feather feather-lock">
-                                    <rect x="3" y="11" width="18" height="11"
-                                        rx="2" ry="2"></rect>
-                                    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-                                </svg> <span>Lock Screen</span>
+                                    stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                    <circle cx="9" cy="7" r="4"></circle>
+                                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                                </svg>
+                                <span>Guru Pelajaran</span>
                             </a>
                         </div>
                         <div class="dropdown-item">
@@ -110,16 +112,31 @@
             </ul>
         </header>
     </div>
-    <!--  END NAVBAR  -->
-
-    <!--  BEGIN MAIN CONTAINER  -->
     <div class="main-container" id="container">
 
         <div class="overlay"></div>
         <div class="search-overlay"></div>
 
-        <!--  BEGIN SIDEBAR  -->
-        @include('layout.admin.v_sidebar')
+        @php
+            $guard = Auth::getDefaultDriver();
+        @endphp
+        @switch($guard)
+            @case('admin')
+                @include('layout.admin.v_sidebar_admin')
+            @break
+
+            @case('user')
+            @case('parent')
+                @include('layout.admin.v_sidebar_user')
+            @break
+
+            @case('teacher')
+                @include('layout.admin.v_sidebar_teacher')
+            @break
+
+            @default
+        @endswitch
+
         <!--  END SIDEBAR  -->
 
         <!--  BEGIN CONTENT AREA  -->

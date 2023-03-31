@@ -30,12 +30,10 @@ class ConfigController extends Controller
 
     public function updateOrCreate(ConfigRequest $request)
     {
-        // dd($request);
         $data = $request->toArray();
         if ($request->hasFile('signature')) {
             $data = ImageHelper::upload_asset($request, 'signature', 'signature', $data);
         }
-        // dd($data);
 
         Config::updateOrCreate(
             ['id_school_year' => $request->id_school_year],

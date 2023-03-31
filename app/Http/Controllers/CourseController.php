@@ -16,16 +16,52 @@ use Yajra\DataTables\DataTables;
 
 class CourseController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index(Request $request)
     {
         session()->put('title', 'Daftar Mata Pelajaran');
+        $courses = Course::with(['subjectTeacher.teacher', 'subjectTeacher.oneClass'])->get();
+        $data = $courses->map(function ($course) {
+            $subjectTeachers = $course->subjectTeacher;
+            $kelasIds = [];
+            foreach ($subjectTeachers as $subjectTeacher) {
+                $kelasIds = array_merge($kelasIds, json_decode($subjectTeacher->id_study_class));
+            }
+            $kelasIds = array_unique($kelasIds);
+
+            $guruPelajaransGroup = $subjectTeachers->groupBy('teacher.id');
+
+            $gurus = [];
+
+            foreach ($guruPelajaransGroup as $id_guru => $group) {
+                $guru = $group->first()->teacher;
+
+                $gurus[] = [
+                    'id_guru' => $guru->id,
+                    'nama_guru' => $guru->name,
+                    'file_guru' => $guru->file
+                ];
+            }
+
+
+            $kelass = StudyClass::whereIn('id', $kelasIds)->get()->map(function ($kelas) {
+                return [
+                    'id_kelas' => $kelas->id,
+                    'nama_kelas' => $kelas->name,
+                ];
+            });
+
+            return [
+                'id' => $course->id,
+                'name' => $course->name,
+                'status' => $course->status,
+                'code' => $course->code,
+                'group' => $course->group,
+                'slug' => $course->slug,
+                'teachers' => $gurus,
+                'class' => $kelass,
+            ];
+        });
         if ($request->ajax()) {
-            $data = Course::select('*');
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function ($row) {
@@ -49,23 +85,25 @@ class CourseController extends Controller
                  </blockquote>';
                 })
                 ->addColumn('teacher', function ($row) {
-                    return '<div class="avatar--group">
-                    <div class="avatar">
-                        <img alt="avatar" src="' . asset('asset/img/90x90.jpg') . '" class="rounded-circle  bs-tooltip" data-original-title="Judy Holmes">
-                    </div>
-                    <div class="avatar">
-                        <img alt="avatar" src="' . asset('asset/img/90x90.jpg') . '" class="rounded-circle  bs-tooltip" data-original-title="Judy Holmes">
-                    </div>
-                    <div class="avatar">
-                        <img alt="avatar" src="' . asset('asset/img/90x90.jpg') . '" class="rounded-circle  bs-tooltip" data-original-title="Judy Holmes">
-                    </div>
-                    <div class="avatar">
-                        <span class="avatar-title rounded-circle  bs-tooltip" data-original-title="Alan Green">AG</span>
-                    </div>
-                </div>';
+                    $result = '<div class="avatar--group">';
+                    foreach ($row['teachers'] as $teacher) {
+                        $file = asset($teacher['file_guru']);
+                        if ($teacher['file_guru'] == null) {
+                            $file = asset('asset/img/90x90.jpg');
+                        }
+                        $result .= '<div class="avatar">
+                        <img alt="avatar" src="' . $file . '" class="rounded-circle  bs-tooltip" data-original-title="' . $teacher['nama_guru'] . '">
+                    </div>';
+                        $result .= '</div>';
+                    }
+                    return $result;
                 })
                 ->editColumn('classes', function ($row) {
-                    return '<span class="badge badge-primary mx-1">XII MOA</span><span class="badge badge-primary mx-1">XII MOA</span>';
+                    $classes = '';
+                    foreach ($row['class'] as $class) {
+                        $classes .= '<span class="badge badge-primary mx-1">' . $class['nama_kelas'] . '</span>';
+                    }
+                    return $classes;
                 })
                 ->editColumn('status', function ($row) {
                     $check = '';

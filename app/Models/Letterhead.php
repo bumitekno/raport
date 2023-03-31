@@ -6,13 +6,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Cover extends Model
+class Letterhead extends Model
 {
     use HasFactory;
 
     use SoftDeletes;
 
-    protected $table = "covers";
+    protected $table = "letterheads";
 
     protected $guarded = [];
 

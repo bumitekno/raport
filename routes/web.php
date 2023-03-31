@@ -6,6 +6,7 @@ use App\Http\Controllers\ConfigController;
 use App\Http\Controllers\CoverController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\LetterheadController;
 use App\Http\Controllers\LevelController;
 use App\Http\Controllers\MajorController;
 use App\Http\Controllers\SchoolYearController;
@@ -25,6 +26,8 @@ Route::prefix('auth')->name('auth.')->group(function () {
 
 Route::middleware('auth:user,admin,parent,teacher')->group(function () {
     Route::get('dashboard', [DashboardController::class, 'admin'])->name('dashboard');
+    Route::get('home', [DashboardController::class, 'user'])->name('user.dashboard');
+    Route::get('statistic', [DashboardController::class, 'teacher'])->name('teacher.dashboard');
 
 
     // User
@@ -81,9 +84,16 @@ Route::middleware('auth:user,admin,parent,teacher')->group(function () {
         Route::get('/', [ConfigController::class, 'index'])->name('index');
         Route::post('updateOrCreate', [ConfigController::class, 'updateOrCreate'])->name('updateOrCreate');
     });
-   
+
     Route::prefix('cover')->name('covers.')->group(function () {
         Route::get('/', [CoverController::class, 'index'])->name('index');
         Route::post('updateOrCreate', [CoverController::class, 'updateOrCreate'])->name('updateOrCreate');
+    });
+
+    // Route::get('error', [CoverController::class, 'error'])->name('error');
+
+    Route::prefix('letterhead')->name('letterheads.')->group(function () {
+        Route::get('/', [LetterheadController::class, 'index'])->name('index');
+        Route::post('updateOrCreate', [LetterheadController::class, 'updateOrCreate'])->name('updateOrCreate');
     });
 });

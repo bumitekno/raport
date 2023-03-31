@@ -13,7 +13,19 @@
         <ul class="list-unstyled menu-categories" id="accordionExample">
             <li class="menu">
                 <div class="form-group mb-4">
-                    <label for="exampleFormControlSelect1">PILIH KURIKULUM</label>
+                    <label for="exampleFormControlSelect1">PILIH KELAS</label>
+                    <select class="form-control" id="exampleFormControlSelect1">
+                        <option>1</option>
+                        <option>2</option>
+                        <option>3</option>
+                        <option>4</option>
+                        <option>5</option>
+                    </select>
+                </div>
+            </li>
+            <li class="menu">
+                <div class="form-group mb-4">
+                    <label for="exampleFormControlSelect1">PILIH MAPEL</label>
                     <select class="form-control" id="exampleFormControlSelect1">
                         <option>1</option>
                         <option>2</option>
@@ -127,10 +139,10 @@
                         <a href="{{ route('configs.index') }}"> Konfigurasi</a>
                     </li>
                     <li>
-                        <a href="javascript:void(0);"> Sampul</a>
+                        <a href="{{ route('covers.index') }}"> Sampul</a>
                     </li>
                     <li>
-                        <a href="javascript:void(0);"> KOP Surat</a>
+                        <a href="{{ route('letterheads.index') }}"> KOP Surat</a>
                     </li>
                     <li>
                         <a href="javascript:void(0);"> Template Raport</a>

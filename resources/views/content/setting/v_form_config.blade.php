@@ -17,7 +17,6 @@
                 </nav>
             </div>
 
-            {{-- {{ dd($config) }} --}}
             <div class="row mb-4 layout-spacing layout-top-spacing">
                 <div id="basic" class="col-lg-12 layout-spacing">
                     <div class="statbox widget box box-shadow">

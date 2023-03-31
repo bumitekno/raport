@@ -1,4 +1,4 @@
-<script src="{{ asset('asset/js/flatpickr.js') }}"></script>
+<script src="{{ asset('asset/js/flatpickr.js') }}" defer></script>
 <script>
     flatpickr(document.getElementsByClassName('basicPicker'));
     flatpickr(".formatYear", {
