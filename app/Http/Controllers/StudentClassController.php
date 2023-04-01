@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StudentClass\StudentActionRequest;
 use App\Models\SchoolYear;
 use App\Models\StudentClass;
 use App\Models\StudyClass;
@@ -21,9 +22,13 @@ class StudentClassController extends Controller
             ->distinct()
             ->get()
             ->toArray();
-        // dd($years);
         if ($request->ajax()) {
-            $data = User::select('*');
+            if ($_GET['origin'] == 'user') {
+                $data = User::select('id', 'name', 'gender', 'file', 'email', 'place_of_birth', 'date_of_birth');
+            } else {
+                $data = StudentClass::join('users', 'student_classes.id_student', '=', 'users.id')
+                    ->select('student_classes.id', 'student_classes.id_student',  'student_classes.year', 'users.name', 'users.gender', 'users.file', 'users.email', 'users.place_of_birth', 'users.date_of_birth');
+            }
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function ($row) {
@@ -34,8 +39,8 @@ class StudentClassController extends Controller
                     </a>
 
                     <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink-3">
-                        <a class="dropdown-item" href="' . route('users.edit', $row['slug']) . '"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="16 3 21 8 8 21 3 21 3 16 16 3"></polygon></svg> Edit</a>
-                        <a class="dropdown-item"  onclick="' . $alert . '" href="' . route('users.destroy', $row['slug']) . '"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg> Hapus</a>
+                        <a class="dropdown-item" href=""><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="16 3 21 8 8 21 3 21 3 16 16 3"></polygon></svg> Edit</a>
+                        <a class="dropdown-item"  onclick="' . $alert . '" href=""><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg> Hapus</a>
                     </div>
                 </div> ';
                 })
@@ -63,8 +68,66 @@ class StudentClassController extends Controller
         return view('content.student_classes.v_student_class', compact('classes', 'years'));
     }
 
-    public function storeOrUpdate(Request $request)
+    public function storeOrUpdate(StudentActionRequest $request)
     {
-        dd($request);
+        // dd($request);
+        $action = $request->action;
+        $selectedSiswa = explode(',', $request->selected_siswa);;
+        $dataOrigin = $request->data_origin;
+
+        if ($action == 'delete') {
+            if ($dataOrigin == 'student') {
+                StudentClass::whereIn('id', $selectedSiswa)->delete();
+            } else {
+                User::whereIn('id', $selectedSiswa)->delete();
+            }
+        } else if ($action == 'alumni') {
+            StudentClass::whereIn('id', $selectedSiswa)->update(['status' => 0]);
+        } else if ($action == 'move') {
+
+            $idStudyClass = $request->id_study_class;
+            // dd($idStudyClass);
+            $year = substr($request->year, 0, 4);
+            // dd($selectedSiswa);
+
+
+            $siswaData = User::whereIn('id', $selectedSiswa)->get();
+            // dd($siswaData);
+            $siswaIds = $siswaData->pluck('id')->toArray();
+
+
+
+            $existingData = StudentClass::whereIn('id_student', $siswaIds)
+                ->where('year', $year)
+                ->get();
+
+            if ($dataOrigin == 'student') {
+                $existingData->each(function ($data) {
+                    $data->status = 2;
+                    $data->save();
+                });
+            } else if ($dataOrigin == 'user') {
+                // dd('move');
+                // Create new data
+                $siswaData->each(function ($siswa) use ($idStudyClass, $year) {
+                    StudentClass::create([
+                        'id_student' => $siswa->id,
+                        'id_study_class' => $idStudyClass,
+                        'year' => $year,
+                    ]);
+                });
+            }
+
+            // Create new data
+            $siswaData->each(function ($siswa) use ($idStudyClass, $year) {
+                StudentClass::create([
+                    'id_student' => $siswa->id,
+                    'id_study_class' => $idStudyClass,
+                    'year' => $year
+                ]);
+            });
+        }
+
+        return redirect()->back();
     }
 }

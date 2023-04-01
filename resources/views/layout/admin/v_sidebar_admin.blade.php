@@ -178,7 +178,7 @@
                         <a href="{{ route('courses.index') }}"> Mata Pelajaran</a>
                     </li>
                     <li class="{{ Route::is('courses.*') ? 'active' : '' }}">
-                        <a href="{{ route('student_classes.index') }}"> Rotasi Siswa</a>
+                        <a href="{{ route('student_classes.index', ['origin' => 'user']) }}"> Rotasi Siswa</a>
                     </li>
                 </ul>
             </li>

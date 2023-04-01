@@ -29,14 +29,26 @@
                         <div class="widget-header">
                             <div class="row">
                                 <div class="col-xl-12 col-md-12 col-sm-12 col-12 d-flex justify-content-between">
-                                    <h4 class="my-auto">{{ session('title') }}</h4>
-                                    <div class="form-group my-auto p-3">
-                                        <select name="student_origin" class="form-control">
+                                    <h4 class="my-auto">Kelola Siswa</h4>
+                                    <div class="form-group my-auto p-3 d-flex">
+                                        <select name="student_origin" id="student_origin" class="form-control m-1">
+                                            <option value="user" {{ $_GET['origin'] == 'user' ? 'selected' : '' }}>Siswa
+                                                Baru</option>
+                                            <option value="student" {{ $_GET['origin'] == 'student' ? 'selected' : '' }}>
+                                                Kelas Siswa</option>
+                                        </select>
+                                        <select id="show-class" class="form-control m-1 d-none">
+                                            <option value="">Pilih Rombel</option>
                                             <option value="user">Siswa Baru</option>
-                                            <option value="class_student">Kelas Siswa</option>
+                                            <option value="student" selected="">Kelas Siswa</option>
+                                        </select>
+                                        <select id="show-year" class="form-control m-1 d-none">
+                                            <option value="user">Siswa Baru</option>
+                                            <option value="student" selected="">Kelas Siswa</option>
                                         </select>
                                     </div>
                                 </div>
+
                             </div>
                         </div>
                         <div class="widget-content widget-content-area br-8">
@@ -72,17 +84,19 @@
                             <form id="form-move-class" action="{{ route('student_classes.storeOrUpdate') }}" method="post">
                                 @csrf
                                 <input type="hidden" name="selected_siswa" id="selected_siswa" value="">
-                                <input type="hidden" name="data_origin" id="data_origin" value="">
+                                <input type="hidden" name="data_origin" id="data_origin" value="{{ $_GET['origin'] }}">
                                 <div class="form-group">
                                     <label for="class_id">Pilih Aksi:</label>
-                                    <select class="form-control" id="action" name="action">
+                                    <select class="form-control" id="action" name="action" onchange="getAction(this)">
                                         <option value="move">Pindahkan ke Kelas</option>
                                         <option value="delete">Hapus </option>
-                                        <option value="alumni">Jadikan Alumni</option>
+                                        @if ($_GET['origin'] == 'student')
+                                            <option value="alumni">Jadikan Alumni</option>
+                                        @endif
 
                                     </select>
                                 </div>
-                                <div class="form-group">
+                                <div class="form-group" id="show-move">
                                     <label for="class_id">Pindah ke Kelas:</label>
                                     <select class="form-control" id="id_study_class" name="id_study_class">
                                         <option value="" selected disabled>-- Pilih Kelas --</option>
@@ -91,11 +105,12 @@
                                         @endforeach
                                     </select>
                                 </div>
-                                <div class="form-group">
+                                <div class="form-group" id="show-year">
                                     <label for="class_id">Pilih Tahun:</label>
                                     <select class="form-control" id="year" name="year">
                                         @foreach ($years as $year)
-                                            <option value="{{ $year['school_year'] }}">{{ $year['school_year'] }}</option>
+                                            <option value="{{ $year['school_year'] }}">
+                                                {{ $year['school_year'] }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -186,8 +201,27 @@
                 $('#btn-move-class').on('click', function(e) {
                     e.preventDefault();
                     var selectedSiswa = $('#selected_siswa').val();
-                    // Kirim form ke server dengan data selectedSiswa
-                    $('form').submit();
+
+                    if (selectedSiswa.length > 0) {
+                        var confirmation = confirm(
+                            'Apakah anda yakin ingin mengeksekusi proses ini?');
+                        if (confirmation) {
+                            $('form').submit();
+                        }
+                    } else {
+                        alert('Anda belum memilih siswa untuk diproses');
+                    }
+                });
+
+                $('#student_origin').change(function() {
+                    if ($(this).val() == 'user') {
+                        $('#show-class').addClass('d-none');
+                        $('#show-year').addClass('d-none');
+                        window.location.href = "student-class?origin=" + $(this).val();
+                    } else {
+                        $('#show-class').removeClass('d-none');
+                        $('#show-year').removeClass('d-none');
+                    }
                 });
 
             });
@@ -198,6 +232,24 @@
                     $('#btn-move-class').removeAttr('disabled');
                 } else {
                     $('#btn-move-class').attr('disabled', 'disabled');
+                }
+            }
+
+            function getAction(val_action) {
+                switch (val_action.value) {
+                    case 'alumni':
+                        $('#show-move').addClass('d-none');
+                        $('#show-year').removeClass('d-none');
+                        break;
+                    case 'delete':
+                        $('#show-move').addClass('d-none');
+                        $('#show-year').addClass('d-none');
+                        break;
+
+                    default:
+                        $('#show-move').removeClass('d-none');
+                        $('#show-year').removeClass('d-none');
+                        break;
                 }
             }
         </script>
