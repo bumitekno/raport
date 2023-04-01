@@ -2,20 +2,26 @@
 
 namespace App\Http\Controllers;
 
-use App\Helpers\Helper;
-use App\Helpers\ImageHelper;
-use App\Http\Requests\User\StoreUserRequest;
-use App\Http\Requests\User\UpdateUserRequest;
+use App\Models\SchoolYear;
+use App\Models\StudentClass;
+use App\Models\StudyClass;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\DataTables;
 
-class UserController extends Controller
+class StudentClassController extends Controller
 {
     public function index(Request $request)
     {
-        session()->put('title', 'List Siswa');
+        session()->put('title', 'Kelola Siswa');
+        $classes = StudyClass::where('status', 1)->get();
+        $years = SchoolYear::select(DB::raw("SUBSTRING(name, 1, 9) as school_year"))
+            ->orderBy('name', 'ASC')
+            ->distinct()
+            ->get()
+            ->toArray();
+        // dd($years);
         if ($request->ajax()) {
             $data = User::select('*');
             return DataTables::of($data)
@@ -45,57 +51,20 @@ class UserController extends Controller
                     <p class="align-self-center mb-0 admin-name">' . $row['name'] . '</p>
                 </div>';
                 })
-                ->rawColumns(['action', 'name'])
+                ->addColumn('checkbox', function ($row) {
+                    return '<label class="switch s-icons s-outline s-outline-primary my-auto">
+                    <input type="checkbox" value="' . $row['id'] . '">
+                    <span class="slider round"></span>
+                </label>';
+                })
+                ->rawColumns(['action', 'name', 'checkbox'])
                 ->make(true);
         }
-        return view('content.users.v_user');
+        return view('content.student_classes.v_student_class', compact('classes', 'years'));
     }
 
-    public function create()
+    public function storeOrUpdate(Request $request)
     {
-        return view('content.users.v_form_user');
-    }
-
-    public function store(StoreUserRequest $request)
-    {
-        // dd($request);
-        $data = $request->toArray();
-        if ($request->hasFile('file')) {
-            $data = ImageHelper::upload_asset($request, 'file', 'profile', $data);
-        }
-        User::create($data);
-        Helper::toast('Berhasil menambah siswa', 'success');
-        return redirect()->route('users.index');
-    }
-
-    public function edit(User $user, $slug)
-    {
-        $user = User::where('slug', $slug)->firstOrFail();
-        // dd(date("m", strtotime($user->date_of_birth)));
-        return view('content.users.v_form_user', compact('user'));
-    }
-
-    public function update(UpdateUserRequest $request, User $user, $slug)
-    {
-        $user = User::where('slug', $slug)->firstOrFail();
-        if ($request->password) {
-            $user->update([
-                'password' => Hash::make($request->password),
-            ]);
-        }
-        $data = $request->input();
-        if ($request->hasFile('file')) {
-            $data = ImageHelper::upload_asset($request, 'file', 'profile', $data);
-        }
-        $user->fill($data)->save();
-        Helper::toast('Berhasil mengupdate siswa', 'success');
-        return redirect()->route('users.index');
-    }
-
-    public function destroy($slug)
-    {
-        User::where('slug', $slug)->delete();
-        Helper::toast('Berhasil menghapus siswa', 'success');
-        return redirect()->route('users.index');
+        dd($request);
     }
 }

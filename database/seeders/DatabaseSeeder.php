@@ -19,9 +19,10 @@ class DatabaseSeeder extends Seeder
                 // UserSeeder::class,
                 AdminSeeder::class,
                 SchoolYearSeeder::class,
-                // CategorySeeder::class,
-                // UnitSeeder::class,
-                // SupplierSeeder::class,
+                DimensionSeeder::class,
+                TemaSeeder::class,
+                ElementSeeder::class,
+                SubElementSeeder::class,
                 // StuffSeeder::class,
                 // LocationSeeder::class,
             ]

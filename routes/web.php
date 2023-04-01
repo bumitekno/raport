@@ -9,7 +9,9 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LetterheadController;
 use App\Http\Controllers\LevelController;
 use App\Http\Controllers\MajorController;
+use App\Http\Controllers\P5Controller;
 use App\Http\Controllers\SchoolYearController;
+use App\Http\Controllers\StudentClassController;
 use App\Http\Controllers\StudyClassController;
 use App\Http\Controllers\SubjectTeacherController;
 use App\Http\Controllers\TeacherController;
@@ -79,6 +81,12 @@ Route::middleware('auth:user,admin,parent,teacher')->group(function () {
         Route::get('destroy/{id}', [SubjectTeacherController::class, 'destroy'])->name('destroy');
     });
 
+    Route::prefix('student-class')->name('student_classes.')->group(function () {
+        Route::get('/', [StudentClassController::class, 'index'])->name('index');
+        Route::post('createOrUpdate', [StudentClassController::class, 'storeOrUpdate'])->name('storeOrUpdate');
+        // Route::get('destroy/{id}', [SubjectTeacherController::class, 'destroy'])->name('destroy');
+    });
+
     // setelan
     Route::prefix('config')->name('configs.')->group(function () {
         Route::get('/', [ConfigController::class, 'index'])->name('index');
@@ -95,5 +103,15 @@ Route::middleware('auth:user,admin,parent,teacher')->group(function () {
     Route::prefix('letterhead')->name('letterheads.')->group(function () {
         Route::get('/', [LetterheadController::class, 'index'])->name('index');
         Route::post('updateOrCreate', [LetterheadController::class, 'updateOrCreate'])->name('updateOrCreate');
+    });
+
+    //P5
+    Route::prefix('manage-p5')->name('manages.')->group(function () {
+        Route::get('/', [P5Controller::class, 'index'])->name('index');
+        Route::get('create', [P5Controller::class, 'create'])->name('create');
+        Route::get('edit/{slug}', [P5Controller::class, 'edit'])->name('edit');
+        Route::get('detail/{slug}', [P5Controller::class, 'detail'])->name('detail');
+        Route::get('delete/{slug}', [P5Controller::class, 'destroy'])->name('destroy');
+        Route::post('updateOrCreate/{id?}', [P5Controller::class, 'updateOrCreate'])->name('updateOrCreate');
     });
 });

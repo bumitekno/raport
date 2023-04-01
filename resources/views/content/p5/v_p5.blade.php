@@ -6,17 +6,15 @@
     <div class="layout-px-spacing">
         <div class="middle-content container-xxl p-0">
 
-            <!-- BREADCRUMB -->
             <div class="page-meta mt-3">
                 <nav class="breadcrumb-style-one" aria-label="breadcrumb">
                     <ol class="breadcrumb bg-transparent">
                         <li class="breadcrumb-item"><a href="#">User</a></li>
-                        <li class="breadcrumb-item"><a href="{{ route('admins.index') }}">Admin</a></li>
+                        <li class="breadcrumb-item"><a href="{{ route('users.index') }}">Siswa</a></li>
                         <li class="breadcrumb-item active" aria-current="page">List</li>
                     </ol>
                 </nav>
             </div>
-            <!-- /BREADCRUMB -->
 
             <div class="row" id="cancel-row">
 
@@ -34,14 +32,16 @@
                                 <thead>
                                     <tr>
                                         <th></th>
-                                        <th>Nama</th>
-                                        <th>Email</th>
-                                        <th>Alamat</th>
-                                        <th>Telepon</th>
-                                        <th class="no-content text-center">Aksi</th>
+                                        <th>Tema</th>
+                                        <th>Judul Proyek</th>
+                                        <th>Penanggung Jawab</th>
+                                        <th>Kelas</th>
+                                        <th>Sub Elemen</th>
+                                        <th class="no-content text-center"></th>
                                     </tr>
                                 </thead>
                                 <tbody>
+
                                 </tbody>
                             </table>
                         </div>
@@ -66,7 +66,7 @@
                         text: 'Tambah Baru',
                         className: 'btn btn-primary',
                         action: function(e, dt, node, config) {
-                            window.location = '{{ route('admins.create') }}';
+                            window.location = '{{ route('manages.create') }}';
                         }
                     }],
                     columns: [{
@@ -76,17 +76,20 @@
                         searchable: false,
                         className: 'align-middle'
                     }, {
-                        data: 'name',
-                        name: 'name',
+                        data: 'tema',
+                        name: 'tema',
                     }, {
-                        data: 'email',
-                        name: 'email',
+                        data: 'title',
+                        name: 'title',
                     }, {
-                        data: 'address',
-                        name: 'address',
+                        data: 'teacher',
+                        name: 'teacher',
                     }, {
-                        data: 'phone',
-                        name: 'phone',
+                        data: 'class',
+                        name: 'class',
+                    }, {
+                        data: 'sub_element_count',
+                        name: 'sub_element_count',
                     }, {
                         data: 'action',
                         name: 'action',
