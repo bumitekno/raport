@@ -63,8 +63,34 @@
                             </div>
                             <div class="form-row">
                                 <div class="form-group col-md-6">
+                                    <label for="inputPassword4">Kelas</label>
+                                    <select name="id_study_class" class="form-control">
+                                        <option value="" selected disabled>Pilih Kelas</option>
+                                        @foreach ($classes as $class)
+                                            <option value="{{ $class->id }}"
+                                                {{ isset($p5) && old('id_study_class', $p5->id_study_class) == $class->id ? 'selected' : (old('id_study_class') == $class->id ? 'selected' : '') }}>
+                                                {{ $class->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="form-group col-md-6">
                                     <label for="inputEmail4">Penanggung Jawab</label>
-                                    <select name="id_teacher" class="form-control selectpicker" data-live-search="true">
+                                    <select name="id_subject_teacher" class="form-control selectpicker"
+                                        data-live-search="true" {{ !isset($p5) ? 'disabled' : '' }}>
+                                        <option value="" selected disabled>-- Pilih Penanggung Jawab -- </option>
+                                        @if (isset($p5))
+                                            @foreach ($teachers as $teacher)
+                                                <option value="{{ $teacher->id }}"
+                                                    {{ old('id_subject_teacher', $p5->id_subject_teacher) == $teacher->id ? 'selected' : '' }}>
+                                                    {{ $teacher->teacher->name . ' - ' . $teacher->course->name }}
+                                                </option>
+                                            @endforeach
+                                        @endif
+                                    </select>
+                                </div>
+                                {{-- <div class="form-group col-md-6">
+                                    <label for="inputEmail4">Penanggung Jawab</label>
+                                    <select name="id_subject_teacher" class="form-control selectpicker" data-live-search="true">
                                         <option value="" selected disabled>-- Pilih Penanggung Jawab -- </option>
                                         @foreach ($teachers as $teacher)
                                             <option value="{{ $teacher['id'] }}"
@@ -72,18 +98,8 @@
                                                 {{ $teacher['name'] }}</option>
                                         @endforeach
                                     </select>
-                                </div>
-                                <div class="form-group col-md-6">
-                                    <label for="inputPassword4">Kelas</label>
-                                    <select name="id_study_class" class="form-control">
-                                        <option value="" selected disabled>Pilih Kelas</option>
-                                        @foreach ($classes as $class)
-                                            <option value="{{ $class->id }}"
-                                                {{ isset($p5) && old('id_study_class', $p5->id_study_class) == $tema->id_study_class ? 'selected' : (old('id_study_class') == $tema->id_study_class ? 'selected' : '') }}>
-                                                {{ $class->name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
+                                </div> --}}
+
                             </div>
                         </div>
                     </div>
@@ -216,7 +232,41 @@
                     var subElement = $(this).closest('tbody').find('.child-checkbox');
                     parentCheckbox.prop('checked', subElement.length == subElement.filter(':checked').length);
                 });
+
+                $('select[name="id_study_class"]').on('change', function() {
+                    // Mengambil id_study_class yang dipilih
+                    var id_study_class = $(this).val();
+
+                    // Jika belum memilih id_study_class, maka select id_subject_teacher di-disabled dan kosongkan nilainya
+                    if (!id_study_class) {
+                        $('select[name="id_subject_teacher"]').prop('disabled', true).empty();
+                        return;
+                    }
+
+                    // Memuat data guru pelajaran berdasarkan id_study_class yang dipilih
+                    $.ajax({
+                        url: "{{ route('subject_teachers.study_class') }}",
+                        data: {
+                            id_study_class
+                        },
+                        success: function(response) {
+                            // Mengisi select id_subject_teacher dengan data guru pelajaran yang telah dimuat
+                            var options =
+                                '<option value="" selected disabled>-- Pilih Penanggung Jawab --</option>';
+                            $.each(response, function(key, value) {
+                                options += '<option value="' + value.id + '">' + value
+                                    .teacher.name + ' - ' + value.course.name + '</option>';
+                            });
+                            $('select[name="id_subject_teacher"]').prop('disabled', false).html(
+                                options).selectpicker('refresh');
+                        },
+                        error: function(xhr, status, error) {
+                            // code to handle error
+                        }
+                    });
+                });
             });
+
 
 
 

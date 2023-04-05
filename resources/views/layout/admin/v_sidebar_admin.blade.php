@@ -60,7 +60,7 @@
                 </a>
                 <ul class="collapse submenu list-unstyled" id="submenu" data-parent="#accordionExample">
                     <li>
-                        <a href="javascript:void(0);"> Capaian Kompetensi </a>
+                        <a href="{{ route('setting_scores.competence') }}"> Capaian Kompetensi </a>
                     </li>
                     <li>
                         <a href="javascript:void(0);"> Deskripsi CP </a>

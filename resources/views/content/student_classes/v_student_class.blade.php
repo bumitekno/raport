@@ -37,14 +37,24 @@
                                             <option value="student" {{ $_GET['origin'] == 'student' ? 'selected' : '' }}>
                                                 Kelas Siswa</option>
                                         </select>
-                                        <select id="show-class" class="form-control m-1 d-none">
-                                            <option value="">Pilih Rombel</option>
-                                            <option value="user">Siswa Baru</option>
-                                            <option value="student" selected="">Kelas Siswa</option>
+                                        <select id="show-class"
+                                            class="form-control m-1 {{ $_GET['origin'] == 'student' ? '' : 'd-none' }}">
+                                            <option value="" selected disabled>Pilih Rombel</option>
+                                            @foreach ($classes as $class)
+                                                <option value="{{ $class->slug }}"
+                                                    {{ $_GET['origin'] == 'student' && $_GET['class'] == $class->slug ? 'selected' : '' }}>
+                                                    {{ $class->name }}</option>
+                                            @endforeach
                                         </select>
-                                        <select id="show-year" class="form-control m-1 d-none">
-                                            <option value="user">Siswa Baru</option>
-                                            <option value="student" selected="">Kelas Siswa</option>
+                                        <select id="show-year"
+                                            class="form-control m-1 {{ $_GET['origin'] == 'student' ? '' : 'd-none' }}">
+                                            <option value="" selected disabled>Pilih Tahun Ajaran</option>
+                                            @foreach ($years as $year)
+                                                <option value="{{ substr($year['school_year'], 0, 4) }}"
+                                                    {{ $_GET['origin'] == 'student' && $_GET['year'] == substr($year['school_year'], 0, 4) ? 'selected' : '' }}>
+                                                    {{ $year['school_year'] }}
+                                                </option>
+                                            @endforeach
                                         </select>
                                     </div>
                                 </div>
@@ -81,7 +91,8 @@
                 <div class="col-xl-4 col-lg-4 col-sm-12 layout-top-spacing layout-spacing">
                     <div class="statbox widget box box-shadow">
                         <div class="widget-content widget-content-area br-8">
-                            <form id="form-move-class" action="{{ route('student_classes.storeOrUpdate') }}" method="post">
+                            <form id="form-move-class" action="{{ route('student_classes.storeOrUpdate') }}"
+                                method="post">
                                 @csrf
                                 <input type="hidden" name="selected_siswa" id="selected_siswa" value="">
                                 <input type="hidden" name="data_origin" id="data_origin" value="{{ $_GET['origin'] }}">
@@ -105,7 +116,7 @@
                                         @endforeach
                                     </select>
                                 </div>
-                                <div class="form-group" id="show-year">
+                                <div class="form-group" id="show-years">
                                     <label for="class_id">Pilih Tahun:</label>
                                     <select class="form-control" id="year" name="year">
                                         @foreach ($years as $year)
@@ -221,8 +232,18 @@
                     } else {
                         $('#show-class').removeClass('d-none');
                         $('#show-year').removeClass('d-none');
+                        loadSiswa('student', $('#show-class').val(), $('#show-year').val());
                     }
                 });
+
+                $('#show-class').change(function() {
+                    loadSiswa('student', $('#show-class').val(), $('#show-year').val());
+                });
+                $('#show-year').change(function() {
+                    loadSiswa('student', $('#show-class').val(), $('#show-year').val());
+                });
+
+
 
             });
 
@@ -239,17 +260,24 @@
                 switch (val_action.value) {
                     case 'alumni':
                         $('#show-move').addClass('d-none');
-                        $('#show-year').removeClass('d-none');
+                        $('#show-years').removeClass('d-none');
                         break;
                     case 'delete':
                         $('#show-move').addClass('d-none');
-                        $('#show-year').addClass('d-none');
+                        $('#show-years').addClass('d-none');
                         break;
 
                     default:
                         $('#show-move').removeClass('d-none');
-                        $('#show-year').removeClass('d-none');
+                        $('#show-years').removeClass('d-none');
                         break;
+                }
+            }
+
+            function loadSiswa(based, classes, year) {
+                var notempty = based && classes && year;
+                if (notempty) {
+                    window.location.href = "student-class?origin=" + based + "&class=" + classes + "&year=" + year;
                 }
             }
         </script>

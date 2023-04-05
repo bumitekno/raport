@@ -13,15 +13,14 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('p5_s', function (Blueprint $table) {
-            $table->increments('id');
+        Schema::create('score_p5_s', function (Blueprint $table) {
+            $table->bigIncrements('id');
             $table->string('slug')->nullable();
-            $table->string('title');
-            $table->integer('id_tema');
-            $table->integer('id_subject_teacher');
-            $table->integer('id_study_class');
+            $table->bigInteger('id_student_class')->nullable();
+            $table->integer('id_school_year');
+            $table->bigInteger('id_subject_teacher');
+            $table->json('score');
             $table->text('description')->nullable();
-            $table->json('sub_element')->nullable();
             $table->tinyInteger('status')->default(1);
             $table->timestamps();
             $table->softDeletes();
@@ -35,6 +34,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('p5_s');
+        Schema::dropIfExists('score_p5_s');
     }
 };

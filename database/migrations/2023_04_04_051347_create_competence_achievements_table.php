@@ -13,15 +13,17 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('p5_s', function (Blueprint $table) {
+        Schema::create('competence_achievements', function (Blueprint $table) {
             $table->increments('id');
             $table->string('slug')->nullable();
-            $table->string('title');
-            $table->integer('id_tema');
-            $table->integer('id_subject_teacher');
+            $table->tinyInteger('id_type_competence')->nullable();
+            $table->integer('id_course');
             $table->integer('id_study_class');
+            $table->integer('id_teacher');
+            $table->integer('id_school_year');
+            $table->string('code')->nullable();
+            $table->string('achievement')->nullable();
             $table->text('description')->nullable();
-            $table->json('sub_element')->nullable();
             $table->tinyInteger('status')->default(1);
             $table->timestamps();
             $table->softDeletes();
@@ -35,6 +37,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('p5_s');
+        Schema::dropIfExists('competence_achievements');
     }
 };

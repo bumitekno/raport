@@ -39,4 +39,15 @@ class SubjectTeacherController extends Controller
         Helper::toast('Berhasil menghapus guru pengampu', 'success');
         return redirect()->back();
     }
+
+    public function get_study_class(Request $request)
+    {
+        $id_class = $request->id_study_class;
+        // $id_class = 1;
+        $teachers = SubjectTeacher::with('teacher', 'course')->whereRaw('JSON_CONTAINS(id_study_class, \'["' . $id_class . '"]\')')
+            ->where('status', 1)
+            ->get();
+        return response()->json($teachers);
+        // dd($teachers);
+    }
 }

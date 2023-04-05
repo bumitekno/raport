@@ -17,4 +17,10 @@ class SubElement extends Model
     protected $guarded = [];
 
     protected $dates = ['deleted_at'];
+
+    public function dimension()
+    {
+        return $this->belongsTo(Dimension::class, 'id_dimension');
+    }
+
 }

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CompetenceAchievementController;
 use App\Http\Controllers\ConfigController;
 use App\Http\Controllers\CoverController;
 use App\Http\Controllers\CourseController;
@@ -11,6 +12,7 @@ use App\Http\Controllers\LevelController;
 use App\Http\Controllers\MajorController;
 use App\Http\Controllers\P5Controller;
 use App\Http\Controllers\SchoolYearController;
+use App\Http\Controllers\ScoreP5Controller;
 use App\Http\Controllers\StudentClassController;
 use App\Http\Controllers\StudyClassController;
 use App\Http\Controllers\SubjectTeacherController;
@@ -79,6 +81,7 @@ Route::middleware('auth:user,admin,parent,teacher')->group(function () {
         Route::post('updateOrCreate', [SubjectTeacherController::class, 'storeOrUpdateItem'])->name('updateOrCreate');
         Route::get('show', [SubjectTeacherController::class, 'show'])->name('show');
         Route::get('destroy/{id}', [SubjectTeacherController::class, 'destroy'])->name('destroy');
+        Route::get('study_class', [SubjectTeacherController::class, 'get_study_class'])->name('study_class');
     });
 
     Route::prefix('student-class')->name('student_classes.')->group(function () {
@@ -93,7 +96,7 @@ Route::middleware('auth:user,admin,parent,teacher')->group(function () {
         Route::post('updateOrCreate', [ConfigController::class, 'updateOrCreate'])->name('updateOrCreate');
     });
 
-    Route::prefix('cover')->name('covers.')->group(function () {
+    Route::prefix('covers')->name('covers.')->group(function () {
         Route::get('/', [CoverController::class, 'index'])->name('index');
         Route::post('updateOrCreate', [CoverController::class, 'updateOrCreate'])->name('updateOrCreate');
     });
@@ -105,6 +108,14 @@ Route::middleware('auth:user,admin,parent,teacher')->group(function () {
         Route::post('updateOrCreate', [LetterheadController::class, 'updateOrCreate'])->name('updateOrCreate');
     });
 
+    Route::prefix('setting-score')->name('setting_scores.')->group(function () {
+        Route::get('competence', [CompetenceAchievementController::class, 'index'])->name('competence');
+        Route::get('competence/create', [CompetenceAchievementController::class, 'create'])->name('competence.create');
+        Route::get('competence/edit', [CompetenceAchievementController::class, 'edit'])->name('competence.edit');
+        Route::post('competence/update/{id?}', [CompetenceAchievementController::class, 'storeOrUpdate'])->name('competence.storeOrUpdate');
+        Route::get('competence/delete/{slug}', [CompetenceAchievementController::class, 'destroy'])->name('competence.destroy');
+    });
+
     //P5
     Route::prefix('manage-p5')->name('manages.')->group(function () {
         Route::get('/', [P5Controller::class, 'index'])->name('index');
@@ -113,5 +124,8 @@ Route::middleware('auth:user,admin,parent,teacher')->group(function () {
         Route::get('detail/{slug}', [P5Controller::class, 'detail'])->name('detail');
         Route::get('delete/{slug}', [P5Controller::class, 'destroy'])->name('destroy');
         Route::post('updateOrCreate/{id?}', [P5Controller::class, 'updateOrCreate'])->name('updateOrCreate');
+    });
+    Route::prefix('score-p5')->name('score_p5.')->group(function () {
+        Route::post('update', [ScoreP5Controller::class, 'storeOrUpdate'])->name('storeOrUpdate');
     });
 });

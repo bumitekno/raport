@@ -22,12 +22,18 @@ class StudentClassController extends Controller
             ->distinct()
             ->get()
             ->toArray();
+
         if ($request->ajax()) {
             if ($_GET['origin'] == 'user') {
-                $data = User::select('id', 'name', 'gender', 'file', 'email', 'place_of_birth', 'date_of_birth');
+                $data = User::select('id', 'name', 'gender', 'file', 'email', 'place_of_birth', 'date_of_birth', DB::raw("'user' as type"));
             } else {
+                $get_class = StudyClass::where('slug', $_GET['class'])->first();
                 $data = StudentClass::join('users', 'student_classes.id_student', '=', 'users.id')
-                    ->select('student_classes.id', 'student_classes.id_student',  'student_classes.year', 'users.name', 'users.gender', 'users.file', 'users.email', 'users.place_of_birth', 'users.date_of_birth');
+                    ->select('student_classes.id', 'student_classes.id_student',  'student_classes.year', 'users.name', 'users.gender', 'users.file', 'users.email', 'users.place_of_birth', 'users.date_of_birth',  DB::raw("IF(student_classes.status = 1, 'siswa', 'alumni') as type"))
+                    ->where([
+                        ['id_study_class', $get_class->id],
+                        ['year', $_GET['year']],
+                    ])->get();
             }
             return DataTables::of($data)
                 ->addIndexColumn()
@@ -49,11 +55,15 @@ class StudentClassController extends Controller
                     if ($row['file'] != null) {
                         $file = asset($row['file']);
                     }
+                    $class = $row['type'] == 'user' ? 'primary' : ($row['type'] == 'siswa' ? 'success' : 'warning');
                     return '<div class="d-flex">
-                    <div class="usr-img-frame mr-2 rounded-circle">
+                    <div class="usr-img-frame mr-2 rounded-circle my-auto">
                         <img alt="avatar" class="img-fluid rounded-circle" src="' . $file . '">
                     </div>
+                    <div>
                     <p class="align-self-center mb-0 admin-name">' . $row['name'] . '</p>
+                    <span class="badge badge-' . $class . '">' . ucwords($row['type']) . '</span>
+                    </div>
                 </div>';
                 })
                 ->addColumn('checkbox', function ($row) {

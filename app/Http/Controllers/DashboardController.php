@@ -15,6 +15,7 @@ class DashboardController extends Controller
             session()->put('id_school_year', $school_year->id);
             session()->put('school_year', substr($school_year->name, 0, 9));
             session()->put('semester', substr($school_year->name, -1));
+            session()->put('year', substr($school_year->name, 0, 4));
         }
         return view('content.dashboard.v_admin');
     }
@@ -33,6 +34,7 @@ class DashboardController extends Controller
             session()->put('id_school_year', $school_year->id);
             session()->put('school_year', substr($school_year->name, 0, 9));
             session()->put('semester', substr($school_year->name, -1));
+            session()->put('year', substr($school_year->name, 0, 4));
         } else {
             session()->put('message', 'Admin belum mengaktifkan tahun ajaran. Harap menghubungi admin untuk mengaktifkannya');
             return view('pages.v_error');

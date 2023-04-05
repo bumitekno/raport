@@ -6,8 +6,11 @@ use App\Helpers\Helper;
 use App\Http\Requests\P5\FormP5Request;
 use App\Models\Dimension;
 use App\Models\P5;
+use App\Models\ScoreP5;
+use App\Models\StudentClass;
 use App\Models\StudyClass;
 use App\Models\SubElement;
+use App\Models\SubjectTeacher;
 use App\Models\Teacher;
 use App\Models\Tema;
 use Illuminate\Http\Request;
@@ -21,12 +24,12 @@ class P5Controller extends Controller
         session()->put('title', 'Kelola Projek Penguatan Profil Pelajar Pancasila');
         // $data = P5::select('*')->get();
         // dd($data);
-        $data = P5::select('p5_s.*', 'temas.name as tema', 'teachers.name as teacher', 'study_classes.name as class',  DB::raw('JSON_LENGTH(sub_element) as sub_element_count'))
+        $data = P5::select('p5_s.*', 'temas.name as tema', 'teachers.name as teacher', 'study_classes.name as class', DB::raw('JSON_LENGTH(sub_element) as sub_element_count'))
             ->leftJoin('temas', 'temas.id', '=', 'p5_s.id_tema')
-            ->leftJoin('teachers', 'teachers.id', '=', 'p5_s.id_teacher')
+            ->leftJoin('subject_teachers', 'subject_teachers.id', '=', 'p5_s.id_subject_teacher')
+            ->leftJoin('teachers', 'teachers.id', '=', 'subject_teachers.id_teacher')
             ->leftJoin('study_classes', 'study_classes.id', '=', 'p5_s.id_study_class')
             ->leftJoin('sub_elements', 'sub_elements.id', '=', 'p5_s.id')
-            ->groupBy('p5_s.id', 'p5_s.slug', 'p5_s.title', 'p5_s.id_tema', 'p5_s.id_teacher', 'p5_s.id_study_class', 'p5_s.description', 'p5_s.sub_element', 'p5_s.status', 'p5_s.created_at', 'p5_s.updated_at', 'p5_s.deleted_at', 'temas.name', 'teachers.name', 'study_classes.name')
             ->get();
         // dd($data);
         if ($request->ajax()) {
@@ -55,6 +58,7 @@ class P5Controller extends Controller
     public function create()
     {
 
+        // dd($teachers);
         session()->put('title', 'Tambah Proyek');
         $temas = Tema::where('status', 1)->get();
         $teachers = Teacher::where('status', 1)->get();
@@ -70,8 +74,16 @@ class P5Controller extends Controller
         session()->put('title', 'Edit Proyek');
         $p5 = P5::where('slug', $slug)->firstOrFail();
         // dd($p5);
+        if ($p5->id_study_class) {
+            $teachers = SubjectTeacher::with('teacher', 'course')->whereRaw('JSON_CONTAINS(id_study_class, \'["' . $p5->id_study_class . '"]\')')
+                ->where('status', 1)
+                ->get();
+        } else {
+            $teachers = collect([]);
+        }
+        // dd($teachers);
         $temas = Tema::where('status', 1)->get();
-        $teachers = Teacher::where('status', 1)->get();
+        // $teachers = Teacher::where('status', 1)->get();
         $classes = StudyClass::where('status', 1)->get();
 
         $dimensions = Dimension::with('elements')->get();
@@ -79,11 +91,71 @@ class P5Controller extends Controller
         return view('content.p5.v_create_p5', compact('temas', 'teachers', 'classes', 'dimensions', 'subElements', 'p5'));
     }
 
-    public function detail($slug)
+    public function detail(Request $request, $slug)
     {
-        // dd($slug);
-        $p5 = P5::where('slug', $slug)->firstOrFail();
-        // dd()
+        // dd(session()->all());
+        $p5 = P5::where('slug', $slug)->with('study_class.level', 'tema')->first();
+
+        $students = StudentClass::join('users', 'student_classes.id_student', '=', 'users.id')
+            ->select('student_classes.id', 'student_classes.id_student', 'student_classes.year', 'users.name', 'users.gender', 'users.file', 'users.email', 'users.slug', 'users.place_of_birth', 'users.date_of_birth', DB::raw("IF(student_classes.status = 1, 'siswa', 'alumni') as type"))
+            ->when(session('year'), function ($query, $year) {
+                return $query->where('year', $year);
+            })
+            ->where('id_study_class', $p5->id_study_class)
+            ->get();
+
+        $detail_student = StudentClass::join('users', 'users.id', '=', 'student_classes.id_student')
+            ->select('users.*', 'student_classes.id as id_student_class')
+            ->when($request->has('student'), function ($query) use ($request) {
+                return $query->where('users.slug', $request->student);
+            })
+            ->latest()
+            ->first();
+        $scores = $detail_student ? ScoreP5::where('id_student_class', $detail_student->id_student_class)->first() : null;
+        $description = optional($scores)->description;
+
+        $subElements = collect(json_decode($p5->sub_element, true))
+            ->map(function ($subElement) use ($scores) {
+                $subElementModel = SubElement::with('dimension')->findOrFail($subElement['id_sub_element']);
+
+                $score = optional(collect(json_decode($scores->score, true))->where('id_sub_element', $subElement['id_sub_element'])->first())['score'];
+
+                return [
+                    'id' => $subElementModel->id,
+                    'name' => $subElementModel->name,
+                    'score' => $score,
+                    'dimension' => [
+                        'id' => $subElementModel->dimension->id,
+                        'name' => $subElementModel->dimension->name,
+                    ],
+                ];
+            })
+            ->groupBy('dimension.id')
+            ->map(function ($grouped) {
+                $dimension = $grouped->first()['dimension'];
+                $subElements = $grouped->map(function ($subElement) {
+                    return [
+                        'id' => $subElement['id'],
+                        'name' => $subElement['name'],
+                        'score' => $subElement['score'],
+                    ];
+                })->toArray();
+
+                return [
+                    'id' => $dimension['id'],
+                    'name' => $dimension['name'],
+                    'sub_elements' => $subElements,
+                ];
+            })
+            ->values()
+            ->toArray();
+
+        $data = [
+            'subElements' => $subElements,
+            'description' => $description,
+        ];
+        // dd($data);
+        return view('content.p5.v_modify_p5', compact('p5', 'students', 'data', 'detail_student'));
     }
 
     public function updateOrCreate(FormP5Request $request, $id = null)
@@ -107,7 +179,7 @@ class P5Controller extends Controller
             $user->title = $request->input('title');
             $user->slug = str_slug($request->input('title')) . '-' . Helper::str_random(5);
             $user->description = $request->input('description');
-            $user->id_teacher = $request->input('id_teacher');
+            $user->id_subject_teacher = $request->input('id_subject_teacher');
             $user->id_study_class = $request->input('id_study_class');
             $user->sub_element = json_encode($sub_elements);
             $user->save();
@@ -118,7 +190,7 @@ class P5Controller extends Controller
             $user->id_tema = $request->input('id_tema');
             $user->title = $request->input('title');
             $user->description = $request->input('description');
-            $user->id_teacher = $request->input('id_teacher');
+            $user->id_subject_teacher = $request->input('id_subject_teacher');
             $user->id_study_class = $request->input('id_study_class');
             $user->slug = str_slug($request->input('title')) . '-' . Helper::str_random(5);
             $user->sub_element = json_encode($sub_elements);
