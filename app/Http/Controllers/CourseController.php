@@ -8,7 +8,6 @@ use App\Http\Resources\Master\SchoolYearResource;
 use App\Models\Course;
 use App\Models\SchoolYear;
 use App\Models\StudyClass;
-use App\Models\SubjectTeacher;
 use App\Models\Teacher;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;

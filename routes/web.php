@@ -1,12 +1,15 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AssesmentWeightingController;
+use App\Http\Controllers\AttitudeController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CompetenceAchievementController;
 use App\Http\Controllers\ConfigController;
 use App\Http\Controllers\CoverController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DescriptionCompetenceController;
 use App\Http\Controllers\LetterheadController;
 use App\Http\Controllers\LevelController;
 use App\Http\Controllers\MajorController;
@@ -114,6 +117,12 @@ Route::middleware('auth:user,admin,parent,teacher')->group(function () {
         Route::get('competence/edit', [CompetenceAchievementController::class, 'edit'])->name('competence.edit');
         Route::post('competence/update/{id?}', [CompetenceAchievementController::class, 'storeOrUpdate'])->name('competence.storeOrUpdate');
         Route::get('competence/delete/{slug}', [CompetenceAchievementController::class, 'destroy'])->name('competence.destroy');
+
+        Route::get('description', [DescriptionCompetenceController::class, 'index'])->name('description');
+        Route::post('description/update', [DescriptionCompetenceController::class, 'storeOrUpdate'])->name('description.storeOrUpdate');
+
+        Route::get('assesment-weight', [AssesmentWeightingController::class, 'index'])->name('assesment_weight');
+        Route::post('assesment-weight/update', [AssesmentWeightingController::class, 'storeOrUpdate'])->name('assesment_weight.storeOrUpdate');
     });
 
     //P5
@@ -127,5 +136,11 @@ Route::middleware('auth:user,admin,parent,teacher')->group(function () {
     });
     Route::prefix('score-p5')->name('score_p5.')->group(function () {
         Route::post('update', [ScoreP5Controller::class, 'storeOrUpdate'])->name('storeOrUpdate');
+    });
+
+    //K13
+    Route::prefix('attitude/{type}')->name('attitudes.')->group(function () {
+        Route::get('/', [AttitudeController::class, 'index'])->name('index');
+        Route::post('update', [AttitudeController::class, 'storeOrUpdate'])->name('storeOrUpdate');
     });
 });
