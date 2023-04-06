@@ -24,8 +24,10 @@
                         <div class="widget-header">
                             <h4>{{ session('title') }}</h4>
                         </div>
-                        <form action="{{ route('attitudes.storeOrUpdate', request()->route('type')) }}" method="post">
+                        {{-- {{ dd($type) }} --}}
+                        <form action="{{ route('attitudes.storeOrUpdate', $type) }}" method="post">
                             @csrf
+                            <input type="hidden" name="type" value="{{ $type }}">
                             <div class="widget-content widget-content-area br-8">
                                 <table id="table-list" class="table dt-table-hover w-100">
                                     <thead>
@@ -67,7 +69,7 @@
                                                         </svg>
                                                     </a>
                                                 </td>
-                                                <input type="hidden" name="type[]" value="">
+
                                                 <input type="hidden" name="deleted_id[]" value="">
                                             </tr>
                                         @else
@@ -80,7 +82,7 @@
                                                     </td>
                                                     <td>
                                                         <a href="javascript:void(0);" class="remove"
-                                                            data-id="{{ $criteria->id }}" data-row="{{ $index + 1 }}">
+                                                            data-id="{{ $attitude->id }}" data-row="{{ $index + 1 }}">
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="24"
                                                                 height="24" viewBox="0 0 24 24" fill="none"
                                                                 stroke="#f00931" stroke-width="2" stroke-linecap="round"
@@ -93,7 +95,6 @@
                                                             </svg>
                                                         </a>
                                                     </td>
-                                                    <input type="hidden" name="type[]" value="{{ $attitude->type }}">
                                                     <input type="hidden" name="id[]" value="{{ $attitude->id }}">
                                                     <input type="hidden" name="deleted_id[]" class="deleted_id"
                                                         value="">

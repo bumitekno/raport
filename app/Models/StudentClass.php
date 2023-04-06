@@ -17,4 +17,14 @@ class StudentClass extends Model
     protected $guarded = [];
 
     protected $dates = ['deleted_at'];
+
+    public function study_class()
+    {
+        return $this->belongsTo(StudyClass::class, 'id_study_class');
+    }
+
+    public function student()
+    {
+        return $this->belongsTo(User::class, 'id_student');
+    }
 }

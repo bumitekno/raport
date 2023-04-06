@@ -10,10 +10,12 @@ use App\Http\Controllers\CoverController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DescriptionCompetenceController;
+use App\Http\Controllers\ExtracurricularController;
 use App\Http\Controllers\LetterheadController;
 use App\Http\Controllers\LevelController;
 use App\Http\Controllers\MajorController;
 use App\Http\Controllers\P5Controller;
+use App\Http\Controllers\PredicatedScoreController;
 use App\Http\Controllers\SchoolYearController;
 use App\Http\Controllers\ScoreP5Controller;
 use App\Http\Controllers\StudentClassController;
@@ -104,6 +106,12 @@ Route::middleware('auth:user,admin,parent,teacher')->group(function () {
         Route::post('updateOrCreate', [CoverController::class, 'updateOrCreate'])->name('updateOrCreate');
     });
 
+    Route::prefix('extracurricular')->name('extracurriculars.')->group(function () {
+        Route::get('/', [ExtracurricularController::class, 'index'])->name('index');
+        Route::get('create', [ExtracurricularController::class, 'create'])->name('create');
+        Route::post('updateOrCreate', [CoverController::class, 'updateOrCreate'])->name('updateOrCreate');
+    });
+
     // Route::get('error', [CoverController::class, 'error'])->name('error');
 
     Route::prefix('letterhead')->name('letterheads.')->group(function () {
@@ -142,5 +150,13 @@ Route::middleware('auth:user,admin,parent,teacher')->group(function () {
     Route::prefix('attitude/{type}')->name('attitudes.')->group(function () {
         Route::get('/', [AttitudeController::class, 'index'])->name('index');
         Route::post('update', [AttitudeController::class, 'storeOrUpdate'])->name('storeOrUpdate');
+    });
+
+    Route::prefix('setting-score')->name('setting_scores.')->group(function () {
+        Route::prefix('predicated-score')->name('predicated_scores.')->group(function () {
+            Route::get('/', [PredicatedScoreController::class, 'index'])->name('index');
+            Route::get('create', [PredicatedScoreController::class, 'create'])->name('create');
+            Route::post('update', [AttitudeController::class, 'storeOrUpdate'])->name('storeOrUpdate');
+        });
     });
 });
