@@ -15,7 +15,9 @@ use App\Http\Controllers\LetterheadController;
 use App\Http\Controllers\LevelController;
 use App\Http\Controllers\MajorController;
 use App\Http\Controllers\P5Controller;
+use App\Http\Controllers\PasConfigurationController;
 use App\Http\Controllers\PredicatedScoreController;
+use App\Http\Controllers\PtsConfigurationController;
 use App\Http\Controllers\SchoolYearController;
 use App\Http\Controllers\ScoreP5Controller;
 use App\Http\Controllers\StudentClassController;
@@ -156,7 +158,17 @@ Route::middleware('auth:user,admin,parent,teacher')->group(function () {
         Route::prefix('predicated-score')->name('predicated_scores.')->group(function () {
             Route::get('/', [PredicatedScoreController::class, 'index'])->name('index');
             Route::get('create', [PredicatedScoreController::class, 'create'])->name('create');
-            Route::post('update', [AttitudeController::class, 'storeOrUpdate'])->name('storeOrUpdate');
+            Route::get('edit/{slug}', [PredicatedScoreController::class, 'edit'])->name('edit');
+            Route::get('delete/{slug}', [PredicatedScoreController::class, 'destroy'])->name('delete');
+            Route::post('update/{id?}', [PredicatedScoreController::class, 'storeOrUpdate'])->name('storeOrUpdate');
+        });
+        Route::prefix('pts-configuration')->name('pts_configurations.')->group(function () {
+            Route::get('/', [PtsConfigurationController::class, 'index'])->name('index');
+            Route::post('update', [PtsConfigurationController::class, 'storeOrUpdate'])->name('storeOrUpdate');
+        });
+        Route::prefix('pas-configuration')->name('pas_configurations.')->group(function () {
+            Route::get('/', [PasConfigurationController::class, 'index'])->name('index');
+            Route::post('update', [PasConfigurationController::class, 'storeOrUpdate'])->name('storeOrUpdate');
         });
     });
 });

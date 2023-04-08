@@ -6,13 +6,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Extracurricular extends Model
+class PtsConfiguration extends Model
 {
     use HasFactory;
 
     use SoftDeletes;
 
-    protected $table = "extracurriculars";
+    protected $table = "pts_configurations";
 
     protected $guarded = [];
 

@@ -78,14 +78,14 @@
                         data: 'name',
                         name: 'name',
                     }, {
-                        data: 'email',
-                        name: 'email',
+                        data: 'score',
+                        name: 'score',
                     }, {
-                        data: 'address',
-                        name: 'address',
+                        data: 'grade_weight',
+                        name: 'grade_weight',
                     }, {
-                        data: 'phone',
-                        name: 'phone',
+                        data: 'description',
+                        name: 'description',
                     }, {
                         data: 'action',
                         name: 'action',

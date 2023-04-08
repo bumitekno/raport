@@ -24,51 +24,67 @@
                             <h4>{{ session('title') }}</h4>
                         </div>
                         <div class="widget-content widget-content-area">
-                            @if (isset($major))
-                                {{ Form::model($major, ['route' => ['majors.update', $major->slug], 'method' => 'patch']) }}
-                            @else
-                                {{ Form::open(['route' => 'majors.store']) }}
-                            @endif
-                            <div class="form-group">
-                                <label for="fullName">Predikat</label>
-                                <input type="text" class="form-control"
-                                    placeholder="Masukan predikat raport, contoh : A, B"
-                                    value="{{ isset($major) ? old('name', $major->name) : old('name') }}" name="name">
-                                @error('name')
-                                    <div class="invalid-feedback d-block">{{ $message }}</div>
-                                @enderror
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group col-md-6">
-                                    <label for="inputEmail4">Skor Minimal</label>
-                                    <input type="number" name="score[]" class="form-control" required placeholder="Masukan nilai minimal">
+                            <form
+                                action="{{ route('setting_scores.predicated_scores.storeOrUpdate', ['id' => isset($predicated) ? $predicated->id : null]) }}"
+                                method="POST">
+                                @csrf
+                                <div class="form-group">
+                                    <label for="fullName">Predikat</label>
+                                    <input type="text" class="form-control"
+                                        placeholder="Masukan predikat raport, contoh : A, B"
+                                        value="{{ isset($predicated) ? old('name', $predicated->name) : old('name') }}"
+                                        name="name">
+                                    @error('name')
+                                        <div class="invalid-feedback d-block">{{ $message }}</div>
+                                    @enderror
                                 </div>
-                                <div class="form-group col-md-6">
-                                    <label for="inputPassword4">Skor Maksimal</label>
-                                    <input type="number" class="form-control" name="score[]"  required placeholder="Masukan nilai maksimal">
+                                @php
+                                    if(isset($predicated)){
+                                        $scoreArr = explode('-', $predicated->score);
+                                    }
+                                @endphp
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                        <label for="inputEmail4">Skor Minimal</label>
+                                        <input type="number" name="score[]" class="form-control" required
+                                            placeholder="Masukan nilai minimal"
+                                            value="{{ isset($predicated) ? old('score[0]', $scoreArr[0]) : old('score.0') }}">
+                                        @error('score.0')
+                                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                                        @enderror
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label for="inputPassword4">Skor Maksimal</label>
+                                        <input type="number" class="form-control" name="score[]" required
+                                            placeholder="Masukan nilai maksimal"
+                                            value="{{ isset($predicated) ? old('score[1]', $scoreArr[1]) : old('score.1') }}">
+                                        @error('score.1')
+                                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                                        @enderror
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="fullName">Bobot Nilai</label>
-                                <input type="text" class="form-control" placeholder="Masukan bobot nilai, contoh: 3.6" name="grade_weight">
-                                @error('name')
-                                    <div class="invalid-feedback d-block">{{ $message }}</div>
-                                @enderror
-                            </div>
-                            <div class="form-group">
-                                <label for="fullName">Deskripsi</label>
-                                <textarea name="description" rows="3" class="form-control" placeholder="Masukan deskripsi predikat"></textarea>
-                                @error('description')
-                                    <div class="invalid-feedback d-block">{{ $message }}</div>
-                                @enderror
-                            </div>
-                            <button class="btn btn-primary mt-2 d-none" id="btnLoader">
-                                <div class="spinner-grow text-white mr-2 align-self-center loader-sm">
-                                    Loading...</div>
-                                Loading
-                            </button>
-
-                            {{ Form::close() }}
+                                <div class="form-group">
+                                    <label for="fullName">Bobot Nilai</label>
+                                    <input type="text" class="form-control"
+                                        placeholder="Masukan bobot nilai, contoh: 3.6" name="grade_weight"
+                                        value="{{ isset($predicated) ? old('grade_weight', $predicated->grade_weight) : old('grade_weight') }}">
+                                    @error('grade_weight')
+                                        <div class="invalid-feedback d-block">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <div class="form-group">
+                                    <label for="fullName">Deskripsi</label>
+                                    <textarea name="description" rows="3" class="form-control" placeholder="Masukan deskripsi predikat">{{ isset($predicated) ? old('description', $predicated->description) : old('description') }}</textarea>
+                                    @error('description')
+                                        <div class="invalid-feedback d-block">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <button class="btn btn-primary mt-2 d-none" id="btnLoader">
+                                    <div class="spinner-grow text-white mr-2 align-self-center loader-sm">
+                                        Loading...</div>
+                                    Loading
+                                </button>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -104,6 +120,10 @@
                     $('#btnSubmit').addClass('d-none');
                 });
             });
+
+            function submitForm() {
+                $('form').submit();
+            }
         </script>
     @endpush
 @endsection

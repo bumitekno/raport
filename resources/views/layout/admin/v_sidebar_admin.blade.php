@@ -137,10 +137,10 @@
                         <a href="{{ route('setting_scores.predicated_scores.index') }}"> Nilai Predikat Raport</a>
                     </li>
                     <li>
-                        <a href="{{ route('attitudes.index', 'spiritual') }}"> Nilai PTS</a>
+                        <a href="{{ route('setting_scores.pts_configurations.index') }}"> Nilai PTS</a>
                     </li>
                     <li>
-                        <a href="{{ route('attitudes.index', 'spiritual') }}"> Nilai PAS</a>
+                        <a href="{{ route('setting_scores.pas_configurations.index') }}"> Nilai PAS</a>
                     </li>
                     <li>
                         <a href="{{ route('attitudes.index', 'spiritual') }}"> KKM</a>
