@@ -4,9 +4,9 @@
         <div class="profile-info">
             <figure class="user-cover-image"></figure>
             <div class="user-info">
-                <img src="{{ asset('asset/img/90x90.jpg') }}" alt="avatar">
-                <h6 class="">Sonia Shaw</h6>
-                <p class="">Project Leader</p>
+                <img src="{{ Auth::guard('admin')->user()->file ? asset(Auth::guard('admin')->user()->file) : asset('asset/img/90x90.jpg') }}" alt="avatar">
+                <h6 class="">{{ Auth::guard('admin')->user()->name }}</h6>
+                <p class="">Admin</p>
             </div>
         </div>
         <div class="shadow-bottom"></div>
@@ -14,12 +14,12 @@
             <li class="menu">
                 <div class="form-group mb-4">
                     <label for="exampleFormControlSelect1">PILIH KURIKULUM</label>
-                    <select class="form-control" id="exampleFormControlSelect1">
-                        <option value="merdeka">Kurikulum Merdeka</option>
-                        <option value="k16">Kurikulum 16</option>
-                        <option>3</option>
-                        <option>4</option>
-                        <option>5</option>
+                    <select class="form-control" id="curriculumSelect">
+                        <option value="" selected disabled>Pilih Kurikulum</option>
+                        <option value="merdeka" {{ session('template') == 'merdeka' ? 'selected' : '' }}>Kurikulum
+                            Merdeka</option>
+                        <option value="k16" {{ session('template') == 'merdeka' ? 'selected' : '' }}>Kurikulum 16
+                        </option>
                     </select>
                 </div>
             </li>
@@ -39,7 +39,7 @@
                 </a>
             </li>
 
-            <li class="menu">
+            <li class="menu merdeka d-none">
                 <a href="#submenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
                     <div class="">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -71,7 +71,7 @@
                 </ul>
             </li>
 
-            <li class="menu">
+            <li class="menu k16 d-none">
                 <a href="#attitude" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
                     <div class="">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -106,7 +106,7 @@
                 </ul>
             </li>
 
-            <li class="menu">
+            <li class="menu k16 d-none">
                 <a href="#setting-score" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
                     <div class="">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -143,12 +143,12 @@
                         <a href="{{ route('setting_scores.pas_configurations.index') }}"> Nilai PAS</a>
                     </li>
                     <li>
-                        <a href="{{ route('attitudes.index', 'spiritual') }}"> KKM</a>
+                        <a href="{{ route('setting_scores.kkm.index', ['year' => session('slug_year')]) }}"> KKM</a>
                     </li>
                 </ul>
             </li>
 
-            <li class="menu">
+            <li class="menu merdeka d-none">
                 <a href="{{ route('manages.index') }}" aria-expanded="false" class="dropdown-toggle">
                     <div class="">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -200,6 +200,9 @@
                     </div>
                 </a>
                 <ul class="collapse submenu list-unstyled" id="submenu2" data-parent="#accordionExample">
+                    <li>
+                        <a href="{{ route('settings.index') }}"> Sekolah</a>
+                    </li>
                     <li>
                         <a href="{{ route('configs.index') }}"> Konfigurasi</a>
                     </li>
@@ -304,3 +307,29 @@
     </nav>
 
 </div>
+@push('scripts')
+    <script>
+        $(function() {
+            checkTemplate($('#curriculumSelect').val());
+            $('#curriculumSelect').on('change', function() {
+                var curriculum = $(this).val();
+                $.ajax({
+                    url: '{{ route('session.template') }}',
+                    type: 'POST',
+                    data: {
+                        '_token': '{{ csrf_token() }}',
+                        'curriculum': curriculum
+                    },
+                    success: function(response) {
+                        console.log(response);
+                        checkTemplate(curriculum);
+                    }
+                });
+            });
+        })
+
+        function checkTemplate(param) {
+            $('.' + param).removeClass('d-none');
+        }
+    </script>
+@endpush

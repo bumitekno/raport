@@ -14,12 +14,17 @@
 
             <ul class="navbar-nav theme-brand flex-row  text-center">
                 <li class="nav-item theme-logo">
-                    <a href="index.html">
-                        <img src="{{ asset('asset/img/90x90.jpg') }}" class="navbar-logo" alt="logo">
+                    @php
+                        $setting = json_decode(file_get_contents(storage_path('app/settings.json')), true);
+                    @endphp
+                    <a href="{{ route('dashboard') }}">
+                        <img src="{{ isset($setting['logo']) ? asset($setting['logo']) : asset('asset/img/90x90.jpg') }}"
+                            class="navbar-logo" alt="logo">
                     </a>
                 </li>
                 <li class="nav-item theme-text">
-                    <a href="index.html" class="nav-link"> CORK </a>
+                    <a href="{{ route('dashboard') }}" class="nav-link">
+                        {{ isset($setting['name_school']) ? $setting['name_school'] : 'E-Raport' }} </a>
                 </li>
                 <li class="nav-item toggle-sidebar">
                     <a href="javascript:void(0);" class="sidebarCollapse" data-placement="bottom"><svg
@@ -71,31 +76,33 @@
                                 </svg> <span>My Profile</span>
                             </a>
                         </div>
-                        <div class="dropdown-item">
-                            <a href="apps_mailbox.html">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                    stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M5.52 19c.64-2.2 1.84-3 3.22-3h6.52c1.38 0 2.58.8 3.22 3" />
-                                    <circle cx="12" cy="10" r="3" />
-                                    <circle cx="12" cy="12" r="10" />
-                                </svg>
-                                <span>Wali Kelas</span>
-                            </a>
-                        </div>
-                        <div class="dropdown-item">
-                            <a href="auth_lockscreen.html">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                    stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                                    <circle cx="9" cy="7" r="4"></circle>
-                                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-                                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-                                </svg>
-                                <span>Guru Pelajaran</span>
-                            </a>
-                        </div>
+                        @if (session('role') == 'teacher')
+                            <div class="dropdown-item">
+                                <a href="apps_mailbox.html">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M5.52 19c.64-2.2 1.84-3 3.22-3h6.52c1.38 0 2.58.8 3.22 3" />
+                                        <circle cx="12" cy="10" r="3" />
+                                        <circle cx="12" cy="12" r="10" />
+                                    </svg>
+                                    <span>Wali Kelas</span>
+                                </a>
+                            </div>
+                            <div class="dropdown-item">
+                                <a href="auth_lockscreen.html">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                        <circle cx="9" cy="7" r="4"></circle>
+                                        <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                        <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                                    </svg>
+                                    <span>Guru Pelajaran</span>
+                                </a>
+                            </div>
+                        @endif
                         <div class="dropdown-item">
                             <a href="{{ route('auth.logout') }}">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"

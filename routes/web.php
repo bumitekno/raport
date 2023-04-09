@@ -11,6 +11,7 @@ use App\Http\Controllers\CourseController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DescriptionCompetenceController;
 use App\Http\Controllers\ExtracurricularController;
+use App\Http\Controllers\KkmController;
 use App\Http\Controllers\LetterheadController;
 use App\Http\Controllers\LevelController;
 use App\Http\Controllers\MajorController;
@@ -20,11 +21,13 @@ use App\Http\Controllers\PredicatedScoreController;
 use App\Http\Controllers\PtsConfigurationController;
 use App\Http\Controllers\SchoolYearController;
 use App\Http\Controllers\ScoreP5Controller;
+use App\Http\Controllers\SettingController;
 use App\Http\Controllers\StudentClassController;
 use App\Http\Controllers\StudyClassController;
 use App\Http\Controllers\SubjectTeacherController;
 use App\Http\Controllers\TeacherController;
 use App\Http\Controllers\UserController;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [AuthController::class, 'login'])->name('first_page');
@@ -39,6 +42,10 @@ Route::middleware('auth:user,admin,parent,teacher')->group(function () {
     Route::get('dashboard', [DashboardController::class, 'admin'])->name('dashboard');
     Route::get('home', [DashboardController::class, 'user'])->name('user.dashboard');
     Route::get('statistic', [DashboardController::class, 'teacher'])->name('teacher.dashboard');
+    Route::post('set-template', function (Request $request) {
+        session(['template' => $request->curriculum]);
+        return response()->json(['success' => true]);
+    })->name('session.template');
 
 
     // User
@@ -101,6 +108,11 @@ Route::middleware('auth:user,admin,parent,teacher')->group(function () {
     Route::prefix('config')->name('configs.')->group(function () {
         Route::get('/', [ConfigController::class, 'index'])->name('index');
         Route::post('updateOrCreate', [ConfigController::class, 'updateOrCreate'])->name('updateOrCreate');
+    });
+
+    Route::prefix('setting')->name('settings.')->group(function () {
+        Route::get('/', [SettingController::class, 'index'])->name('index');
+        Route::post('updateOrCreate', [SettingController::class, 'updateOrCreate'])->name('updateOrCreate');
     });
 
     Route::prefix('covers')->name('covers.')->group(function () {
@@ -169,6 +181,10 @@ Route::middleware('auth:user,admin,parent,teacher')->group(function () {
         Route::prefix('pas-configuration')->name('pas_configurations.')->group(function () {
             Route::get('/', [PasConfigurationController::class, 'index'])->name('index');
             Route::post('update', [PasConfigurationController::class, 'storeOrUpdate'])->name('storeOrUpdate');
+        });
+        Route::prefix('kkm')->name('kkm.')->group(function () {
+            Route::get('/', [KkmController::class, 'index'])->name('index');
+            Route::post('update', [KkmController::class, 'storeOrUpdate'])->name('storeOrUpdate');
         });
     });
 });

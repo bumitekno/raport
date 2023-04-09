@@ -61,6 +61,7 @@ class TeacherController extends Controller
     public function store(StoreTeacherRequest $request)
     {
         $data = $request->toArray();
+        // dd($data);
         if ($request->hasFile('file')) {
             $data = ImageHelper::upload_asset($request, 'file', 'profile', $data);
         }

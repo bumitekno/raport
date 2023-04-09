@@ -27,17 +27,21 @@ class AuthController extends Controller
 
         if (Auth::guard('admin')->attempt($this->check_credentials($request), $request->filled('remember'))) {
             Helper::alert('success', 'Selamat Datang !', 'Berhasil Login');
+            session()->put('role', 'admin');
             return redirect()->intended('/dashboard');
         } else if (Auth::guard('teacher')->attempt($this->check_credentials($request), $request->filled('remember'))) {
             Helper::alert('success', 'Selamat Datang !', 'Berhasil Login');
+            session()->put('role', 'teacher');
             return redirect()->route('teacher.dashboard');
         } else if (Auth::guard('user')->attempt($this->check_credentials($request), $request->filled('remember'))) {
+            session()->put('role', 'student');
             return response()->json([
                 'message' =>  'Login sebagai Pengguna berhasil',
                 'status' =>  true,
                 'target_url' =>  route('user.dashboard'),
             ]);
         } else if (Auth::guard('parent')->attempt($this->check_credentials($request), $request->filled('remember'))) {
+            session()->put('role', 'parent');
             return response()->json([
                 'message' =>  'Login sebagai Pengguna berhasil',
                 'status' =>  true,

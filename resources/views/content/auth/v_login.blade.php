@@ -18,9 +18,13 @@
             <div class="form-form-wrap">
                 <div class="form-container">
                     <div class="form-content">
+                        @php
+                            $setting = json_decode(file_get_contents(storage_path('app/settings.json')), true);
+                        @endphp
 
-                        <h1 class="">Log In to <a href="index.html"><span class="brand-name">CORK</span></a></h1>
-                        <p class="signup-link">New Here? <a href="auth_register.html">Create an account</a></p>
+                        <h1 class="">Log In to <a href="{{ route('first_page') }}"><span
+                                    class="brand-name text-uppercase">{{ isset($setting['name_school']) ? $setting['name_school'] : 'E-Raport' }}</span></a>
+                        </h1>
                         <form class="text-left" action="{{ route('auth.verify') }}" method="POST">
                             @csrf
                             <div class="form">
@@ -82,16 +86,16 @@
 
                             </div>
                         </form>
-                        <p class="terms-conditions">© 2020 All Rights Reserved. <a href="index.html">CORK</a> is a
-                            product of Designreset. <a href="javascript:void(0);">Cookie Preferences</a>, <a
-                                href="javascript:void(0);">Privacy</a>, and <a href="javascript:void(0);">Terms</a>.</p>
+                        <p class="terms-conditions">{{ isset($setting['footer']) ? $setting['footer'] : '© 2020 All Rights Reserved. <a href="index.html">CORK</a> is a
+                            product of Designreset.' }}</p>
 
                     </div>
                 </div>
             </div>
         </div>
         <div class="form-image">
-            <div class="l-image">
+            <div class="l-image"
+                style="background-image: url({{ isset($setting['logo']) ? asset($setting['logo']) : 'https://cdn.pixabay.com/photo/2015/12/10/16/39/shield-1086703_960_720.png' }})">
             </div>
         </div>
     </div>
