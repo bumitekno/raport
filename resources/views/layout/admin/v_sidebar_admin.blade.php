@@ -18,7 +18,7 @@
                         <option value="" selected disabled>Pilih Kurikulum</option>
                         <option value="merdeka" {{ session('template') == 'merdeka' ? 'selected' : '' }}>Kurikulum
                             Merdeka</option>
-                        <option value="k16" {{ session('template') == 'merdeka' ? 'selected' : '' }}>Kurikulum 16
+                        <option value="k16" {{ session('template') == 'k16' ? 'selected' : '' }}>Kurikulum 16
                         </option>
                     </select>
                 </div>
@@ -313,6 +313,7 @@
             checkTemplate($('#curriculumSelect').val());
             $('#curriculumSelect').on('change', function() {
                 var curriculum = $(this).val();
+                checkTemplate(curriculum);
                 $.ajax({
                     url: '{{ route('session.template') }}',
                     type: 'POST',
@@ -322,14 +323,21 @@
                     },
                     success: function(response) {
                         console.log(response);
-                        checkTemplate(curriculum);
+                        
                     }
                 });
             });
         })
 
         function checkTemplate(param) {
-            $('.' + param).removeClass('d-none');
+            if (param === 'merdeka') {
+                $('.merdeka').removeClass('d-none');
+                $('.k16').addClass('d-none');
+            } else {
+                $('.k16').removeClass('d-none');
+                $('.merdeka').addClass('d-none');
+            }
+            
         }
     </script>
 @endpush
