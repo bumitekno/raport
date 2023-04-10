@@ -6,7 +6,7 @@
             <div class="user-info">
                 <img src="{{ asset('asset/img/90x90.jpg') }}" alt="avatar">
                 <h6 class="">Sonia Shaw</h6>
-                <p class="">Project Leader</p>
+                <p class="">Wali Kelas</p>
             </div>
         </div>
         <div class="shadow-bottom"></div>

@@ -76,32 +76,35 @@
                                 </svg> <span>My Profile</span>
                             </a>
                         </div>
-                        @if (session('role') == 'teacher')
-                            <div class="dropdown-item">
-                                <a href="apps_mailbox.html">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                        stroke-linecap="round" stroke-linejoin="round">
-                                        <path d="M5.52 19c.64-2.2 1.84-3 3.22-3h6.52c1.38 0 2.58.8 3.22 3" />
-                                        <circle cx="12" cy="10" r="3" />
-                                        <circle cx="12" cy="12" r="10" />
-                                    </svg>
-                                    <span>Wali Kelas</span>
-                                </a>
-                            </div>
-                            <div class="dropdown-item">
-                                <a href="auth_lockscreen.html">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                        stroke-linecap="round" stroke-linejoin="round">
-                                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                                        <circle cx="9" cy="7" r="4"></circle>
-                                        <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-                                        <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-                                    </svg>
-                                    <span>Guru Pelajaran</span>
-                                </a>
-                            </div>
+                        @if (session('role') == 'teacher' && session('type-teacher') == 'homeroom')
+                            @if (session('layout') == 'teacher')
+                                <div class="dropdown-item">
+                                    <a href="{{ route('session.layout', ['layout' => 'homeroom']) }}">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                            viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M5.52 19c.64-2.2 1.84-3 3.22-3h6.52c1.38 0 2.58.8 3.22 3" />
+                                            <circle cx="12" cy="10" r="3" />
+                                            <circle cx="12" cy="12" r="10" />
+                                        </svg>
+                                        <span>Wali Kelas</span>
+                                    </a>
+                                </div>
+                            @else
+                                <div class="dropdown-item">
+                                    <a href="{{ route('session.layout', ['layout' => 'teacher']) }}">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                            viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                            <circle cx="9" cy="7" r="4"></circle>
+                                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                                        </svg>
+                                        <span>Guru Pelajaran</span>
+                                    </a>
+                                </div>
+                            @endif
                         @endif
                         <div class="dropdown-item">
                             <a href="{{ route('auth.logout') }}">
@@ -138,7 +141,11 @@
             @break
 
             @case('teacher')
-                @include('layout.admin.v_sidebar_teacher')
+                @if (session('layout') == 'teacher')
+                    @include('layout.admin.v_sidebar_teacher')
+                @else
+                    @include('layout.admin.v_sidebar_homeroom')
+                @endif
             @break
 
             @default
@@ -151,19 +158,11 @@
             @yield('content')
             <div class="footer-wrapper">
                 <div class="footer-section f-section-1">
-                    <p class="">Copyright © 2020 <a target="_blank"
-                            href="https://designreset.com">DesignReset</a>, All rights reserved.</p>
+                    <p class="">
+                        {{ isset($setting['footer']) ? $setting['footer'] : 'Copyright © 2023 Design by, MYSCH.ID' }}.
+                    </p>
                 </div>
-                <div class="footer-section f-section-2">
-                    <p class="">Coded with <svg xmlns="http://www.w3.org/2000/svg" width="24"
-                            height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                            class="feather feather-heart">
-                            <path
-                                d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
-                            </path>
-                        </svg></p>
-                </div>
+
             </div>
         </div>
     </div>

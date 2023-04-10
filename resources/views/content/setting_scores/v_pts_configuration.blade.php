@@ -38,7 +38,7 @@
                                             <th>Tahun Ajaran</th>
                                             <th>Rata Nilai Ulangan Harian (%)</th>
                                             <th>Nilai Ulangan Tengah Semester (%)</th>
-                                            <th>Total (%)</th>
+                                            <th class="text-center">Total (%)</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -64,7 +64,7 @@
                                                         <div class="invalid-feedback d-block">{{ $message }}</div>
                                                     @enderror
                                                 </td>
-                                                <td>
+                                                <td class="text-center">
                                                     @php
                                                         $total = 0;
                                                         if ($configuration['average_daily_rate'] != null) {

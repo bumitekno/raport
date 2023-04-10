@@ -4,7 +4,8 @@
         <div class="profile-info">
             <figure class="user-cover-image"></figure>
             <div class="user-info">
-                <img src="{{ Auth::guard('admin')->user()->file ? asset(Auth::guard('admin')->user()->file) : asset('asset/img/90x90.jpg') }}" alt="avatar">
+                <img src="{{ Auth::guard('admin')->user()->file ? asset(Auth::guard('admin')->user()->file) : asset('asset/img/90x90.jpg') }}"
+                    alt="avatar">
                 <h6 class="">{{ Auth::guard('admin')->user()->name }}</h6>
                 <p class="">Admin</p>
             </div>
@@ -24,7 +25,7 @@
                 </div>
             </li>
             <li class="menu">
-                <a href="javascript:void(0);" aria-expanded="true" class="dropdown-toggle">
+                <a href="{{ route('dashboard') }}" aria-expanded="true" class="dropdown-toggle">
                     <div class="">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                             fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -213,7 +214,7 @@
                         <a href="{{ route('letterheads.index') }}"> KOP Surat</a>
                     </li>
                     <li>
-                        <a href="javascript:void(0);"> Template Raport</a>
+                        <a href="{{ route('templates.index', ['year' => session('slug_year')]) }}"> Template Raport</a>
                     </li>
 
                 </ul>
@@ -323,7 +324,7 @@
                     },
                     success: function(response) {
                         console.log(response);
-                        
+
                     }
                 });
             });
@@ -337,7 +338,7 @@
                 $('.k16').removeClass('d-none');
                 $('.merdeka').addClass('d-none');
             }
-            
+
         }
     </script>
 @endpush

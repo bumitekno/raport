@@ -21,11 +21,13 @@ use App\Http\Controllers\PredicatedScoreController;
 use App\Http\Controllers\PtsConfigurationController;
 use App\Http\Controllers\SchoolYearController;
 use App\Http\Controllers\ScoreP5Controller;
+use App\Http\Controllers\SessionController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\StudentClassController;
 use App\Http\Controllers\StudyClassController;
 use App\Http\Controllers\SubjectTeacherController;
 use App\Http\Controllers\TeacherController;
+use App\Http\Controllers\TemplateConfigurationController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -42,11 +44,20 @@ Route::middleware('auth:user,admin,parent,teacher')->group(function () {
     Route::get('dashboard', [DashboardController::class, 'admin'])->name('dashboard');
     Route::get('home', [DashboardController::class, 'user'])->name('user.dashboard');
     Route::get('statistic', [DashboardController::class, 'teacher'])->name('teacher.dashboard');
+
+    //maen session
     Route::post('set-template', function (Request $request) {
         session(['template' => $request->curriculum]);
         return response()->json(['success' => true]);
     })->name('session.template');
 
+    Route::get('set-layout', function (Request $request) {
+        session(['layout' => $request->layout]);
+        return redirect()->back();
+    })->name('session.layout');
+
+    // session menu guru
+    Route::post('set-layout/teacher', [SessionController::class, 'set_layout'])->name('session.set_layout_teacher');
 
     // User
     Route::resource('admins', AdminController::class)->parameters([
@@ -113,6 +124,11 @@ Route::middleware('auth:user,admin,parent,teacher')->group(function () {
     Route::prefix('setting')->name('settings.')->group(function () {
         Route::get('/', [SettingController::class, 'index'])->name('index');
         Route::post('updateOrCreate', [SettingController::class, 'updateOrCreate'])->name('updateOrCreate');
+    });
+
+    Route::prefix('template')->name('templates.')->group(function () {
+        Route::get('/', [TemplateConfigurationController::class, 'index'])->name('index');
+        Route::post('updateOrCreate', [TemplateConfigurationController::class, 'updateOrCreate'])->name('updateOrCreate');
     });
 
     Route::prefix('covers')->name('covers.')->group(function () {

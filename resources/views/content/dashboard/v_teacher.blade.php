@@ -19,7 +19,7 @@
                     </div>
                     <h5 class="info-heading text-center">Jumlah Siswa Aktif</h5>
                     <div class="invoice-box ">
-                        <p class="acc-amount">$470</p>
+                        <p class="acc-amount">{{ $statistic['students'] }}</p>
                     </div>
                 </div>
             </div>
@@ -35,7 +35,7 @@
                     </div>
                     <h5 class="info-heading text-center">Jumlah Guru Aktif</h5>
                     <div class="invoice-box ">
-                        <p class="acc-amount">$470</p>
+                        <p class="acc-amount">{{ $statistic['teachers'] }}</p>
                     </div>
                 </div>
             </div>
@@ -52,7 +52,7 @@
                     </div>
                     <h5 class="info-heading text-center">Jumlah Orang Tua Aktif</h5>
                     <div class="invoice-box ">
-                        <p class="acc-amount">$470</p>
+                        <p class="acc-amount">{{ $statistic['parents'] }}</p>
                     </div>
                 </div>
             </div>

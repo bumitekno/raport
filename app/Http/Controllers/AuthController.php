@@ -11,14 +11,12 @@ class AuthController extends Controller
 {
     public function login()
     {
+        session()->put('title', 'Login');
         return view('content.auth.v_login');
     }
 
     public function verify_login(Request $request)
     {
-        // Helper::alert('success', 'Congrats', 'kamu berhasil');
-        // Helper::toast('kamu berhasil', 'error');
-        // return redirect()->back();
         $this->validate($request, [
             'username' => 'required',
             'password' => 'required'
@@ -30,8 +28,11 @@ class AuthController extends Controller
             session()->put('role', 'admin');
             return redirect()->intended('/dashboard');
         } else if (Auth::guard('teacher')->attempt($this->check_credentials($request), $request->filled('remember'))) {
+            // dd(Auth::guard('teacher')->user()->type);
             Helper::alert('success', 'Selamat Datang !', 'Berhasil Login');
             session()->put('role', 'teacher');
+            session()->put('type-teacher', Auth::guard('teacher')->user()->type);
+            session()->put('layout', 'teacher');
             return redirect()->route('teacher.dashboard');
         } else if (Auth::guard('user')->attempt($this->check_credentials($request), $request->filled('remember'))) {
             session()->put('role', 'student');

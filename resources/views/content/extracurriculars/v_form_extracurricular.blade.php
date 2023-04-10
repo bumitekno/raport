@@ -28,71 +28,67 @@
                     <div class="info widget-content widget-content-area ecommerce-create-section">
                         <h6 class="">Informasi Umum</h6>
                         <div class="row">
-                            <div class="col-lg-11 mx-auto">
-                                <div class="row">
-                                    <div class="col-sm-6">
-                                        <div class="form-group">
-                                            <label for="fullName">Ekstrakurikuler</label>
-                                            <input type="text" class="form-control" name="name"
-                                                value="{{ isset($user) ? old('name', $user->name) : old('name') }}">
-                                            @error('name')
-                                                <div class="invalid-feedback d-block">{{ $message }}</div>
-                                            @enderror
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <div class="form-group">
-                                            <label for="fullName">Penanggung Jawab</label>
-                                            <input type="text" class="form-control" name="person_responsible"
-                                                placeholder="Penanggung Jawab"
-                                                value="{{ isset($user) ? old('name', $user->name) : old('name') }}">
-                                            @error('name')
-                                                <div class="invalid-feedback d-block">{{ $message }}</div>
-                                            @enderror
-                                        </div>
-
-                                    </div>
-                                    <input type="hidden" name="id_student_classes" id="selected-rows-data">
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="table-responsive">
-                                            <h6 class="mb-2">Pilih Siswa</h6>
-                                            <table id="table-list" class="table dt-table-hover w-100">
-                                                <thead>
-                                                    <tr>
-                                                        <th></th>
-                                                        <th>NIS</th>
-                                                        <th>Nama</th>
-                                                        <th>Kelas</th>
-                                                        <th>Tambah</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <h6 class="mb-2">Peserta Ekstrakurikuler</h6>
-                                        <table id="example2" class="table dt-table-hover w-100">
-                                            <thead>
-                                                <tr>
-                                                    <th></th>
-                                                    <th>NIS</th>
-                                                    <th>Nama</th>
-                                                    <th>Kelas</th>
-                                                    <th>Aksi</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                            </tbody>
-                                        </table>
-                                    </div>
-
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for="fullName">Ekstrakurikuler</label>
+                                    <input type="text" class="form-control" name="name"
+                                        value="{{ isset($user) ? old('name', $user->name) : old('name') }}">
+                                    @error('name')
+                                        <div class="invalid-feedback d-block">{{ $message }}</div>
+                                    @enderror
                                 </div>
                             </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for="fullName">Penanggung Jawab</label>
+                                    <input type="text" class="form-control" name="person_responsible"
+                                        placeholder="Penanggung Jawab"
+                                        value="{{ isset($user) ? old('name', $user->name) : old('name') }}">
+                                    @error('name')
+                                        <div class="invalid-feedback d-block">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                            </div>
+                            <input type="hidden" name="id_student_classes" id="selected-rows-data">
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="table-responsive">
+                                    <h6 class="mb-2">Cari Siswa</h6>
+                                    <table id="student-table" class="table table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th>NIS</th>
+                                                <th>Nama Siswa</th>
+                                                <th>Kelas</th>
+                                                <th>Aksi</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <!-- Tampilkan data siswa yang dicari -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <h6 class="mb-2">Siswa Terpilih</h6>
+                                <table id="selected-students-table" class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>NIS</th>
+                                            <th>Nama Siswa</th>
+                                            <th>Kelas</th>
+                                            <th>Aksi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <!-- Tampilkan data siswa yang sudah dipilih -->
+                                    </tbody>
+                                </table>
+                            </div>
+
                         </div>
                     </div>
                 </div>

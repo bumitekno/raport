@@ -12,6 +12,7 @@ class ExtracurricularController extends Controller
     public function index(Request $request)
     {
         // dd('ekstrakurikuler');
+        session()->put('title', 'Kelola Ekstrakulikuler');
         if ($request->ajax()) {
             $data = Extracurricular::select('*');
             return DataTables::of($data)
