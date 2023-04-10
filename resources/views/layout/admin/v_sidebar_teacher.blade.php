@@ -57,7 +57,7 @@
                         </div>
                     </a>
                 </li>
-                <li class="menu">
+                <li class="menu {{ session()->has('teachers') && session('teachers.template') != 'merdeka' ? 'd-none' : '' }}">
                     <a href="#submenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
                         <div class="">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -78,14 +78,14 @@
                     </a>
                     <ul class="collapse submenu list-unstyled" id="submenu" data-parent="#accordionExample">
                         <li>
-                            <a href="javascript:void(0);"> Capaian Kompetensi </a>
+                            <a href="{{ route('setting_scores.list_competence') }}"> Capaian Kompetensi </a>
                         </li>
                         <li>
                             <a href="javascript:void(0);"> Pengaturan Deskripsi </a>
                         </li>
                     </ul>
                 </li>
-                <li class="menu">
+                <li class="menu {{ session()->has('teachers') && session('teachers.template') != 'merdeka' ? 'd-none' : '' }}">
                     <a href="#submenu2" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
                         <div class="">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -112,7 +112,7 @@
                         </li>
                     </ul>
                 </li>
-                <li class="menu">
+                <li class="menu {{ session()->has('teachers') && session('teachers.template') != 'merdeka' ? 'd-none' : '' }}">
                     <a href="javascript:void(0);" aria-expanded="false" class="dropdown-toggle">
                         <div class="">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"

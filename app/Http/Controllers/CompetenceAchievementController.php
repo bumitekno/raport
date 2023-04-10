@@ -11,6 +11,7 @@ use App\Models\SubjectTeacher;
 use App\Models\Teacher;
 use App\Models\TypeCompetenceAchievement;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\DataTables;
 
 class CompetenceAchievementController extends Controller
@@ -46,7 +47,7 @@ class CompetenceAchievementController extends Controller
         })->values()->all();
         // dd($courses);
         if ($request->ajax()) {
-            $data = CompetenceAchievement::with('type')->select('*');
+            $data = CompetenceAchievement::with('type', 'course', 'study_class')->select('*');
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function ($row) {
@@ -71,6 +72,48 @@ class CompetenceAchievementController extends Controller
         }
         // dd($courses);
         return view('content.score_p5.v_achievement_competence', compact('courses'));
+    }
+
+    public function list_competence(Request $request)
+    {
+        // dd(session()->all());
+        // $data = CompetenceAchievement::with('type', 'course', 'study_class')->select('*')->where([
+        //     ['id_study_class', session('teachers.id_study_class')],
+        //     ['id_course', session('teachers.id_course')],
+        //     ['id_teacher', Auth::guard('teacher')->user()->id],
+        //     ['id_school_year', session('id_school_year')],
+        // ])->get();
+        // dd($data);
+        if ($request->ajax()) {
+            $data = CompetenceAchievement::with('type', 'course', 'study_class')->select('*')->where([
+                ['id_study_class', session('teachers.id_study_class')],
+                ['id_course', session('teachers.id_course')],
+                ['id_teacher', Auth::guard('teacher')->user()->id],
+                ['id_school_year', session('id_school_year')],
+            ]);
+            return DataTables::of($data)
+                ->addIndexColumn()
+                ->addColumn('action', function ($row) {
+                    $alert = "return confirm('Apa kamu yakin?')";
+                    return '<div class="dropdown dropup  custom-dropdown-icon">
+                    <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink-3" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-more-vertical"><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg>
+                    </a>
+
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink-3">
+                        <a class="dropdown-item" href="' . route('setting_scores.competence.edit', ['course' => $row->course->slug, 'study_class' => $row->study_class->slug, 'teacher' => $row->teacher->slug, 'slug' => $row->slug]) . '"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="16 3 21 8 8 21 3 21 3 16 16 3"></polygon></svg> Edit</a>
+                        <a class="dropdown-item"  onclick="' . $alert . '" href="' . route('setting_scores.competence.destroy', $row['slug']) . '"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg> Hapus</a>
+                    </div>
+                </div> ';
+                })
+                ->editColumn('description', function ($row) {
+                    return str_limit($row['description'], 50);
+                })
+
+                ->rawColumns(['action', 'description'])
+                ->make(true);
+        }
+        return view('content.score_p5.v_list_achievement_competence');
     }
 
     public function create(Request $request)
@@ -113,7 +156,11 @@ class CompetenceAchievementController extends Controller
             ]
         );
         Helper::toast('Berhasil mengupdate kompetensi', 'success');
-        return redirect()->route('setting_scores.competence');
+        if (session('role') == 'teacher') {
+            return redirect()->route('setting_scores.list_competence');
+        } else {
+            return redirect()->route('setting_scores.competence');
+        }
     }
 
     public function destroy($slug)

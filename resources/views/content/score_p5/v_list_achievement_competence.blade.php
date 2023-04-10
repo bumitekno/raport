@@ -21,27 +21,7 @@
                 <div class="col-xl-12 col-lg-12 col-sm-12 layout-top-spacing layout-spacing">
                     <div class="statbox widget box box-shadow">
                         <div class="widget-header">
-                            <div class="row">
-                                <div class="col-xl-12 col-md-12 col-sm-12 col-12 d-flex justify-content-between">
-                                    <h4>{{ session('title') }}</h4>
-                                    <div class="form-group row my-auto mx-3">
-                                        <label for="inputUsername" class="col-auto col-form-label my-auto">Pilih
-                                            Mapel</label>
-                                        <div class="col">
-                                            <select name="id_course" id="id_course" class="form-control">
-                                                <option value="" selected disabled>-- Pilih Mapel --</option>
-                                                @foreach ($courses as $course)
-                                                    <option data-slug-course="{{ $course['slug_mapel'] }}"
-                                                        data-slug-study-class="{{ $course['slug_class'] }}"
-                                                        data-slug-teacher="{{ $course['slug_teacher'] }}"
-                                                        value="{{ $course['id_course'] }}">
-                                                        {{ $course['name_mapel'] . ', ' . $course['name_class'] }}</option>
-                                                @endforeach
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            <h4>{{ session('title') }}</h4>
                         </div>
                         <div class="widget-content widget-content-area br-8">
                             <table id="table-list" class="table dt-table-hover w-100">
@@ -50,8 +30,6 @@
                                         <th></th>
                                         <th>Tipe</th>
                                         <th>Kode</th>
-                                        <th>Mapel</th>
-                                        <th>Kelas</th>
                                         <th>Capaian Kompetensi</th>
                                         <th>Deskripsi</th>
                                         <th class="no-content text-center"></th>
@@ -71,6 +49,12 @@
         @include('package.datatable.datatable_js')
         <script>
             $(function() {
+                var course = '{{ session('teachers.slug_course') }}';
+                var studyClass = '{{ session('teachers.slug_classes') }}';
+                var teacher = '{{ Auth::guard('teacher')->user()->slug }}';
+
+                var url = 'competence/create?course=' + course + '&study_class=' + studyClass +
+                    '&teacher=' + teacher;
                 var table = $('#table-list').DataTable({
                     processing: true,
                     serverSide: true,
@@ -81,20 +65,9 @@
                         "<'inv-list-bottom-section d-sm-flex justify-content-sm-between text-center'<'inv-list-pages-count  mb-sm-0 mb-3'i><'inv-list-pagination'p>>",
                     buttons: [{
                         text: 'Tambah Baru',
-                        className: 'btn btn-primary addData',
+                        className: 'btn btn-primary',
                         action: function(e, dt, node, config) {
-
-
-                            var selectedOption = $('#id_course option:selected');
-                            var course = selectedOption.data('slug-course');
-                            var studyClass = selectedOption.data('slug-study-class');
-                            var teacher = selectedOption.data('slug-teacher');
-                            var url = '{{ route('setting_scores.competence.create') }}' +
-                                '?course=' + course +
-                                '&study_class=' + studyClass + '&teacher=' + teacher;
                             window.location = url;
-
-
                         }
                     }],
                     columns: [{
@@ -110,12 +83,6 @@
                         data: 'code',
                         name: 'code',
                     }, {
-                        data: 'course.name',
-                        name: 'course.name',
-                    }, {
-                        data: 'study_class.name',
-                        name: 'study_class.name',
-                    }, {
                         data: 'achievement',
                         name: 'achievement',
                     }, {
@@ -125,26 +92,6 @@
                         data: 'action',
                         name: 'action',
                     }, ]
-                });
-
-
-                // Simpan tombol Tambah Baru ke variabel
-                const tambahBaruBtn = $('button.addData');
-
-                // Dapatkan select dropdown
-                const mapelDropdown = $('select#id_course');
-
-                // Sembunyikan tombol Tambah Baru secara default
-                tambahBaruBtn.hide();
-
-                // Tambahkan event listener untuk dropdown
-                mapelDropdown.change(function() {
-                    // Jika dropdown dipilih, tampilkan tombol Tambah Baru
-                    if ($(this).val() !== null) {
-                        tambahBaruBtn.show();
-                    } else {
-                        tambahBaruBtn.hide();
-                    }
                 });
 
             });

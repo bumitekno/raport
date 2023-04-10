@@ -151,6 +151,7 @@ Route::middleware('auth:user,admin,parent,teacher')->group(function () {
 
     Route::prefix('setting-score')->name('setting_scores.')->group(function () {
         Route::get('competence', [CompetenceAchievementController::class, 'index'])->name('competence');
+        Route::get('list-competence', [CompetenceAchievementController::class, 'list_competence'])->name('list_competence');
         Route::get('competence/create', [CompetenceAchievementController::class, 'create'])->name('competence.create');
         Route::get('competence/edit', [CompetenceAchievementController::class, 'edit'])->name('competence.edit');
         Route::post('competence/update/{id?}', [CompetenceAchievementController::class, 'storeOrUpdate'])->name('competence.storeOrUpdate');
