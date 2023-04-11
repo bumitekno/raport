@@ -22,6 +22,8 @@ return new class extends Migration
             $table->integer('id_school_year');
             $table->integer('formative_weight')->nullable();
             $table->integer('sumative_weight')->nullable();
+            $table->integer('uts_weight')->nullable();
+            $table->integer('uas_weight')->nullable();
             $table->tinyInteger('status')->default(1);
             $table->timestamps();
             $table->softDeletes();

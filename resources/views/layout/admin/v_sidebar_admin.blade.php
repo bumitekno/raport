@@ -214,7 +214,8 @@
                         <a href="{{ route('letterheads.index') }}"> KOP Surat</a>
                     </li>
                     <li>
-                        <a href="{{ route('templates.index', ['year' => session('slug_year')]) }}"> Template Raport</a>
+                        <a href="{{ route('templates.index', ['year' => session('slug_year')]) }}"> Template
+                            Raport</a>
                     </li>
 
                 </ul>
@@ -334,7 +335,8 @@
             if (param === 'merdeka') {
                 $('.merdeka').removeClass('d-none');
                 $('.k16').addClass('d-none');
-            } else {
+            }
+            if (param === 'k16') {
                 $('.k16').removeClass('d-none');
                 $('.merdeka').addClass('d-none');
             }

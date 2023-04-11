@@ -53,6 +53,8 @@
                                             <th>Guru Mapel</th>
                                             <th>Bobot Formatif</th>
                                             <th>Bobot Sumatif</th>
+                                            <th>Bobot UTS</th>
+                                            <th>Bobot UAS</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -68,15 +70,43 @@
                                                         value="{{ $data['id_course'] }}">
                                                     <input type="hidden" name="id_study_class[]"
                                                         value="{{ $data['id_study_class'] }}">
-                                                    <td><input type="number" name="formative_weight[]" class="form-control"
-                                                            value="{{ $data['score_formatif'] }}"></td>
-                                                    <td><input type="number" name="sumative_weight[]" class="form-control"
-                                                            value="{{ $data['score_sumatif'] }}"></td>
+                                                    <td>
+                                                        <input type="number" name="formative_weight[]" class="form-control"
+                                                            value="{{ old('formative_weight.' . $index, $data['formative_weight']) }}">
+                                                        @error('formative_weight.' . $index)
+                                                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                                                        @enderror
+                                                    </td>
+                                                    <td>
+                                                        <input type="number" name="sumative_weight[]" class="form-control"
+                                                            value="{{ old('sumative_weight.' . $index, $data['sumative_weight']) }}">
+                                                        @error('sumative_weight.' . $index)
+                                                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                                                        @enderror
+                                                    </td>
+                                                    <td>
+                                                        <input type="number" name="uts_weight[]" class="form-control"
+                                                            value="{{ old('uts_weight.' . $index, $data['uts_weight']) }}">
+                                                        @error('uts_weight.' . $index)
+                                                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                                                        @enderror
+                                                    </td>
+                                                    <td>
+                                                        <input type="number" name="uas_weight[]" class="form-control"
+                                                            value="{{ old('uas_weight.' . $index, $data['uas_weight']) }}">
+                                                        @error('uas_weight.' . $index)
+                                                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                                                        @enderror
+                                                        @error('total_weight.' . $index)
+                                                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                                                        @enderror
+                                                    </td>
+
                                                 </tr>
                                             @endforeach
                                         @else
                                             <tr>
-                                                <td colspan="5" class="text-center">Harap masukan filter kelas terlebih
+                                                <td colspan="7" class="text-center">Harap masukan filter kelas terlebih
                                                     dahulu untuk menampilkan data</td>
                                             </tr>
                                         @endif

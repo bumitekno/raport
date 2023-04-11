@@ -48,12 +48,16 @@ class AssesmentWeightingController extends Controller
 
                 $score_formatif = $found ? $found->formative_weight : null;
                 $score_sumatif = $found ? $found->sumative_weight : null;
+                $score_uts = $found ? $found->uts_weight : null;
+                $score_uas = $found ? $found->uas_weight : null;
 
                 $result[] = [
                     'course' => $data->course->name,
                     'teacher' => $data->teacher->name,
-                    'score_formatif' => $score_formatif,
-                    'score_sumatif' => $score_sumatif,
+                    'formative_weight' => $score_formatif,
+                    'sumative_weight' => $score_sumatif,
+                    'uts_weight' => $score_uts,
+                    'uas_weight' => $score_uas,
                     'id_teacher' => $data->id_teacher,
                     'id_course' => $data->id_course,
                     'id_study_class' => $study_class->id,
@@ -72,6 +76,7 @@ class AssesmentWeightingController extends Controller
     {
         // dd($request);
         $data = $request->validated();
+        // dd($data);
         $id = $data['id_teacher'];
 
         for ($i = 0; $i < count($id); $i++) {
@@ -84,7 +89,9 @@ class AssesmentWeightingController extends Controller
                 ],
                 [
                     'formative_weight' => $data['formative_weight'][$i],
-                    'sumative_weight' => $data['sumative_weight'][$i]
+                    'sumative_weight' => $data['sumative_weight'][$i],
+                    'uts_weight' => $data['uts_weight'][$i],
+                    'uas_weight' => $data['uas_weight'][$i]
                 ]
             );
         }

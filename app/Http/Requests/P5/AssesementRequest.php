@@ -23,17 +23,32 @@ class AssesementRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            'id_teacher' => 'required|array',
-            'id_course' => 'required|array',
-            'id_study_class' => 'required|array',
-            'formative_weight' => 'required|array',
-            'sumative_weight' => 'required|array',
+        $rules = [
             'id_teacher.*' => 'required|integer',
             'id_course.*' => 'required|integer',
             'id_study_class.*' => 'required|integer',
-            'formative_weight.*' => 'required|integer',
-            'sumative_weight.*' => 'required|integer',
+            'formative_weight.*' => 'required|integer|between:0,100',
+            'sumative_weight.*' => 'required|integer|between:0,100',
+            'uts_weight.*' => 'required|integer|between:0,100',
+            'uas_weight.*' => 'required|integer|between:0,100',
+            'total_weight.*' => 'required|in:100',
         ];
+
+        $messages = [
+            'required' => 'Field :attribute wajib diisi.',
+            'integer' => 'Field :attribute harus berupa angka.',
+            'between' => 'Field :attribute harus berada di antara :min dan :max.',
+            'in' => 'Jumlah bobot pada :attribute harus sama dengan 100.'
+        ];
+
+        $this->merge([
+            'total_weight' => array_map(function ($formative, $sumative, $uts, $uas) {
+                return $formative + $sumative + $uts + $uas;
+            }, $this->formative_weight, $this->sumative_weight, $this->uts_weight, $this->uas_weight),
+        ]);
+
+        $rules['total_weight.*'] = 'required|in:100';
+
+        return $rules;
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\Helper;
 use App\Http\Requests\StudentClass\StudentActionRequest;
 use App\Models\SchoolYear;
 use App\Models\StudentClass;
@@ -124,6 +125,7 @@ class StudentClassController extends Controller
                         'id_student' => $siswa->id,
                         'id_study_class' => $idStudyClass,
                         'year' => $year,
+                        'slug' => $siswa->id . $idStudyClass . $year . '-' . Helper::str_random(5)
                     ]);
                 });
             }
@@ -133,7 +135,8 @@ class StudentClassController extends Controller
                 StudentClass::create([
                     'id_student' => $siswa->id,
                     'id_study_class' => $idStudyClass,
-                    'year' => $year
+                    'year' => $year,
+                    'slug' => $siswa->id . $idStudyClass . $year . '-' . Helper::str_random(5)
                 ]);
             });
         }

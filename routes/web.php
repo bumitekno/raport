@@ -20,6 +20,7 @@ use App\Http\Controllers\PasConfigurationController;
 use App\Http\Controllers\PredicatedScoreController;
 use App\Http\Controllers\PtsConfigurationController;
 use App\Http\Controllers\SchoolYearController;
+use App\Http\Controllers\ScoreMerdekaController;
 use App\Http\Controllers\ScoreP5Controller;
 use App\Http\Controllers\SessionController;
 use App\Http\Controllers\SettingController;
@@ -162,6 +163,10 @@ Route::middleware('auth:user,admin,parent,teacher')->group(function () {
 
         Route::get('assesment-weight', [AssesmentWeightingController::class, 'index'])->name('assesment_weight');
         Route::post('assesment-weight/update', [AssesmentWeightingController::class, 'storeOrUpdate'])->name('assesment_weight.storeOrUpdate');
+
+        Route::get('score', [ScoreMerdekaController::class, 'index'])->name('score');
+        Route::get('score/create/{slug}', [ScoreMerdekaController::class, 'create'])->name('score.create');
+        Route::post('score/update', [ScoreMerdekaController::class, 'storeOrUpdate'])->name('score.storeOrUpdate');
     });
 
     //P5

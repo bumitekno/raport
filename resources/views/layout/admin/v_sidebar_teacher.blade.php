@@ -57,7 +57,8 @@
                         </div>
                     </a>
                 </li>
-                <li class="menu {{ session()->has('teachers') && session('teachers.template') != 'merdeka' ? 'd-none' : '' }}">
+                <li
+                    class="menu {{ session()->has('teachers') && session('teachers.template') != 'merdeka' ? 'd-none' : '' }}">
                     <a href="#submenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
                         <div class="">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -85,7 +86,8 @@
                         </li>
                     </ul>
                 </li>
-                <li class="menu {{ session()->has('teachers') && session('teachers.template') != 'merdeka' ? 'd-none' : '' }}">
+                <li
+                    class="menu {{ session()->has('teachers') && session('teachers.template') != 'merdeka' ? 'd-none' : '' }}">
                     <a href="#submenu2" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
                         <div class="">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -105,14 +107,15 @@
                     </a>
                     <ul class="collapse submenu list-unstyled" id="submenu2" data-parent="#accordionExample">
                         <li>
-                            <a href="{{ route('configs.index') }}"> Input Nilai</a>
+                            <a href="{{ route('setting_scores.score') }}"> Input Nilai</a>
                         </li>
                         <li>
                             <a href="{{ route('covers.index') }}"> Kelola Deskripsi</a>
                         </li>
                     </ul>
                 </li>
-                <li class="menu {{ session()->has('teachers') && session('teachers.template') != 'merdeka' ? 'd-none' : '' }}">
+                <li
+                    class="menu {{ session()->has('teachers') && session('teachers.template') != 'merdeka' ? 'd-none' : '' }}">
                     <a href="javascript:void(0);" aria-expanded="false" class="dropdown-toggle">
                         <div class="">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
