@@ -7,12 +7,15 @@ use App\Models\Teacher;
 use App\Models\User;
 use App\Models\UserParent;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class DashboardController extends Controller
 {
     public function admin()
     {
         session()->put('title', 'Dashboard Admin');
+        $settings = json_decode(Storage::get('settings.json'), true);
+        session()->put('logo', isset($setting['logo']) ? asset($setting['logo']) : asset('asset/img/90x90.jpg'));
         $statistic = self::get_statistic();
         $school_year = SchoolYear::where('status', 1)->first();
         if ($school_year) {
@@ -34,6 +37,8 @@ class DashboardController extends Controller
     {
         // dd(session()->all());
         session()->put('title', 'Dashboard Guru');
+        $settings = json_decode(Storage::get('settings.json'), true);
+        session()->put('logo', isset($setting['logo']) ? asset($setting['logo']) : asset('asset/img/90x90.jpg'));
         $statistic = self::get_statistic();
         $school_year = SchoolYear::where('status', 1)->first();
         // dd($school_year);

@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\Helper;
 use App\Http\Requests\P5\ScoreRequest;
 use App\Models\AssesmentWeighting;
+use App\Models\ScoreMerdeka;
 use App\Models\StudentClass;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -73,13 +75,34 @@ class ScoreMerdekaController extends Controller
             ];
             return view('content.score_p5.v_create_student_score', compact('weight', 'result'));
         } catch (\Throwable $e) {
-            session()->put('message', 'Terjadi kesalahan: ' . $e->getMessage());
+            session()->put('message', 'Terjadi kesalahan: Dikarenakan bobot nilai belum di setting ');
             return view('pages.v_error');
         }
     }
 
     public function storeOrUpdate(ScoreRequest $request)
     {
-        dd($request);
+        $data = $request->validated();
+        $id_student_class = StudentClass::where('slug', $data['slug_student_class'])->first()->id;
+        ScoreMerdeka::updateOrCreate(
+            [
+                'id_student_class' => $id_student_class,
+                'id_course' => $data['id_course'],
+                'id_study_class' => $data['id_study_class'],
+                'id_teacher' => $data['id_teacher'],
+                'id_school_year' => $data['id_school_year'],
+            ],
+            [
+                'score_formative' =>  $data['formative'],
+                'average_formative' =>  $data['average_formative'],
+                'score_summative' =>  $data['sumatif'],
+                'average_summative' =>  $data['average_summative'],
+                'score_uts' =>  $data['uts'],
+                'score_uas' =>  $data['uas'],
+                'final_score' =>  $data['final_score'],
+            ]
+        );
+        Helper::toast('Berhasil menyimpan data', 'success');
+        return redirect()->back();
     }
 }

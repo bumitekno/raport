@@ -42,6 +42,7 @@ class SettingController extends Controller
 
 
         Storage::put('settings.json', json_encode($settings, JSON_PRETTY_PRINT));
+        session()->put('logo', isset($setting['logo']) ? asset($setting['logo']) : asset('asset/img/90x90.jpg'));
 
         Helper::toast('Berhasil memperbarui pegaturan', 'success');
         return redirect()->back();

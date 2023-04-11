@@ -31,7 +31,7 @@ class AppServiceProvider extends ServiceProvider
             $mapelData = SubjectTeacher::with(['teacher', 'course' => function ($query) {
                 $query->select(['id', 'name']);
             }])
-                ->where('id_teacher', 1)
+                ->where('id_teacher', Auth::guard('teacher')->user()->id)
                 ->get(['id_course', 'id_study_class']);
 
             $studyClassIds = $mapelData->pluck('id_study_class')->flatMap(function ($item) {

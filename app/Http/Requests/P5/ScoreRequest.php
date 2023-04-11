@@ -16,11 +16,6 @@ class ScoreRequest extends FormRequest
         return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, mixed>
-     */
     public function rules()
     {
         return [
@@ -41,4 +36,14 @@ class ScoreRequest extends FormRequest
         ];
     }
 
+    public function validated($key = null, $default = null)
+    {
+        $validatedData = parent::validated();
+
+        // Convert formative and sumatif input to JSON
+        $validatedData['formative'] = json_encode($validatedData['formative']);
+        $validatedData['sumatif'] = json_encode($validatedData['sumatif']);
+
+        return $validatedData;
+    }
 }

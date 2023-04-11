@@ -120,6 +120,7 @@ class CompetenceAchievementController extends Controller
     {
         session()->put('title', 'Tambah Data');
         $course = Course::where('slug', $request->course)->first();
+        // dd($course);
         $study_class = StudyClass::with('major', 'level')->where('slug', $request->study_class)->first();
         $teacher = Teacher::where('slug', $request->teacher)->first();
         $types = TypeCompetenceAchievement::all();

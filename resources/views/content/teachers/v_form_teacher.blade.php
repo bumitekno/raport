@@ -235,48 +235,42 @@
                             <div class="widget-content widget-content-area ecommerce-create-section">
                                 <div class="row">
                                     <div class="col-sm-12 mb-4">
-                                        <label for="sale-price">Password</label>
-                                        <div class="input-group">
-                                            <input type="password" class="form-control" id="password"
-                                                placeholder="&#8226;&#8226;&#8226;&#8226;&#8226;" name="password">
-                                            <div class="input-group-append">
-                                                <button class="btn btn-outline-primary" type="button"
+                                        <div class="form-group">
+                                            <label for="password">Password</label>
+                                            <div class="input-group">
+                                                <input type="password" class="form-control" id="password"
+                                                    placeholder="&#8226;&#8226;&#8226;&#8226;&#8226;" name="password">
+                                                <button class="btn btn-outline-secondary password-toggle" type="button"
                                                     onclick="return showPassword('#password')">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
                                                         viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                                                        <circle cx="12" cy="12" r="3"></circle>
+                                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                        class="feather feather-eye">
+                                                        <path
+                                                            d="M22.239 11.984c-1.395-3.795-5.232-7.984-10.239-7.984s-8.844 4.189-10.239 7.984c1.395 3.795 5.232 7.984 10.239 7.984s8.844-4.189 10.239-7.984zm-10.239 5.016c-2.916 0-5.283-2.368-5.283-5.283s2.368-5.283 5.283-5.283 5.283 2.368 5.283 5.283-2.368 5.283-5.283 5.283z">
+                                                        </path>
+                                                        <circle cx="12" cy="12" r="2"></circle>
                                                     </svg>
                                                 </button>
                                             </div>
+                                            @error('password')
+                                                <div class="invalid-feedback d-block">{{ $message }}</div>
+                                            @enderror
                                         </div>
-                                        @error('password')
-                                            <div class="invalid-feedback d-block">{{ $message }}</div>
-                                        @enderror
-
                                     </div>
                                     <div class="col-sm-12 mb-4">
-                                        <label for="sale-price">Ulangi Password</label>
-                                        <div class="input-group">
-                                            <input type="password" class="form-control" id="confirm_password"
-                                                placeholder="&#8226;&#8226;&#8226;&#8226;&#8226;"
-                                                name="password_confirmation">
-                                            <div class="input-group-append">
-                                                <button class="btn btn-outline-primary" type="button"
-                                                    onclick="return showPassword('#confirm_password')">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                        viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                                                        <circle cx="12" cy="12" r="3"></circle>
+                                        <div class="form-group">
+                                            <label for="password_confirmation">Konfirmasi Password</label>
+                                            <div class="input-group">
+                                                <input type="password" class="form-control" id="confirm_password" placeholder="&#8226;&#8226;&#8226;&#8226;&#8226;" name="password_confirmation">
+                                                <button class="btn btn-outline-secondary password-toggle" type="button" onclick="return showPassword('#confirm_password')">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-eye">
+                                                        <path d="M22.239 11.984c-1.395-3.795-5.232-7.984-10.239-7.984s-8.844 4.189-10.239 7.984c1.395 3.795 5.232 7.984 10.239 7.984s8.844-4.189 10.239-7.984zm-10.239 5.016c-2.916 0-5.283-2.368-5.283-5.283s2.368-5.283 5.283-5.283 5.283 2.368 5.283 5.283-2.368 5.283-5.283 5.283z"></path>
+                                                        <circle cx="12" cy="12" r="2"></circle>
                                                     </svg>
                                                 </button>
                                             </div>
                                         </div>
-                                        @error('password_confirmation')
-                                            <div class="invalid-feedback d-block">{{ $message }}</div>
-                                        @enderror
                                     </div>
                                     <div class="col-sm-12">
                                         <button class="btn btn-primary btn-lg w-100 d-none" id="btnLoader">

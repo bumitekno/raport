@@ -13,10 +13,15 @@ class SessionController extends Controller
     {
         $study_class = StudyClass::find($request->id_study_class);
         $course = Course::find($request->id_course);
+        // dd($course);
         $template = TemplateConfiguration::where([
             ['id_major', $study_class->id_major],
             ['id_school_year', session('id_school_year')]
         ])->first();
+        if ($template == null) {
+            session()->put('message', 'Admin Belum mengatur tampilan / template raport');
+            return view('pages.v_error');
+        }
         $array_session = [
             'id_study_class' => $request->id_study_class,
             'id_course' => $request->id_course,
@@ -26,10 +31,7 @@ class SessionController extends Controller
             'type' => $template->type,
 
         ];
-        if ($template == null) {
-            session()->put('message', 'Admin Belum mengatur tampilan / template raport');
-            return view('pages.v_error');
-        }
+
         session(['teachers' => $array_session]);
         return redirect()->back();
     }

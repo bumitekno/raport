@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Alert;
 use App\Helpers\Helper;
+use Illuminate\Support\Facades\Session;
 
 class AuthController extends Controller
 {
@@ -72,6 +73,7 @@ class AuthController extends Controller
         } elseif (Auth::guard('parent')->check()) {
             Auth::guard('parent')->logout();
         }
+        Session::flush();
         Helper::alert('error', 'Anda sudah Logout', '');
         return redirect()->route('auth.login');
     }
