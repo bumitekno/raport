@@ -22,7 +22,7 @@ class ScoreRequest extends FormRequest
             'average_formative' => 'required|numeric',
             'average_summative' => 'required|numeric',
             'final_score' => 'required|numeric',
-            'slug_student_class' => 'required|string',
+            'id_student_class' => 'required|integer',
             'id_course' => 'required|integer',
             'id_study_class' => 'required|integer',
             'id_teacher' => 'required|integer',

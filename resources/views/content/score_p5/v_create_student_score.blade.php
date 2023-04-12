@@ -38,23 +38,30 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <input type="hidden" name="average_formative" class="average-formative-input">
-                                            <input type="hidden" name="average_summative" class="average-summative-input">
-                                            <input type="hidden" name="final_score" class="final-score-input">
-                                            <input type="hidden" name="slug_student_class" value="{{ $result['slug'] }}">
-                                            <input type="hidden" name="id_course" value="{{ $result['id_course'] }}">
+                                            <input type="hidden" name="average_formative" class="average-formative-input"
+                                                value="{{ old('average_formative', $result['average_formative']) }}">
+                                            <input type="hidden" name="average_summative" class="average-summative-input"
+                                                value="{{ old('average_summative', $result['average_summative']) }}">
+                                            <input type="hidden" name="final_score" class="final-score-input"
+                                                value="{{ old('final_score', $result['final_score']) }}">
+                                            <input type="hidden" name="id_student_class"
+                                                value="{{ old('id_student_class', $result['id_student_class']) }}">
+                                            <input type="hidden" name="id_course"
+                                                value="{{ old('id_course', $result['id_course']) }}">
                                             <input type="hidden" name="id_study_class"
-                                                value="{{ $result['id_study_class'] }}">
-                                            <input type="hidden" name="id_teacher" value="{{ $result['id_teacher'] }}">
+                                                value="{{ old('id_study_class', $result['id_study_class']) }}">
+                                            <input type="hidden" name="id_teacher"
+                                                value="{{ old('id_teacher', $result['id_teacher']) }}">
                                             <input type="hidden" name="id_school_year"
-                                                value="{{ $result['id_school_year'] }}">
+                                                value="{{ old('id_school_year', $result['id_school_year']) }}">
                                             <tr>
                                                 <td>1</td>
                                                 <td>Nilai Formatif</td>
                                                 <td>
                                                     <div class="input-group">
                                                         <input type="text" class="form-control formative"
-                                                            placeholder="Formative 1" name="formative[]">
+                                                            placeholder="Formative 1" name="formative[]"
+                                                            value="{{ $result['score_formative'] != null ? $result['score_formative'][0] : '0' }}">
                                                         <div class="input-group-append">
                                                             <button class="btn btn-outline-secondary add-formative"
                                                                 type="button"><i class="fas fa-plus"></i></button>
@@ -62,7 +69,7 @@
                                                     </div>
                                                     <div class="formative-inputs mt-2"></div>
                                                 </td>
-                                                <td class="average-formatif">0</td>
+                                                <td class="average-formatif">{{ $result['average_formative'] }}</td>
                                             </tr>
                                             <tr>
                                                 <td>2</td>
@@ -70,7 +77,8 @@
                                                 <td>
                                                     <div class="input-group">
                                                         <input type="text" class="form-control sumatif"
-                                                            placeholder="Sumatif 1" name="sumatif[]">
+                                                            placeholder="Sumatif 1" name="sumatif[]"
+                                                            value="{{ $result['score_summative'] != null ? $result['score_summative'][0] : '0' }}">
                                                         <div class="input-group-append">
                                                             <button class="btn btn-outline-secondary add-sumatif"
                                                                 type="button"><i class="fas fa-plus"></i></button>
@@ -88,9 +96,13 @@
                                                         <tbody>
                                                             <tr>
                                                                 <td><input type="text" class="form-control uts"
-                                                                        name="uts" placeholder="Nilai UTS"></td>
+                                                                        name="uts" placeholder="Nilai UTS"
+                                                                        value="{{ old('uts', $result['score_uts']) }}">
+                                                                </td>
                                                                 <td><input type="text" class="form-control uas"
-                                                                        name="uas" placeholder="Nilai UAS"></td>
+                                                                        name="uas" placeholder="Nilai UAS"
+                                                                        value="{{ old('uas', $result['score_uas']) }}">
+                                                                </td>
                                                                 <td><button class="btn btn-outline-danger remove-uas"
                                                                         type="button"><i class="fas fa-trash"></i></button>
                                                                 </td>
@@ -98,12 +110,12 @@
                                                         </tbody>
                                                     </table>
                                                 </td>
-                                                <td class="average-sumatif">0</td>
+                                                <td class="average-sumatif">{{ $result['average_summative'] }}</td>
                                             </tr>
                                             <tr>
                                                 <td colspan="3"> Nilai Akhir
                                                 </td>
-                                                <td class="nilai-akhir">0</td>
+                                                <td class="nilai-akhir">{{ $result['final_score'] }}</td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -144,6 +156,36 @@
                     $('#btnLoader').removeClass('d-none');
                     $('#btnSubmit').addClass('d-none');
                 });
+
+                var scoreFormative = {!! json_encode($result['score_formative']) !!};
+                var scoreSummative = {!! json_encode($result['score_summative']) !!};
+
+                if (scoreFormative) {
+                    for (var i = 1; i < scoreFormative.length; i++) {
+                        var formativeInput = `
+        <div class="input-group mt-2">
+          <input type="text" class="form-control formative" placeholder="Formative" name="formative[]" value="${scoreFormative[i]}">
+          <div class="input-group-append">
+            <button class="btn btn-outline-secondary remove-formative" type="button"><i class="fas fa-trash"></i></button>
+          </div>
+        </div>
+      `;
+                        $('.formative-inputs').append(formativeInput);
+                    }
+                }
+                if (scoreSummative) {
+                    for (var i = 1; i < scoreSummative.length; i++) {
+                        var summativeInput = `
+                        <div class="input-group mt-2">
+        <input type="text" class="form-control sumatif" placeholder="Sumatif" name="sumatif[]" value="${scoreSummative[i]}">
+        <div class="input-group-append">
+          <button class="btn btn-outline-secondary remove-sumatif" type="button"><i class="fas fa-trash"></i></button>
+        </div>
+      </div>
+      `;
+                        $('.sumatif-inputs').append(summativeInput);
+                    }
+                }
 
                 $(document).on("click", ".add-formative", function() {
                     const formativeInput = `

@@ -59,34 +59,53 @@ class ScoreMerdekaController extends Controller
 
     public function create($slug)
     {
-        try {
-            $weight = AssesmentWeighting::where([
-                ['id_study_class', session('teachers.id_study_class')],
-                ['id_teacher', Auth::guard('teacher')->user()->id],
-                ['id_course', session('teachers.id_course')],
-                ['id_school_year', session('id_school_year')],
-            ])->firstOrFail();
-            $result = [
-                'id_study_class' => session('teachers.id_study_class'),
-                'id_teacher' => Auth::guard('teacher')->user()->id,
-                'id_course' => session('teachers.id_course'),
-                'id_school_year' => session('id_school_year'),
-                'slug' => $slug
-            ];
-            return view('content.score_p5.v_create_student_score', compact('weight', 'result'));
-        } catch (\Throwable $e) {
-            session()->put('message', 'Terjadi kesalahan: Dikarenakan bobot nilai belum di setting ');
-            return view('pages.v_error');
-        }
+        // try {
+        $weight = AssesmentWeighting::where([
+            ['id_study_class', session('teachers.id_study_class')],
+            ['id_teacher', Auth::guard('teacher')->user()->id],
+            ['id_course', session('teachers.id_course')],
+            ['id_school_year', session('id_school_year')],
+        ])->first();
+        // dd($weight);
+
+        $student_class = StudentClass::where('slug', $slug)->first();
+        $score = ScoreMerdeka::where([
+            ['id_student_class', $student_class->id],
+            ['id_course', $student_class->id],
+            ['id_study_class', session('teachers.id_study_class')],
+            ['id_teacher', Auth::guard('teacher')->user()->id],
+            ['id_course', session('teachers.id_course')],
+            ['id_school_year', session('id_school_year')]
+        ])->first();
+
+        $result = [
+            'id_study_class' => session('teachers.id_study_class'),
+            'id_teacher' => Auth::guard('teacher')->user()->id,
+            'id_course' => session('teachers.id_course'),
+            'id_school_year' => session('id_school_year'),
+            'id_student_class' => $student_class->id,
+            'score_formative' => $score ? json_decode($score->score_formative) : null,
+            'average_formative' => $score ? $score->average_formative : 0,
+            'score_summative' => $score ? json_decode($score->score_summative) : null,
+            'average_summative' => $score ? $score->average_summative : 0,
+            'score_uts' => $score ? $score->score_uts : 0,
+            'score_uas' => $score ? $score->score_uas : 0,
+            'final_score' => $score ? $score->final_score : 0,
+        ];
+        // dd($result);
+        return view('content.score_p5.v_create_student_score', compact('weight', 'result'));
+        // } catch (\Throwable $e) {
+        //     session()->put('message', 'Terjadi kesalahan: Dikarenakan bobot nilai belum di setting ');
+        //     return view('pages.v_error');
+        // }
     }
 
     public function storeOrUpdate(ScoreRequest $request)
     {
         $data = $request->validated();
-        $id_student_class = StudentClass::where('slug', $data['slug_student_class'])->first()->id;
         ScoreMerdeka::updateOrCreate(
             [
-                'id_student_class' => $id_student_class,
+                'id_student_class' => $data['id_student_class'],
                 'id_course' => $data['id_course'],
                 'id_study_class' => $data['id_study_class'],
                 'id_teacher' => $data['id_teacher'],
