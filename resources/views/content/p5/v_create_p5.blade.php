@@ -61,46 +61,40 @@
                                 <label for="inputAddress">Deskripsi Proyek</label>
                                 <textarea name="description" rows="3" class="form-control">{{ isset($p5) ? old('description', $p5->description) : old('description') }}</textarea>
                             </div>
-                            <div class="form-row">
-                                <div class="form-group col-md-6">
-                                    <label for="inputPassword4">Kelas</label>
-                                    <select name="id_study_class" class="form-control">
-                                        <option value="" selected disabled>Pilih Kelas</option>
-                                        @foreach ($classes as $class)
-                                            <option value="{{ $class->id }}"
-                                                {{ isset($p5) && old('id_study_class', $p5->id_study_class) == $class->id ? 'selected' : (old('id_study_class') == $class->id ? 'selected' : '') }}>
-                                                {{ $class->name }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div class="form-group col-md-6">
-                                    <label for="inputEmail4">Penanggung Jawab</label>
-                                    <select name="id_subject_teacher" class="form-control selectpicker"
-                                        data-live-search="true" {{ !isset($p5) ? 'disabled' : '' }}>
-                                        <option value="" selected disabled>-- Pilih Penanggung Jawab -- </option>
-                                        @if (isset($p5))
-                                            @foreach ($teachers as $teacher)
-                                                <option value="{{ $teacher->id }}"
-                                                    {{ old('id_subject_teacher', $p5->id_subject_teacher) == $teacher->id ? 'selected' : '' }}>
-                                                    {{ $teacher->teacher->name . ' - ' . $teacher->course->name }}
-                                                </option>
+                            @if (Auth::guard('teacher')->check())
+                                <input type="hidden" name="id_study_class" value="{{ session('teachers.id_study_class') }}">
+                                <input type="hidden" name="id_subject_teacher" value="{{ session('teachers.id_subject_teacher') }}">
+                            @else
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                        <label for="inputPassword4">Kelas</label>
+                                        <select name="id_study_class" class="form-control">
+                                            <option value="" selected disabled>Pilih Kelas</option>
+                                            @foreach ($classes as $class)
+                                                <option value="{{ $class->id }}"
+                                                    {{ isset($p5) && old('id_study_class', $p5->id_study_class) == $class->id ? 'selected' : (old('id_study_class') == $class->id ? 'selected' : '') }}>
+                                                    {{ $class->name }}</option>
                                             @endforeach
-                                        @endif
-                                    </select>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label for="inputEmail4">Penanggung Jawab</label>
+                                        <select name="id_subject_teacher" class="form-control selectpicker"
+                                            data-live-search="true" {{ !isset($p5) ? 'disabled' : '' }}>
+                                            <option value="" selected disabled>-- Pilih Penanggung Jawab -- </option>
+                                            @if (isset($p5))
+                                                @foreach ($teachers as $teacher)
+                                                    <option value="{{ $teacher->id }}"
+                                                        {{ old('id_subject_teacher', $p5->id_subject_teacher) == $teacher->id ? 'selected' : '' }}>
+                                                        {{ $teacher->teacher->name . ' - ' . $teacher->course->name }}
+                                                    </option>
+                                                @endforeach
+                                            @endif
+                                        </select>
+                                    </div>
                                 </div>
-                                {{-- <div class="form-group col-md-6">
-                                    <label for="inputEmail4">Penanggung Jawab</label>
-                                    <select name="id_subject_teacher" class="form-control selectpicker" data-live-search="true">
-                                        <option value="" selected disabled>-- Pilih Penanggung Jawab -- </option>
-                                        @foreach ($teachers as $teacher)
-                                            <option value="{{ $teacher['id'] }}"
-                                                {{ isset($p5) && old('id_teacher', $p5->id_teacher) == $tema->id_teacher ? 'selected' : (old('id_teacher') == $tema->id_teacher ? 'selected' : '') }}>
-                                                {{ $teacher['name'] }}</option>
-                                        @endforeach
-                                    </select>
-                                </div> --}}
+                            @endif
 
-                            </div>
                         </div>
                     </div>
 

@@ -13,13 +13,17 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('template_configurations', function (Blueprint $table) {
-            $table->tinyIncrements('id');
+        Schema::create('general_weightings', function (Blueprint $table) {
+            $table->increments('id');
             $table->string('slug')->nullable();
-            $table->integer('id_major')->nullable();
-            $table->enum('type', ['uas', 'uts']);
-            $table->string('template')->nullable();
-            $table->integer('id_school_year')->nullable();
+            $table->enum('type', ['uts', 'uas']);
+            $table->integer('id_teacher');
+            $table->integer('id_course');
+            $table->integer('id_study_class');
+            $table->integer('id_school_year');
+            $table->integer('score_weight')->nullable();
+            $table->integer('uts_weight')->nullable();
+            $table->integer('uas_weight')->nullable();
             $table->tinyInteger('status')->default(1);
             $table->timestamps();
             $table->softDeletes();
@@ -33,6 +37,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('template_configurations');
+        Schema::dropIfExists('general_weightings');
     }
 };

@@ -404,10 +404,6 @@
                 </button>
                 <button class="btn btn-primary" id="btnSubmit" onclick="submitForm()">Simpan
                     Data</button>
-
-
-                {{-- <button id="btnLoader" class="btn btn-primary" onclick="">Save Changes</button> --}}
-
             </div>
 
         </div>

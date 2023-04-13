@@ -66,11 +66,11 @@
 
                                                     <select name="type[]" class="form-control">
                                                         <option value="" selected disabled>Pilih Jenis</option>
-                                                        <option value="pts"
-                                                            {{ old('type', $template['type']) == 'pts' ? 'selected' : (old('type') == 'pts' ? 'selected' : '') }}>
+                                                        <option value="uts"
+                                                            {{ old('type', $template['type']) == 'uts' ? 'selected' : (old('type') == 'uts' ? 'selected' : '') }}>
                                                             Penilaian Tengah Semester</option>
-                                                        <option value="pas"
-                                                            {{ old('type', $template['type']) == 'pas' ? 'selected' : (old('type') == 'pas' ? 'selected' : '') }}>
+                                                        <option value="uas"
+                                                            {{ old('type', $template['type']) == 'uas' ? 'selected' : (old('type') == 'uas' ? 'selected' : '') }}>
                                                             Penilaian Akhir Semester</option>
                                                     </select>
                                                     @error('type.' . $index)

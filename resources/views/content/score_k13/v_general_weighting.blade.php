@@ -24,7 +24,7 @@
                         <div class="widget-header">
                             <div class="row">
                                 <div class="col-xl-12 col-md-12 col-sm-12 col-12 d-flex justify-content-between">
-                                    <h4>{{ session('title') }}</h4>
+                                    <h4 class="text-uppercase">{{ session('title') }}</h4>
                                     @if (Auth::guard('admin')->check())
                                         <div class="form-group row my-auto mx-3">
                                             <label for="inputUsername" class="col-auto col-form-label my-auto">Pilih
@@ -44,7 +44,9 @@
                                 </div>
                             </div>
                         </div>
-                        <form action="{{ route('setting_scores.assesment_weight.storeOrUpdate') }}" method="post">
+                        <form
+                            action="{{ route('general_weights.storeOrUpdate', ['type' => request()->segment(count(request()->segments()))]) }}"
+                            method="post">
                             @csrf
                             <div class="widget-content widget-content-area br-8">
                                 <table id="table-list" class="table dt-table-hover w-100">
@@ -53,10 +55,11 @@
                                             <th>No</th>
                                             <th>Mata Pelajaran</th>
                                             <th>Guru Mapel</th>
-                                            <th>Bobot Formatif</th>
-                                            <th>Bobot Sumatif</th>
+                                            <th>Bobot Nilai</th>
                                             <th>Bobot UTS</th>
-                                            <th>Bobot UAS</th>
+                                            @if (request()->segment(count(request()->segments())) == 'uas')
+                                                <th>Bobot UAS</th>
+                                            @endif
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -72,17 +75,12 @@
                                                         value="{{ $data['id_course'] }}">
                                                     <input type="hidden" name="id_study_class[]"
                                                         value="{{ $data['id_study_class'] }}">
+                                                    <input type="hidden" name="type"
+                                                        value="{{ request()->segment(count(request()->segments())) }}">
                                                     <td>
-                                                        <input type="number" name="formative_weight[]" class="form-control"
-                                                            value="{{ old('formative_weight.' . $index, $data['formative_weight']) }}">
-                                                        @error('formative_weight.' . $index)
-                                                            <div class="invalid-feedback d-block">{{ $message }}</div>
-                                                        @enderror
-                                                    </td>
-                                                    <td>
-                                                        <input type="number" name="sumative_weight[]" class="form-control"
-                                                            value="{{ old('sumative_weight.' . $index, $data['sumative_weight']) }}">
-                                                        @error('sumative_weight.' . $index)
+                                                        <input type="number" name="score_weight[]" class="form-control"
+                                                            value="{{ old('score_weight.' . $index, $data['score_weight']) }}">
+                                                        @error('score_weight.' . $index)
                                                             <div class="invalid-feedback d-block">{{ $message }}</div>
                                                         @enderror
                                                     </td>
@@ -93,22 +91,44 @@
                                                             <div class="invalid-feedback d-block">{{ $message }}</div>
                                                         @enderror
                                                     </td>
-                                                    <td>
-                                                        <input type="number" name="uas_weight[]" class="form-control"
-                                                            value="{{ old('uas_weight.' . $index, $data['uas_weight']) }}">
-                                                        @error('uas_weight.' . $index)
+                                                    @if (request()->segment(count(request()->segments())) == 'uas')
+                                                        <td>
+                                                            <input type="number" name="uas_weight[]" class="form-control"
+                                                                value="{{ old('uas_weight.' . $index, $data['uas_weight']) }}">
+                                                            @error('uas_weight.' . $index)
+                                                                <div class="invalid-feedback d-block">{{ $message }}</div>
+                                                            @enderror
+                                                        </td>
+                                                    @endif
+                                                    @error('sum_weight.' . $index)
+                                                        <td colspan="3">
                                                             <div class="invalid-feedback d-block">{{ $message }}</div>
-                                                        @enderror
-                                                        @error('total_weight.' . $index)
+                                                        </td>
+                                                    @enderror
+                                                    @error('sum_weight_uts.' . $index)
+                                                        <td colspan="2"></td>
+                                                        <td>
                                                             <div class="invalid-feedback d-block">{{ $message }}</div>
-                                                        @enderror
-                                                    </td>
-
+                                                        </td>
+                                                    @enderror
+                                                    @error('sum_weight_uas.' . $index)
+                                                        <td colspan="2"></td>
+                                                        <td>
+                                                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                                                        </td>
+                                                    @enderror
+                                                    @error('sum_weight')
+                                                        <td colspan="2"></td>
+                                                        <td>
+                                                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                                                        </td>
+                                                    @enderror
                                                 </tr>
                                             @endforeach
                                         @else
                                             <tr>
-                                                <td colspan="7" class="text-center">Harap masukan filter kelas terlebih
+                                                <td colspan="{{ request()->segment(count(request()->segments())) == 'uas' ? '6' : '5' }}"
+                                                    class="text-center">Harap masukan filter kelas terlebih
                                                     dahulu untuk menampilkan data</td>
                                             </tr>
                                         @endif
@@ -151,7 +171,8 @@
                 });
 
                 $('#id_class').change(function() {
-                    window.location.href = "assesment-weight?study_class=" + $(this).val();
+                    var lastSegment = window.location.pathname.split('/').filter(Boolean).pop();
+                    window.location.href = lastSegment + "?study_class=" + $(this).val();
                 });
 
 

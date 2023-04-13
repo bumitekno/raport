@@ -149,6 +149,37 @@
                 </ul>
             </li>
 
+            <li class="menu k16 d-none">
+                <a href="#setting-other" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                    <div class="">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round">
+                            <path d="M13 17l5-5-5-5M6 17l5-5-5-5" />
+                        </svg>
+                        <span> Other</span>
+                    </div>
+                    <div>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" class="feather feather-chevron-right">
+                            <polyline points="9 18 15 12 9 6"></polyline>
+                        </svg>
+                    </div>
+                </a>
+                <ul class="collapse submenu list-unstyled" id="setting-other" data-parent="#accordionExample">
+                    <li>
+                        <a href="{{ route('basic_competencies.index') }}"> Kompetensi Dasar</a>
+                    </li>
+                    <li>
+                        <a href="{{ route('general_weights.index', 'uas') }}"> Bobot Nilai UAS</a>
+                    </li>
+                    <li>
+                        <a href="{{ route('general_weights.index', 'uts') }}"> Bobot Nilai UTS</a>
+                    </li>
+                </ul>
+            </li>
+
             <li class="menu merdeka d-none">
                 <a href="{{ route('manages.index') }}" aria-expanded="false" class="dropdown-toggle">
                     <div class="">

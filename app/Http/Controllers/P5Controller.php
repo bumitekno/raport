@@ -14,6 +14,7 @@ use App\Models\SubjectTeacher;
 use App\Models\Teacher;
 use App\Models\Tema;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\DataTables;
 
@@ -22,31 +23,36 @@ class P5Controller extends Controller
     public function index(Request $request)
     {
         session()->put('title', 'Kelola Projek Penguatan Profil Pelajar Pancasila');
-        // $data = P5::select('*')->get();
-        // dd($data);
-        $data = P5::select('p5_s.*', 'temas.name as tema', 'teachers.name as teacher', 'study_classes.name as class', DB::raw('JSON_LENGTH(sub_element) as sub_element_count'))
-            ->leftJoin('temas', 'temas.id', '=', 'p5_s.id_tema')
-            ->leftJoin('subject_teachers', 'subject_teachers.id', '=', 'p5_s.id_subject_teacher')
-            ->leftJoin('teachers', 'teachers.id', '=', 'subject_teachers.id_teacher')
-            ->leftJoin('study_classes', 'study_classes.id', '=', 'p5_s.id_study_class')
-            ->leftJoin('sub_elements', 'sub_elements.id', '=', 'p5_s.id')
-            ->get();
+
+        if (Auth::guard('teacher')->check()) {
+            $data = P5::select('p5_s.*', 'temas.name as tema', 'teachers.name as teacher', 'study_classes.name as class', DB::raw('JSON_LENGTH(sub_element) as sub_element_count'))
+                ->leftJoin('temas', 'temas.id', '=', 'p5_s.id_tema')
+                ->leftJoin('subject_teachers', 'subject_teachers.id', '=', 'p5_s.id_subject_teacher')
+                ->leftJoin('teachers', 'teachers.id', '=', 'subject_teachers.id_teacher')
+                ->leftJoin('study_classes', 'study_classes.id', '=', 'p5_s.id_study_class')
+                ->leftJoin('sub_elements', 'sub_elements.id', '=', 'p5_s.id')
+                ->where('subject_teachers.id_teacher', Auth::guard('teacher')->user()->id)
+                ->whereRaw('JSON_CONTAINS(subject_teachers.id_study_class, \'["' . session('teachers.id_study_class') . '"]\', "$")')
+                ->where('p5_s.id_study_class', session('teachers.id_study_class'))
+                ->where('subject_teachers.id_course', session('teachers.id_course'))
+                ->where('subject_teachers.id_school_year', session('id_school_year'))
+                ->get();
+        } else {
+            $data = P5::select('p5_s.*', 'temas.name as tema', 'teachers.name as teacher', 'study_classes.name as class', DB::raw('JSON_LENGTH(sub_element) as sub_element_count'))
+                ->leftJoin('temas', 'temas.id', '=', 'p5_s.id_tema')
+                ->leftJoin('subject_teachers', 'subject_teachers.id', '=', 'p5_s.id_subject_teacher')
+                ->leftJoin('teachers', 'teachers.id', '=', 'subject_teachers.id_teacher')
+                ->leftJoin('study_classes', 'study_classes.id', '=', 'p5_s.id_study_class')
+                ->leftJoin('sub_elements', 'sub_elements.id', '=', 'p5_s.id')
+                ->get();
+        }
+
         // dd($data);
         if ($request->ajax()) {
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function ($row) {
                     $alert = "return confirm('Apa kamu yakin?')";
-                    //     return '<div class="dropdown custom-dropdown">
-                    //     <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink12" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                    //         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-more-horizontal"><circle cx="12" cy="12" r="1"></circle><circle cx="19" cy="12" r="1"></circle><circle cx="5" cy="12" r="1"></circle></svg>
-                    //     </a>
-                    //     <div class="dropdown-menu" aria-labelledby="dropdownMenuLink12">
-                    //         <a class="dropdown-item" href="javascript:void(0);">View</a>
-                    //         <a class="dropdown-item" href="javascript:void(0);">Edit</a>
-                    //         <a class="dropdown-item" href="javascript:void(0);">Delete</a>
-                    //     </div>
-                    // </div>';
                     return '<div class="dropdown dropup  custom-dropdown-icon">
                         <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink-3" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-more-vertical"><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg>
@@ -67,16 +73,13 @@ class P5Controller extends Controller
 
     public function create()
     {
-
-        // dd($teachers);
         session()->put('title', 'Tambah Proyek');
         $temas = Tema::where('status', 1)->get();
-        $teachers = Teacher::where('status', 1)->get();
         $classes = StudyClass::where('status', 1)->get();
 
         $dimensions = Dimension::with('elements')->get();
         $subElements = SubElement::all();
-        return view('content.p5.v_create_p5', compact('temas', 'teachers', 'classes', 'dimensions', 'subElements'));
+        return view('content.p5.v_create_p5', compact('temas', 'classes', 'dimensions', 'subElements'));
     }
 
     public function edit($slug)
@@ -105,7 +108,7 @@ class P5Controller extends Controller
     {
         // dd(session()->all());
         $p5 = P5::where('slug', $slug)->with('study_class.level', 'tema')->first();
-
+        // dd($p5);
         $students = StudentClass::join('users', 'student_classes.id_student', '=', 'users.id')
             ->select('student_classes.id', 'student_classes.id_student', 'student_classes.year', 'users.name', 'users.gender', 'users.file', 'users.email', 'users.slug', 'users.place_of_birth', 'users.date_of_birth', DB::raw("IF(student_classes.status = 1, 'siswa', 'alumni') as type"))
             ->when(session('year'), function ($query, $year) {
@@ -128,7 +131,13 @@ class P5Controller extends Controller
             ->map(function ($subElement) use ($scores) {
                 $subElementModel = SubElement::with('dimension')->findOrFail($subElement['id_sub_element']);
 
-                $score = optional(collect(json_decode($scores->score, true))->where('id_sub_element', $subElement['id_sub_element'])->first())['score'];
+                $score = 0;
+                if ($scores && $scores->score) {
+                    $scoreData = collect(json_decode($scores->score, true))->where('id_sub_element', $subElement['id_sub_element'])->first();
+                    if ($scoreData) {
+                        $score = $scoreData['score'];
+                    }
+                }
 
                 return [
                     'id' => $subElementModel->id,

@@ -24,8 +24,28 @@ class ScoreMerdekaController extends Controller
                 ['year', session('year')],
                 ['student_classes.status', 1],
             ])->get();
+        $result = [];
+        foreach ($data as $student) {
+            $score = ScoreMerdeka::where([
+                ['id_student_class', $student->id],
+                ['id_study_class', session('teachers.id_study_class')],
+                ['id_teacher', Auth::guard('teacher')->user()->id],
+                ['id_course', session('teachers.id_course')],
+                ['id_school_year', session('id_school_year')]
+            ])->first();
+            $result[] = [
+                'slug' => $student->slug,
+                'name' => $student->name,
+                'file' => $student->file,
+                'email' => $student->email,
+                'place_of_birth' => $student->place_of_birth,
+                'date_of_birth' => $student->date_of_birth,
+                'score' => $score ? $score->final_score : 0
+            ];
+        }
+        // dd($data)
         if ($request->ajax()) {
-            return DataTables::of($data)
+            return DataTables::of($result)
                 ->addIndexColumn()
                 ->addColumn('action', function ($row) {
                     return '<div class="dropdown dropup  custom-dropdown-icon">
@@ -34,7 +54,7 @@ class ScoreMerdekaController extends Controller
                         </a>
 
                         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink-3">
-                            <a class="dropdown-item" href="' . route('setting_scores.score.create', $row->slug) . '"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg> Lihat</a>
+                            <a class="dropdown-item" href="' . route('setting_scores.score.create', $row['slug']) . '"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg> Lihat</a>
                         </div>
                     </div> ';
                 })
@@ -66,12 +86,12 @@ class ScoreMerdekaController extends Controller
             ['id_course', session('teachers.id_course')],
             ['id_school_year', session('id_school_year')],
         ])->first();
+
         // dd($weight);
 
         $student_class = StudentClass::where('slug', $slug)->first();
         $score = ScoreMerdeka::where([
             ['id_student_class', $student_class->id],
-            ['id_course', $student_class->id],
             ['id_study_class', session('teachers.id_study_class')],
             ['id_teacher', Auth::guard('teacher')->user()->id],
             ['id_course', session('teachers.id_course')],
@@ -92,6 +112,10 @@ class ScoreMerdekaController extends Controller
             'score_uas' => $score ? $score->score_uas : 0,
             'final_score' => $score ? $score->final_score : 0,
         ];
+        if (empty($weight)) {
+            session()->put('message', 'Terjadi kesalahan: Dikarenakan bobot nilai belum di setting ');
+            return view('pages.v_error');
+        }
         // dd($result);
         return view('content.score_p5.v_create_student_score', compact('weight', 'result'));
         // } catch (\Throwable $e) {

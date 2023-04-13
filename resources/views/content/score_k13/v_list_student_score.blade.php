@@ -28,21 +28,23 @@
                             </div>
                         </div>
                         <div class="widget-content widget-content-area br-8">
-                            <table id="table-list" class="table dt-table-hover w-100">
-                                <thead>
-                                    <tr>
-                                        <th></th>
-                                        <th>Siswa</th>
-                                        <th>Email</th>
-                                        <th>Tempat, Tanggal lahir</th>
-                                        <th>Nilai Akhir</th>
-                                        <th class="no-content text-center"></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
+                            <div class="table-responsive">
+                                <table id="table-list" class="table dt-table-hover w-100">
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th>Siswa</th>
+                                            <th>Email</th>
+                                            <th>Nilai Pengetahuan</th>
+                                            <th>Nilai Ketrampilan</th>
+                                            <th class="no-content text-center"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
 
-                                </tbody>
-                            </table>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -71,14 +73,13 @@
                         data: 'email',
                         name: 'email',
                     }, {
-                        data: null,
-                        name: 'place_and_date_of_birth',
-                        render: function(data, type, row) {
-                            return row.place_of_birth + ', ' + row.date_of_birth;
-                        }
+                        data: 'final_assesment',
+                        name: 'final_assesment',
+                        className: 'text-center'
                     }, {
-                        data: 'score',
-                        name: 'score',
+                        data: 'final_skill',
+                        name: 'final_skill',
+                        className: 'text-center'
                     }, {
                         data: 'action',
                         name: 'action',

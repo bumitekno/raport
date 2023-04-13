@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AssesmentWeightingController;
 use App\Http\Controllers\AttitudeController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BasicCompetencyController;
 use App\Http\Controllers\CompetenceAchievementController;
 use App\Http\Controllers\ConfigController;
 use App\Http\Controllers\CoverController;
@@ -11,6 +12,7 @@ use App\Http\Controllers\CourseController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DescriptionCompetenceController;
 use App\Http\Controllers\ExtracurricularController;
+use App\Http\Controllers\GeneralWeightingController;
 use App\Http\Controllers\KkmController;
 use App\Http\Controllers\LetterheadController;
 use App\Http\Controllers\LevelController;
@@ -20,6 +22,7 @@ use App\Http\Controllers\PasConfigurationController;
 use App\Http\Controllers\PredicatedScoreController;
 use App\Http\Controllers\PtsConfigurationController;
 use App\Http\Controllers\SchoolYearController;
+use App\Http\Controllers\ScoreKdController;
 use App\Http\Controllers\ScoreMerdekaController;
 use App\Http\Controllers\ScoreP5Controller;
 use App\Http\Controllers\SessionController;
@@ -182,11 +185,25 @@ Route::middleware('auth:user,admin,parent,teacher')->group(function () {
         Route::post('update', [ScoreP5Controller::class, 'storeOrUpdate'])->name('storeOrUpdate');
     });
 
+    Route::prefix('general-weight/{type}')->name('general_weights.')->group(function () {
+        Route::get('/', [GeneralWeightingController::class, 'index'])->name('index');
+        Route::post('update', [GeneralWeightingController::class, 'storeOrUpdate'])->name('storeOrUpdate');
+    });
+
     //K13
     Route::prefix('attitude/{type}')->name('attitudes.')->group(function () {
         Route::get('/', [AttitudeController::class, 'index'])->name('index');
         Route::post('update', [AttitudeController::class, 'storeOrUpdate'])->name('storeOrUpdate');
     });
+
+    Route::prefix('k13')->name('k13.')->group(function () {
+        Route::prefix('score')->name('scores.')->group(function () {
+            Route::get('/', [ScoreKdController::class, 'index'])->name('index');
+            Route::get('create/{slug}', [ScoreKdController::class, 'create'])->name('create');
+        });
+    });
+
+
 
     Route::prefix('setting-score')->name('setting_scores.')->group(function () {
         Route::prefix('predicated-score')->name('predicated_scores.')->group(function () {
@@ -208,5 +225,13 @@ Route::middleware('auth:user,admin,parent,teacher')->group(function () {
             Route::get('/', [KkmController::class, 'index'])->name('index');
             Route::post('update', [KkmController::class, 'storeOrUpdate'])->name('storeOrUpdate');
         });
+    });
+
+    Route::prefix('basic-competency')->name('basic_competencies.')->group(function () {
+        Route::get('/', [BasicCompetencyController::class, 'index'])->name('index');
+        Route::get('create', [BasicCompetencyController::class, 'create'])->name('create');
+        Route::get('edit/{slug}', [BasicCompetencyController::class, 'edit'])->name('edit');
+        Route::post('update/{id?}', [BasicCompetencyController::class, 'storeOrUpdate'])->name('storeOrUpdate');
+        Route::get('destroy/{slug}', [BasicCompetencyController::class, 'destroy'])->name('destroy');
     });
 });

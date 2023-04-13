@@ -20,7 +20,7 @@ class TemplateRequest extends FormRequest
     {
         return [
             'id_school_year.*' => 'required|integer',
-            'type.*' => 'required|present|in:pas,pts',
+            'type.*' => 'required|present|in:uas,uts',
             'id_major.*' => 'required|integer',
             'template.*' => 'required|present|in:k16,merdeka',
         ];
@@ -33,7 +33,7 @@ class TemplateRequest extends FormRequest
             'id_school_year.*.integer' => 'Kolom tahun ajaran harus berisi angka',
 
             'type.*.required' => 'Kolom jenis ulangan harus diisi',
-            'type.*.in' => 'Kolom jenis ulangan harus berisi pas atau pts',
+            'type.*.in' => 'Kolom jenis ulangan harus berisi uas atau uts',
 
             'id_major.*.required' => 'Kolom jurusan harus diisi',
             'id_major.*.integer' => 'Kolom jurusan harus berisi angka',

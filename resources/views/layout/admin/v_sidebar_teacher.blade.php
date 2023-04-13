@@ -43,7 +43,7 @@
             </form>
             @if (session()->has('teachers'))
                 <li class="menu">
-                    <a href="javascript:void(0);" aria-expanded="true" class="dropdown-toggle">
+                    <a href="{{ route('teacher.dashboard') }}" aria-expanded="true" class="dropdown-toggle">
                         <div class="">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -112,11 +112,45 @@
                         <li>
                             <a href="{{ route('covers.index') }}"> Kelola Deskripsi</a>
                         </li>
+                        <li>
+                            <a
+                                href="{{ route('setting_scores.assesment_weight', ['study_class' => session('teachers.slug_classes')]) }}">
+                                Bobot Penilaian</a>
+                        </li>
+                    </ul>
+                </li>
+                <li
+                    class="menu {{ session()->has('teachers') && session('teachers.template') != 'k16' ? 'd-none' : '' }}">
+                    <a href="#score-k16" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                        <div class="">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <polygon points="14 2 18 6 7 17 3 17 3 13 14 2"></polygon>
+                                <line x1="3" y1="22" x2="21" y2="22"></line>
+                            </svg>
+                            <span> Penilaian Siswa</span>
+                        </div>
+                        <div>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
+                                <polyline points="9 18 15 12 9 6"></polyline>
+                            </svg>
+                        </div>
+                    </a>
+                    <ul class="collapse submenu list-unstyled" id="score-k16" data-parent="#accordionExample">
+                        <li>
+                            <a href="{{ route('k13.scores.index') }}"> Nilai</a>
+                        </li>
+                        <li>
+                            <a href="{{ route('basic_competencies.index') }}"> Kompetensi Dasar</a>
+                        </li>
                     </ul>
                 </li>
                 <li
                     class="menu {{ session()->has('teachers') && session('teachers.template') != 'merdeka' ? 'd-none' : '' }}">
-                    <a href="javascript:void(0);" aria-expanded="false" class="dropdown-toggle">
+                    <a href="{{ route('manages.index') }}" aria-expanded="false" class="dropdown-toggle">
                         <div class="">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"

@@ -13,13 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('template_configurations', function (Blueprint $table) {
-            $table->tinyIncrements('id');
+        Schema::create('basic_competencies', function (Blueprint $table) {
+            $table->increments('id');
             $table->string('slug')->nullable();
-            $table->integer('id_major')->nullable();
-            $table->enum('type', ['uas', 'uts']);
-            $table->string('template')->nullable();
-            $table->integer('id_school_year')->nullable();
+            $table->integer('id_course')->nullable();
+            $table->integer('id_level')->nullable();
+            $table->json('name')->nullable();
             $table->tinyInteger('status')->default(1);
             $table->timestamps();
             $table->softDeletes();
@@ -33,6 +32,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('template_configurations');
+        Schema::dropIfExists('basic_competencies');
     }
 };
