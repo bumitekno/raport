@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\Helper;
+use App\Http\Requests\K16\ScoreKdRequest;
+use App\Models\BasicCompetency;
 use App\Models\GeneralWeighting;
 use App\Models\ScoreKd;
 use App\Models\StudentClass;
@@ -80,16 +83,11 @@ class ScoreKdController extends Controller
 
     public function create($slug)
     {
-        // dd(session()->all());
-        $data = [
-            'id_study_class' => session('teachers.id_study_class'),
-            'id_teacher' => Auth::guard('teacher')->user()->id,
-            'id_course' => session('teachers.id_course'),
-            'id_school_year' => session('id_school_year'),
-            'type' => session('teachers.type'),
-        ];
-
-        dd($data);
+        $basic_competencies = BasicCompetency::where([
+            ['id_course', session('teachers.id_course')],
+            ['id_level', session('teachers.id_level')]
+        ])->get();
+        // dd($basic_competencies);
         $weight = GeneralWeighting::where([
             ['id_study_class', session('teachers.id_study_class')],
             ['id_teacher', Auth::guard('teacher')->user()->id],
@@ -97,8 +95,65 @@ class ScoreKdController extends Controller
             ['id_school_year', session('id_school_year')],
             ['type', session('teachers.type')],
         ])->first();
-        dd($weight);
-        return view('content.score_k13.v_create_student_score');
-        // dd('create');
+        // dd($weight);
+        $student_class = StudentClass::where('slug', $slug)->first();
+        $subject_teacher = SubjectTeacher::whereRaw('JSON_CONTAINS(id_study_class, \'["' . session('teachers.id_study_class') . '"]\')')
+            ->where([
+                ['id_teacher', Auth::guard('teacher')->user()->id],
+                ['id_course', session('teachers.id_course')],
+                ['id_school_year', session('id_school_year')],
+            ])->first();
+        $score = ScoreKd::where([
+            ['id_student_class', $student_class->id],
+            ['id_subject_teacher', $subject_teacher->id],
+            ['id_study_class', session('teachers.id_study_class')],
+            ['id_school_year', session('id_school_year')]
+        ])->first();
+        $result = [
+            'id_study_class' => session('teachers.id_study_class'),
+            'id_subject_teacher' => $subject_teacher->id,
+            'id_school_year' => session('id_school_year'),
+            'id_student_class' => $student_class->id,
+            'assessment_score' => $score ? json_decode($score->assessment_score) : [],
+            'average_assesment' => $score ? $score->averege_assesment : 0,
+            'skill_score' => $score ? json_decode($score->skill_score) : [],
+            'average_skill' => $score ? $score->averege_skill : 0,
+            'score_uts' => $score ? $score->score_uts : 0,
+            'score_uas' => $score ? $score->score_uas : 0,
+            'final_assesment' => $score ? $score->final_assesment : 0,
+            'final_skill' => $score ? $score->final_skill : 0,
+        ];
+        // dd($result);
+        if (empty($weight)) {
+            session()->put('message', 'Terjadi kesalahan: Dikarenakan bobot nilai belum di setting ');
+            return view('pages.v_error');
+        }
+        // dd($weight);
+        return view('content.score_k13.v_create_student_score', compact('weight', 'basic_competencies', 'result'));
+    }
+
+    public function update(ScoreKdRequest $request)
+    {
+        $data = $request->transformedData();
+        ScoreKd::updateOrCreate(
+            [
+                'id_student_class' => $data['id_student_class'],
+                'id_subject_teacher' => $data['id_subject_teacher'],
+                'id_study_class' => $data['id_study_class'],
+                'id_school_year' => $data['id_school_year'],
+            ],
+            [
+                'assessment_score' =>  $data['assesment_score'],
+                'averege_assesment' =>  $data['average_assesment'],
+                'skill_score' =>  $data['skill_score'],
+                'averege_skill' =>  $data['average_skill'],
+                'score_uts' =>  $data['uts'],
+                'score_uas' =>  $data['uas'],
+                'final_assesment' =>  $data['final_assesment'],
+                'final_skill' =>  $data['final_skill'],
+            ]
+        );
+        Helper::toast('Berhasil menyimpan data', 'success');
+        return redirect()->back();
     }
 }

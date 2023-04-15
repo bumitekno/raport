@@ -110,7 +110,7 @@
                             <a href="{{ route('setting_scores.score') }}"> Input Nilai</a>
                         </li>
                         <li>
-                            <a href="{{ route('covers.index') }}"> Kelola Deskripsi</a>
+                            <a href="{{ route('setting_scores.score_competency') }}"> Kelola Deskripsi</a>
                         </li>
                         <li>
                             <a
@@ -159,6 +159,20 @@
                                 <line x1="3" y1="22" x2="21" y2="22"></line>
                             </svg>
                             <span> Penilaian P5</span>
+                        </div>
+                    </a>
+                </li>
+                <li
+                    class="menu {{ session()->has('teachers') && session('teachers.template') != 'manual' ? 'd-none' : '' }}">
+                    <a href="{{ route('manuals.scores.index') }}" aria-expanded="false" class="dropdown-toggle">
+                        <div class="">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <polygon points="14 2 18 6 7 17 3 17 3 13 14 2"></polygon>
+                                <line x1="3" y1="22" x2="21" y2="22"></line>
+                            </svg>
+                            <span> Penilaian Siswa</span>
                         </div>
                     </a>
                 </li>

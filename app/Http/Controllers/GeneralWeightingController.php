@@ -86,7 +86,8 @@ class GeneralWeightingController extends Controller
                         'id_teacher' => $id[$i],
                         'id_course' => $data['id_course'][$i],
                         'id_study_class' => $data['id_study_class'][$i],
-                        'id_school_year' => session('id_school_year')
+                        'id_school_year' => session('id_school_year'),
+                        'type' => $data['type']
                     ],
                     [
                         'score_weight' => $data['score_weight'][$i],
@@ -99,7 +100,8 @@ class GeneralWeightingController extends Controller
                         'id_teacher' => $id[$i],
                         'id_course' => $data['id_course'][$i],
                         'id_study_class' => $data['id_study_class'][$i],
-                        'id_school_year' => session('id_school_year')
+                        'id_school_year' => session('id_school_year'),
+                        'type' => $data['type']
                     ],
                     [
                         'score_weight' => $data['score_weight'][$i],

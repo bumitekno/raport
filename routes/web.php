@@ -22,7 +22,9 @@ use App\Http\Controllers\PasConfigurationController;
 use App\Http\Controllers\PredicatedScoreController;
 use App\Http\Controllers\PtsConfigurationController;
 use App\Http\Controllers\SchoolYearController;
+use App\Http\Controllers\ScoreCompetencyController;
 use App\Http\Controllers\ScoreKdController;
+use App\Http\Controllers\ScoreManualController;
 use App\Http\Controllers\ScoreMerdekaController;
 use App\Http\Controllers\ScoreP5Controller;
 use App\Http\Controllers\SessionController;
@@ -170,6 +172,10 @@ Route::middleware('auth:user,admin,parent,teacher')->group(function () {
         Route::get('score', [ScoreMerdekaController::class, 'index'])->name('score');
         Route::get('score/create/{slug}', [ScoreMerdekaController::class, 'create'])->name('score.create');
         Route::post('score/update', [ScoreMerdekaController::class, 'storeOrUpdate'])->name('score.storeOrUpdate');
+
+        Route::get('score-competency', [ScoreCompetencyController::class, 'index'])->name('score_competency');
+        // Route::get('score/create/{slug}', [ScoreMerdekaController::class, 'create'])->name('score.create');
+        Route::post('score/update', [ScoreCompetencyController::class, 'storeOrUpdate'])->name('score_competency.storeOrUpdate');
     });
 
     //P5
@@ -200,10 +206,9 @@ Route::middleware('auth:user,admin,parent,teacher')->group(function () {
         Route::prefix('score')->name('scores.')->group(function () {
             Route::get('/', [ScoreKdController::class, 'index'])->name('index');
             Route::get('create/{slug}', [ScoreKdController::class, 'create'])->name('create');
+            Route::post('update', [ScoreKdController::class, 'update'])->name('update');
         });
     });
-
-
 
     Route::prefix('setting-score')->name('setting_scores.')->group(function () {
         Route::prefix('predicated-score')->name('predicated_scores.')->group(function () {
@@ -233,5 +238,14 @@ Route::middleware('auth:user,admin,parent,teacher')->group(function () {
         Route::get('edit/{slug}', [BasicCompetencyController::class, 'edit'])->name('edit');
         Route::post('update/{id?}', [BasicCompetencyController::class, 'storeOrUpdate'])->name('storeOrUpdate');
         Route::get('destroy/{slug}', [BasicCompetencyController::class, 'destroy'])->name('destroy');
+    });
+
+    //Score Manual
+    Route::prefix('manual')->name('manuals.')->group(function () {
+        Route::prefix('score')->name('scores.')->group(function () {
+            Route::get('/', [ScoreManualController::class, 'index'])->name('index');
+            // Route::get('create/{slug}', [ScoreKdController::class, 'create'])->name('create');
+            // Route::post('update', [ScoreKdController::class, 'update'])->name('update');
+        });
     });
 });
