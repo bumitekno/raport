@@ -150,10 +150,6 @@
 
             @default
         @endswitch
-
-        <!--  END SIDEBAR  -->
-
-        <!--  BEGIN CONTENT AREA  -->
         <div id="content" class="main-content">
             @yield('content')
             <div class="footer-wrapper">

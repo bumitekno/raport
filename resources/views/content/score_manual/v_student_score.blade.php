@@ -24,167 +24,59 @@
                         <div class="widget-header">
                             <h4>{{ session('title') }}</h4>
                         </div>
-                        <form action="{{ route('k13.scores.update') }}" method="post">
+                        <form action="{{ route('manuals.scores.storeOrUpdate') }}" method="post">
                             @csrf
                             <div class="widget-content widget-content-area br-8">
                                 <div class="table-responsive">
-                                    <table class="table table-hover table-bordered">
-                                        <thead class="thead-dark">
+
+                                    <table class="table table-bordered table-hover">
+                                        <thead>
                                             <tr>
-                                                <th scope="col"></th>
-                                                <th scope="col">Pengetahuan</th>
-                                                <th scope="col">Ketrampilan</th>
-                                                <th scope="col">Hasil Akhir</th>
+                                                <th rowspan="2" class="align-middle">Siswa</th>
+                                                <th colspan="4" class="align-middle text-center">Nilai</th>
+                                                <th rowspan="2" class="align-middle">Nilai Akhir</th>
+                                                <th rowspan="2" class="align-middle">Predikat</th>
+                                                <th rowspan="2" class="align-middle">Deskripsi</th>
+                                            </tr>
+                                            <tr>
+                                                <th class="align-middle">Tugas</th>
+                                                <th class="align-middle">Ulangan Harian</th>
+                                                <th class="align-middle">Ulangan Tengah Semester</th>
+                                                <th class="align-middle">Ulangan Akhir Semester</th>
                                             </tr>
                                         </thead>
-                                        <input type="hidden" name="id_school_year" value="{{ $result['id_school_year'] }}">
-                                        <input type="hidden" name="id_student_class"
-                                            value={{ $result['id_student_class'] }}>
-                                        <input type="hidden" name="id_subject_teacher"
-                                            value="{{ $result['id_subject_teacher'] }}">
-                                        <input type="hidden" name="id_study_class" value="{{ $result['id_study_class'] }}">
-                                        <input type="hidden" name="average_assesment" id="average-assesment-input"
-                                            value="{{ $result['average_assesment'] }}">
-                                        <input type="hidden" name="average_skill" id="average-skill-input"
-                                            value="{{ $result['average_skill'] }}">
-                                        <input type="hidden" name="final_assesment" id="hasil-akhir-assesment-input"
-                                            value="{{ $result['final_assesment'] }}">
-                                        <input type="hidden" name="final_skill" id="hasil-akhir-ketrampilan-input"
-                                            value="{{ $result['final_skill'] }}">
                                         <tbody>
-                                            @if (empty($result['assessment_score']))
+                                            @foreach ($result as $student)
                                                 <tr>
-                                                    <td>
-                                                        <button class="btn btn-outline-primary add-row" type="button">
-                                                            <i class="fas fa-plus"></i>
-                                                        </button>
+                                                    <td>{{ $student['name'] }}</td>
+                                                    <input type="hidden" name="id_student_class[]"
+                                                        value="{{ $student['id_student_class'] }}">
+                                                    <td><input type="text" class="form-control" name="assigment_grade[]"
+                                                            value="{{ $student['assigment_grade'] != null ? $student['assigment_grade'] : '0' }}">
                                                     </td>
-                                                    <td>
-                                                        <select name="id_kd_assesment[]" id=""
-                                                            class="form-control">
-                                                            <option value="" disabled>Pilih KD</option>
-                                                            @foreach ($basic_competencies as $basic_competency)
-                                                                @php
-                                                                    $name = json_decode($basic_competency->name);
-                                                                @endphp
-                                                                <option value="{{ $basic_competency->id }}">
-                                                                    {{ $name->code . ' ' . $name->name }}</option>
-                                                            @endforeach
-                                                        </select>
-                                                        <input type="number" class="form-control mt-2"
-                                                            name="nilai_pengetahuan[]" placeholder="Nilai Pengetahuan"
-                                                            min="0" max="100">
+                                                    <td><input type="text" class="form-control" name="daily_test_score[]"
+                                                            value="{{ $student['daily_test_score'] != null ? $student['daily_test_score'] : '0' }}">
                                                     </td>
-                                                    <td>
-                                                        <select name="id_kd_skill[]" id="" class="form-control">
-                                                            <option value="" disabled>Pilih KD</option>
-                                                            @foreach ($basic_competencies as $basic_competency)
-                                                                @php
-                                                                    $name = json_decode($basic_competency->name);
-                                                                @endphp
-                                                                <option value="{{ $basic_competency->id }}">
-                                                                    {{ $name->code . ' ' . $name->name }}</option>
-                                                            @endforeach
-                                                        </select>
-                                                        <input type="number" class="form-control mt-2"
-                                                            name="nilai_ketrampilan[]" placeholder="Nilai Ketrampilan"
-                                                            min="0" max="100">
+                                                    <td><input type="text" class="form-control" name="score_uts[]"
+                                                            value="{{ $student['score_uts'] != null ? $student['score_uts'] : '0' }}">
                                                     </td>
+                                                    <td><input type="text" class="form-control" name="score_uas[]"
+                                                            value="{{ $student['score_uas'] != null ? $student['score_uas'] : '0' }}">
+                                                    </td>
+                                                    <td>{{ $student['score_final'] }}</td>
+                                                    <td>{{ $student['predicate'] }}</td>
                                                     <td>
-                                                        <p class="hasil-akhir-assesment">0
-                                                        </p>
-                                                        <p class="hasil-akhir-ketrampilan">0</p>
+                                                        <input type="hidden" name="score_final[]" value="{{ $student['score_final'] }}">
+                                                        <input type="hidden" name="predicate[]" value="{{ $student['predicate'] }}">
+                                                        <textarea class="form-control" rows="1" name="description[]">{{ $student['description'] }}</textarea>
                                                     </td>
                                                 </tr>
-                                            @else
-                                                @foreach ($result['assessment_score'] as $index => $assessment)
-                                                    <tr>
-                                                        <td>
-                                                            @if ($index == 0)
-                                                                <button class="btn btn-outline-primary add-row"
-                                                                    type="button">
-                                                                    <i class="fas fa-plus"></i>
-                                                                </button>
-                                                            @else
-                                                                <button class="btn btn-outline-danger remove-row"
-                                                                    type="button">
-                                                                    <i class="fas fa-minus"></i>
-                                                                </button>
-                                                            @endif
-                                                        </td>
-                                                        <td>
-                                                            <select name="id_kd_assesment[]" id=""
-                                                                class="form-control">
-                                                                <option value="" disabled>Pilih KD</option>
-                                                                @foreach ($basic_competencies as $basic_competency)
-                                                                    @php
-                                                                        $name = json_decode($basic_competency->name);
-                                                                    @endphp
-                                                                    <option value="{{ $basic_competency->id }}"
-                                                                        {{ $basic_competency->id == $assessment->id_kd ? 'selected' : '' }}>
-                                                                        {{ $name->code . ' ' . $name->name }}</option>
-                                                                @endforeach
-                                                            </select>
-                                                            <input type="number" class="form-control mt-2"
-                                                                name="nilai_pengetahuan[]" placeholder="Nilai Pengetahuan"
-                                                                min="0" max="100"
-                                                                value="{{ $assessment->score }}">
-                                                        </td>
-                                                        <td>
-                                                            <select name="id_kd_skill[]" id=""
-                                                                class="form-control">
-                                                                <option value="" disabled>Pilih KD</option>
-                                                                @foreach ($basic_competencies as $basic_competency)
-                                                                    @php
-                                                                        $name = json_decode($basic_competency->name);
-                                                                    @endphp
-                                                                    <option value="{{ $basic_competency->id }}"
-                                                                        {{ $basic_competency->id == $result['skill_score'][$index]->id_kd ? 'selected' : '' }}>
-                                                                        {{ $name->code . ' ' . $name->name }}</option>
-                                                                @endforeach
-                                                            </select>
-                                                            <input type="number" class="form-control mt-2"
-                                                                name="nilai_ketrampilan[]" placeholder="Nilai Ketrampilan"
-                                                                min="0" max="100"
-                                                                value="{{ $result['skill_score'][$index]->score }}">
-                                                        </td>
-                                                        <td>
-                                                            <p class="hasil-akhir-assesment">
-                                                                {{ $result['final_assesment'] }}
-                                                            </p>
-                                                            <p class="hasil-akhir-ketrampilan">
-                                                                {{ $result['final_skill'] }}
-                                                            </p>
-                                                        </td>
-                                                    </tr>
-                                                @endforeach
-                                            @endif
-                                            <tr>
-                                                <td>Rata-rata</td>
-                                                <td class="average-assesment">{{ $result['average_assesment'] }}</td>
-                                                <td class="average-skill">{{ $result['average_skill'] }}</td>
-                                                <td></td>
-                                            </tr>
-                                            <tr>
-                                                <td>UTS</td>
-                                                <td colspan="2">
-                                                    <input type="number" class="form-control uts" name="uts"
-                                                        placeholder="Nilai UTS" min="0" max="100"
-                                                        value="{{ $result['score_uts'] }}">
-                                                </td>
-                                                <td></td>
-                                            </tr>
-                                            <tr>
-                                                <td>UAS</td>
-                                                <td colspan="2">
-                                                    <input type="number" class="form-control uas" name="uas"
-                                                        placeholder="Nilai UAS" min="0" max="100"
-                                                        value="{{ $result['score_uas'] }}">
-                                                </td>
-                                                <td></td>
-                                            </tr>
+                                            @endforeach
                                         </tbody>
                                     </table>
+
+
+
                                 </div>
                             </div>
                         </form>
@@ -214,115 +106,54 @@
     @push('scripts')
         <script>
             $(document).ready(function() {
-                function updateAverage() {
-                    let sum_assesment = 0;
-                    let sum_skill = 0;
-                    let count = 0;
+                // saat nilai diinputkan
+                $("input[name='assigment_grade[]'], input[name='daily_test_score[]'], input[name='score_uts[]'], input[name='score_uas[]']")
+                    .keyup(function() {
+                        // ambil nilai-nilai yang dibutuhkan
+                        var assigment_grade = parseFloat($(this).closest("tr").find(
+                            "input[name='assigment_grade[]']").val()) || 0;
+                        var daily_test_score = parseFloat($(this).closest("tr").find(
+                            "input[name='daily_test_score[]']").val()) || 0;
+                        var score_uts = parseFloat($(this).closest("tr").find("input[name='score_uts[]']").val()) ||
+                            0;
+                        var score_uas = parseFloat($(this).closest("tr").find("input[name='score_uas[]']").val()) ||
+                            0;
 
-                    $("input[name='nilai_pengetahuan[]']").each(function() {
-                        sum_assesment += parseInt($(this).val()) || 0;
-                        count += 1;
+                        // hitung nilai akhir
+                        var final_score = ((assigment_grade * 0.2) + (daily_test_score * 0.2) + (score_uts * 0.3) +
+                            (score_uas * 0.3)).toFixed(2);
+
+                        // tampilkan nilai akhir
+                        $(this).closest("tr").find("td:eq(5)").text(final_score);
+                        $(this).closest("tr").find("input[name='score_final[]']").val(final_score);
+
+                        // hitung predikat
+                        var predikat;
+                        if (final_score >= 90) {
+                            predikat = "A";
+                        } else if (final_score >= 80) {
+                            predikat = "B";
+                        } else if (final_score >= 70) {
+                            predikat = "C";
+                        } else if (final_score >= 60) {
+                            predikat = "D";
+                        } else {
+                            predikat = "E";
+                        }
+
+                        // tampilkan predikat
+                        $(this).closest("tr").find("td:eq(6)").text(predikat);
+                        $(this).closest("tr").find("input[name='predicate[]']").val(predikat);
                     });
-
-                    $("input[name='nilai_ketrampilan[]']").each(function() {
-                        sum_skill += parseInt($(this).val()) || 0;
-                    });
-
-                    let average_assesment = sum_assesment / count;
-                    let average_skill = sum_skill / count;
-
-                    $('.average-assesment').text(average_assesment.toFixed(2));
-                    $('.average-skill').text(average_skill.toFixed(2));
-
-                    let uts = parseInt($("input[name='uts']").val()) || 0;
-                    let uas = parseInt($("input[name='uas']").val()) || 0;
-
-
-                    let bobotAssesment = '{{ $weight['score_weight'] }}' * 0.01;
-                    let bobotUts = '{{ $weight['uts_weight'] }}' * 0.01;
-                    let bobotUas = '{{ $weight['uas_weight'] }}' * 0.01;
-
-                    let hasil_akhir_assesment = (average_assesment * bobotAssesment) + (uts * bobotUts) + (uas *
-                        bobotUas);
-                    let hasil_akhir_ketrampilan = average_skill;
-
-                    $('.hasil-akhir-assesment').text(hasil_akhir_assesment.toFixed(2));
-                    $('.hasil-akhir-ketrampilan').text(hasil_akhir_ketrampilan.toFixed(2));
-                    $('#average-assesment-input').val(average_assesment.toFixed(2));
-                    $('#average-skill-input').val(average_skill.toFixed(2));
-                    $('#hasil-akhir-assesment-input').val(hasil_akhir_assesment.toFixed(2));
-                    $('#hasil-akhir-ketrampilan-input').val(hasil_akhir_ketrampilan.toFixed(2));
-                }
-
-                function newRow() {
-                    let row = `
-                <tr>
-                    <td>
-                        <button class="btn btn-outline-danger remove-row" type="button">
-                            <i class="fas fa-minus"></i>
-                        </button>
-                    </td>
-                    <td>
-                        <select name="id_kd_assesment[]" id="" class="form-control">
-                        </select>
-                        <input type="number" class="form-control mt-2" name="nilai_pengetahuan[]" placeholder="Nilai Pengetahuan" min="0" max="100">
-                    </td>
-                    <td>
-                        <select name="id_kd_skill[]" id="" class="form-control">
-                        </select>
-                        <input type="number" class="form-control mt-2" name="nilai_ketrampilan[]" placeholder="Nilai Ketrampilan" min="0" max="100">
-                    </td>
-                    <td class="hasil-akhir">
-                    </td>
-                </tr>
-            `;
-                    let newRow = $(row);
-                    newRow.find("select[name='id_kd_assesment[]']").replaceWith($("select[name='id_kd_assesment[]']")
-                        .eq(0).clone());
-                    newRow.find("select[name='id_kd_skill[]']").replaceWith($("select[name='id_kd_skill[]']").eq(0)
-                        .clone());
-                    $('.average-assesment').closest('tr').before(newRow);
-
-                    // Sembunyikan hasil akhir pada semua baris kecuali baris terakhir
-                    $('.hasil-akhir').not(':last').empty();
-
-                    // Tampilkan label atau ikon pada baris terakhir
-                    let lastRow = $('.hasil-akhir:last');
-                    if (lastRow.find('.label-akhir').length === 0) {
-                        lastRow.html(`
-                    <div class="label-akhir">
-                        <p><strong>Pengetahuan:</strong> <span class="hasil-akhir-assesment">{{ $result['final_assesment'] }}</span></p>
-                        <p><strong>Ketrampilan:</strong> <span class="hasil-akhir-ketrampilan">{{ $result['final_skill'] }}</span></p>
-                    </div>
-                `);
-                    }
-                }
-
-                $('body').on('click', '.add-row', function() {
-                    newRow();
-                });
-
-                $('body').on('click', '.remove-row', function() {
-                    $(this).closest('tr').remove();
-                    updateAverage();
-                });
-
-                $('body').on('input',
-                    "input[name='nilai_pengetahuan[]'], input[name='nilai_ketrampilan[]'], input[name='uts'], input[name='uas']",
-                    function() {
-                        updateAverage();
-                    });
-
-                // Menambahkan baris baru saat halaman dimuat (opsional)
-                // newRow();
-
-
 
                 $("form").submit(function() {
                     $('#btnLoader').removeClass('d-none');
                     $('#btnSubmit').addClass('d-none');
                 });
             });
+
+
+
 
             function submitForm() {
                 $('form').submit();

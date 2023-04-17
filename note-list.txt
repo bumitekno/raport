@@ -1,0 +1,43 @@
+- php artisan make:model Admin -a
+- php artisan make:model Banana -mcr
+
+$products = Produk::whereJsonContains('harga', ['jenis' => 'retail', 'nilai' => 10000])
+                  ->get();
+
+
+jurusan
+-rombel
+
+Tingkat
+-rombel
+
+
+
+// pencarian
+<input type="text" id="input-search" class="form-control"
+placeholder="Let's find your question in fast way" aria-label="Username"
+aria-describedby="basic-addon1">
+
+<tbody id="student-table">
+
+ $('#input-search').on('keyup', function() {
+    var rex = new RegExp($(this).val(), 'i');
+    $('#student-table tr').hide();
+    $('#student-table tr').filter(function() {
+        return rex.test($(this).text());
+    }).show();
+});
+
+
+//Menampilkan error di request
+
+use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Http\Exceptions\HttpResponseException;
+
+protected function failedValidation(Validator $validator)
+{
+    throw new HttpResponseException(response()->json([
+        'message' => 'The given data is invalid',
+        'errors' => $validator->errors(),
+    ], 422));
+}

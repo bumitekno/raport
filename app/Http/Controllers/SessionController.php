@@ -8,6 +8,7 @@ use App\Models\SubjectTeacher;
 use App\Models\TemplateConfiguration;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class SessionController extends Controller
 {
@@ -42,5 +43,15 @@ class SessionController extends Controller
 
         session(['teachers' => $array_session]);
         return redirect()->back();
+    }
+
+    public function layout(Request $request)
+    {
+        session(['layout' => $request->layout]);
+        if ($request->layout == 'homeroom') {
+            Session::forget('teachers');
+            session(['id_study_class' => Auth::guard('teacher')->user()->id_class]);
+        }
+        return redirect()->route('teacher.dashboard');
     }
 }

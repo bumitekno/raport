@@ -12,30 +12,6 @@
         <div class="shadow-bottom"></div>
         <ul class="list-unstyled menu-categories" id="accordionExample">
             <li class="menu">
-                <div class="form-group mb-4">
-                    <label for="exampleFormControlSelect1">PILIH KELAS</label>
-                    <select class="form-control" id="exampleFormControlSelect1">
-                        <option>1</option>
-                        <option>2</option>
-                        <option>3</option>
-                        <option>4</option>
-                        <option>5</option>
-                    </select>
-                </div>
-            </li>
-            <li class="menu">
-                <div class="form-group mb-4">
-                    <label for="exampleFormControlSelect1">PILIH MAPEL</label>
-                    <select class="form-control" id="exampleFormControlSelect1">
-                        <option>1</option>
-                        <option>2</option>
-                        <option>3</option>
-                        <option>4</option>
-                        <option>5</option>
-                    </select>
-                </div>
-            </li>
-            <li class="menu">
                 <a href="javascript:void(0);" aria-expanded="true" class="dropdown-toggle">
                     <div class="">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -52,61 +28,15 @@
             </li>
 
             <li class="menu">
-                <a href="#submenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
-                    <div class="">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                            stroke-linejoin="round">
-                            <polygon points="14 2 18 6 7 17 3 17 3 13 14 2"></polygon>
-                            <line x1="3" y1="22" x2="21" y2="22"></line>
-                        </svg>
-                        <span> Pengaturan Nilai</span>
-                    </div>
-                    <div>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                            stroke-linejoin="round" class="feather feather-chevron-right">
-                            <polyline points="9 18 15 12 9 6"></polyline>
-                        </svg>
-                    </div>
-                </a>
-                <ul class="collapse submenu list-unstyled" id="submenu" data-parent="#accordionExample">
-                    <li>
-                        <a href="javascript:void(0);"> Capaian Kompetensi </a>
-                    </li>
-                    <li>
-                        <a href="javascript:void(0);"> Deskripsi CP </a>
-                    </li>
-                    <li>
-                        <a href="javascript:void(0);"> Bobot Penilaian </a>
-                    </li>
-                </ul>
-            </li>
-
-            <li class="menu">
                 <a href="javascript:void(0);" aria-expanded="false" class="dropdown-toggle">
                     <div class="">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                             fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                             stroke-linejoin="round">
-                            <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                            <circle cx="8.5" cy="7" r="4"></circle>
-                            <polyline points="17 11 19 13 23 9"></polyline>
-                        </svg>
-                        <span> Kelola P5</span>
-                    </div>
-                </a>
-            </li>
-
-            <li class="menu">
-                <a href="javascript:void(0);" aria-expanded="false" class="dropdown-toggle">
-                    <div class="">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                            stroke-linejoin="round">
-                            <polygon
-                                points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2">
-                            </polygon>
+                            <rect x="4" y="2" width="16" height="20" rx="2"
+                                ry="2"></rect>
+                            <circle cx="12" cy="14" r="4"></circle>
+                            <line x1="12" y1="6" x2="12.01" y2="6"></line>
                         </svg>
                         <span> Ekstrakurikuler</span>
                     </div>
@@ -114,84 +44,70 @@
             </li>
 
             <li class="menu">
-                <a href="#submenu2" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                <a href="{{ route('teacher_notes.index') }}" aria-expanded="false" class="dropdown-toggle">
                     <div class="">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                             fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                             stroke-linejoin="round">
-                            <circle cx="12" cy="12" r="3"></circle>
-                            <path
-                                d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z">
+                            <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+                            <rect x="8" y="2" width="8" height="4" rx="1"
+                                ry="1"></rect>
+                        </svg>
+                        <span> Catatan</span>
+                    </div>
+                </a>
+            </li>
+
+            <li class="menu">
+                <a href="{{ route('achievements.index') }}" aria-expanded="false" class="dropdown-toggle">
+                    <div class="">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round">
+                            <line x1="12" y1="2" x2="12" y2="6"></line>
+                            <line x1="12" y1="18" x2="12" y2="22"></line>
+                            <line x1="4.93" y1="4.93" x2="7.76" y2="7.76"></line>
+                            <line x1="16.24" y1="16.24" x2="19.07" y2="19.07"></line>
+                            <line x1="2" y1="12" x2="6" y2="12"></line>
+                            <line x1="18" y1="12" x2="22" y2="12"></line>
+                            <line x1="4.93" y1="19.07" x2="7.76" y2="16.24"></line>
+                            <line x1="16.24" y1="7.76" x2="19.07" y2="4.93"></line>
+                        </svg>
+                        <span> Prestasi</span>
+                    </div>
+                </a>
+            </li>
+            <li class="menu">
+                <a href="{{ route('attendances.index') }}" aria-expanded="false" class="dropdown-toggle">
+                    <div class="">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round">
+                            <polyline points="9 11 12 14 22 4"></polyline>
+                            <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+                        </svg>
+                        <span> Absensi</span>
+                    </div>
+                </a>
+            </li>
+            <li class="menu">
+                <a href="javascript:void(0);" aria-expanded="false" class="dropdown-toggle">
+                    <div class="">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round">
+                            <polyline points="6 9 6 2 18 2 18 9"></polyline>
+                            <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2">
                             </path>
+                            <rect x="6" y="14" width="12" height="8"></rect>
                         </svg>
-                        <span> Setelan</span>
-                    </div>
-                    <div>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                            stroke-linejoin="round" class="feather feather-chevron-right">
-                            <polyline points="9 18 15 12 9 6"></polyline>
-                        </svg>
+                        <span> Cetak</span>
                     </div>
                 </a>
-                <ul class="collapse submenu list-unstyled" id="submenu2" data-parent="#accordionExample">
-                    <li>
-                        <a href="{{ route('configs.index') }}"> Konfigurasi</a>
-                    </li>
-                    <li>
-                        <a href="{{ route('covers.index') }}"> Sampul</a>
-                    </li>
-                    <li>
-                        <a href="{{ route('letterheads.index') }}"> KOP Surat</a>
-                    </li>
-                    <li>
-                        <a href="javascript:void(0);"> Template Raport</a>
-                    </li>
-
-                </ul>
             </li>
 
-            <li
-                class="menu {{ Route::is('majors.*') || Route::is('levels.*') || Route::is('classes.*') || Route::is('courses.*') || Route::is('school-years.*') ? 'active' : '' }}">
-                <a href="#side-master" data-toggle="collapse"
-                    aria-expanded="{{ Route::is('majors.*') || Route::is('levels.*') || Route::is('classes.*') || Route::is('courses.*') || Route::is('school-years.*') ? 'true' : 'false' }}"
-                    class="dropdown-toggle">
-                    <div class="">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                            stroke-linejoin="round">
-                            <path d="M11 21H4a2 2 0 0 1-2-2V5c0-1.1.9-2 2-2h5l2 3h9a2 2 0 0 1 2 2v2M19 15v6M16 18h6" />
-                        </svg>
-                        <span>Master</span>
-                    </div>
-                    <div>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                            stroke-linejoin="round" class="feather feather-chevron-right">
-                            <polyline points="9 18 15 12 9 6"></polyline>
-                        </svg>
-                    </div>
-                </a>
-                <ul class="collapse submenu list-unstyled {{ Route::is('majors.*') || Route::is('levels.*') || Route::is('classes.*') || Route::is('courses.*') || Route::is('school-years.*') ? 'recent-submenu mini-recent-submenu show' : '' }}"
-                    id="side-master" data-parent="#accordionExample">
-                    <li class="{{ Route::is('school-years.*') ? 'active' : '' }}">
-                        <a href="{{ route('school-years.index') }}"> Tahun Ajar </a>
-                    </li>
-                    <li class="{{ Route::is('majors.*') ? 'active' : '' }}">
-                        <a href="{{ route('majors.index') }}"> Jurusan </a>
-                    </li>
-                    <li class="{{ Route::is('levels.*') ? 'active' : '' }}">
-                        <a href="{{ route('levels.index') }}"> Tingkat</a>
-                    </li>
-                    <li class="{{ Route::is('classes.*') ? 'active' : '' }}">
-                        <a href="{{ route('classes.index') }}"> Rombel</a>
-                    </li>
-                    <li class="{{ Route::is('courses.*') ? 'active' : '' }}">
-                        <a href="{{ route('courses.index') }}"> Mata Pelajaran</a>
-                    </li>
-                </ul>
-            </li>
-            <li
+
+            {{-- <li
                 class="menu {{ Route::is('admins.*') || Route::is('teachers.*') || Route::is('users.*') ? 'active' : '' }}">
                 <a href="#side-user" data-toggle="collapse"
                     aria-expanded="{{ Route::is('admins.*') || Route::is('teachers.*') || Route::is('users.*') ? 'true' : 'false' }}"
@@ -229,7 +145,7 @@
                     </li>
 
                 </ul>
-            </li>
+            </li> --}}
 
         </ul>
 

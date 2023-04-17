@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\AchievementController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AssesmentWeightingController;
+use App\Http\Controllers\AttendanceScoreController;
 use App\Http\Controllers\AttitudeController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BasicCompetencyController;
@@ -33,6 +35,7 @@ use App\Http\Controllers\StudentClassController;
 use App\Http\Controllers\StudyClassController;
 use App\Http\Controllers\SubjectTeacherController;
 use App\Http\Controllers\TeacherController;
+use App\Http\Controllers\TeacherNoteController;
 use App\Http\Controllers\TemplateConfigurationController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
@@ -57,10 +60,12 @@ Route::middleware('auth:user,admin,parent,teacher')->group(function () {
         return response()->json(['success' => true]);
     })->name('session.template');
 
-    Route::get('set-layout', function (Request $request) {
-        session(['layout' => $request->layout]);
-        return redirect()->back();
-    })->name('session.layout');
+    // Route::get('set-layout', function (Request $request) {
+    //     session(['layout' => $request->layout]);
+
+    //     return redirect()->back();
+    // })->name('session.layout');
+    Route::get('set-layout', [SessionController::class, 'layout'])->name('session.layout');
 
     // session menu guru
     Route::post('set-layout/teacher', [SessionController::class, 'set_layout'])->name('session.set_layout_teacher');
@@ -244,8 +249,26 @@ Route::middleware('auth:user,admin,parent,teacher')->group(function () {
     Route::prefix('manual')->name('manuals.')->group(function () {
         Route::prefix('score')->name('scores.')->group(function () {
             Route::get('/', [ScoreManualController::class, 'index'])->name('index');
-            // Route::get('create/{slug}', [ScoreKdController::class, 'create'])->name('create');
-            // Route::post('update', [ScoreKdController::class, 'update'])->name('update');
+            Route::post('update', [ScoreManualController::class, 'storeOrUpdate'])->name('storeOrUpdate');
         });
+    });
+
+    //Wali kelas
+    Route::prefix('teacher_note')->name('teacher_notes.')->group(function () {
+        Route::get('/', [TeacherNoteController::class, 'index'])->name('index');
+        Route::post('update', [TeacherNoteController::class, 'storeOrUpdate'])->name('storeOrUpdate');
+    });
+
+    Route::prefix('achievement')->name('achievements.')->group(function () {
+        Route::get('/', [AchievementController::class, 'index'])->name('index');
+        Route::get('create', [AchievementController::class, 'create'])->name('create');
+        Route::get('edit/{slug}', [AchievementController::class, 'edit'])->name('edit');
+        Route::post('update/{id?}', [AchievementController::class, 'storeOrUpdate'])->name('storeOrUpdate');
+        Route::get('destroy/{slug}', [AchievementController::class, 'destroy'])->name('destroy');
+    });
+
+    Route::prefix('attendance')->name('attendances.')->group(function () {
+        Route::get('/', [AttendanceScoreController::class, 'index'])->name('index');
+        Route::post('update', [AttendanceScoreController::class, 'storeOrUpdate'])->name('storeOrUpdate');
     });
 });

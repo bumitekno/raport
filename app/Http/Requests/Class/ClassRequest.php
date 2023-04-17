@@ -19,7 +19,7 @@ class ClassRequest extends FormRequest
 
     public function rules()
     {
-        dd($this->all());
+        // dd($this->all());
         return [
             'name' => 'required',
             'id_major' => 'required|exists:majors',
