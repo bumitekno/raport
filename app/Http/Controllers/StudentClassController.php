@@ -19,8 +19,8 @@ class StudentClassController extends Controller
         session()->put('title', 'Kelola Siswa');
         $classes = StudyClass::where('status', 1)->get();
         $years = SchoolYear::select(DB::raw("SUBSTRING(name, 1, 9) as school_year"))
-            ->orderBy('name', 'ASC')
-            ->distinct()
+            ->groupBy('school_year')
+            ->orderBy('school_year', 'ASC')
             ->get()
             ->toArray();
 

@@ -47,9 +47,14 @@ class ScoreCompetencyController extends Controller
                 ['id_school_year', session('id_school_year')]
             ])->first();
             $archieved = [];
-            $competency_archieved = json_decode($score_competencies->competency_archieved);
+
             foreach ($competencies as $competency) {
-                $checked = in_array($competency->id, $competency_archieved);
+                if ($score_competencies == null) {
+                    $checked = false;
+                } else {
+                    $competency_archieved = json_decode($score_competencies->competency_archieved);
+                    $checked = in_array($competency->id, $competency_archieved);
+                }
                 $archieved[] = [
                     'id' => $competency->id,
                     'code' => $competency->code,
@@ -58,9 +63,14 @@ class ScoreCompetencyController extends Controller
                 ];
             }
             $improved = [];
-            $competency_improved = json_decode($score_competencies->competency_improved);
+
             foreach ($competencies as $competency) {
-                $checked = in_array($competency->id, $competency_improved);
+                if ($score_competencies == null) {
+                    $checked = false;
+                } else {
+                    $competency_improved = json_decode($score_competencies->competency_improved);
+                    $checked = in_array($competency->id, $competency_improved);
+                }
                 $improved[] = [
                     'id' => $competency->id,
                     'code' => $competency->code,
