@@ -59,10 +59,17 @@
                         aria-labelledby="userProfileDropdown">
                         <div class="user-profile-section">
                             <div class="media mx-auto">
-                                <img src="{{ asset('asset/img/90x90.jpg') }}" class="img-fluid mr-2" alt="avatar">
+                                @php
+                                    $user = Auth::user();
+                                    $name = $user->name;
+                                    $file = $user->file;
+                                    $role = session('role');
+                                @endphp
+                                <img src="{{ $file ? asset($file) : asset('asset/img/90x90.jpg') }}" class="img-fluid mr-2" alt="avatar">
+                                {{-- <img src="{{ asset('asset/img/90x90.jpg') }}" class="img-fluid mr-2" alt="avatar"> --}}
                                 <div class="media-body">
-                                    <h5>Sonia Shaw</h5>
-                                    <p>Project Leader</p>
+                                    <h5 class="text-capitalize">{{ $name }}</h5>
+                                    <p class="text-capitalize">{{ $role }}</p>
                                 </div>
                             </div>
                         </div>

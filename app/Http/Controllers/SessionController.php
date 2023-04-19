@@ -51,6 +51,16 @@ class SessionController extends Controller
         if ($request->layout == 'homeroom') {
             Session::forget('teachers');
             session(['id_study_class' => Auth::guard('teacher')->user()->id_class]);
+            $study_class = StudyClass::find(session('id_study_class'));
+            $template = TemplateConfiguration::where([
+                ['id_major', $study_class->id_major],
+                ['id_school_year', session('id_school_year')]
+            ])->first();
+            $array_session = [
+                'template' => $template->template,
+                'type' => $template->type,
+            ];
+            session(['templates' => $array_session]);
         }
         return redirect()->route('teacher.dashboard');
     }

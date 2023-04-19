@@ -23,6 +23,8 @@ class DatabaseSeeder extends Seeder
                 TemaSeeder::class,
                 ElementSeeder::class,
                 SubElementSeeder::class,
+                TemaSeeder::class,
+                TypeCompetenceSeeder::class,
                 // StuffSeeder::class,
                 // LocationSeeder::class,
             ]

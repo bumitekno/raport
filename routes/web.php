@@ -5,6 +5,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AssesmentWeightingController;
 use App\Http\Controllers\AttendanceScoreController;
 use App\Http\Controllers\AttitudeController;
+use App\Http\Controllers\AttitudeGradeController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BasicCompetencyController;
 use App\Http\Controllers\CompetenceAchievementController;
@@ -22,6 +23,7 @@ use App\Http\Controllers\MajorController;
 use App\Http\Controllers\P5Controller;
 use App\Http\Controllers\PasConfigurationController;
 use App\Http\Controllers\PredicatedScoreController;
+use App\Http\Controllers\PreviewController;
 use App\Http\Controllers\PtsConfigurationController;
 use App\Http\Controllers\SchoolYearController;
 use App\Http\Controllers\ScoreCompetencyController;
@@ -270,5 +272,15 @@ Route::middleware('auth:user,admin,parent,teacher')->group(function () {
     Route::prefix('attendance')->name('attendances.')->group(function () {
         Route::get('/', [AttendanceScoreController::class, 'index'])->name('index');
         Route::post('update', [AttendanceScoreController::class, 'storeOrUpdate'])->name('storeOrUpdate');
+    });
+
+    Route::prefix('attitude-grade/{type}')->name('attitude_grades.')->group(function () {
+        Route::get('/', [AttitudeGradeController::class, 'index'])->name('index');
+        Route::post('update', [AttitudeGradeController::class, 'storeOrUpdate'])->name('storeOrUpdate');
+    });
+
+    Route::prefix('preview')->name('previews.')->group(function () {
+        Route::get('/', [PreviewController::class, 'index'])->name('index');
+        // Route::post('update', [AttitudeGradeController::class, 'storeOrUpdate'])->name('storeOrUpdate');
     });
 });

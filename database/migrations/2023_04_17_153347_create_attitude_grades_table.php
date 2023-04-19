@@ -13,14 +13,15 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('teacher_notes', function (Blueprint $table) {
+        Schema::create('attitude_grades', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('slug')->nullable();
+            $table->enum('type', ['social', 'spiritual']);
             $table->bigInteger('id_student_class')->nullable();
             $table->integer('id_school_year');
-            $table->integer('id_teacher')->nullable();
-            $table->enum('promotion', ['Y', 'N']);
-            $table->text('description')->nullable();
+            $table->integer('id_teacher');
+            $table->string('predicate')->nullable();
+            $table->json('attitudes')->default(0);
             $table->tinyInteger('status')->default(1);
             $table->timestamps();
             $table->softDeletes();
@@ -34,6 +35,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('teacher_notes');
+        Schema::dropIfExists('attitude_grades');
     }
 };

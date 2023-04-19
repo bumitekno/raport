@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('attendance_scores', function (Blueprint $table) {
-            $table->increments('id');
+            $table->bigIncrements('id');
             $table->string('slug')->nullable();
             $table->bigInteger('id_student_class')->nullable();
             $table->integer('id_school_year');

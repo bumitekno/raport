@@ -4,15 +4,16 @@
         <div class="profile-info">
             <figure class="user-cover-image"></figure>
             <div class="user-info">
-                <img src="{{ asset('asset/img/90x90.jpg') }}" alt="avatar">
-                <h6 class="">Sonia Shaw</h6>
+                <img src="{{ Auth::guard('teacher')->user()->file ? asset(Auth::guard('teacher')->user()->file) : asset('asset/img/90x90.jpg') }}"
+                alt="avatar">
+            <h6 class="">{{ Auth::guard('teacher')->user()->name }}</h6>
                 <p class="">Wali Kelas</p>
             </div>
         </div>
         <div class="shadow-bottom"></div>
         <ul class="list-unstyled menu-categories" id="accordionExample">
             <li class="menu">
-                <a href="javascript:void(0);" aria-expanded="true" class="dropdown-toggle">
+                <a href="{{ route('teacher.dashboard') }}" aria-expanded="true" class="dropdown-toggle">
                     <div class="">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                             fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -26,7 +27,40 @@
                     </div>
                 </a>
             </li>
+            <li
+                class="menu {{ session()->has('templates') && session('templates.template') == 'merdeka' ? 'd-none' : '' }} {{ Route::is('admins.*') || Route::is('teachers.*') || Route::is('users.*') ? 'active' : '' }}">
+                <a href="#side-user" data-toggle="collapse"
+                    aria-expanded="{{ Route::is('admins.*') || Route::is('teachers.*') || Route::is('users.*') ? 'true' : 'false' }}"
+                    class="dropdown-toggle">
+                    <div class="">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round">
+                            <path d="M4 11a9 9 0 0 1 9 9"></path>
+                            <path d="M4 4a16 16 0 0 1 16 16"></path>
+                            <circle cx="5" cy="19" r="1"></circle>
+                        </svg>
+                        <span>Sikap</span>
+                    </div>
+                    <div>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" class="feather feather-chevron-right">
+                            <polyline points="9 18 15 12 9 6"></polyline>
+                        </svg>
+                    </div>
+                </a>
+                <ul class="collapse submenu list-unstyled {{ Route::is('admins.*') || Route::is('teachers.*') || Route::is('users.*') ? 'recent-submenu mini-recent-submenu show' : '' }}"
+                    id="side-user" data-parent="#accordionExample">
+                    <li class="{{ Route::is('admins.*') ? 'active' : '' }}">
+                        <a href="{{ route('attitude_grades.index', 'social') }}"> Sosial</a>
+                    </li>
+                    <li class="{{ Route::is('teachers.*') ? 'active' : '' }}">
+                        <a href="{{ route('attitude_grades.index', 'spiritual') }}"> Spiritual </a>
+                    </li>
 
+                </ul>
+            </li>
             <li class="menu">
                 <a href="javascript:void(0);" aria-expanded="false" class="dropdown-toggle">
                     <div class="">
@@ -105,50 +139,6 @@
                     </div>
                 </a>
             </li>
-
-
-            {{-- <li
-                class="menu {{ Route::is('admins.*') || Route::is('teachers.*') || Route::is('users.*') ? 'active' : '' }}">
-                <a href="#side-user" data-toggle="collapse"
-                    aria-expanded="{{ Route::is('admins.*') || Route::is('teachers.*') || Route::is('users.*') ? 'true' : 'false' }}"
-                    class="dropdown-toggle">
-                    <div class="">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                            stroke-linejoin="round">
-                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                            <circle cx="9" cy="7" r="4"></circle>
-                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-                            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-                        </svg>
-
-                        <span>User</span>
-                    </div>
-                    <div>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                            stroke-linejoin="round" class="feather feather-chevron-right">
-                            <polyline points="9 18 15 12 9 6"></polyline>
-                        </svg>
-                    </div>
-                </a>
-                <ul class="collapse submenu list-unstyled {{ Route::is('admins.*') || Route::is('teachers.*') || Route::is('users.*') ? 'recent-submenu mini-recent-submenu show' : '' }}"
-                    id="side-user" data-parent="#accordionExample">
-                    <li class="{{ Route::is('admins.*') ? 'active' : '' }}">
-                        <a href="{{ route('admins.index') }}"> Admin</a>
-                    </li>
-                    <li class="{{ Route::is('teachers.*') ? 'active' : '' }}">
-                        <a href="{{ route('teachers.index') }}"> Guru </a>
-                    </li>
-                    <li class="{{ Route::is('users.*') ? 'active' : '' }}">
-                        <a href="{{ route('users.index') }}"> Siswa</a>
-                    </li>
-
-                </ul>
-            </li> --}}
-
         </ul>
-
     </nav>
-
 </div>

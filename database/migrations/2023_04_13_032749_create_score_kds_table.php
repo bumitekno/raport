@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('score_kds', function (Blueprint $table) {
-            $table->increments('id');
+            $table->bigIncrements('id');
             $table->string('slug')->nullable();
             $table->integer('id_school_year')->nullable();
             $table->bigInteger('id_student_class')->nullable();

@@ -25,7 +25,8 @@
                 </div>
             </li>
             <li class="menu">
-                <a href="{{ route('dashboard') }}" aria-expanded="true" class="dropdown-toggle">
+                <a href="{{ route('dashboard') }}" aria-expanded="{{ Request::is('dashboard*') ? 'true' : 'false' }}"
+                    class="dropdown-toggle">
                     <div class="">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                             fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -40,8 +41,9 @@
                 </a>
             </li>
 
-            <li class="menu merdeka d-none">
-                <a href="#submenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+            <li class="menu merdeka d-none {{ Request::is('setting-score*') ? 'active' : '' }}">
+                <a href="#submenu" data-toggle="collapse"
+                    aria-expanded="{{ Request::is('setting-score*') ? 'true' : 'false' }}" class="dropdown-toggle">
                     <div class="">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                             fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -59,21 +61,23 @@
                         </svg>
                     </div>
                 </a>
-                <ul class="collapse submenu list-unstyled" id="submenu" data-parent="#accordionExample">
-                    <li>
+                <ul class="collapse submenu list-unstyled {{ Request::is('setting-score*') ? 'recent-submenu mini-recent-submenu show' : '' }}"
+                    id="submenu" data-parent="#accordionExample">
+                    <li class="{{ Route::is('setting_scores.competence*') ? 'active' : '' }}">
                         <a href="{{ route('setting_scores.competence') }}"> Capaian Kompetensi </a>
                     </li>
-                    <li>
+                    <li class="{{ Route::is('setting_scores.description*') ? 'active' : '' }}">
                         <a href="{{ route('setting_scores.description') }}"> Deskripsi CP </a>
                     </li>
-                    <li>
+                    <li class="{{ Route::is('setting_scores.assesment_weight*') ? 'active' : '' }}">
                         <a href="{{ route('setting_scores.assesment_weight') }}"> Bobot Penilaian </a>
                     </li>
                 </ul>
             </li>
 
-            <li class="menu k16 d-none">
-                <a href="#attitude" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+            <li class="menu k16 d-none {{ Route::is('attitudes*') ? 'active' : '' }}">
+                <a href="#attitude" data-toggle="collapse"
+                    aria-expanded="{{ Route::is('attitudes*') ? 'true' : 'false' }}" class="dropdown-toggle">
                     <div class="">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                             fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -97,18 +101,21 @@
                         </svg>
                     </div>
                 </a>
-                <ul class="collapse submenu list-unstyled" id="attitude" data-parent="#accordionExample">
-                    <li>
+                <ul class="collapse submenu list-unstyled {{ Route::is('attitudes*') ? 'recent-submenu mini-recent-submenu show' : '' }}"
+                    id="attitude" data-parent="#accordionExample">
+                    <li
+                        class="{{ Route::is('attitudes*') && Route::current()->parameter('type') == 'social' ? 'active' : '' }}">
                         <a href="{{ route('attitudes.index', 'social') }}"> Sikap Sosial</a>
                     </li>
-                    <li>
+                    <li
+                        class="{{ Route::is('attitudes*') && Route::current()->parameter('type') == 'spiritual' ? 'active' : '' }}">
                         <a href="{{ route('attitudes.index', 'spiritual') }}"> Sikap Spiritual</a>
                     </li>
                 </ul>
             </li>
 
-            <li class="menu k16 d-none">
-                <a href="#setting-score" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+            <li class="menu k16 d-none {{ Route::is('setting_scores*') ? 'active' : '' }}">
+                <a href="#setting-score" data-toggle="collapse" aria-expanded="{{ Route::is('setting_scores*') ? 'true' : 'false' }}" class="dropdown-toggle">
                     <div class="">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                             fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -133,8 +140,8 @@
                         </svg>
                     </div>
                 </a>
-                <ul class="collapse submenu list-unstyled" id="setting-score" data-parent="#accordionExample">
-                    <li>
+                <ul class="collapse submenu list-unstyled {{ Route::is('setting_scores*') ? 'recent-submenu mini-recent-submenu show' : '' }}" id="setting-score" data-parent="#accordionExample">
+                    <li class="{{ Route::is('setting_scores.predicated_scores*') ? 'active' : '' }}">
                         <a href="{{ route('setting_scores.predicated_scores.index') }}"> Nilai Predikat Raport</a>
                     </li>
                     <li>
