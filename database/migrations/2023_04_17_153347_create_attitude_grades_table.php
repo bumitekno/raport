@@ -21,7 +21,7 @@ return new class extends Migration
             $table->integer('id_school_year');
             $table->integer('id_teacher');
             $table->string('predicate')->nullable();
-            $table->json('attitudes')->default(0);
+            $table->json('attitudes');
             $table->tinyInteger('status')->default(1);
             $table->timestamps();
             $table->softDeletes();
