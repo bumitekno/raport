@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\Extracurricular;
 use App\Models\StudyClass;
 use App\Models\SubjectTeacher;
 use Illuminate\Support\ServiceProvider;
@@ -80,6 +81,13 @@ class AppServiceProvider extends ServiceProvider
             // dd($data);
             $view->with('class_course', $data);
         });
+
+        View()->composer('layout.admin.v_sidebar_homeroom', function ($view) {
+            $extra = Extracurricular::where('status', 1)->first();
+            // dd($extra);
+            $view->with(['side_extra' => $extra]);
+        });
+
         JsonResource::withoutWrapping();
     }
 }

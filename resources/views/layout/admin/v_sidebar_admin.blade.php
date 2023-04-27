@@ -257,7 +257,7 @@
                         <a href="{{ route('configs.index') }}"> Konfigurasi</a>
                     </li>
                     <li class="{{ Route::is('covers*') ? 'active' : '' }}">
-                        <a href="{{ route('covers.index') }}"> Sampul</a>
+                        <a href="{{ route('covers.index', ['year' => session('slug_year')]) }}"> Sampul</a>
                     </li>
                     <li class="{{ Route::is('letterheads*') ? 'active' : '' }}">
                         <a href="{{ route('letterheads.index') }}"> KOP Surat</a>

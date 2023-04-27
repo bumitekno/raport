@@ -31,7 +31,7 @@
                                                 <option value="" selected disabled>-- Pilih Tahun Ajaran --</option>
                                                 @foreach ($years as $year)
                                                     <option value="{{ $year['id'] }}"
-                                                        {{ isset($cover) && old('id_school_year', $cover->id_school_year) == $year['id'] ? 'selected' : (old('id_school_year', session('id_school_year')) == $year['id'] ? 'selected' : '') }}>
+                                                        {{ old('id_school_year', $cover->id_school_year) == $year['id'] ? 'selected' : (old('id_school_year', session('id_school_year')) == $year['id'] ? 'selected' : '') }}>
                                                         {{ $year['school_year'] . ' ' . $year['semester']['name'] }}
                                                     </option>
                                                 @endforeach
@@ -55,7 +55,7 @@
                                                     <div class="card-body">
                                                         <div class="form-group">
                                                             <label for="l30">Title 1</label>
-                                                            <input class="form-control" id="title" name="title"
+                                                            <input class="form-control" id="header1" name="title"
                                                                 value="{{ isset($cover) ? old('title', $cover->title) : old('title') }}"
                                                                 placeholder="RAPOR" type="text">
                                                             @error('title')
@@ -64,7 +64,7 @@
                                                         </div>
                                                         <div class="form-group">
                                                             <label for="l30">Title 2</label>
-                                                            <input class="form-control" id="title2" name="sub_title"
+                                                            <input class="form-control" id="header2" name="sub_title"
                                                                 placeholder="SEKOLAH MENENGAH KEJURUAN <br> (SMK)"
                                                                 value="{{ isset($cover) ? old('sub_title', $cover->sub_title) : old('sub_title') }}"
                                                                 type="text">
@@ -176,18 +176,19 @@
                                                                 <center>
                                                                     <img class="logo-expand" id="prev-logo-atas"
                                                                         alt=""
-                                                                        src="{{ !empty($sampul) ? $sampul['file'] : asset('asset/img/sma.png') }}"
+                                                                        src="{{ !empty($cover) ? $cover['left_logo'] : asset('asset/img/sma.png') }}"
                                                                         style="max-height: 59px;">
                                                                     <br><br>
                                                                     <h5 class="my-0"><b
-                                                                            id="prevTitle">{!! !empty($sampul) ? $sampul['title'] : '' !!}</b></h5>
+                                                                            id="prevHeader1">{!! !empty($cover) ? $cover['title'] : '' !!}</b>
+                                                                    </h5>
                                                                     <h5 class="my-0"><b
-                                                                            id="prevTitle2">{!! !empty($sampul) ? $sampul['sub_title'] : '' !!}</b>
+                                                                            id="prevHeader2">{!! !empty($cover) ? $cover['sub_title'] : '' !!}</b>
                                                                     </h5>
                                                                     <br>
                                                                     <img class="logo-expand" id="prev-logo-tengah"
                                                                         alt=""
-                                                                        src="{{ !empty($sampul) ? $sampul['file1'] : asset('asset/img/sma.png') }}"
+                                                                        src="{{ !empty($cover) ? $cover['right_logo'] : asset('asset/img/sma.png') }}"
                                                                         style="max-height: 59px;">
                                                                     <br><br>
                                                                     <h6><b>Nama Peserta Didik</b></h6>
@@ -202,7 +203,7 @@
                                                                     <br><br><br>
 
                                                                     <h6 class="my-0"><b
-                                                                            id="prevFooter">{!! !empty($sampul) ? $sampul['footer'] : '' !!}</b>
+                                                                            id="prevFooter">{!! !empty($cover) ? $cover['footer'] : '' !!}</b>
                                                                     </h6>
                                                                 </center>
                                                             </div>
@@ -211,44 +212,7 @@
                                                 </div>
                                                 <div class="card post text-post mt-2" style="">
                                                     <div class="card-body">
-                                                        <div
-                                                            style="display: flex; justify-content: center; align-items: center;">
-                                                            <div style="width: 21cm; height: 17cm; padding: 1cm"
-                                                                class="border my-shadow">
-                                                                <br>
-                                                                <center>
-                                                                    <img class="logo-expand" id="prev-logo-atas"
-                                                                        alt=""
-                                                                        src="{{ !empty($sampul) ? $sampul['file'] : asset('asset/img/sma.png') }}"
-                                                                        style="max-height: 59px;">
-                                                                    <br><br>
-                                                                    <h5 class="my-0"><b
-                                                                            id="prevTitle">{!! !empty($sampul) ? $sampul['title'] : '' !!}</b></h5>
-                                                                    <h5 class="my-0"><b
-                                                                            id="prevTitle2">{!! !empty($sampul) ? $sampul['sub_title'] : '' !!}</b>
-                                                                    </h5>
-                                                                    <br>
-                                                                    <img class="logo-expand" id="prev-logo-tengah"
-                                                                        alt=""
-                                                                        src="{{ !empty($sampul) ? $sampul['file1'] : asset('asset/img/sma.png') }}"
-                                                                        style="max-height: 59px;">
-                                                                    <br><br>
-                                                                    <h6><b>Nama Peserta Didik</b></h6>
-                                                                    <div style="border: 1px solid black; padding: 12px">
-                                                                        <h6 class="m-0"><b>AKHMAD SAFI'I</b></h6>
-                                                                    </div>
-                                                                    <br>
-                                                                    <h6><b>NISN/NIS</b></h6>
-                                                                    <div style="border: 1px solid black; padding: 12px">
-                                                                        <h6 class="m-0"><b>123232434/13123244</b></h6>
-                                                                    </div>
-                                                                    <br><br><br>
-
-                                                                    <h6 class="my-0"><b
-                                                                            id="prevFooter">{!! !empty($sampul) ? $sampul['footer'] : '' !!}</b>
-                                                                    </h6>
-                                                                </center>
-                                                            </div>
+                                                        <div id="instructions">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -259,9 +223,6 @@
 
                                     </div>
                                 </div>
-
-
-
                             </div>
                         </form>
                     </div>
@@ -308,6 +269,11 @@
                     $('#btnSubmit').addClass('d-none');
                 });
 
+                bindInputChange("#header1", "#prevHeader1");
+                bindInputChange("#header2", "#prevHeader2");
+                bindInputChange("#footer", "#prevFooter");
+
+
                 var quill = new Quill('#content-container #editor', {
                     modules: {
                         toolbar: '#toolbar-container'
@@ -316,12 +282,31 @@
                     theme: 'snow'
                 });
 
+                var editor = document.querySelector('#editor');
+                var instructions = document.querySelector('#instructions');
+
                 // Update value of the textarea on every change in the editor
                 quill.on('text-change', function() {
                     var contents = quill.root.innerHTML;
                     $('.editor').val(contents);
+                    instructions.innerHTML = editor.firstChild.innerHTML;
                 });
+
+                bindInputChange("#editor", "#instructions");
             });
+
+            function bindInputChange(selector, previewSelector) {
+                var oldVal = $(selector).val();
+                $(selector).on("change keyup paste", function() {
+                    var currentVal = $(this).val();
+                    if (currentVal === oldVal) {
+                        return;
+                    }
+
+                    oldVal = currentVal;
+                    $(previewSelector).text(currentVal);
+                });
+            }
 
             function submitForm() {
                 $('form').submit();

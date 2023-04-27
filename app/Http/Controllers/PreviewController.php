@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AttendanceScore;
 use App\Models\CompetenceAchievement;
+use App\Models\Extracurricular;
 use App\Models\SchoolYear;
 use App\Models\ScoreCompetency;
+use App\Models\ScoreExtracurricular;
 use App\Models\ScoreKd;
 use App\Models\ScoreManual;
 use App\Models\ScoreMerdeka;
@@ -79,9 +82,6 @@ class PreviewController extends Controller
         });
 
         $competencies = CompetenceAchievement::where('status', 1)->get();
-        // dd($competencies);
-
-        // $mapel_tampil = [];
 
         foreach ($subjects as $subject) {
             $score_competencies = ScoreCompetency::where([
@@ -119,8 +119,52 @@ class PreviewController extends Controller
                 'competency_improved' => $competency_improved->toArray(),
             ];
         }
-        // dd($mapel_tampil);
-        $pdf = PDF::loadView('content.previews.merdeka.v_print_pas', compact('result_score'));
+        $result_extra = [];
+
+        $extras = Extracurricular::where('status', 1)->get();
+
+        foreach ($extras as $extra) {
+            $score_extra = ScoreExtracurricular::where([
+                ['id_study_class', session('id_study_class')],
+                // ['id_teacher', Auth::guard('teacher')->user()->id],
+                ['id_school_year', session('id_school_year')],
+                ['id_extra', $extra->id],
+            ])->first();
+
+            $id_extra = $extra->id;
+            $name = $extra->name;
+            $score = null;
+            $description = null;
+            if ($score_extra) {
+                $scoreData = json_decode($score_extra->score);
+                foreach ($scoreData as $data) {
+                    if ($data->id_student_class == session('id_student_class')) {
+                        $score = $data->score;
+                        $description = $data->description;
+                        break;
+                    }
+                }
+            }
+            $result_extra[] = [
+                'id_extra' => $id_extra,
+                'name' => $name,
+                'score' => $score ? $score : null,
+                'description' => $description ? $description : null
+            ];
+        }
+        $attendance = AttendanceScore::where([
+            ['id_student_class', session('id_student_class')],
+            ['id_school_year', session('id_school_year')],
+        ])->first();
+
+        $result_attendance = [
+            'ill' => $attendance ? $attendance->ill : 0,
+            'excused' => $attendance ? $attendance->excused : 0,
+            'unexcused' => $attendance ? $attendance->unexcused : 0,
+        ];
+        // dd($result_attendance);
+        // dd($result_extra);
+        $pdf = PDF::loadView('content.previews.merdeka.v_print_pas', compact('result_score', 'result_extra', 'result_attendance'));
 
         // Mengirim output PDF ke browser
         return $pdf->stream();

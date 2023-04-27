@@ -289,9 +289,9 @@ Route::middleware('auth:user,admin,parent,teacher')->group(function () {
         // Route::post('update', [AttitudeGradeController::class, 'storeOrUpdate'])->name('storeOrUpdate');
     });
 
-    Route::prefix('score-extra')->name('score_extras.')->group(function () {
+    Route::prefix('score-extra/{slug}')->name('score_extras.')->group(function () {
         Route::get('/', [ScoreExtracurricularController::class, 'index'])->name('index');
         // Route::get('print', [PreviewController::class, 'print'])->name('print');
-        // Route::post('update', [AttitudeGradeController::class, 'storeOrUpdate'])->name('storeOrUpdate');
+        Route::post('update', [ScoreExtracurricularController::class, 'storeOrUpdate'])->name('storeOrUpdate');
     });
 });

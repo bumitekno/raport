@@ -14,7 +14,7 @@ class CoverController extends Controller
 {
     public function index()
     {
-        // dd('ping');
+        // dd(session()->all());
         session()->put('title', 'Pengaturan Sampul Raport');
         $years = SchoolYear::all();
         $years = SchoolYearResource::collection($years)->toArray(request());
@@ -22,10 +22,19 @@ class CoverController extends Controller
         $data_array = [
             'years' => $years
         ];
-        $cover = Cover::where('id_school_year', session('id_school_year'))->first();
-        if ($cover) {
-            $data_array['cover'] = $cover;
-        }
+        $detail_year = SchoolYear::where('slug', $_GET['year'])->first();
+        $result_cover = Cover::where('id_school_year', $detail_year->id)->first();
+        // dd($cover);
+        $cover = [
+            'title' => $result_cover ? $result_cover->title : null,
+            'sub_title' => $result_cover ? $result_cover->sub_title : null,
+            'footer' => $result_cover ? $result_cover->footer : null,
+            'instruction' => $result_cover ? $result_cover->instruction : null,
+            'left_logo' => $result_cover ? $result_cover->left_logo : null,
+            'right_logo' => $result_cover ? $result_cover->right_logo : null,
+        ];
+        $data_array['cover'] = $cover;
+        // dd($data_array);
         return view('content.setting.v_form_cover', $data_array);
     }
 

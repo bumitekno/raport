@@ -86,8 +86,7 @@
                 <table style="width: 100%">
                     <tr>
                         <td class="b-0">
-                            <img alt="logo kiri" id="prev-logo-kiri-print"
-                                src="{{ public_path('asset/img/logo.png') }}"
+                            <img alt="logo kiri" id="prev-logo-kiri-print" src="{{ public_path('asset/img/logo.png') }}"
                                 style="width: 85%;">
 
 
@@ -233,27 +232,20 @@
                             <th class="text-center">
                                 Keterangan</th>
                         </tr>
-                        <tr>
-                            <td class="text-center">
-                                1</td>
-                            <td>Seni Bina Musika</td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td class="text-center">
-                                2</td>
-                            <td>DCV</td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td class="text-center">
-                                3</td>
-                            <td>Karya Ilmiah Remaja (KIR)</td>
-                            <td></td>
-                            <td></td>
-                        </tr>
+                        @if (empty($result_extra))
+                            <tr>
+                                <td colspan="4" class="text-center">Ekstrakurikuler tidak ada yang tersedia</td>
+                            </tr>
+                        @else
+                            @foreach ($result_extra as $extra)
+                                <tr>
+                                    <td class="text-center">{{ $loop->iteration }}</td>
+                                    <td>{{ $extra['name'] }}</td>
+                                    <td class="text-center">{{ ucwords($extra['score']) }}</td>
+                                    <td>{{ $extra['description'] }}</td>
+                                </tr>
+                            @endforeach
+                        @endif
                     </table>
                 </td>
             </tr>
@@ -271,21 +263,21 @@
                             <td>
                                 Sakit</td>
                             <td class="text-center">
-                                1 Hari
+                                {{ $result_attendance['ill'] }} Hari
                             </td>
                         </tr>
                         <tr>
                             <td>
                                 Izin</td>
                             <td class="text-center">
-                                2 Hari
+                                {{ $result_attendance['excused'] }} Hari
                             </td>
                         </tr>
                         <tr>
                             <td>
                                 Tanpa Keterangan</td>
                             <td class="text-center">
-                                0 Hari
+                                {{ $result_attendance['unexcused'] }} Hari
                             </td>
                         </tr>
                     </table>
