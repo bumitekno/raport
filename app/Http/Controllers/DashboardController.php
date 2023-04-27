@@ -34,6 +34,7 @@ class DashboardController extends Controller
 
     public function user()
     {
+        // dd(session()->all());
         session()->put('title', 'Dashboard Siswa');
         $school_year = SchoolYear::where('status', 1)->first();
 
@@ -52,6 +53,8 @@ class DashboardController extends Controller
             ['status', 1],
         ])->first();
         $study_class = StudyClass::find($student_class->id_study_class);
+        session()->put('id_study_class', $student_class->id_study_class);
+        session()->put('id_student_class', $student_class->id);
         $template = TemplateConfiguration::where([
             ['id_major', $study_class->id_major],
             ['id_school_year', session('id_school_year')]

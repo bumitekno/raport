@@ -115,7 +115,8 @@
             </li>
 
             <li class="menu k16 d-none {{ Route::is('setting_scores*') ? 'active' : '' }}">
-                <a href="#setting-score" data-toggle="collapse" aria-expanded="{{ Route::is('setting_scores*') ? 'true' : 'false' }}" class="dropdown-toggle">
+                <a href="#setting-score" data-toggle="collapse"
+                    aria-expanded="{{ Route::is('setting_scores*') ? 'true' : 'false' }}" class="dropdown-toggle">
                     <div class="">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                             fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -140,24 +141,28 @@
                         </svg>
                     </div>
                 </a>
-                <ul class="collapse submenu list-unstyled {{ Route::is('setting_scores*') ? 'recent-submenu mini-recent-submenu show' : '' }}" id="setting-score" data-parent="#accordionExample">
+                <ul class="collapse submenu list-unstyled {{ Route::is('setting_scores*') ? 'recent-submenu mini-recent-submenu show' : '' }}"
+                    id="setting-score" data-parent="#accordionExample">
                     <li class="{{ Route::is('setting_scores.predicated_scores*') ? 'active' : '' }}">
                         <a href="{{ route('setting_scores.predicated_scores.index') }}"> Nilai Predikat Raport</a>
                     </li>
-                    <li>
+                    <li class="{{ Route::is('setting_scores.pts_configurations*') ? 'active' : '' }}">
                         <a href="{{ route('setting_scores.pts_configurations.index') }}"> Nilai PTS</a>
                     </li>
-                    <li>
+                    <li class="{{ Route::is('setting_scores.pas_configurations*') ? 'active' : '' }}">
                         <a href="{{ route('setting_scores.pas_configurations.index') }}"> Nilai PAS</a>
                     </li>
-                    <li>
+                    <li class="{{ Route::is('setting_scores.kkm*') ? 'active' : '' }}">
                         <a href="{{ route('setting_scores.kkm.index', ['year' => session('slug_year')]) }}"> KKM</a>
                     </li>
                 </ul>
             </li>
 
-            <li class="menu k16 d-none">
-                <a href="#setting-other" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+            <li
+                class="menu k16 d-none {{ Route::is('basic_competencies*') || Route::is('general_weights*') ? 'active' : '' }}">
+                <a href="#setting-other" data-toggle="collapse"
+                    aria-expanded="{{ Route::is('basic_competencies*') || Route::is('general_weights*') ? 'true' : 'false' }}"
+                    class="dropdown-toggle">
                     <div class="">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                             fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -174,21 +179,24 @@
                         </svg>
                     </div>
                 </a>
-                <ul class="collapse submenu list-unstyled" id="setting-other" data-parent="#accordionExample">
-                    <li>
+                <ul class="collapse submenu list-unstyled {{ Route::is('basic_competencies*') || Route::is('general_weights*') ? 'recent-submenu mini-recent-submenu show' : '' }}"
+                    id="setting-other" data-parent="#accordionExample">
+                    <li class="{{ Route::is('basic_competencies*') ? 'active' : '' }}">
                         <a href="{{ route('basic_competencies.index') }}"> Kompetensi Dasar</a>
                     </li>
-                    <li>
+                    <li
+                        class="{{ Route::is('general_weights*') && Route::current()->parameter('type') == 'uas' ? 'active' : '' }}">
                         <a href="{{ route('general_weights.index', 'uas') }}"> Bobot Nilai UAS</a>
                     </li>
-                    <li>
+                    <li
+                        class="{{ Route::is('general_weights*') && Route::current()->parameter('type') == 'uts' ? 'active' : '' }}">
                         <a href="{{ route('general_weights.index', 'uts') }}"> Bobot Nilai UTS</a>
                     </li>
                 </ul>
             </li>
 
-            <li class="menu merdeka d-none">
-                <a href="{{ route('manages.index') }}" aria-expanded="false" class="dropdown-toggle">
+            <li class="menu merdeka d-none {{ Route::is('manages*') ? 'true' : 'false' }}">
+                <a href="{{ route('manages.index') }}" aria-expanded="{{ Route::is('manages*') ? 'true' : 'false' }}" class="dropdown-toggle">
                     <div class="">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                             fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -203,7 +211,8 @@
             </li>
 
             <li class="menu">
-                <a href="{{ route('extracurriculars.index') }}" aria-expanded="false" class="dropdown-toggle">
+                <a href="{{ route('extracurriculars.index') }}"
+                    aria-expanded="{{ Route::is('extracurriculars*') ? 'true' : 'false' }}" class="dropdown-toggle">
                     <div class="">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                             fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -217,8 +226,10 @@
                 </a>
             </li>
 
-            <li class="menu">
-                <a href="#submenu2" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+            <li class="menu {{ Route::is('settings*') || Route::is('configs*') || Route::is('covers*') || Route::is('letterheads*') || Route::is('templates*') ? 'active' : '' }}">
+                <a href="#submenu2" data-toggle="collapse"
+                    aria-expanded="{{ Route::is('settings*') || Route::is('configs*') || Route::is('covers*') || Route::is('letterheads*') || Route::is('templates*') ? 'true' : 'false' }}"
+                    class="dropdown-toggle">
                     <div class="">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                             fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -238,20 +249,20 @@
                         </svg>
                     </div>
                 </a>
-                <ul class="collapse submenu list-unstyled" id="submenu2" data-parent="#accordionExample">
-                    <li>
+                <ul class="collapse submenu list-unstyled {{ Route::is('settings*') || Route::is('configs*') || Route::is('covers*') || Route::is('letterheads*') || Route::is('templates*') ? 'recent-submenu mini-recent-submenu show' : '' }}" id="submenu2" data-parent="#accordionExample">
+                    <li class="{{ Route::is('settings*') ? 'active' : '' }}">
                         <a href="{{ route('settings.index') }}"> Sekolah</a>
                     </li>
-                    <li>
+                    <li class="{{ Route::is('configs*') ? 'active' : '' }}">
                         <a href="{{ route('configs.index') }}"> Konfigurasi</a>
                     </li>
-                    <li>
+                    <li class="{{ Route::is('covers*') ? 'active' : '' }}">
                         <a href="{{ route('covers.index') }}"> Sampul</a>
                     </li>
-                    <li>
+                    <li class="{{ Route::is('letterheads*') ? 'active' : '' }}">
                         <a href="{{ route('letterheads.index') }}"> KOP Surat</a>
                     </li>
-                    <li>
+                    <li class="{{ Route::is('templates*') ? 'active' : '' }}">
                         <a href="{{ route('templates.index', ['year' => session('slug_year')]) }}"> Template
                             Raport</a>
                     </li>
@@ -260,9 +271,9 @@
             </li>
 
             <li
-                class="menu {{ Route::is('majors.*') || Route::is('levels.*') || Route::is('classes.*') || Route::is('courses.*') || Route::is('school-years.*') ? 'active' : '' }}">
+                class="menu {{ Route::is('majors.*') || Route::is('levels.*') || Route::is('classes.*') || Route::is('courses.*') || Route::is('school-years.*') || Route::is('student_classes.*') ? 'active' : '' }}">
                 <a href="#side-master" data-toggle="collapse"
-                    aria-expanded="{{ Route::is('majors.*') || Route::is('levels.*') || Route::is('classes.*') || Route::is('courses.*') || Route::is('school-years.*') ? 'true' : 'false' }}"
+                    aria-expanded="{{ Route::is('majors.*') || Route::is('levels.*') || Route::is('classes.*') || Route::is('courses.*') || Route::is('school-years.*') || Route::is('student_classes.*') ? 'true' : 'false' }}"
                     class="dropdown-toggle">
                     <div class="">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -280,7 +291,7 @@
                         </svg>
                     </div>
                 </a>
-                <ul class="collapse submenu list-unstyled {{ Route::is('majors.*') || Route::is('levels.*') || Route::is('classes.*') || Route::is('courses.*') || Route::is('school-years.*') ? 'recent-submenu mini-recent-submenu show' : '' }}"
+                <ul class="collapse submenu list-unstyled {{ Route::is('majors.*') || Route::is('levels.*') || Route::is('classes.*') || Route::is('courses.*') || Route::is('student_classes.*') || Route::is('school-years.*') ? 'recent-submenu mini-recent-submenu show' : '' }}"
                     id="side-master" data-parent="#accordionExample">
                     <li class="{{ Route::is('school-years.*') ? 'active' : '' }}">
                         <a href="{{ route('school-years.index') }}"> Tahun Ajar </a>
@@ -297,7 +308,7 @@
                     <li class="{{ Route::is('courses.*') ? 'active' : '' }}">
                         <a href="{{ route('courses.index') }}"> Mata Pelajaran</a>
                     </li>
-                    <li class="{{ Route::is('courses.*') ? 'active' : '' }}">
+                    <li class="{{ Route::is('student_classes.*') ? 'active' : '' }}">
                         <a href="{{ route('student_classes.index', ['origin' => 'user']) }}"> Rotasi Siswa</a>
                     </li>
                 </ul>

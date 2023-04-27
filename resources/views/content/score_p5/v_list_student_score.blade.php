@@ -28,21 +28,23 @@
                             </div>
                         </div>
                         <div class="widget-content widget-content-area br-8">
-                            <table id="table-list" class="table dt-table-hover w-100">
-                                <thead>
-                                    <tr>
-                                        <th></th>
-                                        <th>Siswa</th>
-                                        <th>Email</th>
-                                        <th>Tempat, Tanggal lahir</th>
-                                        <th>Nilai Akhir</th>
-                                        <th class="no-content text-center"></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-
-                                </tbody>
-                            </table>
+                            <div class="table-responsive">
+                                <table id="table-list" class="table dt-table-hover w-100">
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th>Siswa</th>
+                                            <th>Email</th>
+                                            <th>Tempat, Tanggal lahir</th>
+                                            <th>Nilai Akhir</th>
+                                            <th class="no-content text-center"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+    
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -37,7 +37,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($result as $school_year)
+                                        @foreach ($school_years as $school_year)
                                             <tr>
                                                 <td>{{ $loop->iteration }}</td>
                                                 <td>{{ substr($school_year->name, 0, 9) }} @if ($school_year->status == 1)
@@ -45,7 +45,13 @@
                                                     @endif
                                                 </td>
                                                 <td>{{ substr($school_year->name, -1) == 1 ? 'Ganjil' : 'Genap' }}</td>
-                                                <td><a href="">Lihat raport</a></td>
+                                                <td>
+                                                    @if ($school_year->score == true)
+                                                        <a target="_blank" href="{{ route('previews.print') }}">Lihat raport</a>
+                                                    @else
+                                                        <span class="text-danger">Nilai belum diinput</span>
+                                                    @endif
+                                                </td>
                                             </tr>
                                         @endforeach
                                     </tbody>

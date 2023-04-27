@@ -5,8 +5,8 @@
             <figure class="user-cover-image"></figure>
             <div class="user-info">
                 <img src="{{ Auth::guard('teacher')->user()->file ? asset(Auth::guard('teacher')->user()->file) : asset('asset/img/90x90.jpg') }}"
-                alt="avatar">
-            <h6 class="">{{ Auth::guard('teacher')->user()->name }}</h6>
+                    alt="avatar">
+                <h6 class="">{{ Auth::guard('teacher')->user()->name }}</h6>
                 <p class="">Wali Kelas</p>
             </div>
         </div>
@@ -62,7 +62,7 @@
                 </ul>
             </li>
             <li class="menu">
-                <a href="javascript:void(0);" aria-expanded="false" class="dropdown-toggle">
+                <a href="{{ route('score_extras.index') }}" aria-expanded="false" class="dropdown-toggle">
                     <div class="">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                             fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"

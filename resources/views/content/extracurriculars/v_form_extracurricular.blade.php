@@ -2,7 +2,7 @@
 @section('content')
     @push('styles')
         @include('package.loader.loader_css')
-        @include('package.datatable.datatable_css')
+        {{-- @include('package.datatable.datatable_css') --}}
         <link rel="stylesheet" type="text/css" href="{{ asset('asset/custom/account-setting.css') }}">
     @endpush
     <div class="layout-px-spacing">
@@ -18,41 +18,39 @@
                     </ol>
                 </nav>
             </div>
-            @if (isset($user))
-                {{ Form::model($user, ['route' => ['users.update', $user->slug], 'method' => 'patch', 'files' => true]) }}
-            @else
-                {{ Form::open(['route' => 'users.store', 'files' => true]) }}
-            @endif
-            <div class="row">
-                <div class="col-xl-12 col-lg-12 col-md-12 layout-spacing">
-                    <div class="info widget-content widget-content-area ecommerce-create-section">
-                        <h6 class="">Informasi Umum</h6>
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label for="fullName">Ekstrakurikuler</label>
-                                    <input type="text" class="form-control" name="name"
-                                        value="{{ isset($user) ? old('name', $user->name) : old('name') }}">
-                                    @error('name')
-                                        <div class="invalid-feedback d-block">{{ $message }}</div>
-                                    @enderror
+            <form action="{{ route('extracurriculars.updateOrCreate', ['id' => isset($extra) ? $extra->id : null]) }}"
+                method="POST">
+                @csrf
+                <div class="row">
+                    <div class="col-xl-12 col-lg-12 col-md-12 layout-spacing">
+                        <div class="info widget-content widget-content-area ecommerce-create-section">
+                            <h6 class="">{{ session('title') }}</h6>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="fullName">Ekstrakurikuler</label>
+                                        <input type="text" class="form-control" name="name"
+                                            value="{{ isset($extra) ? old('name', $extra->name) : old('name') }}">
+                                        @error('name')
+                                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                                        @enderror
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label for="fullName">Penanggung Jawab</label>
-                                    <input type="text" class="form-control" name="person_responsible"
-                                        placeholder="Penanggung Jawab"
-                                        value="{{ isset($user) ? old('name', $user->name) : old('name') }}">
-                                    @error('name')
-                                        <div class="invalid-feedback d-block">{{ $message }}</div>
-                                    @enderror
-                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="fullName">Penanggung Jawab</label>
+                                        <input type="text" class="form-control" name="person_responsible"
+                                            placeholder="Penanggung Jawab"
+                                            value="{{ isset($extra) ? old('person_responsible', $extra->person_responsible) : old('person_responsible') }}">
+                                        @error('person_responsible')
+                                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                                        @enderror
+                                    </div>
 
+                                </div>
+                                {{-- <input type="hidden" name="id_studenst_classes" id="selected-rows-data"> --}}
                             </div>
-                            <input type="hidden" name="id_student_classes" id="selected-rows-data">
-                        </div>
-                        <div class="row">
+                            {{-- <div class="row">
                             <div class="col-md-6">
                                 <div class="table-responsive">
                                     <h6 class="mb-2">Cari Siswa</h6>
@@ -89,13 +87,11 @@
                                 </table>
                             </div>
 
+                        </div> --}}
                         </div>
                     </div>
                 </div>
-
-            </div>
-
-            {{ Form::close() }}
+            </form>
         </div>
         <div class="account-settings-footer">
 
@@ -131,40 +127,40 @@
                     $('#btnSubmit').addClass('d-none');
                 });
 
-                var table = $('#table-list').DataTable({
-                    processing: true,
-                    serverSide: true,
-                    responsive: true,
-                    ajax: "",
-                    columns: [{
-                            data: 'DT_RowIndex',
-                            name: 'DT_RowIndex',
-                            orderable: false,
-                            searchable: false,
-                            className: 'align-middle',
-                            checkboxes: {
-                                selectRow: true,
-                                selected: []
-                            }
-                        },
-                        {
-                            data: 'student.nis',
-                            name: 'student.nis',
-                        },
-                        {
-                            data: 'student.name',
-                            name: 'student.name',
-                        },
-                        {
-                            data: 'study_class.name',
-                            name: 'study_class.name',
-                        },
-                        {
-                            data: 'action',
-                            name: 'action',
-                        },
-                    ]
-                });
+                // var table = $('#table-list').DataTable({
+                //     processing: true,
+                //     serverSide: true,
+                //     responsive: true,
+                //     ajax: "",
+                //     columns: [{
+                //             data: 'DT_RowIndex',
+                //             name: 'DT_RowIndex',
+                //             orderable: false,
+                //             searchable: false,
+                //             className: 'align-middle',
+                //             checkboxes: {
+                //                 selectRow: true,
+                //                 selected: []
+                //             }
+                //         },
+                //         {
+                //             data: 'student.nis',
+                //             name: 'student.nis',
+                //         },
+                //         {
+                //             data: 'student.name',
+                //             name: 'student.name',
+                //         },
+                //         {
+                //             data: 'study_class.name',
+                //             name: 'study_class.name',
+                //         },
+                //         {
+                //             data: 'action',
+                //             name: 'action',
+                //         },
+                //     ]
+                // });
             });
 
 

@@ -34,7 +34,6 @@
                                         <th></th>
                                         <th>Nama Ekskul</th>
                                         <th>Penanggung Jawab</th>
-                                        <th>Jumlah Siswa</th>
                                         <th class="no-content text-center"></th>
                                     </tr>
                                 </thead>
@@ -77,15 +76,9 @@
                         data: 'name',
                         name: 'name',
                     }, {
-                        data: 'email',
-                        name: 'email',
-                    }, {
-                        data: 'address',
-                        name: 'address',
-                    }, {
-                        data: 'phone',
-                        name: 'phone',
-                    }, {
+                        data: 'person_responsible',
+                        name: 'person_responsible',
+                    },  {
                         data: 'action',
                         name: 'action',
                     }, ]
