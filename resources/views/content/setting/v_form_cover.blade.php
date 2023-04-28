@@ -27,11 +27,11 @@
                                     <div class="col-xl-12 col-md-12 col-sm-12 col-12 d-flex justify-content-between">
                                         <h4>{{ session('title') }}</h4>
                                         <div class="form-group my-auto">
-                                            <select name="id_school_year" class="form-control">
+                                            <select name="id_school_year" id="id_school_year" class="form-control">
                                                 <option value="" selected disabled>-- Pilih Tahun Ajaran --</option>
                                                 @foreach ($years as $year)
-                                                    <option value="{{ $year['id'] }}"
-                                                        {{ old('id_school_year', $cover->id_school_year) == $year['id'] ? 'selected' : (old('id_school_year', session('id_school_year')) == $year['id'] ? 'selected' : '') }}>
+                                                    <option value="{{ $year['slug'] }}"
+                                                        {{ $_GET['year'] == $year['slug'] ? 'selected' : '' }}>
                                                         {{ $year['school_year'] . ' ' . $year['semester']['name'] }}
                                                     </option>
                                                 @endforeach
@@ -56,7 +56,7 @@
                                                         <div class="form-group">
                                                             <label for="l30">Title 1</label>
                                                             <input class="form-control" id="header1" name="title"
-                                                                value="{{ isset($cover) ? old('title', $cover->title) : old('title') }}"
+                                                                value="{{ isset($cover) ? old('title', $cover['title']) : old('title') }}"
                                                                 placeholder="RAPOR" type="text">
                                                             @error('title')
                                                                 <div class="invalid-feedback d-block">{{ $message }}</div>
@@ -66,7 +66,7 @@
                                                             <label for="l30">Title 2</label>
                                                             <input class="form-control" id="header2" name="sub_title"
                                                                 placeholder="SEKOLAH MENENGAH KEJURUAN <br> (SMK)"
-                                                                value="{{ isset($cover) ? old('sub_title', $cover->sub_title) : old('sub_title') }}"
+                                                                value="{{ isset($cover) ? old('sub_title', $cover['sub_title']) : old('sub_title') }}"
                                                                 type="text">
                                                             @error('sub_title')
                                                                 <div class="invalid-feedback d-block">{{ $message }}</div>
@@ -77,7 +77,7 @@
                                                             <input class="form-control" id="footer"
                                                                 placeholder="KEMENTERIAN PENDIDIKAN DAN KEBUDAYAAN <br> REPUBLIK INDONESIA"
                                                                 name="footer"
-                                                                value="{{ isset($cover) ? old('footer', $cover->footer) : old('footer') }}"
+                                                                value="{{ isset($cover) ? old('footer', $cover['footer']) : old('footer') }}"
                                                                 type="text">
                                                             @error('footer')
                                                                 <div class="invalid-feedback d-block">{{ $message }}</div>
@@ -85,7 +85,7 @@
                                                         </div>
                                                         <div class="form-group">
                                                             <label for="l30">Petunjuk Pengisian</label>
-                                                            <textarea name="instruction" class="editor d-none">{!! isset($cover) ? old('instruction', $cover->instruction) : old('instruction') !!}</textarea>
+                                                            <textarea name="instruction" class="editor d-none">{!! isset($cover) ? old('instruction', $cover['instruction']) : old('instruction') !!}</textarea>
                                                             <div id="content-container">
                                                                 <div id="toolbar-container">
                                                                     <button class="ql-bold" data-toggle="tooltip"
@@ -102,7 +102,7 @@
                                                                         data-placement="bottom" title="Show code"></button>
                                                                 </div>
                                                                 <div id="editor">
-                                                                    {!! isset($cover) ? old('instruction', $cover->instruction) : old('instruction') !!}
+                                                                    {!! isset($cover) ? old('instruction', $cover['instruction']) : old('instruction') !!}
                                                                 </div>
                                                             </div>
                                                             @error('instruction')
@@ -114,43 +114,43 @@
                                                                 class="col-xl-12 col-lg-12 col-md-12 text-center d-flex justify-content-between">
                                                                 <div class="upload mt-4 pr-md-4">
                                                                     @php
-                                                                        if (isset($cover) && $cover->left_logo != null) {
-                                                                            $left_logo = asset($cover->left_logo);
+                                                                        if (isset($cover) && $cover['top_logo'] != null) {
+                                                                            $top_logo = asset($cover['top_logo']);
                                                                         } else {
-                                                                            $left_logo = asset('asset/img/200x200.jpg');
+                                                                            $top_logo = asset('asset/img/200x200.jpg');
                                                                         }
                                                                     @endphp
-                                                                    <input type="file" name="left_logo"
-                                                                        id="input-file-max-fs" class="dropify"
-                                                                        data-default-file="{{ isset($cover) ? old('left_logo', $left_logo) : old('left_logo', asset('asset/img/200x200.jpg')) }}"
+                                                                    <input type="file" name="top_logo"
+                                                                        id="input-top-logo" class="dropify"
+                                                                        data-default-file="{{ isset($cover) ? old('top_logo', $top_logo) : old('top_logo', asset('asset/img/200x200.jpg')) }}"
                                                                         data-max-file-size="2M" />
                                                                     <p class="mt-2"><i
                                                                             class="flaticon-cloud-upload mr-1"></i>
-                                                                        Logo Kiri
+                                                                        Logo Atas
                                                                     </p>
                                                                 </div>
-                                                                @error('left_logo')
+                                                                @error('top_logo')
                                                                     <div class="invalid-feedback d-block">{{ $message }}
                                                                     </div>
                                                                 @enderror
                                                                 <div class="upload mt-4 pr-md-4">
                                                                     @php
-                                                                        if (isset($cover) && $cover->right_logo != null) {
-                                                                            $right_logo = asset($cover->right_logo);
+                                                                        if (isset($cover) && $cover['middle_logo'] != null) {
+                                                                            $middle_logo = asset($cover['middle_logo']);
                                                                         } else {
-                                                                            $right_logo = asset('asset/img/200x200.jpg');
+                                                                            $middle_logo = asset('asset/img/200x200.jpg');
                                                                         }
                                                                     @endphp
-                                                                    <input type="file" name="right_logo"
-                                                                        id="input-file-max-fs" class="dropify"
-                                                                        data-default-file="{{ isset($cover) ? old('right_logo', $right_logo) : old('right_logo', asset('asset/img/200x200.jpg')) }}"
+                                                                    <input type="file" name="middle_logo"
+                                                                        id="input-middle-logo" class="dropify"
+                                                                        data-default-file="{{ isset($cover) ? old('middle_logo', $middle_logo) : old('middle_logo', asset('asset/img/200x200.jpg')) }}"
                                                                         data-max-file-size="2M" />
                                                                     <p class="mt-2"><i
                                                                             class="flaticon-cloud-upload mr-1"></i>
-                                                                        Logo Kanan
+                                                                        Logo Tengah
                                                                     </p>
                                                                 </div>
-                                                                @error('right_logo')
+                                                                @error('middle_logo')
                                                                     <div class="invalid-feedback d-block">{{ $message }}
                                                                     </div>
                                                                 @enderror
@@ -174,9 +174,9 @@
                                                             <div style="width: 21cm; height: 17cm; padding: 1cm">
                                                                 <br>
                                                                 <center>
-                                                                    <img class="logo-expand" id="prev-logo-atas"
+                                                                    <img class="logo-expand" id="prev-logo-top"
                                                                         alt=""
-                                                                        src="{{ !empty($cover) ? $cover['left_logo'] : asset('asset/img/sma.png') }}"
+                                                                        src="{{ !empty($cover) ? $cover['top_logo'] : asset('asset/img/sma.png') }}"
                                                                         style="max-height: 59px;">
                                                                     <br><br>
                                                                     <h5 class="my-0"><b
@@ -186,9 +186,9 @@
                                                                             id="prevHeader2">{!! !empty($cover) ? $cover['sub_title'] : '' !!}</b>
                                                                     </h5>
                                                                     <br>
-                                                                    <img class="logo-expand" id="prev-logo-tengah"
+                                                                    <img class="logo-expand" id="prev-logo-middle"
                                                                         alt=""
-                                                                        src="{{ !empty($cover) ? $cover['right_logo'] : asset('asset/img/sma.png') }}"
+                                                                        src="{{ !empty($cover) ? $cover['middle_logo'] : asset('asset/img/sma.png') }}"
                                                                         style="max-height: 59px;">
                                                                     <br><br>
                                                                     <h6><b>Nama Peserta Didik</b></h6>
@@ -293,6 +293,19 @@
                 });
 
                 bindInputChange("#editor", "#instructions");
+
+                $('#id_school_year').change(function() {
+                    window.location.href = "covers?year=" + $(this).val();
+                });
+
+                $('#input-top-logo').on('change', function() {
+                    readURL(this, '#prev-logo-top');
+                });
+                $('#input-middle-logo').on('change', function() {
+                    readURL(this, '#prev-logo-middle');
+                });
+
+
             });
 
             function bindInputChange(selector, previewSelector) {
@@ -306,6 +319,16 @@
                     oldVal = currentVal;
                     $(previewSelector).text(currentVal);
                 });
+            }
+
+            function readURL(input, previewId) {
+                if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+                    reader.onload = function(e) {
+                        $(previewId).attr('src', e.target.result);
+                    };
+                    reader.readAsDataURL(input.files[0]);
+                }
             }
 
             function submitForm() {

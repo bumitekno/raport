@@ -23,6 +23,7 @@ class ConfigRequest extends FormRequest
             'id_school_year' => 'required',
             'nip_headmaster' => 'required',
             'signature' => 'nullable|image|mimes:jpg,jpeg,png|max:2048', // Validasi gambar
+            'place' => 'nullable',
         ];
     }
 }

@@ -163,6 +163,7 @@ Route::middleware('auth:user,admin,parent,teacher')->group(function () {
     Route::prefix('letterhead')->name('letterheads.')->group(function () {
         Route::get('/', [LetterheadController::class, 'index'])->name('index');
         Route::post('updateOrCreate', [LetterheadController::class, 'updateOrCreate'])->name('updateOrCreate');
+        Route::get('remove/{image}', [LetterheadController::class, 'removeImage'])->name('removeImage');
     });
 
     Route::prefix('setting-score')->name('setting_scores.')->group(function () {
@@ -285,7 +286,7 @@ Route::middleware('auth:user,admin,parent,teacher')->group(function () {
 
     Route::prefix('preview')->name('previews.')->group(function () {
         Route::get('/', [PreviewController::class, 'index'])->name('index');
-        Route::get('print', [PreviewController::class, 'print'])->name('print');
+        Route::get('print/{year}', [PreviewController::class, 'print'])->name('print');
         // Route::post('update', [AttitudeGradeController::class, 'storeOrUpdate'])->name('storeOrUpdate');
     });
 

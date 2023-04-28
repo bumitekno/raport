@@ -20,8 +20,8 @@ return new class extends Migration
             $table->string('sub_title')->nullable();
             $table->string('footer')->nullable();
             $table->text('instruction')->nullable();
-            $table->string('left_logo')->nullable();
-            $table->string('right_logo')->nullable();
+            $table->string('top_logo')->nullable();
+            $table->string('middle_logo')->nullable();
             $table->integer('id_school_year');
             $table->tinyInteger('status')->default(1);
             $table->timestamps();

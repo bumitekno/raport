@@ -47,7 +47,7 @@
                                                 <td>{{ substr($school_year->name, -1) == 1 ? 'Ganjil' : 'Genap' }}</td>
                                                 <td>
                                                     @if ($school_year->score == true)
-                                                        <a target="_blank" href="{{ route('previews.print') }}">Lihat raport</a>
+                                                        <a target="_blank" href="{{ route('previews.print', $school_year->slug) }}">Lihat raport</a>
                                                     @else
                                                         <span class="text-danger">Nilai belum diinput</span>
                                                     @endif

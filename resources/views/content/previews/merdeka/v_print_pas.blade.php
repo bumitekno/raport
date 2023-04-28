@@ -85,28 +85,34 @@
             <td colspan="4" class="b-0">
                 <table style="width: 100%">
                     <tr>
-                        <td class="b-0">
-                            <img alt="logo kiri" id="prev-logo-kiri-print" src="{{ public_path('asset/img/logo.png') }}"
-                                style="width: 85%;">
+                        @if ($result_kop['left_logo'] != null)
+                            <td class="b-0">
+                                <img alt="logo kiri" id="prev-logo-kiri-print"
+                                    src="{{ public_path($result_kop['left_logo']) }}" style="width: 85%;">
+                            </td>
+                        @endif
 
-
-                        </td>
                         <td style="width:70%; text-align: center;" class="b-0">
                             <div class="text-uppercase" style="line-height: 1.1; font-family: 'Arial'; font-size: 12pt">
-                                BADAN PENGEMBANGAN SUMBER DAYA MANUSIA
+                                {{ $result_kop['text1'] }}
                             </div>
                             <div style="line-height: 1.1; font-family: 'Arial'; font-size: 16pt" class="text-uppercase">
-                                SEKOLAH MENENGAH ATAS
+                                {{ $result_kop['text2'] }}
                             </div>
                             <div style="line-height: 1.2; font-family: 'Arial'; font-size: 16pt"
                                 class="text-uppercase text-bold">
-                                KABUPATEN TEMANGGUNG
+                                {{ $result_kop['text3'] }}
                             </div>
                             <div style="line-height: 1.2; font-family: 'Arial'; font-size: 8pt">
-                                Jl. Kranggan Pringsurat No. 43, Telp (01234) 56789001, NPSN 10010120, Website :
-                                www.mysch.id
+                                {{ $result_kop['text5'] }}
                             </div>
                         </td>
+                        @if ($result_kop['right_logo'] != null)
+                            <td class="b-0">
+                                <img alt="logo kiri" id="prev-logo-kiri-print"
+                                    src="{{ public_path($result_kop['right_logo']) }}" style="width: 85%;">
+                            </td>
+                        @endif
                     </tr>
 
                 </table>
@@ -130,44 +136,46 @@
                             <td class="b-0" style="padding: 0px; vertical-align: top"><b>Nama Peserta Didik</b></td>
                             <td class="b-0" style="padding: 0px; vertical-align: top">:</td>
                             <td class="b-0" style="padding: 0px">
-                                NAILIL FITRI
+                                {{ $result_profile['name'] }}
                             </td>
                             <td class="b-0" style="padding: 0px; vertical-align: top"><b>Kelas</b></td>
                             <td class="b-0" style="padding: 0px; vertical-align: top">:</td>
-                            <td class="b-0" style="padding: 0px; vertical-align: top">XI
+                            <td class="b-0" style="padding: 0px; vertical-align: top">
+                                {{ $result_profile['study_class'] }}
                             </td>
                         </tr>
                         <tr>
                             <td class="b-0" style="padding: 0px"><b>NISN</b></td>
                             <td class="b-0" style="padding: 0px">:</td>
                             <td class="b-0" style="padding: 0px">
-                                00123456
+                                {{ $result_profile['nisn'] }}
                             </td>
                             <td class="b-0" style="padding: 0px"><b>Fase</b></td>
                             <td class="b-0" style="padding: 0px">:</td>
-                            <td class="b-0" style="padding: 0px">E</td>
+                            <td class="b-0" style="padding: 0px">{{ $result_profile['fase'] }}</td>
                         </tr>
                         <tr>
                             <td class="b-0" style="padding: 0px; vertical-align: top"><b>Sekolah</b></td>
                             <td class="b-0" style="padding: 0px; vertical-align: top">:</td>
                             <td class="b-0" style="padding: 0px; vertical-align: top">
-                                SMKN MYSCH TEMANGGUNG
+                                {{ $result_profile['school'] }}
                             </td>
                             <td class="b-0" style="padding: 0px; vertical-align: top"><b>Semester</b></td>
                             <td class="b-0" style="padding: 0px; vertical-align: top">:</td>
-                            <td class="b-0" style="padding: 0px; vertical-align: top">2
-                                (Genap)
+                            <td class="b-0" style="padding: 0px; vertical-align: top">
+                                {{ $result_profile['semester_number'] . ' (' . $result_profile['semester'] . ')' }}
                             </td>
                         </tr>
                         <tr>
                             <td class="b-0" style="padding: 0px; vertical-align: top"><b>Alamat</b></td>
                             <td class="b-0" style="padding: 0px; vertical-align: top">:</td>
                             <td class="b-0" style="padding: 0px; max-width: 250px">
-                                Jl. Kranggan Temanggung No. 23 Pringsurat Temanggung No. 23 Pringsurat
+                                {{ $result_profile['address_school'] }}
                             </td>
                             <td class="b-0" style="padding: 0px; vertical-align: top"><b>Tahun Pelajaran</b></td>
                             <td class="b-0" style="padding: 0px; vertical-align: top">:</td>
-                            <td class="b-0" style="padding: 0px; vertical-align: top">2022/2023</td>
+                            <td class="b-0" style="padding: 0px; vertical-align: top">
+                                {{ $result_profile['school_year'] }}</td>
                         </tr>
 
                         <tr>
@@ -296,7 +304,7 @@
                         <tr>
                             <td class="text-left vertical-middle">
                                 <div style="width: 100%; min-height: 60px">
-                                    <p class="m-0">
+                                    <p class="m-0">{!! $result_other['note_teacher'] !!}
                                     </p>
                                 </div>
                             </td>
@@ -306,33 +314,40 @@
             </tr>
         </tbody>
     </table>
+    <table style="width: 100%">
+        <tr>
+            <td>
+                <div class="signature">
+                    <div style="float: left; width: 40%;">
+                        <p>Mengetahui,</p>
+                        <p>Orang tua peserta didik</p>
+                        <p style="margin-top: 80px;">___________________</p>
+                    </div>
 
-    {{-- <table class="table table-striped mb-20">
-        ...
+                    <div style="float: right; width: 40%;">
+                        <p>{{ $result_other['place'] . ', ' . DateHelper::getTanggal($result_other['date']) }}</p>
+                        <p>TTD Wali Kelas</p>
+                        <p style="margin-top: 80px;">___________________</p>
+                    </div>
+
+                    <div style="margin: 0 auto; width: 40%;">
+                        <p class="text-uppercase text-center">TTD Kepala Sekolah</p>
+                        @if ($result_other['signature'] != null)
+                            <center>
+                                <img src="{{ $result_other['signature'] }}" alt="" srcset=""
+                                    style="height: 150px">
+                            </center>
+                        @endif
+                        <p style="text-align: center; margin-bottom: 0; {{ $result_other['signature'] == null ? 'margin-top: 80px;' : '' }}">{{ $result_other['headmaster'] }}</p>
+                        <p style="text-align: center; margin-top : -15px">___________________</p>
+                        <p style="text-align: center">NIP {{ $result_other['nip_headmaster'] }}</p>
+                    </div>
+                </div>
+            </td>
+        </tr>
     </table>
 
-    <table class="table table-striped mb-20">
-        ...
-    </table> --}}
 
-    <div class="signature">
-        <div style="float: left; width: 40%;">
-            <p>Mengetahui,</p>
-            <p>Orang tua peserta didik</p>
-            <p style="margin-top: 80px;">___________________</p>
-        </div>
-
-        <div style="float: right; width: 40%;">
-            <p>Kab Temanggung, 20 Desember 2023</p>
-            <p>TTD Wali Kelas</p>
-            <p style="margin-top: 80px;">___________________</p>
-        </div>
-
-        <div style="margin: 0 auto; width: 40%;">
-            <p class="text-uppercase text-center">TTD Kepala Sekolah</p>
-            <p style="margin-top: 80px; text-align: center;">___________________</p>
-        </div>
-    </div>
 </body>
 
 </html>

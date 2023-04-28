@@ -14,11 +14,9 @@ class CoverController extends Controller
 {
     public function index()
     {
-        // dd(session()->all());
         session()->put('title', 'Pengaturan Sampul Raport');
         $years = SchoolYear::all();
         $years = SchoolYearResource::collection($years)->toArray(request());
-        // dd($years);
         $data_array = [
             'years' => $years
         ];
@@ -30,8 +28,8 @@ class CoverController extends Controller
             'sub_title' => $result_cover ? $result_cover->sub_title : null,
             'footer' => $result_cover ? $result_cover->footer : null,
             'instruction' => $result_cover ? $result_cover->instruction : null,
-            'left_logo' => $result_cover ? $result_cover->left_logo : null,
-            'right_logo' => $result_cover ? $result_cover->right_logo : null,
+            'top_logo' => $result_cover ? $result_cover->top_logo : null,
+            'middle_logo' => $result_cover ? $result_cover->middle_logo : null,
         ];
         $data_array['cover'] = $cover;
         // dd($data_array);
@@ -40,17 +38,18 @@ class CoverController extends Controller
 
     public function updateOrCreate(CoverRequest $request)
     {
-        // dd($request);
+        $id_school_year = SchoolYear::where('slug', $request->id_school_year)->first()->id;
         $data = $request->toArray();
-        if ($request->hasFile('left_logo')) {
-            $data = ImageHelper::upload_asset($request, 'left_logo', 'cover', $data);
+        $data['id_school_year'] = $id_school_year;
+        // dd($data);
+        if ($request->hasFile('top_logo')) {
+            $data = ImageHelper::upload_asset($request, 'top_logo', 'cover', $data);
         }
-        if ($request->hasFile('right_logo')) {
-            $data = ImageHelper::upload_asset($request, 'right_logo', 'cover', $data);
+        if ($request->hasFile('middle_logo')) {
+            $data = ImageHelper::upload_asset($request, 'middle_logo', 'cover', $data);
         }
-
         Cover::updateOrCreate(
-            ['id_school_year' => $request->id_school_year],
+            ['id_school_year' => $id_school_year],
             $data
         );
         Helper::toast('Berhasil menyimpan Sampul Raport', 'success');

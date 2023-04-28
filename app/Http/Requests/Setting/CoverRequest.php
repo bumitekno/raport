@@ -23,7 +23,7 @@ class CoverRequest extends FormRequest
             'sub_title' => 'nullable|string',
             'instructions' => 'nullable',
             'footer' => 'nullable|string',
-            'id_school_year' => 'required',
+            // 'id_school_year' => 'required',
             'left_logo' => 'nullable|image|mimes:jpg,jpeg,png|max:2048', // Validasi gambar
             'right_logo' => 'nullable|image|mimes:jpg,jpeg,png|max:2048', // Validasi gambar
         ];

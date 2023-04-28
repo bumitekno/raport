@@ -13,6 +13,7 @@ class SchoolYearResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'slug' => $this->slug,
             'school_year' => substr($this->name, 0, 9),
             'semester' => [
                 'number' => substr($this->name, -1),

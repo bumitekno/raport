@@ -254,7 +254,7 @@
                         <a href="{{ route('settings.index') }}"> Sekolah</a>
                     </li>
                     <li class="{{ Route::is('configs*') ? 'active' : '' }}">
-                        <a href="{{ route('configs.index') }}"> Konfigurasi</a>
+                        <a href="{{ route('configs.index', ['year' => session('slug_year')]) }}"> Konfigurasi</a>
                     </li>
                     <li class="{{ Route::is('covers*') ? 'active' : '' }}">
                         <a href="{{ route('covers.index', ['year' => session('slug_year')]) }}"> Sampul</a>

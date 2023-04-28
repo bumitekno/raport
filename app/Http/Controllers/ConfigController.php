@@ -21,8 +21,9 @@ class ConfigController extends Controller
         $data_array = [
             'years' => $years
         ];
-        $config = Config::where('id_school_year', session('id_school_year'))->first();
-        if($config){
+        $detail_school_year = SchoolYear::where('slug', $_GET['year'])->first();
+        $config = Config::where('id_school_year', $detail_school_year->id)->first();
+        if ($config) {
             $data_array['config'] = $config;
         }
         return view('content.setting.v_form_config', $data_array);
@@ -30,13 +31,15 @@ class ConfigController extends Controller
 
     public function updateOrCreate(ConfigRequest $request)
     {
+        $id_school_year = SchoolYear::where('slug', $request->id_school_year)->first()->id;
         $data = $request->toArray();
+        $data['id_school_year'] = $id_school_year;
+        // dd($data);
         if ($request->hasFile('signature')) {
             $data = ImageHelper::upload_asset($request, 'signature', 'signature', $data);
         }
-
         Config::updateOrCreate(
-            ['id_school_year' => $request->id_school_year],
+            ['id_school_year' => $id_school_year],
             $data
         );
         Helper::toast('Berhasil menyimpan Konfigurasi', 'success');

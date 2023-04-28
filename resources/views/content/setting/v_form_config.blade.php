@@ -20,16 +20,30 @@
             <div class="row mb-4 layout-spacing layout-top-spacing">
                 <div id="basic" class="col-lg-12 layout-spacing">
                     <div class="statbox widget box box-shadow">
-                        <div class="widget-header">
-                            <div class="row">
-                                <div class="col-xl-12 col-md-12 col-sm-12 col-12">
-                                    <h4>{{ session('title') }}</h4>
+                        <form action="{{ route('configs.updateOrCreate') }}" method="post" enctype="multipart/form-data">
+                            @csrf
+                            <div class="widget-header">
+                                <div class="row">
+                                    <div class="col-xl-12 col-md-12 col-sm-12 col-12 d-flex justify-content-between">
+                                        <h4>{{ session('title') }}</h4>
+                                        <div class="form-group my-auto">
+                                            <select name="id_school_year" id="id_school_year" class="form-control">
+                                                <option value="" selected disabled>-- Pilih Tahun Ajaran --</option>
+                                                @foreach ($years as $year)
+                                                    <option value="{{ $year['slug'] }}"
+                                                        {{ $_GET['year'] == $year['slug'] ? 'selected' : '' }}>
+                                                        {{ $year['school_year'] . ' ' . $year['semester']['name'] }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                            @error('id_school_year')
+                                                <div class="invalid-feedback d-block">{{ $message }}</div>
+                                            @enderror
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="info widget-content widget-content-area">
-                            <form action="{{ route('configs.updateOrCreate') }}" method="post" enctype="multipart/form-data">
-                                @csrf
+                            <div class="info widget-content widget-content-area">
                                 <div class="form-row mb-4">
                                     <div class="form-group col-md-6">
                                         <label for="inputEmail4">Tanggal PTS</label>
@@ -102,23 +116,15 @@
                                             </div>
                                             <div class="col-sm-6">
                                                 <div class="form-group">
-                                                    <label for="fullName">Tahun Ajaran</label>
-                                                    <select name="id_school_year" id="" class="form-control">
-                                                        <option value="" disabled>Pilih Tahun Ajaran</option>
-                                                        @foreach ($years as $year)
-                                                            <option value="{{ $year['id'] }}"
-                                                                {{ isset($config) && old('id_school_year', $config->id_school_year) == $year['id'] ? 'selected' : (old('id_school_year', session('id_school_year')) == $year['id'] ? 'selected' : '') }}>
-                                                                {{ $year['school_year'] . ' ' . $year['semester']['name'] }}
-                                                            </option>
-                                                        @endforeach
-                                                    </select>
-                                                    @error('headmaster')
+                                                    <label for="fullName">Tempat Surat</label>
+                                                    <input type="text" class="form-control" name="place" id="place"
+                                                        placeholder="Lokasi Surat" value="{{ isset($config) ? old('place', $config->place) : old('place') }}">
+                                                    @error('place')
                                                         <div class="invalid-feedback d-block">{{ $message }}</div>
                                                     @enderror
                                                 </div>
                                             </div>
                                         </div>
-
                                         <div class="form-group">
                                             <label for="profession">NIP Kepala Sekolah</label>
                                             <input type="text" class="form-control" name="nip_headmaster"
@@ -130,8 +136,8 @@
                                         </div>
                                     </div>
                                 </div>
-                            </form>
-                        </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -174,6 +180,10 @@
                 $("form").submit(function() {
                     $('#btnLoader').removeClass('d-none');
                     $('#btnSubmit').addClass('d-none');
+                });
+
+                $('#id_school_year').change(function() {
+                    window.location.href = "config?year=" + $(this).val();
                 });
             });
 
