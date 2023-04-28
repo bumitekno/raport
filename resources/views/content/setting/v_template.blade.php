@@ -64,7 +64,8 @@
                                                     <input type="hidden" name="id_school_year[]"
                                                         value="{{ $template['id_school_year'] }}">
 
-                                                    <select name="type[]" class="form-control">
+                                                    <select name="type[]" class="form-control"
+                                                        id="type_{{ $index + 1 }}">
                                                         <option value="" selected disabled>Pilih Jenis</option>
                                                         <option value="uts"
                                                             {{ old('type', $template['type']) == 'uts' ? 'selected' : (old('type') == 'uts' ? 'selected' : '') }}>
@@ -80,7 +81,8 @@
                                                 <td>
                                                     <input type="hidden" name="id_major[]"
                                                         value="{{ $template['id_major'] }}">
-                                                    <select name="template[]" class="form-control">
+                                                    <select name="template[]" class="form-control"
+                                                        id="template_{{ $index + 1 }}">
                                                         <option value="" selected disabled>Pilih Template</option>
                                                         <option value="kd"
                                                             {{ old('template', $template['template']) == 'kd' ? 'selected' : (old('template') == 'kd' ? 'selected' : '') }}>
@@ -88,9 +90,9 @@
                                                         <option value="manual"
                                                             {{ old('template', $template['template']) == 'manual' ? 'selected' : (old('template') == 'manual' ? 'selected' : '') }}>
                                                             Input Manual</option>
-                                                        <option value="k16"
-                                                            {{ old('template', $template['template']) == 'k16' ? 'selected' : (old('template') == 'k16' ? 'selected' : '') }}>
-                                                            Kurikulum 16</option>
+                                                        <option value="k13"
+                                                            {{ old('template', $template['template']) == 'k13' ? 'selected' : (old('template') == 'k13' ? 'selected' : '') }}>
+                                                            Kurikulum 13</option>
                                                         <option value="merdeka"
                                                             {{ old('template', $template['template']) == 'merdeka' ? 'selected' : (old('template') == 'merdeka' ? 'selected' : '') }}>
                                                             Kurikulum Merdeka</option>
@@ -100,11 +102,13 @@
                                                     @enderror
                                                 </td>
                                                 <td>
-                                                    <a href="javascript:void(0);" data-toggle="tooltip" data-placement="top"
-                                                        title="" data-original-title="Edit"><svg
-                                                            xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                            viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                    <a href="javascript:void(0);"
+                                                        onclick="previewTemplate({{ $index + 1 }})"
+                                                        data-toggle="tooltip" data-placement="top" title=""
+                                                        data-original-title="Edit"><svg xmlns="http://www.w3.org/2000/svg"
+                                                            width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                                            stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                            stroke-linejoin="round"
                                                             class="feather feather-check-circle text-primary">
                                                             <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
                                                             <polyline points="22 4 12 14.01 9 11.01"></polyline>
@@ -155,6 +159,12 @@
 
             function submitForm() {
                 $('form').submit();
+            }
+
+            function previewTemplate(params) {
+                let template = $('#template_' + params).val();
+                let type = $('#type_' + params).val();
+                window.open('preview/sample?template=' + template + '&type=' + type, '_blank');
             }
         </script>
     @endpush

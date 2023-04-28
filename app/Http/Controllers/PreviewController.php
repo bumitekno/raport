@@ -16,6 +16,7 @@ use App\Models\ScoreMerdeka;
 use App\Models\StudentClass;
 use App\Models\SubjectTeacher;
 use App\Models\TeacherNote;
+use App\Models\TemplateConfiguration;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -66,19 +67,59 @@ class PreviewController extends Controller
         }
     }
 
+    public function sample()
+    {
+        // dd('tes');
+        switch ($_GET['template']) {
+            case 'k13':
+                $pdf = PDF::loadView('content.previews.k13.v_print_sample_pas');
+                return $pdf->stream();
+                break;
+
+            default:
+                # code...
+                break;
+        }
+    }
+
     public function print($year)
     {
-        // dd(session()->all());
-        $result_score = [];
-        $ekskul_tampil = [];
-        $prestasi_for = [];
         $school_year = SchoolYear::where('slug', $year)->first();
-        $student_class = StudentClass::with('student', 'study_class', 'study_class.level')->where([
+
+        $student_class = StudentClass::with('student', 'study_class', 'study_class.level', 'study_class.major')->where([
             ['id_student', session('id_student')],
             ['year', substr($school_year->name, 0, 4)],
         ])->first();
+
+        $template = TemplateConfiguration::where([
+            ['id_major', $student_class->study_class->major->id],
+            ['id_school_year', $school_year->id],
+        ])->first();
+
         $setting = json_decode(Storage::get('settings.json'), true);
+
+        switch ($template->template) {
+            case 'k13':
+                return $this->preview_k13($student_class, $setting, $school_year);
+                break;
+            case 'merdeka':
+                return $this->preview_merdeka($student_class, $setting, $school_year);
+                break;
+
+            default:
+                # code...
+                break;
+        }
+        // dd($template);
+        // dd($student_class);
+
+
         // $semester = substr($school_year->name, -1) == 1 ? 'Ganjil' : 'Genap';
+
+    }
+
+    function preview_merdeka($student_class, $setting, $school_year)
+    {
         $result_profile = [
             'name' => strtoupper($student_class->student->name),
             'nisn' => $student_class->student->nisn,
@@ -218,8 +259,12 @@ class PreviewController extends Controller
             'signature' => $config ? public_path($config->signature) : null,
         ];
         // dd($result_other);
-        // return view('content.previews.merdeka.v_print_pas', compact('result_score', 'result_extra', 'result_attendance', 'result_kop', 'result_profile', 'result_other'));
         $pdf = PDF::loadView('content.previews.merdeka.v_print_pas', compact('result_score', 'result_extra', 'result_attendance', 'result_kop', 'result_profile', 'result_other'));
         return $pdf->stream();
+    }
+
+    function preview_k13($student_class, $setting, $school_year)
+    {
+        dd($student_class);
     }
 }
