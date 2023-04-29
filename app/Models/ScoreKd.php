@@ -17,4 +17,9 @@ class ScoreKd extends Model
     protected $guarded = [];
 
     protected $dates = ['deleted_at'];
+
+    public function subject_teacher()
+    {
+        return $this->belongsTo(SubjectTeacher::class, 'id_subject_teacher');
+    }
 }

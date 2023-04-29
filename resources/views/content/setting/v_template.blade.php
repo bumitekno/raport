@@ -84,9 +84,9 @@
                                                     <select name="template[]" class="form-control"
                                                         id="template_{{ $index + 1 }}">
                                                         <option value="" selected disabled>Pilih Template</option>
-                                                        <option value="kd"
+                                                        {{-- <option value="kd"
                                                             {{ old('template', $template['template']) == 'kd' ? 'selected' : (old('template') == 'kd' ? 'selected' : '') }}>
-                                                            Kompetensi Dasar</option>
+                                                            Kompetensi Dasar</option> --}}
                                                         <option value="manual"
                                                             {{ old('template', $template['template']) == 'manual' ? 'selected' : (old('template') == 'manual' ? 'selected' : '') }}>
                                                             Input Manual</option>

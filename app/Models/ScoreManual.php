@@ -17,4 +17,9 @@ class ScoreManual extends Model
     protected $guarded = [];
 
     protected $dates = ['deleted_at'];
+
+    public function course()
+    {
+        return $this->belongsTo(Course::class, 'id_course');
+    }
 }

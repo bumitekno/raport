@@ -288,7 +288,7 @@ Route::middleware('auth:user,admin,parent,teacher')->group(function () {
         Route::get('/', [PreviewController::class, 'index'])->name('index');
         Route::get('print/{year}', [PreviewController::class, 'print'])->name('print');
         Route::get('sample', [PreviewController::class, 'sample'])->name('sample');
-        // Route::post('update', [AttitudeGradeController::class, 'storeOrUpdate'])->name('storeOrUpdate');
+        // Route::get('list-student', [PreviewController::class, 'listStudent'])->name('list_student');
     });
 
     Route::prefix('score-extra/{slug}')->name('score_extras.')->group(function () {
