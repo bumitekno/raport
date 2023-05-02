@@ -17,4 +17,9 @@ class ScoreP5 extends Model
     protected $guarded = [];
 
     protected $dates = ['deleted_at'];
+
+    public function p5()
+    {
+        return $this->belongsTo(p5::class, 'id_p5');
+    }
 }

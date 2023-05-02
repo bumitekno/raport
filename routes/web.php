@@ -287,8 +287,11 @@ Route::middleware('auth:user,admin,parent,teacher')->group(function () {
     Route::prefix('preview')->name('previews.')->group(function () {
         Route::get('/', [PreviewController::class, 'index'])->name('index');
         Route::get('print/{year}', [PreviewController::class, 'print'])->name('print');
+        Route::get('print-p5', [PreviewController::class, 'printP5'])->name('printp5');
         Route::get('sample', [PreviewController::class, 'sample'])->name('sample');
-        // Route::get('list-student', [PreviewController::class, 'listStudent'])->name('list_student');
+        Route::get('print-teacher', [PreviewController::class, 'print_other'])->name('print_other');
+        Route::get('print-cover', [PreviewController::class, 'coverPrint'])->name('print_cover');
+        Route::get('other/print/{id_student_class}', [PreviewController::class, 'otherPrint'])->name('other_print');
     });
 
     Route::prefix('score-extra/{slug}')->name('score_extras.')->group(function () {

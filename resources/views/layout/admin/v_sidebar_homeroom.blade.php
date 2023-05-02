@@ -124,8 +124,42 @@
                     </div>
                 </a>
             </li>
-            <li class="menu">
-                <a href="{{ route('previews.index') }}" aria-expanded="false" class="dropdown-toggle">
+            <li
+                class="menu {{ session()->has('templates') && session('templates.template') == 'merdeka' ? 'd-none' : '' }} {{ Route::is('admins.*') || Route::is('teachers.*') || Route::is('users.*') ? 'active' : '' }}">
+                <a href="#side-user" data-toggle="collapse"
+                    aria-expanded="{{ Route::is('admins.*') || Route::is('teachers.*') || Route::is('users.*') ? 'true' : 'false' }}"
+                    class="dropdown-toggle">
+                    <div class="">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round">
+                            <path d="M4 11a9 9 0 0 1 9 9"></path>
+                            <path d="M4 4a16 16 0 0 1 16 16"></path>
+                            <circle cx="5" cy="19" r="1"></circle>
+                        </svg>
+                        <span>Cetak</span>
+                    </div>
+                    <div>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" class="feather feather-chevron-right">
+                            <polyline points="9 18 15 12 9 6"></polyline>
+                        </svg>
+                    </div>
+                </a>
+                <ul class="collapse submenu list-unstyled {{ Route::is('admins.*') || Route::is('teachers.*') || Route::is('users.*') ? 'recent-submenu mini-recent-submenu show' : '' }}"
+                    id="side-user" data-parent="#accordionExample">
+                    <li class="{{ Route::is('admins.*') ? 'active' : '' }}">
+                        <a href="{{ route('previews.index', ['template' => 'k13']) }}"> Cetak Raport</a>
+                    </li>
+                    <li class="{{ Route::is('teachers.*') ? 'active' : '' }}">
+                        <a href="{{ route('attitude_grades.index', 'spiritual') }}"> Cetak Leger </a>
+                    </li>
+
+                </ul>
+            </li>
+            <li class="menu {{ session()->has('templates') && session('templates.template') != 'merdeka' ? 'd-none' : '' }}">
+                <a href="{{ route('previews.index', ['template' => 'merdeka', 'year' => session('slug_year')]) }}" aria-expanded="false" class="dropdown-toggle">
                     <div class="">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                             fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"

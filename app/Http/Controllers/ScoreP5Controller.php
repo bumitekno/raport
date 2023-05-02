@@ -47,6 +47,7 @@ class ScoreP5Controller extends Controller
 
         // Update atau tambahkan data sub_element dan description
         $score->id_subject_teacher = $id_subject_teacher;
+        $score->id_p5 = $request->id_p5;
         $score->score = $score_json;
         $score->description = $request->description;
 

@@ -46,7 +46,7 @@ class AppServiceProvider extends ServiceProvider
             $mapel = $mapelData->map(function ($item) {
                 return [
                     'id_mapel' => $item->id_course,
-                    'nama_mapel' => $item->course->name,
+                    'nama_mapel' => optional($item->course)->name,
                 ];
             })->unique('id_mapel');
 

@@ -208,15 +208,20 @@
                 </tr>
             @else
                 @foreach ($result_score as $score)
-                    <td class="text-center">{{ $loop->iteration }}</td>
-                    <td class="text-center">{{ $score['course'] }}</td>
-                    <td class="text-center">{{ $score['score'] }}</td>
-                    <td>
-                        <p>Kompetensi {{ implode(', ', $score['competence_archieved']) }}. telah tercapai
-                        </p>
-                        <p>Perlu peningkatan dalam {{ implode(', ', $score['competency_improved']) }}
-                        </p>
-                    </td>
+                    <tr>
+                        <td class="text-center">{{ $loop->iteration }}</td>
+                        <td class="text-center">{{ $score['course'] }}</td>
+                        <td class="text-center">{{ $score['score'] }}</td>
+                        <td>
+                            @if ($score['competence_archieved'])
+                                <p>Kompetensi {{ implode(', ', $score['competence_archieved']) }}. telah tercapai
+                                </p>
+                            @endif
+                            @if ($score['competency_improved'])
+                                <p>Perlu peningkatan dalam {{ implode(', ', $score['competency_improved']) }}</p>
+                            @endif
+                        </td>
+                    </tr>
                 @endforeach
             @endif
             <tr>
@@ -325,7 +330,8 @@
                     </div>
 
                     <div style="float: right; width: 40%;">
-                        <p>{{ $result_other['place'] ?? 'Tidak diketahui' . ', ' . (isset($result_other['date']) ? DateHelper::getTanggal($result_other['date']) : '') }}</p>
+                        <p>{{ $result_other['place'] ?? 'Tidak diketahui' . ', ' . (isset($result_other['date']) ? DateHelper::getTanggal($result_other['date']) : '') }}
+                        </p>
                         <p>TTD Wali Kelas</p>
                         <p style="margin-top: 80px;">___________________</p>
                     </div>
@@ -338,7 +344,9 @@
                                     style="height: 150px">
                             </center>
                         @endif
-                        <p style="text-align: center; margin-bottom: 0; {{ $result_other['signature'] == null ? 'margin-top: 80px;' : '' }}">{{ $result_other['headmaster'] }}</p>
+                        <p
+                            style="text-align: center; margin-bottom: 0; {{ $result_other['signature'] == null ? 'margin-top: 80px;' : '' }}">
+                            {{ $result_other['headmaster'] }}</p>
                         <p style="text-align: center; margin-top : -15px">___________________</p>
                         <p style="text-align: center">NIP {{ $result_other['nip_headmaster'] }}</p>
                     </div>

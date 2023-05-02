@@ -1,5 +1,8 @@
 @extends('layout.admin.v_main')
 @section('content')
+    @push('styles')
+        <link rel="stylesheet" type="text/css" href="{{ asset('asset/custom/search.css') }}">
+    @endpush
     <div class="layout-px-spacing">
         <div class="middle-content container-xxl p-0">
 
@@ -24,58 +27,70 @@
                                 </div>
                             </div>
                         </div>
-                        <form action="{{ route('setting_scores.pts_configurations.storeOrUpdate') }}" method="post">
-                            @csrf
-                            <div class="widget-content widget-content-area br-8">
+                        <div class="widget-content widget-content-area br-8">
+                            <div class="search-input-group-style input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="basic-addon1"><svg xmlns="http://www.w3.org/2000/svg"
+                                            width="24" height="24" viewBox="0 0 24 24" fill="none"
+                                            stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                            stroke-linejoin="round" class="feather feather-search">
+                                            <circle cx="11" cy="11" r="8"></circle>
+                                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                                        </svg></span>
+                                </div>
+                                <input type="text" id="input-search" class="form-control"
+                                    placeholder="Let's find your question in fast way" aria-label="Username"
+                                    aria-describedby="basic-addon1">
+                            </div>
+                            <div class="table-responsive">
                                 <table class="table dt-table-hover w-100">
                                     <thead>
                                         <tr>
                                             <th></th>
-                                            <th>Tahun Ajaran</th>
-                                            <th>Semester</th>
+                                            <th>Siswa</th>
+                                            <th>NIS</th>
                                             <th></th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($school_years as $school_year)
+                                        @foreach ($students as $student)
                                             <tr>
-                                                <td>{{ $loop->iteration }}</td>
-                                                <td>{{ substr($school_year->name, 0, 9) }} @if ($school_year->status == 1)
-                                                        <div class="badge badge-success">Sekarang</div>
-                                                    @endif
-                                                </td>
-                                                <td>{{ substr($school_year->name, -1) == 1 ? 'Ganjil' : 'Genap' }}</td>
+                                                <td class="text-enter">{{ $loop->iteration }}</td>
                                                 <td>
-                                                    @if ($school_year->score == true)
-                                                        <a target="_blank" href="{{ route('previews.print', $school_year->slug) }}">Lihat raport</a>
-                                                    @else
-                                                        <span class="text-danger">Nilai belum diinput</span>
-                                                    @endif
+                                                    <div class="d-flex">
+                                                        <div class="usr-img-frame mr-2 rounded-circle">
+                                                            <img alt="avatar" class="img-fluid rounded-circle"
+                                                                src="{{ $student['file'] != null ? asset($student['file']) : asset('asset/img/90x90.jpg') }}">
+                                                        </div>
+                                                        <p class="align-self-center mb-0 admin-name">
+                                                            {{ $student['name'] }}</p>
+                                                    </div>
                                                 </td>
+                                                <td>{{ $student->nis }}</td>
+                                                <td></td>
                                             </tr>
                                         @endforeach
                                     </tbody>
                                 </table>
                             </div>
-                        </form>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-
     </div>
     @push('scripts')
         <script>
             $(function() {
-                $("form").submit(function() {
-                    $('#btnLoader').removeClass('d-none');
-                    $('#btnSubmit').addClass('d-none');
+
+                $('#input-search').on('keyup', function() {
+                    var rex = new RegExp($(this).val(), 'i');
+                    $('#student-table tr').hide();
+                    $('#student-table tr').filter(function() {
+                        return rex.test($(this).text());
+                    }).show();
                 });
             });
-
-            function submitForm() {
-                $('form').submit();
-            }
         </script>
     @endpush
 @endsection

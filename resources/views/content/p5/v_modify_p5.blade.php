@@ -33,6 +33,7 @@
 
                             <div class="widget-header" style="border-radius: 8px !important;">
                                 <div class="row">
+                                    <input type="hidden" name="id_p5" value="{{ $p5->id }}">
                                     <div class="col-xl-12 col-md-12 col-sm-12 col-12 d-flex justify-content-between">
                                         <h4>{{ $p5->tema->name }}</h4>
                                         <div class="form-group row my-auto mx-3">

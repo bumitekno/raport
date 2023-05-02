@@ -213,6 +213,62 @@
                                                 <div class="card post text-post mt-2" style="">
                                                     <div class="card-body">
                                                         <div id="instructions">
+                                                            @if (!empty($cover))
+                                                                {!! $cover['instruction'] !!}
+                                                            @else
+                                                                <ol>
+                                                                    <li>Rapor merupakan ringkasan hasil penilaian terhadap
+                                                                        seluruh aktivitas pembelajaran yang dilakukan
+                                                                        peserta didik dalam kurun waktu tertentu;</li>
+                                                                    <li>Rapor dipergunakan selama siswa yang bersangkutan
+                                                                        mengikuti seluruh program pembelajaran di Sekolah
+                                                                        Menengah Kejuruan tersebut;</li>
+                                                                    <li>Identitas Sekolah diisi dengan data yang sesuai
+                                                                        dengan keberadaan Sekolah Menengah Kejuruan;</li>
+                                                                    <li>Keterangan tentang diri Peserta didik diisi lengkap
+                                                                        sesuai ijazah sebelumnya atau akta kelahiran;</li>
+                                                                    <li>Rapor harus dilengkapi dengan pas foto berwarna
+                                                                        dengan latar belakang merah (3 x 4) serta
+                                                                        menggunakan baju putih seragam dan pengisiannya
+                                                                        dilakukan oleh Wali Kelas;</li>
+                                                                    <li>Capaian peserta didik dalam kompetensi pengetahuan
+                                                                        dan kompetensi keterampilan ditulis dalam bentuk
+                                                                        angka dan predikat untuk masing-masing mata
+                                                                        pelajaran;</li>
+                                                                    <li>Predikat ditulis dalam bentuk huruf sesuai kriteria;
+                                                                    </li>
+                                                                    <li>Catatan akademik ditulis dengan kalimat positif
+                                                                        sesuai capaian yang diperoleh peserta didik;</li>
+                                                                    <li>Penjelasan lebih detil mengenai capaian kompetensi
+                                                                        peserta didik dapat dilihat pada leger;</li>
+                                                                    <li>Laporan Praktik Kerja Lapangan diisi berdasarkan
+                                                                        kegiatan praktik kerja yang diikuti oleh peserta
+                                                                        didik di industri/perusahaan mitra;</li>
+                                                                    <li>Laporan Ekstrakurikuler diisi berdasarkan kegiatan
+                                                                        ekstrakurikuler yang diikuti oleh peserta didik;
+                                                                    </li>
+                                                                    <li>Ketidakhadiran diisi dengan data akumulasi
+                                                                        ketidakhadiran peserta didik karena sakit, izin,
+                                                                        atau tanpa keterangan selama satu semester;</li>
+                                                                    <li>Keterangan kenaikan kelas diisi dengan putusan
+                                                                        apakah peserta didik naik kelas yang ditentukan
+                                                                        melalui rapat dewan guru;</li>
+                                                                    <li>Deskripsi perkembangan karakter diisi dengan
+                                                                        simpulan perkembangan peserta didik terkait
+                                                                        penumbuhan karakter baik yang dilakukan secara
+                                                                        terprogram oleh sekolah maupun yang muncul secara
+                                                                        spontan dari peserta didik;</li>
+                                                                    <li>Catatan perkembangan karakter diisikan hal-hal yang
+                                                                        tidak tercantum pada deskripsi perkembangan karakter
+                                                                        termasuk prestasi yang diraih peserta didik pada
+                                                                        semester berjalan dan simpulan dari perkembangan
+                                                                        karakter peserta didik pada semester berjalan jika
+                                                                        dikomparasikan dengan semester sebelumnya;</li>
+                                                                    <li>Keterangan pindah keluar sekolah diisi dengan alasan
+                                                                        kepindahan. Sedangkan pindah masuk diisi dengan
+                                                                        sekolah asal.</li>
+                                                                </ol>
+                                                            @endif
                                                         </div>
                                                     </div>
                                                 </div>

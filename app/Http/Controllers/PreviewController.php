@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\Master\SchoolYearResource;
 use App\Models\Achievement;
 use App\Models\AttendanceScore;
 use App\Models\Attitude;
@@ -9,8 +10,11 @@ use App\Models\AttitudeGrade;
 use App\Models\BasicCompetency;
 use App\Models\CompetenceAchievement;
 use App\Models\Config;
+use App\Models\Cover;
+use App\Models\Dimension;
 use App\Models\Extracurricular;
 use App\Models\Letterhead;
+use App\Models\P5;
 use App\Models\PredicatedScore;
 use App\Models\SchoolYear;
 use App\Models\ScoreCompetency;
@@ -18,7 +22,9 @@ use App\Models\ScoreExtracurricular;
 use App\Models\ScoreKd;
 use App\Models\ScoreManual;
 use App\Models\ScoreMerdeka;
+use App\Models\ScoreP5;
 use App\Models\StudentClass;
+use App\Models\SubElement;
 use App\Models\SubjectTeacher;
 use App\Models\TeacherNote;
 use App\Models\TemplateConfiguration;
@@ -32,6 +38,7 @@ class PreviewController extends Controller
 {
     public function index()
     {
+        session()->put('title', 'Lihat Raport');
         $school_years = SchoolYear::all();
         if (Auth::guard('user')->check() || Auth::guard('parent')->check()) {
             if (session()->has('templates')) {
@@ -69,13 +76,28 @@ class PreviewController extends Controller
             return view('content.previews.v_preview', compact('school_years'));
         } else {
             // dd(session()->all());
-            $students = StudentClass::where([
-                ['id_study_class', session('id_study_class')],
-                ['year', session('year')]
-            ])->get();
-            return view('content.previews.v_list_students', compact('students'));
-            // dd($students);
-            // dd('tampilan guru');
+            $students = StudentClass::join('users', 'student_classes.id_student', '=', 'users.id')
+                ->select('student_classes.id', 'student_classes.slug', 'student_classes.id_student', 'student_classes.status',  'student_classes.year', 'users.name', 'users.file', 'users.nis')
+                ->where([
+                    ['id_study_class', session('id_study_class')],
+                    ['student_classes.status', 1],
+                ])->get();
+            if ($_GET['template'] == 'merdeka') {
+                $detail_year = SchoolYear::where('slug', $_GET['year'])->first();
+                $students = $students->where('year', substr($detail_year->name, 0, 4));
+                // dd($students);
+                $years = SchoolYear::all();
+                $years = SchoolYearResource::collection($years)->toArray(request());
+                // dd($years);
+                $view = 'content.previews.v_list_merdeka_students';
+            } else {
+                $years = [];
+                $students = $students->where('year', session('year'));
+                $view = 'content.previews.v_list_students';
+            }
+            // dd(session()->all());
+
+            return view($view, compact('students', 'years'));
         }
     }
 
@@ -94,6 +116,11 @@ class PreviewController extends Controller
         }
     }
 
+    public function otherPrint($slug)
+    {
+        dd($slug);
+    }
+
 
     public function print($year)
     {
@@ -109,14 +136,14 @@ class PreviewController extends Controller
             ['id_school_year', $school_year->id],
         ])->first();
 
-        $subjects = SubjectTeacher::whereRaw('JSON_CONTAINS(id_study_class, \'["' . session('id_study_class') . '"]\')')
+
+        $subjects = SubjectTeacher::whereRaw('JSON_CONTAINS(id_study_class, \'["' . $student_class->id_study_class . '"]\')')
             ->where([
                 ['status', 1],
                 ['id_school_year', $school_year->id],
             ])->get();
 
         $setting = json_decode(Storage::get('settings.json'), true);
-        // dd($template->template);
         switch ($template->template) {
             case 'k13':
                 return $this->preview_k13($student_class, $setting, $school_year, $subjects);
@@ -124,18 +151,168 @@ class PreviewController extends Controller
             case 'merdeka':
                 return $this->preview_merdeka($student_class, $setting, $school_year, $subjects);
                 break;
-            case 'manual':
-                return $this->preview_manual($student_class, $setting, $school_year, $subjects);
-                break;
-
             default:
-                # code...
+                return $this->preview_manual($student_class, $setting, $school_year, $subjects);
                 break;
         }
     }
 
+    public function print_other()
+    {
+        // dd('print other');
+        $school_year = SchoolYear::where('slug', $_GET['year'])->first();
+
+        $student_class = StudentClass::with('student', 'study_class', 'study_class.level', 'study_class.major')->where('slug', $_GET['student'])->first();
+
+        $template = TemplateConfiguration::where([
+            ['id_major', $student_class->study_class->major->id],
+            ['id_school_year', $school_year->id],
+        ])->first();
+
+        $subjects = SubjectTeacher::whereRaw('JSON_CONTAINS(id_study_class, \'["' . $student_class->id_study_class . '"]\')')
+            ->where([
+                ['status', 1],
+                ['id_school_year', $school_year->id],
+            ])->get();
+
+        $setting = json_decode(Storage::get('settings.json'), true);
+        switch ($template->template) {
+            case 'k13':
+                return $this->preview_k13($student_class, $setting, $school_year, $subjects);
+                break;
+            case 'merdeka':
+                return $this->preview_merdeka($student_class, $setting, $school_year, $subjects);
+                break;
+            default:
+                return $this->preview_manual($student_class, $setting, $school_year, $subjects);
+                break;
+        }
+    }
+
+    public function coverPrint()
+    {
+        // dd('print sampul raport');
+        $school_year = SchoolYear::where('slug', $_GET['year'])->first();
+        $student_class = StudentClass::where([
+            ['slug', $_GET['student']],
+            ['status', 1]
+        ])->with('student')->first();
+        // dd($student_class);
+        $cover = Cover::where('id_school_year', $school_year->id)->first();
+        // dd($cover);
+        if (empty($cover)) {
+            session()->put('message', 'Belum ada cover yang tersedia, harap hubungi admin untuk segera menambahkannya');
+            return view('pages.v_error');
+        }
+        $setting = json_decode(Storage::get('settings.json'), true);
+        // dd($setting);
+        $pdf = PDF::loadView('content.previews.v_print_cover', compact('cover', 'student_class', 'setting'));
+        return $pdf->stream();
+    }
+
+    public function printP5()
+    {
+
+        $student_class = StudentClass::where([
+            ['slug', $_GET['student']],
+            ['status', 1]
+        ])->first();
+        $setting = json_decode(Storage::get('settings.json'), true);
+        $school_year = SchoolYear::where('slug', $_GET['year'])->first();
+        $result_profile = [
+            'name' => strtoupper($student_class->student->name),
+            'nisn' => $student_class->student->nisn,
+            'school' => strtoupper($setting['name_school']),
+            'address_school' => $setting['address'],
+            'study_class' => $student_class->study_class->name,
+            'fase' => $student_class->study_class->level->fase,
+            'semester_number' => substr($school_year->name, -1),
+            'semester' => substr($school_year->name, -1) == 1 ? 'Ganjil' : 'Genap',
+            'school_year' => substr($school_year->name, 0, 9),
+        ];
+        $scores_p5 = ScoreP5::where([
+            ['id_student_class', $student_class->id],
+            ['id_school_year', $school_year->id],
+        ])->get();
+
+        $result_score = [];
+
+        foreach ($scores_p5 as $score_p5) {
+            $title = $score_p5->p5->title;
+            $tema = $score_p5->p5->tema->name;
+
+            $dimensions = Dimension::where('status', 1)->get();
+            $dimension_data = [];
+
+            foreach ($dimensions as $dimension) {
+                $sub_elements = SubElement::where([
+                    ['id_dimension', $dimension->id],
+                    ['status', 1]
+                ])->get();
+
+                $sub_element_scores = collect(json_decode($score_p5->score))->where('id_dimension', $dimension->id)->keyBy('id_sub_element');
+
+                if ($sub_element_scores->count() == 0) {
+                    continue;
+                }
+
+                $sub_element_data = [];
+                foreach ($sub_elements as $sub_element) {
+                    if (!$sub_element_scores->has($sub_element->id)) {
+                        continue;
+                    }
+
+                    $score = $sub_element_scores[$sub_element->id]->score;
+                    $sub_element_data[] = [
+                        'name' => $sub_element->name,
+                        'score' => $score,
+                    ];
+                }
+
+                $dimension_data[] = [
+                    'name' => $dimension->name,
+                    'sub_elements' => $sub_element_data,
+                ];
+            }
+
+            $description = $score_p5->description;
+
+            $result_score[] = [
+                'title' => $title,
+                'tema' => $tema,
+                'dimensi' => $dimension_data,
+                'description' => $description,
+            ];
+        }
+
+        $note = TeacherNote::where([
+            ['id_student_class', $student_class->id],
+            ['id_school_year', $school_year->id]
+        ])->first();
+        // dd($note);
+        $config = Config::where('id_school_year', $school_year->id)->first();
+        // dd($config);
+        $result_other = [
+            'note_teacher' => $note ? $note->description : '',
+            'promotion' => $note ? $note->promotion : 'Y',
+            'place' => $config ? $config->place : '',
+            'date' => $config ? $config->report_date : now(),
+            'headmaster' => $config ? $config->headmaster : '',
+            'nip_headmaster' => $config ? $config->nip_headmaster : '',
+            'signature' => $config ? public_path($config->signature) : null,
+        ];
+        // dd($result_score);
+        // return view('content.previews.merdeka.v_print_p5', compact('result_score', 'result_profile', 'result_other'));
+
+        $pdf = PDF::loadView('content.previews.merdeka.v_print_p5', compact('result_score', 'result_profile', 'result_other'));
+        // set ukuran margin
+        $pdf->setPaper('A4', 'portrait');
+        return $pdf->stream();
+    }
+
     function preview_merdeka($student_class, $setting, $school_year, $subjects)
     {
+        // dd($student_class);
         $result_profile = [
             'name' => strtoupper($student_class->student->name),
             'nisn' => $student_class->student->nisn,
@@ -148,17 +325,19 @@ class PreviewController extends Controller
             'school_year' => substr($school_year->name, 0, 9),
         ];
 
-        $score = ScoreMerdeka::where([
-            ['id_student_class', $student_class->id],
-            ['id_school_year', $school_year->id],
-        ])->get()->map(function ($item) {
-            $item->id_study_class = json_decode($item->id_study_class);
-            return $item;
-        });
+
 
         $competencies = CompetenceAchievement::where('status', 1)->get();
-
+        // dd($student_class);
         foreach ($subjects as $subject) {
+            $score = ScoreMerdeka::where([
+                ['id_student_class', $student_class->id],
+                ['id_school_year', $school_year->id],
+                ['id_teacher', $subject->id_teacher],
+            ])->get()->map(function ($item) {
+                $item->id_study_class = json_decode($item->id_study_class);
+                return $item;
+            });
             $score_competencies = ScoreCompetency::where([
                 ['id_student_class', $student_class->id],
                 ['id_teacher', $subject->id_teacher],
@@ -167,10 +346,14 @@ class PreviewController extends Controller
                 ['id_school_year', $school_year->id],
             ])->get();
 
-            $nilai = collect($score)->firstWhere('id_teacher', $subject->id_teacher)
-                ->where('id_study_class', $student_class->id_study_class)
-                ->where('id_course', $subject->id_course)
-                ->where('id_school_year', intval($subject->id_school_year))->first();
+            $nilai = null;
+            if (!$score->isEmpty()) {
+                $nilai = collect($score)
+                    ->firstWhere('id_teacher', $subject->id_teacher)
+                    ->where('id_study_class', $student_class->id_study_class)
+                    ->where('id_course', $subject->id_course)
+                    ->where('id_school_year', intval($subject->id_school_year))->first();
+            }
 
             $competency_archieved = [];
             $competency_improved = [];
@@ -185,15 +368,18 @@ class PreviewController extends Controller
                 $competency_archieved = collect($competency_archieved)->merge($archieved_names);
                 $competency_improved = collect($competency_improved)->merge($improved_names);
             }
+            // dd($nilai);
 
             $result_score[] = [
                 'id_course' => $subject->id_course,
                 'course' => $subject->course->name,
-                'score' => empty($score) ? null : $nilai->final_score,
-                'competence_archieved' => $competency_archieved->toArray(),
-                'competency_improved' => $competency_improved->toArray(),
+                'score' => empty($nilai) ? null : $nilai->final_score,
+                'competence_archieved' => $competency_archieved ? $competency_archieved->toArray() : [],
+                'competency_improved' => $competency_improved ? $competency_improved->toArray() : [],
+
             ];
         }
+        // dd($result_score);
         $result_extra = [];
 
         $extras = Extracurricular::where('status', 1)->get();
@@ -265,7 +451,6 @@ class PreviewController extends Controller
             'nip_headmaster' => $config ? $config->nip_headmaster : '',
             'signature' => $config ? public_path($config->signature) : null,
         ];
-        // dd($result_other);
         $pdf = PDF::loadView('content.previews.merdeka.v_print_pas', compact('result_score', 'result_extra', 'result_attendance', 'result_kop', 'result_profile', 'result_other'));
         return $pdf->stream();
     }

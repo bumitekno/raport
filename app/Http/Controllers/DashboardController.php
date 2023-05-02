@@ -78,6 +78,7 @@ class DashboardController extends Controller
         // dd($school_year);
         if ($school_year) {
             session()->put('id_school_year', $school_year->id);
+            session()->put('slug_year', $school_year->slug);
             session()->put('school_year', substr($school_year->name, 0, 9));
             session()->put('semester', substr($school_year->name, -1));
             session()->put('year', substr($school_year->name, 0, 4));
