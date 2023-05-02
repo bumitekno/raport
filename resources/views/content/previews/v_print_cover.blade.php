@@ -188,56 +188,58 @@
                         <td style="width: 25px">1.</td>
                         <td>Nama Peserta Didik (Lengkap)</td>
                         <td style="width: 20px">:</td>
-                        <td>{{ strtoupper($siswa['nama']) }}</td>
+                        <td>{{ strtoupper($student_class->student->name) }}</td>
                     </tr>
                     <tr>
                         <td>2.</td>
                         <td>Nomor Induk/NISN</td>
                         <td>:</td>
-                        <td>{{ $siswa['nis'] ?? '-' }}/{{ $siswa['nisn'] ?? '-' }}</td>
+                        <td>{{ $student_class->student->nis ?? '-' }}/{{ $student_class->student->nis ?? '-' }}</td>
                     </tr>
                     <tr>
                         <td>3.</td>
                         <td>Tempat ,Tanggal Lahir</td>
                         <td>:</td>
-                        <td>{{ ucwords($siswa['tempat_lahir']) }},
-                            {{ (new \App\Helpers\Help())->getTanggal($siswa['tgl_lahir']) }}</td>
+                        <td>{{ ucwords($student_class->student->place_of_birth) }},
+                            {{ DateHelper::getTanggal($student_class->student->date_of_birth) }}</td>
                     </tr>
                     <tr>
                         <td>4.</td>
                         <td>Jenis Kelamin</td>
                         <td>:</td>
-                        <td>{{ $siswa['jenkel'] ?? '-' }}</td>
+                        <td>{{ $student_class->student->gender ?? '-' }}</td>
                     </tr>
                     <tr>
                         <td>5.</td>
                         <td>Agama/Kepercayaan</td>
                         <td>:</td>
-                        <td>{{ ucwords($siswa['agama']) ?? '-' }}</td>
+                        <td>{{ ucwords($student_class->student->religion) ?? '-' }}</td>
                     </tr>
                     <tr>
                         <td>6.</td>
                         <td>Status dalam Keluarga</td>
                         <td>:</td>
-                        <td>{{ $siswa['status_keluarga'] ?? '-' }}</td>
+                        {{-- <td>{{ $siswa['status_keluarga'] ?? '-' }}</td> --}}
+                        <td>-</td>
                     </tr>
                     <tr>
                         <td>7.</td>
                         <td>Anak ke</td>
                         <td>:</td>
-                        <td>{{ $siswa['anak_ke'] ?? '-' }}</td>
+                        {{-- <td>{{ $siswa['anak_ke'] ?? '-' }}</td> --}}
+                        <td>-</td>
                     </tr>
                     <tr>
                         <td style="vertical-align: top">8.</td>
                         <td style="vertical-align: top">Alamat Peserta Didik</td>
                         <td style="vertical-align: top">:</td>
-                        <td>{{ $siswa['alamat'] ?? '-' }}</td>
+                        <td>{{ $student_teacher->student->address ?? '-' }}</td>
                     </tr>
                     <tr>
                         <td>9.</td>
                         <td>Nomor Telepon Rumah</td>
                         <td>:</td>
-                        <td>{{ $siswa['telepon'] ?? '-' }}</td>
+                        <td>{{ $student_class->student->phone ?? '-' }}</td>
                     </tr>
                     <tr>
                         <td>10.</td>
@@ -255,14 +257,15 @@
                         <td></td>
                         <td>Di kelas</td>
                         <td>:</td>
-                        <td>{{ $siswa['kls_diterima'] ?? '-' }}</td>
+                        {{-- <td>{{ $siswa['kls_diterima'] ?? '-' }}</td> --}}
+                        <td>-</td>
                     </tr>
                     <tr>
                         <td></td>
                         <td>Pada tanggal</td>
                         <td>:</td>
-                        <td>{{ $siswa['tgl_diterima'] == null ? '-' : (new \App\Helpers\Help())->getTanggal($siswa['tgl_diterima']) }}
-                        </td>
+                        {{-- <td>{{ $siswa['tgl_diterima'] == null ? '-' : (new \App\Helpers\Help())->getTanggal($siswa['tgl_diterima']) }} --}}
+                        <td>-</td>
                     </tr>
                     <tr>
                         <td>12.</td>
@@ -274,25 +277,29 @@
                         <td></td>
                         <td>a. Ayah</td>
                         <td>:</td>
-                        <td>{{ strtoupper($siswa['nama_ayah']) ?? '-' }}</td>
+                        {{-- <td>{{ strtoupper($siswa['nama_ayah']) ?? '-' }}</td> --}}
+                        <td>-</td>
                     </tr>
                     <tr>
                         <td></td>
                         <td>b. Ibu</td>
                         <td>:</td>
-                        <td>{{ strtoupper($siswa['nama_ibu']) ?? '-' }}</td>
+                        <td>-</td>
+                        {{-- <td>{{ strtoupper($siswa['nama_ibu']) ?? '-' }}</td> --}}
                     </tr>
                     <tr>
                         <td>13.</td>
                         <td>Alamat Orang Tua</td>
                         <td>:</td>
-                        <td>{{ $siswa['alamat_wali'] ?? '-' }}</td>
+                        <td>-</td>
+                        {{-- <td>{{ $siswa['alamat_wali'] ?? '-' }}</td> --}}
                     </tr>
                     <tr>
                         <td></td>
                         <td>Nomor Telepon Rumah</td>
                         <td>:</td>
-                        <td>{{ $siswa['telp_wali'] ?? '-' }}</td>
+                        {{-- <td>{{ $siswa['telp_wali'] ?? '-' }}</td> --}}
+                        <td>-</td>
                     </tr>
                     <tr>
                         <td>14.</td>
@@ -304,60 +311,41 @@
                         <td></td>
                         <td>a. Ayah</td>
                         <td>:</td>
-                        <td>{{ $siswa['pekerjaan_ayah'] ?? '-' }}</td>
+                        {{-- <td>{{ $siswa['pekerjaan_ayah'] ?? '-' }}</td> --}}
+                        <td>-</td>
                     </tr>
                     <tr>
                         <td></td>
                         <td>b. Ibu</td>
                         <td>:</td>
-                        <td>{{ $siswa['pekerjaan_ibu'] ?? '-' }}</td>
+                        {{-- <td>{{ $siswa['pekerjaan_ibu'] ?? '-' }}</td> --}}
+                        <td>-</td>
                     </tr>
                     <tr>
                         <td>15.</td>
                         <td>Nama Wali Peserta Didik</td>
                         <td>:</td>
-                        <td>{{ strtoupper($siswa['nama_wali']) }}</td>
+                        <td>-</td>
+                        {{-- <td>{{ strtoupper($siswa['nama_wali']) }}</td> --}}
                     </tr>
-                    <tr>
-                        <td>16.</td>
-                        <td>Alamat Wali Peserta Didik</td>
-                        <td>:</td>
-                        <td>
-                            <div style="min-height: 25px;">
-                                <p class="m-0 text-justify">{{ $siswa['alamat_wali'] ?? '-' }}
-                                </p>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td>Nomor Telepon Rumah</td>
-                        <td>:</td>
-                        <td>{{ $siswa['telp_wali'] ?? '-' }}</td>
-                    </tr>
-                    <tr>
-                        <td>17.</td>
-                        <td>Pekerjaan Wali Peserta Didik</td>
-                        <td>:</td>
-                        <td>{{ $siswa['pekerjaan_wali'] ?? '-' }}</td>
-                    </tr>
+                    
                 </table>
                 <br>
                 <table style="width: 100%">
                     <tr>
-                        <td style="width: 50%">
-                            <div
-                                style="display: inline; float: right; width: 3cm; height: 3.7cm; border: solid 1px #000; margin-right: 120px;">
-                        </td>
                         <td>
                             <div
-                            style="background: url('{{ $config['paraf'] }}') no-repeat left; background-size: 200px">
-                            <p> Kepala Sekolah</p>
+                                style="display: inline; float: right; width: 3cm; height: 3.7cm; border: solid 1px #000; margin-right: 120px; margin-top: 30px">
+                        </td>
+                        <td style="width: 500px">
+                            <div
+                                @if ($result_other['signature'] != null) style="background: url('{{ $result_other['signature'] }}') no-repeat left; background-size: 200px" @endif>
+                                <p> Kepala Sekolah</p>
 
-                            <br><br><br><br>
-                            <b>{{ $config['kepsek'] }}</b> <br>
-                            NIP. {{ $config['nip_kepsek'] }}
-                        </div>
+                                <br><br><br><br>
+                                <b>{{ $result_other['headmaster'] }}</b> <br>
+                                NIP. {{ $result_other['nip_headmaster'] }}
+                            </div>
 
                         </td>
                     </tr>
@@ -365,6 +353,109 @@
             </div>
         </div>
     </div>
+    <div style="page-break-before: always;"></div>
+    {{-- <div class="sampul-awal"> --}}
+    <div>
+        <h3 style="text-align: center;">KETERANGAN PINDAH SEKOLAH</h3>
+        <p>Nama Peserta Didik : .....................................</p>
+        <table style="width: 100%; border-collapse: collapse;">
+            <thead>
+                <tr>
+                    <th colspan="4" style="border: 2px solid black; text-align: center;">KELUAR</th>
+                </tr>
+                <tr>
+                    <th style="width: 15%; border: 2px solid black;">Tanggal</th>
+                    <th style="width: 15%; border: 2px solid black;">Kelas yang ditinggalkan</th>
+                    <th style="width: 30%; border: 2px solid black;">Sebab-sebab Keluar atau Atas
+                        Permintaan(Tertulis)</th>
+                    <th style="width: 40%; border: 2px solid black;">Tanda Tangan Kepala Sekolah, Stempel Sekolah,
+                        dan Tanda Tangan Orang Tua/Wali</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="border: 2px solid black;"></td>
+                    <td style="border: 2px solid black;"></td>
+                    <td style="border: 2px solid black;"></td>
+                    <td style="border: 2px solid black; padding: 10px;">
+                        <div>
+                            ................, .............................
+                            <br>
+                            Kepala Sekolah<br>
+                            <br>
+                            <br>
+                            <br>
+                            <b><u>....................................................</u></b><br>
+                            NIP.
+                        </div>
+                        <div>
+                            ................, .............................
+                            <br>
+                            Orang Tua/Wali<br>
+                            <br>
+                            <br>
+                            <br>
+                            <b><u>....................................................</u></b><br>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="border: 2px solid black;"></td>
+                    <td style="border: 2px solid black;"></td>
+                    <td style="border: 2px solid black;"></td>
+                    <td style="border: 2px solid black; padding: 10px;">
+                        <div>
+                            ................, .............................
+                            <br>
+                            Kepala Sekolah<br>
+                            <br>
+                            <br>
+                            <br>
+                            <b><u>....................................................</u></b><br>
+                            NIP.
+                        </div>
+                        <div>
+                            ................, .............................
+                            <br>
+                            Orang Tua/Wali<br>
+                            <br>
+                            <br>
+                            <br>
+                            <b><u>....................................................</u></b><br>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="border: 2px solid black;"></td>
+                    <td style="border: 2px solid black;"></td>
+                    <td style="border: 2px solid black;"></td>
+                    <td style="border: 2px solid black; padding: 10px;">
+                        <div>
+                            ................, .............................
+                            <br>
+                            Kepala Sekolah<br>
+                            <br>
+                            <br>
+                            <br>
+                            <b><u>....................................................</u></b><br>
+                            NIP.
+                        </div>
+                        <div>
+                            ................, .............................
+                            <br>
+                            Orang Tua/Wali<br>
+                            <br>
+                            <br>
+                            <br>
+                            <b><u>....................................................</u></b><br>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    {{-- </div> --}}
 </body>
 
 </html>

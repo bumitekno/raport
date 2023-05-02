@@ -206,7 +206,15 @@ class PreviewController extends Controller
         }
         $setting = json_decode(Storage::get('settings.json'), true);
         // dd($setting);
-        $pdf = PDF::loadView('content.previews.v_print_cover', compact('cover', 'student_class', 'setting'));
+        $config = Config::where('id_school_year', $school_year->id)->first();
+        // dd($config);
+        $result_other = [
+            'headmaster' => $config ? $config->headmaster : '',
+            'nip_headmaster' => $config ? $config->nip_headmaster : '',
+            'signature' => $config ? public_path($config->signature) : null,
+        ];
+        // return view('content.previews.v_print_cover', compact('cover', 'student_class', 'setting', 'result_other'));
+        $pdf = PDF::loadView('content.previews.v_print_cover', compact('cover', 'student_class', 'setting', 'result_other'));
         return $pdf->stream();
     }
 
