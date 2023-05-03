@@ -61,7 +61,7 @@ Route::middleware('auth:user,admin,parent,teacher')->group(function () {
 
     Route::prefix('my-profile')->name('profiles.')->group(function () {
         Route::get('/', [ProfileController::class, 'index'])->name('index');
-        // Route::post('updateOrCreate', [ParentController::class, 'updateOrCreate'])->name('updateOrCreate');
+        Route::post('updateOrCreate', [ProfileController::class, 'update'])->name('update');
         // Route::get('delete', [ParentController::class, 'destroy'])->name('destroy');
     });
 
