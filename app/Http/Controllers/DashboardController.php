@@ -34,7 +34,6 @@ class DashboardController extends Controller
 
     public function user()
     {
-        // dd(session()->all());
         session()->put('title', 'Dashboard Siswa');
         $school_year = SchoolYear::where('status', 1)->first();
 
@@ -48,7 +47,7 @@ class DashboardController extends Controller
             return view('pages.v_error');
         }
         $student_class = StudentClass::where([
-            ['id_student', Auth::guard('user')->user()->id],
+            ['id_student', session('id_student')],
             ['year', session('year')],
             ['status', 1],
         ])->first();

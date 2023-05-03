@@ -42,11 +42,10 @@ class AuthController extends Controller
             return redirect()->route('user.dashboard');
         } else if (Auth::guard('parent')->attempt($this->check_credentials($request), $request->filled('remember'))) {
             session()->put('role', 'parent');
-            return response()->json([
-                'message' =>  'Login sebagai Pengguna berhasil',
-                'status' =>  true,
-                'target_url' =>  route('user.dashboard'),
-            ]);
+            session()->put('id_student', Auth::guard('parent')->user()->id_user);
+            Helper::alert('success', 'Selamat Datang ' . Auth::guard('parent')->user()->name . '!', 'Berhasil Login');
+            return redirect()->route('user.dashboard');
+            // dd('login sebagai parent');
         }
         Helper::alert('error', 'Anda tidak mempunyai akses untuk login', '');
         return redirect()->back()->withInput($request->input());
@@ -54,6 +53,7 @@ class AuthController extends Controller
 
     protected function check_credentials(Request $request)
     {
+        // dd($request);
         if (filter_var($request->get('username'), FILTER_VALIDATE_EMAIL)) {
             return ['email' => $request->get('username'), 'password' => $request->get('password'), 'status' => 1];
         }

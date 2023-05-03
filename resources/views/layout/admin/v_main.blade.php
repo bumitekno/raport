@@ -65,7 +65,8 @@
                                     $file = $user->file;
                                     $role = session('role');
                                 @endphp
-                                <img src="{{ $file ? asset($file) : asset('asset/img/90x90.jpg') }}" class="img-fluid mr-2" alt="avatar">
+                                <img src="{{ $file ? asset($file) : asset('asset/img/90x90.jpg') }}"
+                                    class="img-fluid mr-2" alt="avatar">
                                 {{-- <img src="{{ asset('asset/img/90x90.jpg') }}" class="img-fluid mr-2" alt="avatar"> --}}
                                 <div class="media-body">
                                     <h5 class="text-capitalize">{{ $name }}</h5>
@@ -74,7 +75,7 @@
                             </div>
                         </div>
                         <div class="dropdown-item">
-                            <a href="user_profile.html">
+                            <a href="{{ route('profiles.index') }}">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                     viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                     stroke-linecap="round" stroke-linejoin="round" class="feather feather-user">

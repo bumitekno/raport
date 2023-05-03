@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\Helper;
 use App\Http\Requests\Parent\StoreParentRequest;
 use App\Http\Requests\Parent\UpdateParentRequest;
+use App\Http\Requests\User\ParentRequest;
 use App\Models\UserParent;
 use Illuminate\Http\Request;
 
@@ -14,69 +16,45 @@ class ParentController extends Controller
         //
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function edit(Request $request)
     {
-        //
+        // dd('edit parent');
+        $parent = UserParent::find($request->id);
+        return response()->json($parent);
+        // dd($parent);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\StoreParentRequest  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(StoreParentRequest $request)
+    public function updateOrCreate(ParentRequest $request)
     {
-        //
+        // dd($request);
+        $data = $request->validated();
+        $userParent = new UserParent;
+
+        if ($request->id != null) {
+            $userParent = UserParent::findOrFail($request->id);
+        }
+
+        $userParent->fill([
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'id_user' => $data['id_user'],
+            'type' => $data['type'],
+            'slug' => str_slug($data['name']) . Helper::str_random(5),
+        ]);
+
+        if (!$request->id && $request->has('password')) {
+            $userParent->password = bcrypt($data['password']);
+        }
+
+        $userParent->save();
+
+        return response()->json(['success' => 'Keluarga berhasil terupdate.']);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\UserParent  $teacher
-     * @return \Illuminate\Http\Response
-     */
-    public function show(UserParent $teacher)
+    public function destroy(Request $request)
     {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\UserParent  $teacher
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(UserParent $teacher)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\UpdateParentRequest  $request
-     * @param  \App\Models\UserParent  $teacher
-     * @return \Illuminate\Http\Response
-     */
-    public function update(UpdateParentRequest $request, UserParent $teacher)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\UserParent  $teacher
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(UserParent $teacher)
-    {
-        //
+        // dd($request);
+        UserParent::find($request['id'])->delete();
+        return response()->json(['success' => 'Keluarga berhasil dihapus.']);
     }
 }

@@ -1,18 +1,16 @@
 <div class="sidebar-wrapper sidebar-theme">
-
     <nav id="sidebar">
         <div class="profile-info">
             <figure class="user-cover-image"></figure>
             <div class="user-info">
-                <img src="{{ Auth::guard('user')->user()->file ? asset(Auth::guard('user')->user()->file) : asset('asset/img/90x90.jpg') }}"
+                <img src="{{ Auth::user()->file ? asset(Auth::user()->file) : asset('asset/img/90x90.jpg') }}"
                     alt="avatar">
-                <h6 class="">{{ Auth::guard('user')->user()->name }}</h6>
+                <h6 class="">{{ Auth::user()->name }}</h6>
                 <p class="text-capitalize">{{ session('role') }}</p>
             </div>
         </div>
         <div class="shadow-bottom"></div>
         <ul class="list-unstyled menu-categories" id="accordionExample">
-
             <li class="menu">
                 <a href="{{ route('user.dashboard') }}" aria-expanded="{{ Request::is('home*') ? 'true' : 'false' }}"
                     class="dropdown-toggle">
@@ -29,7 +27,6 @@
                     </div>
                 </a>
             </li>
-
             <li class="menu">
                 <a href="{{ route('previews.index') }}" aria-expanded="{{ Request::is('preview*') ? 'true' : 'false' }}"
                     class="dropdown-toggle">
@@ -46,11 +43,6 @@
                     </div>
                 </a>
             </li>
-
-
-
         </ul>
-
     </nav>
-
 </div>

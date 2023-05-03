@@ -21,9 +21,11 @@ use App\Http\Controllers\LetterheadController;
 use App\Http\Controllers\LevelController;
 use App\Http\Controllers\MajorController;
 use App\Http\Controllers\P5Controller;
+use App\Http\Controllers\ParentController;
 use App\Http\Controllers\PasConfigurationController;
 use App\Http\Controllers\PredicatedScoreController;
 use App\Http\Controllers\PreviewController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PtsConfigurationController;
 use App\Http\Controllers\SchoolYearController;
 use App\Http\Controllers\ScoreCompetencyController;
@@ -57,17 +59,18 @@ Route::middleware('auth:user,admin,parent,teacher')->group(function () {
     Route::get('home', [DashboardController::class, 'user'])->name('user.dashboard');
     Route::get('statistic', [DashboardController::class, 'teacher'])->name('teacher.dashboard');
 
+    Route::prefix('my-profile')->name('profiles.')->group(function () {
+        Route::get('/', [ProfileController::class, 'index'])->name('index');
+        // Route::post('updateOrCreate', [ParentController::class, 'updateOrCreate'])->name('updateOrCreate');
+        // Route::get('delete', [ParentController::class, 'destroy'])->name('destroy');
+    });
+
     //maen session
     Route::post('set-template', function (Request $request) {
         session(['template' => $request->curriculum]);
         return response()->json(['success' => true]);
     })->name('session.template');
 
-    // Route::get('set-layout', function (Request $request) {
-    //     session(['layout' => $request->layout]);
-
-    //     return redirect()->back();
-    // })->name('session.layout');
     Route::get('set-layout', [SessionController::class, 'layout'])->name('session.layout');
 
     // session menu guru
@@ -88,6 +91,12 @@ Route::middleware('auth:user,admin,parent,teacher')->group(function () {
         'users' => 'users:slug',
     ])->except(['show', 'destroy']);
     Route::get('users/destroy/{slug}', [UserController::class, 'destroy'])->name('users.destroy');
+
+    Route::prefix('family')->name('families.')->group(function () {
+        Route::get('edit', [ParentController::class, 'edit'])->name('edit');
+        Route::post('updateOrCreate', [ParentController::class, 'updateOrCreate'])->name('updateOrCreate');
+        Route::get('delete', [ParentController::class, 'destroy'])->name('destroy');
+    });
 
 
     // Master
