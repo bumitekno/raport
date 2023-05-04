@@ -73,7 +73,8 @@ class TeacherController extends Controller
     public function edit(Teacher $teacher, $slug)
     {
         $teacher = Teacher::where('slug', $slug)->firstOrFail();
-        return view('content.teachers.v_form_teacher', compact('teacher'));
+        $classes = StudyClass::where('status', 1)->get();
+        return view('content.teachers.v_form_teacher', compact('teacher', 'classes'));
     }
 
     public function update(UpdateTeacherRequest $request, $slug)

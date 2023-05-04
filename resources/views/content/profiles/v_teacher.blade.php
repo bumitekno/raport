@@ -31,7 +31,7 @@
                                             <div class="upload mt-4 pr-md-4">
                                                 <input type="file" name="file" id="input-file-max-fs" class="dropify"
                                                     data-default-file="{{ Auth::user()->file ? asset(Auth::user()->file) : asset('asset/img/200x200.jpg') }}"
-                                                    data-max-file-size="2M"  />
+                                                    data-max-file-size="2M" />
                                                 <p class="mt-2"><i class="flaticon-cloud-upload mr-1"></i> Upload Picture
                                                 </p>
                                             </div>
@@ -166,6 +166,104 @@
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="form-group">
+                                                <label for="nip">NIP</label>
+                                                <input type="text" class="form-control" name="nip" placeholder="NIP"
+                                                    value="{{ old('nip', Auth::user()->nip) }}">
+                                                @error('nip')
+                                                    <div class="invalid-feedback d-block">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="nik">NIK</label>
+                                                <input type="text" class="form-control" name="nik"
+                                                    placeholder="NIK" value="{{ old('nik', Auth::user()->nik) }}">
+                                                @error('nik')
+                                                    <div class="invalid-feedback d-block">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="nip">NUPTK</label>
+                                                <input type="text" class="form-control" name="nuptk"
+                                                    placeholder="NUPTK" value="{{ old('nuptk', Auth::user()->nuptk) }}">
+                                                @error('nuptk')
+                                                    <div class="invalid-feedback d-block">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="nik">Agama</label>
+                                                <select name="religion" id="religion" class="form-control">
+                                                    <option value="" selected disabled>Pilih Agama</option>
+                                                    <option value="islam"
+                                                        {{ old('religion', Auth::user()->religion) == 'islam' ? 'selected' : (old('religion') == 'islam' ? 'selected' : '') }}>
+                                                        Islam</option>
+                                                    <option value="protestan"
+                                                        {{ old('religion', Auth::user()->religion) == 'protestan' ? 'selected' : (old('religion') == 'protestan' ? 'selected' : '') }}>
+                                                        Protestan</option>
+                                                    <option value="katholik"
+                                                        {{ old('religion', Auth::user()->religion) == 'katholik' ? 'selected' : (old('religion') == 'katholik' ? 'selected' : '') }}>
+                                                        Katholik</option>
+                                                    <option value="budha"
+                                                        {{ old('religion', Auth::user()->religion) == 'budha' ? 'selected' : (old('religion') == 'budha' ? 'selected' : '') }}>
+                                                        Budha</option>
+                                                    <option value="hindu"
+                                                        {{ old('religion', Auth::user()->religion) == 'hindu' ? 'selected' : (old('religion') == 'hindu' ? 'selected' : '') }}>
+                                                        Hindu</option>
+                                                    <option value="konghucu"
+                                                        {{ old('religion', Auth::user()->religion) == 'konghucu' ? 'selected' : (old('religion') == 'konghucu' ? 'selected' : '') }}>
+                                                        Konghucu</option>
+                                                </select>
+                                                @error('religion')
+                                                    <div class="invalid-feedback d-block">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="type">Jenis Guru</label>
+                                                <select name="type" id="type" class="form-control">
+                                                    <option value="" selected disabled>Pilih Jenis Guru</option>
+                                                    <option value="teacher"
+                                                        {{ old('type', Auth::user()->type) == 'teacher' ? 'selected' : (old('type') == 'teacher' ? 'selected' : '') }}>
+                                                        Pengajar</option>
+                                                    <option value="homeroom"
+                                                        {{ old('type', Auth::user()->type) == 'homeroom' ? 'selected' : (old('type') == 'homeroom' ? 'selected' : '') }}>
+                                                        Wali Kelas</option>
+                                                    <option value="other"
+                                                        {{ old('type', Auth::user()->type) == 'other' ? 'selected' : (old('type') == 'other' ? 'selected' : '') }}>
+                                                        Lainnya</option>
+                                                </select>
+                                                @error('type')
+                                                    <div class="invalid-feedback d-block">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6" id="showClass">
+                                            <div class="form-group">
+                                                <label>Kelas yang di bimbing</label>
+                                                <div class="n-chk px-2 my-auto">
+                                                    @foreach ($classes as $class)
+                                                        <label
+                                                            class="new-control new-radio radio-classic-primary mb-0 mr-2">
+                                                            <input type="radio" class="new-control-input"
+                                                                value="{{ $class['id'] }}" name="id_class" {{ Auth::user()->type == 'teacher' && $class['id'] == Auth::user()->id_class ? 'checked' : '' }}>
+                                                            <span
+                                                                class="new-control-indicator"></span>{{ $class['name'] }}
+                                                        </label>
+                                                    @endforeach
+                                                </div>
+                                                @error('id_class')
+                                                    <div class="invalid-feedback d-block">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
                                                 <label for="phone">Telepon</label>
                                                 <input type="text" class="form-control" name="phone"
                                                     placeholder="Telepon"
@@ -179,15 +277,19 @@
                                             <div class="form-group">
                                                 <label for="country">Jenis Kelamin</label>
                                                 <select class="form-control" name="gender">
-                                                    <option value="male" {{ old('gender', Auth::user()->gender) == 'male' ? 'selected' : (old('gender') == 'male' ? 'selected' : '') }}>Laki - laki</option>
-                                                    <option value="female" {{ old('gender', Auth::user()->gender) == 'female' ? 'selected' : (old('gender') == 'female' ? 'selected' : '') }}>Perempuan</option>
+                                                    <option value="male"
+                                                        {{ old('gender', Auth::user()->gender) == 'male' ? 'selected' : (old('gender') == 'male' ? 'selected' : '') }}>
+                                                        Laki - laki</option>
+                                                    <option value="female"
+                                                        {{ old('gender', Auth::user()->gender) == 'female' ? 'selected' : (old('gender') == 'female' ? 'selected' : '') }}>
+                                                        Perempuan</option>
                                                 </select>
                                                 @error('gender')
                                                     <div class="invalid-feedback d-block">{{ $message }}</div>
                                                 @enderror
                                             </div>
                                         </div>
-                                        
+
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="phone">Tempat Lahir</label>
@@ -199,7 +301,7 @@
                                                 @enderror
                                             </div>
                                         </div>
-                                        
+
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="website1">Alamat</label>
@@ -296,6 +398,14 @@
                 $.ajaxSetup({
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+
+                $('#type').on('change', function() {
+                    if ($(this).val() === 'homeroom') {
+                        $('#showClass').removeClass('d-none');
+                    } else {
+                        $('#showClass').addClass('d-none');
                     }
                 });
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Helpers\Helper;
 use App\Helpers\ImageHelper;
 use App\Http\Requests\User\ProfileRequest;
+use App\Models\StudyClass;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -18,7 +19,8 @@ class ProfileController extends Controller
                 return view('content.profiles.v_admin');
                 break;
             case 'teacher':
-                return view('content.profiles.v_teacher');
+                $classes = StudyClass::where('status', 1)->get();
+                return view('content.profiles.v_teacher', compact('classes'));
                 break;
 
             default:
