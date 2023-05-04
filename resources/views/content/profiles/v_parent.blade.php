@@ -55,88 +55,14 @@
 
                                                     </div>
                                                     <div class="col-sm-6">
-                                                        <label class="dob-input">Tanggal Lahir</label>
-                                                        <div class="d-sm-flex d-block">
-                                                            <div class="form-group mr-1">
-                                                                <select class="form-control" name="day"
-                                                                    id="exampleFormControlSelect1">
-                                                                    <option selected disabled>Hari</option>
-                                                                    @for ($i = 1; $i <= 31; $i++)
-                                                                        <option value="{{ $i }}"
-                                                                            {{ old('day', date('d', strtotime(Auth::user()->date_of_birth))) == $i ? 'selected' : (old('day') == $i ? 'selected' : '') }}>
-                                                                            {{ $i }}
-                                                                        </option>
-                                                                    @endfor
-                                                                </select>
-                                                                @error('day')
-                                                                    <div class="invalid-feedback d-block">{{ $message }}
-                                                                    </div>
-                                                                @enderror
-                                                            </div>
-                                                            <div class="form-group mr-1">
-                                                                <select class="form-control" name="month">
-                                                                    <option selected disabled>Bulan</option>
-                                                                    <option value="01"
-                                                                        {{ old('month', date('m', strtotime(Auth::user()->date_of_birth))) == '01' ? 'selected' : (old('month') == '01' ? 'selected' : '') }}>
-                                                                        Januari</option>
-                                                                    <option value="02"
-                                                                        {{ old('month', date('m', strtotime(Auth::user()->date_of_birth))) == '02' ? 'selected' : (old('month') == '02' ? 'selected' : '') }}>
-                                                                        Februari</option>
-                                                                    <option value="03"
-                                                                        {{ old('month', date('m', strtotime(Auth::user()->date_of_birth))) == '03' ? 'selected' : (old('month') == '03' ? 'selected' : '') }}>
-                                                                        Maret</option>
-                                                                    <option value="04"
-                                                                        {{ old('month', date('m', strtotime(Auth::user()->date_of_birth))) == '04' ? 'selected' : (old('month') == '04' ? 'selected' : '') }}>
-                                                                        April</option>
-                                                                    <option value="05"
-                                                                        {{ old('month', date('m', strtotime(Auth::user()->date_of_birth))) == '05' ? 'selected' : (old('month') == '05' ? 'selected' : '') }}>
-                                                                        Mei</option>
-                                                                    <option value="06"
-                                                                        {{ old('month', date('m', strtotime(Auth::user()->date_of_birth))) == '06' ? 'selected' : (old('month') == '06' ? 'selected' : '') }}>
-                                                                        Juni</option>
-                                                                    <option value="07"
-                                                                        {{ old('month', date('m', strtotime(Auth::user()->date_of_birth))) == '07' ? 'selected' : (old('month') == '07' ? 'selected' : '') }}>
-                                                                        Juli</option>
-                                                                    <option value="08"
-                                                                        {{ old('month', date('m', strtotime(Auth::user()->date_of_birth))) == '08' ? 'selected' : (old('month') == '08' ? 'selected' : '') }}>
-                                                                        Agustus</option>
-                                                                    <option value="09"
-                                                                        {{ old('month', date('m', strtotime(Auth::user()->date_of_birth))) == '09' ? 'selected' : (old('month') == '09' ? 'selected' : '') }}>
-                                                                        September</option>
-                                                                    <option value="10"
-                                                                        {{ old('month', date('m', strtotime(Auth::user()->date_of_birth))) == '10' ? 'selected' : (old('month') == '10' ? 'selected' : '') }}>
-                                                                        Oktober</option>
-                                                                    <option value="11"
-                                                                        {{ old('month', date('m', strtotime(Auth::user()->date_of_birth))) == '11' ? 'selected' : (old('month') == '11' ? 'selected' : '') }}>
-                                                                        November</option>
-                                                                    <option value="12"
-                                                                        {{ old('month', date('m', strtotime(Auth::user()->date_of_birth))) == '12' ? 'selected' : (old('month') == '12' ? 'selected' : '') }}>
-                                                                        Desember</option>
-                                                                </select>
-                                                                @error('month')
-                                                                    <div class="invalid-feedback d-block">{{ $message }}
-                                                                    </div>
-                                                                @enderror
-                                                            </div>
-                                                            <div class="form-group mr-1">
-                                                                <select class="form-control" name="year">
-                                                                    <option selected disabled>Tahun</option>
-                                                                    @php
-                                                                        $current_year = (int) date('Y');
-                                                                        $start_year = (int) date('Y') - 60;
-                                                                    @endphp
-                                                                    @for ($year = $current_year; $year >= $start_year; $year--)
-                                                                        <option value="{{ $year }}"
-                                                                            {{ old('year', date('Y', strtotime(Auth::user()->date_of_birth))) == $year ? 'selected' : (old('year') == $year ? 'selected' : '') }}>
-                                                                            {{ $year }}
-                                                                        </option>
-                                                                    @endfor
-                                                                </select>
-                                                                @error('year')
-                                                                    <div class="invalid-feedback d-block">{{ $message }}
-                                                                    </div>
-                                                                @enderror
-                                                            </div>
+                                                        <div class="form-group">
+                                                            <label for="fullName">NIK</label>
+                                                            <input type="text" class="form-control" name="nik"
+                                                                placeholder="Nama Lengkap"
+                                                                value="{{ old('nik', Auth::user()->nik) }}">
+                                                            @error('nik')
+                                                                <div class="invalid-feedback d-block">{{ $message }}</div>
+                                                            @enderror
                                                         </div>
                                                     </div>
                                                 </div>
@@ -164,36 +90,6 @@
                             <div class="row">
                                 <div class="col-md-11 mx-auto">
                                     <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="nip">NIP</label>
-                                                <input type="text" class="form-control" name="nip" placeholder="NIP"
-                                                    value="{{ old('nip', Auth::user()->nip) }}">
-                                                @error('nip')
-                                                    <div class="invalid-feedback d-block">{{ $message }}</div>
-                                                @enderror
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="nik">NIK</label>
-                                                <input type="text" class="form-control" name="nik"
-                                                    placeholder="NIK" value="{{ old('nik', Auth::user()->nik) }}">
-                                                @error('nik')
-                                                    <div class="invalid-feedback d-block">{{ $message }}</div>
-                                                @enderror
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="nip">NUPTK</label>
-                                                <input type="text" class="form-control" name="nuptk"
-                                                    placeholder="NUPTK" value="{{ old('nuptk', Auth::user()->nuptk) }}">
-                                                @error('nuptk')
-                                                    <div class="invalid-feedback d-block">{{ $message }}</div>
-                                                @enderror
-                                            </div>
-                                        </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="nik">Agama</label>
@@ -225,39 +121,23 @@
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label for="type">Jenis Guru</label>
+                                                <label for="type">Status Keluarga</label>
                                                 <select name="type" id="type" class="form-control">
-                                                    <option value="" selected disabled>Pilih Jenis Guru</option>
-                                                    <option value="teacher"
-                                                        {{ old('type', Auth::user()->type) == 'teacher' ? 'selected' : (old('type') == 'teacher' ? 'selected' : '') }}>
-                                                        Pengajar</option>
-                                                    <option value="homeroom"
-                                                        {{ old('type', Auth::user()->type) == 'homeroom' ? 'selected' : (old('type') == 'homeroom' ? 'selected' : '') }}>
-                                                        Wali Kelas</option>
+                                                    <option value="" selected disabled>Pilih Status Keluarga</option>
+                                                    <option value="father"
+                                                        {{ old('type', Auth::user()->type) == 'father' ? 'selected' : (old('type') == 'father' ? 'selected' : '') }}>
+                                                        Ayah</option>
+                                                    <option value="mother"
+                                                        {{ old('type', Auth::user()->type) == 'mother' ? 'selected' : (old('type') == 'mother' ? 'selected' : '') }}>
+                                                        Ibu</option>
+                                                    <option value="guardian"
+                                                        {{ old('type', Auth::user()->type) == 'guardian' ? 'selected' : (old('type') == 'guardian' ? 'selected' : '') }}>
+                                                        Wali</option>
                                                     <option value="other"
                                                         {{ old('type', Auth::user()->type) == 'other' ? 'selected' : (old('type') == 'other' ? 'selected' : '') }}>
                                                         Lainnya</option>
                                                 </select>
                                                 @error('type')
-                                                    <div class="invalid-feedback d-block">{{ $message }}</div>
-                                                @enderror
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6 {{ Auth::user()->type != 'homeroom' ? 'd-none' : '' }}" id="showClass">
-                                            <div class="form-group">
-                                                <label>Kelas yang di bimbing</label>
-                                                <div class="n-chk px-2 my-auto">
-                                                    @foreach ($classes as $class)
-                                                        <label
-                                                            class="new-control new-radio radio-classic-primary mb-0 mr-2">
-                                                            <input type="radio" class="new-control-input"
-                                                                value="{{ $class['id'] }}" name="id_class" {{ Auth::user()->type == 'homeroom' && $class['id'] == Auth::user()->id_class ? 'checked' : '' }}>
-                                                            <span
-                                                                class="new-control-indicator"></span>{{ $class['name'] }}
-                                                        </label>
-                                                    @endforeach
-                                                </div>
-                                                @error('id_class')
                                                     <div class="invalid-feedback d-block">{{ $message }}</div>
                                                 @enderror
                                             </div>
@@ -275,33 +155,23 @@
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label for="country">Jenis Kelamin</label>
-                                                <select class="form-control" name="gender">
-                                                    <option value="male"
-                                                        {{ old('gender', Auth::user()->gender) == 'male' ? 'selected' : (old('gender') == 'male' ? 'selected' : '') }}>
-                                                        Laki - laki</option>
-                                                    <option value="female"
-                                                        {{ old('gender', Auth::user()->gender) == 'female' ? 'selected' : (old('gender') == 'female' ? 'selected' : '') }}>
-                                                        Perempuan</option>
+                                                <label for="phone">Pekerjaan</label>
+                                                @php
+                                                    $jobs = json_decode(Storage::get('profession.json'), true);
+                                                @endphp
+                                                <select name="job" id="job" class="form-control">
+                                                    <option value="" selected disabled>Pilih Pekerjaan</option>
+                                                    @foreach ($jobs as $job)
+                                                        <option value="{{ $job }}"
+                                                            {{ old('job', Auth::user()->job) == $job ? 'selected' : (old('job') == $job ? 'selected' : '') }}>
+                                                            {{ $job }}</option>
+                                                    @endforeach
                                                 </select>
-                                                @error('gender')
+                                                @error('job')
                                                     <div class="invalid-feedback d-block">{{ $message }}</div>
                                                 @enderror
                                             </div>
                                         </div>
-
-                                        <div class="col-md-6">
-                                            <div class="form-group">
-                                                <label for="phone">Tempat Lahir</label>
-                                                <input type="text" class="form-control" name="place_of_birth"
-                                                    placeholder="Tempat lahir"
-                                                    value="{{ old('place_of_birth', Auth::user()->place_of_birth) }}">
-                                                @error('place_of_birth')
-                                                    <div class="invalid-feedback d-block">{{ $message }}</div>
-                                                @enderror
-                                            </div>
-                                        </div>
-
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="website1">Alamat</label>
@@ -398,14 +268,6 @@
                 $.ajaxSetup({
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    }
-                });
-
-                $('#type').on('change', function() {
-                    if ($(this).val() === 'homeroom') {
-                        $('#showClass').removeClass('d-none');
-                    } else {
-                        $('#showClass').addClass('d-none');
                     }
                 });
 

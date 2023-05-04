@@ -3,6 +3,8 @@
     @push('styles')
         @include('package.loader.loader_css')
         @include('package.dropify.dropify_css')
+        @include('package.flatpickr.flatpickr_css')
+        @include('package.bootstrap-select.bootstrap-select_css')
         <link rel="stylesheet" type="text/css" href="{{ asset('asset/custom/account-setting.css') }}">
     @endpush
     <div class="layout-px-spacing">
@@ -166,30 +168,31 @@
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label for="nip">NIP</label>
-                                                <input type="text" class="form-control" name="nip" placeholder="NIP"
-                                                    value="{{ old('nip', Auth::user()->nip) }}">
-                                                @error('nip')
+                                                <label for="nip">NIS</label>
+                                                <input type="text" class="form-control" name="nis" placeholder="NIS"
+                                                    value="{{ old('nis', Auth::user()->nis) }}">
+                                                @error('nis')
                                                     <div class="invalid-feedback d-block">{{ $message }}</div>
                                                 @enderror
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label for="nik">NIK</label>
-                                                <input type="text" class="form-control" name="nik"
-                                                    placeholder="NIK" value="{{ old('nik', Auth::user()->nik) }}">
-                                                @error('nik')
+                                                <label for="nik">NISN</label>
+                                                <input type="text" class="form-control" name="nisn"
+                                                    placeholder="NISN" value="{{ old('nisn', Auth::user()->nisn) }}">
+                                                @error('nisn')
                                                     <div class="invalid-feedback d-block">{{ $message }}</div>
                                                 @enderror
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label for="nip">NUPTK</label>
-                                                <input type="text" class="form-control" name="nuptk"
-                                                    placeholder="NUPTK" value="{{ old('nuptk', Auth::user()->nuptk) }}">
-                                                @error('nuptk')
+                                                <label for="nip">Tahun Angkatan</label>
+                                                <input type="text" class="form-control" name="entry_year"
+                                                    placeholder="Tahun Angkatan"
+                                                    value="{{ old('entry_year', Auth::user()->entry_year) }}">
+                                                @error('entry_year')
                                                     <div class="invalid-feedback d-block">{{ $message }}</div>
                                                 @enderror
                                             </div>
@@ -225,43 +228,33 @@
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label for="type">Jenis Guru</label>
-                                                <select name="type" id="type" class="form-control">
-                                                    <option value="" selected disabled>Pilih Jenis Guru</option>
-                                                    <option value="teacher"
-                                                        {{ old('type', Auth::user()->type) == 'teacher' ? 'selected' : (old('type') == 'teacher' ? 'selected' : '') }}>
-                                                        Pengajar</option>
-                                                    <option value="homeroom"
-                                                        {{ old('type', Auth::user()->type) == 'homeroom' ? 'selected' : (old('type') == 'homeroom' ? 'selected' : '') }}>
-                                                        Wali Kelas</option>
-                                                    <option value="other"
-                                                        {{ old('type', Auth::user()->type) == 'other' ? 'selected' : (old('type') == 'other' ? 'selected' : '') }}>
-                                                        Lainnya</option>
+                                                <label for="type">Status Keluarga</label>
+                                                <select name="family_status" id="family_status" class="form-control">
+                                                    <option value="" selected disabled>Pilih Status Keluarga</option>
+                                                    <option value="kandung"
+                                                        {{ old('family_status', Auth::user()->family_status) == 'kandung' ? 'selected' : (old('family_status') == 'kandung' ? 'selected' : '') }}>
+                                                        Kandung</option>
+                                                    <option value="tiri"
+                                                        {{ old('family_status', Auth::user()->family_status) == 'tiri' ? 'selected' : (old('family_status') == 'tiri' ? 'selected' : '') }}>
+                                                        Tiri/Angkat/Asuh</option>
                                                 </select>
-                                                @error('type')
+                                                @error('family_status')
                                                     <div class="invalid-feedback d-block">{{ $message }}</div>
                                                 @enderror
                                             </div>
                                         </div>
-                                        <div class="col-md-6 {{ Auth::user()->type != 'homeroom' ? 'd-none' : '' }}" id="showClass">
+                                        <div class="col-md-6">
                                             <div class="form-group">
-                                                <label>Kelas yang di bimbing</label>
-                                                <div class="n-chk px-2 my-auto">
-                                                    @foreach ($classes as $class)
-                                                        <label
-                                                            class="new-control new-radio radio-classic-primary mb-0 mr-2">
-                                                            <input type="radio" class="new-control-input"
-                                                                value="{{ $class['id'] }}" name="id_class" {{ Auth::user()->type == 'homeroom' && $class['id'] == Auth::user()->id_class ? 'checked' : '' }}>
-                                                            <span
-                                                                class="new-control-indicator"></span>{{ $class['name'] }}
-                                                        </label>
-                                                    @endforeach
-                                                </div>
-                                                @error('id_class')
+                                                <label for="nip">Anak ke</label>
+                                                <input type="text" class="form-control" name="child_off"
+                                                    placeholder="Urutan anak ke berapa"
+                                                    value="{{ old('child_off', Auth::user()->child_off) }}">
+                                                @error('child_off')
                                                     <div class="invalid-feedback d-block">{{ $message }}</div>
                                                 @enderror
                                             </div>
                                         </div>
+
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="phone">Telepon</label>
@@ -285,6 +278,47 @@
                                                         Perempuan</option>
                                                 </select>
                                                 @error('gender')
+                                                    <div class="invalid-feedback d-block">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="phone">Sekolah Asal</label>
+                                                <input type="text" class="form-control" name="school_from"
+                                                    placeholder="Sekolah Asal"
+                                                    value="{{ old('school_from', Auth::user()->school_from) }}">
+                                                @error('school_from')
+                                                    <div class="invalid-feedback d-block">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="phone">Kelas Penerima</label>
+                                                <select name="accepted_grade" class="form-control selectpicker"
+                                                    data-live-search="true">
+                                                    <option value="" selected disabled>-- Diterima di kelas --
+                                                    </option>
+                                                    @foreach ($classes as $class)
+                                                        <option value="{{ $class->id }}"
+                                                            {{ old('accepted_grade', Auth::user()->accepted_grade) == $class->id ? 'selected' : '' }}>
+                                                            {{ $class->name }}
+                                                        </option>
+                                                    @endforeach
+                                                </select>
+                                                @error('accepted_grade')
+                                                    <div class="invalid-feedback d-block">{{ $message }}</div>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="phone">Tanggal Diterima</label>
+                                                <input type="text" class="form-control basicPicker active" name="accepted_date"
+                                                    placeholder="Tanggal diterima"
+                                                    value="{{ old('accepted_date', Auth::user()->accepted_date) }}">
+                                                @error('accepted_date')
                                                     <div class="invalid-feedback d-block">{{ $message }}</div>
                                                 @enderror
                                             </div>
@@ -393,6 +427,8 @@
     </div>
     @push('scripts')
         @include('package.dropify.dropify_js')
+        @include('package.bootstrap-select.bootstrap-select_js')
+        @include('package.flatpickr.flatpickr_js')
         <script>
             $(function() {
                 $.ajaxSetup({

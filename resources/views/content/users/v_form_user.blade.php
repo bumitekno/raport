@@ -449,7 +449,7 @@
                     var formData = $(this).serialize();
 
                     $.ajax({
-                        url: "{{ route('families.updateOrCreate') }}",
+                        url: "{{ route('families.update') }}",
                         type: 'POST',
                         data: formData,
                         success: function(data) {

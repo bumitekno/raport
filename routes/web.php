@@ -93,9 +93,14 @@ Route::middleware('auth:user,admin,parent,teacher')->group(function () {
     Route::get('users/destroy/{slug}', [UserController::class, 'destroy'])->name('users.destroy');
 
     Route::prefix('family')->name('families.')->group(function () {
+        Route::get('/', [ParentController::class, 'index'])->name('index');
+        Route::get('create', [ParentController::class, 'create'])->name('create');
         Route::get('edit', [ParentController::class, 'edit'])->name('edit');
-        Route::post('updateOrCreate', [ParentController::class, 'updateOrCreate'])->name('updateOrCreate');
+        Route::get('change/{slug}', [ParentController::class, 'change'])->name('change');
+        Route::post('update', [ParentController::class, 'update'])->name('update');
+        Route::post('updateOrCreate/{id?}', [ParentController::class, 'updateOrCreate'])->name('updateOrCreate');
         Route::get('delete', [ParentController::class, 'destroy'])->name('destroy');
+        Route::get('trash/{slug}', [ParentController::class, 'trash'])->name('trash');
     });
 
 
