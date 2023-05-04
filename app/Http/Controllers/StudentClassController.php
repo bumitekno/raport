@@ -26,7 +26,11 @@ class StudentClassController extends Controller
 
         if ($request->ajax()) {
             if ($_GET['origin'] == 'user') {
-                $data = User::select('id', 'name', 'gender', 'file', 'email', 'place_of_birth', 'date_of_birth', DB::raw("'user' as type"));
+                $data = User::select('id', 'name', 'gender', 'file', 'email', 'place_of_birth', 'date_of_birth', DB::raw("'user' as type"))
+                    ->whereNotIn('id', function ($query) {
+                        $query->select('id_student')->from('student_classes')->distinct();
+                    })
+                    ->get();
             } else {
                 $get_class = StudyClass::where('slug', $_GET['class'])->first();
                 $data = StudentClass::join('users', 'student_classes.id_student', '=', 'users.id')
@@ -97,30 +101,40 @@ class StudentClassController extends Controller
         } else if ($action == 'move') {
 
             $idStudyClass = $request->id_study_class;
-            // dd($idStudyClass);
             $year = substr($request->year, 0, 4);
-            // dd($selectedSiswa);
-
-
             $siswaData = User::whereIn('id', $selectedSiswa)->get();
-            // dd($siswaData);
             $siswaIds = $siswaData->pluck('id')->toArray();
 
-
-
-            $existingData = StudentClass::whereIn('id_student', $siswaIds)
+            $existingData = StudentClass::where(function ($query) use ($siswaIds, $dataOrigin) {
+                if ($dataOrigin === 'student') {
+                    return $query->whereIn('id', $siswaIds);
+                } else if ($dataOrigin === 'user') {
+                    return $query->whereIn('id_student', $siswaIds);
+                }
+            })
                 ->where('year', $year)
                 ->get();
+            // dd($existingData);
 
             if ($dataOrigin == 'student') {
-                $existingData->each(function ($data) {
+                $existingData->each(function ($data) use ($idStudyClass, $year) {
+                    $newData = $data->replicate();
+                    $newData->id_study_class = $idStudyClass;
+                    $newData->year = $year;
+                    $newData->save();
+
                     $data->status = 2;
                     $data->save();
                 });
             } else if ($dataOrigin == 'user') {
-                // dd('move');
+                // Check if user is not already in student class
+                $existingStudentIds = $existingData->pluck('id_student')->toArray();
+                $newSiswaData = $siswaData->reject(function ($siswa) use ($existingStudentIds) {
+                    return in_array($siswa->id, $existingStudentIds);
+                });
+
                 // Create new data
-                $siswaData->each(function ($siswa) use ($idStudyClass, $year) {
+                $newSiswaData->each(function ($siswa) use ($idStudyClass, $year) {
                     StudentClass::create([
                         'id_student' => $siswa->id,
                         'id_study_class' => $idStudyClass,
@@ -129,16 +143,6 @@ class StudentClassController extends Controller
                     ]);
                 });
             }
-
-            // Create new data
-            $siswaData->each(function ($siswa) use ($idStudyClass, $year) {
-                StudentClass::create([
-                    'id_student' => $siswa->id,
-                    'id_study_class' => $idStudyClass,
-                    'year' => $year,
-                    'slug' => $siswa->id . $idStudyClass . $year . '-' . Helper::str_random(5)
-                ]);
-            });
         }
 
         return redirect()->back();

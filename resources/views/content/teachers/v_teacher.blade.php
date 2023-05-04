@@ -36,7 +36,7 @@
                                         <th>Nama</th>
                                         <th>NIP</th>
                                         <th>Email</th>
-                                        <th>Status Akun</th>
+                                        <th>Telepon</th>
                                         <th class="no-content text-center"></th>
                                     </tr>
                                 </thead>
@@ -79,11 +79,11 @@
                         data: 'name',
                         name: 'name',
                     }, {
+                        data: 'nip',
+                        name: 'nip',
+                    }, {
                         data: 'email',
                         name: 'email',
-                    }, {
-                        data: 'address',
-                        name: 'address',
                     }, {
                         data: 'phone',
                         name: 'phone',
