@@ -74,6 +74,27 @@
                     }, ]
                 });
 
+                $(document).on('click', '.active-year', function() {
+                    let id = $(this).data('id');
+                    let value = $(this).is(':checked') ? 1 : 0;
+                    if (id) {
+                        $.ajax({
+                            url: "{{ route('school-years.activated') }}",
+                            data: {
+                                id,
+                                value
+                            },
+                            success: function(data) {
+                                table.ajax.reload();
+                            },
+                            error: function(data) {
+                                console.log('Error:', data);
+                            }
+                        });
+
+                    }
+                });
+
             });
         </script>
     @endpush

@@ -37,7 +37,7 @@ class SchoolYearController extends Controller
                         $check = 'checked';
                     }
                     return '<label class="switch s-icons s-outline  s-outline-primary mb-0">
-                    <input type="checkbox" name="status" value="1" ' . $check . '>
+                    <input type="checkbox" name="status" data-id="' . $row['id'] . '" class="active-year" value="1" ' . $check . '>
                     <span class="slider round my-auto"></span>
                 </label>';
                 })
@@ -105,5 +105,20 @@ class SchoolYearController extends Controller
         SchoolYear::where('slug', $slug)->delete();
         Helper::toast('Berhasil menghapus tahun ajaran', 'success');
         return redirect()->route('school-years.index');
+    }
+
+    public function activated(Request $request)
+    {
+        SchoolYear::where('status', 1)->update(['status' => 0]);
+        $school_year = SchoolYear::find($request->id);
+        $school_year->update(['status' => $request->value]);
+        if ($request->value == 1) {
+            session()->put('id_school_year', $school_year->id);
+            session()->put('slug_year', $school_year->slug);
+            session()->put('school_year', substr($school_year->name, 0, 9));
+            session()->put('semester', substr($school_year->name, -1));
+            session()->put('year', substr($school_year->name, 0, 4));
+        }
+        return response()->json('Data berhasil diaktivasi');
     }
 }

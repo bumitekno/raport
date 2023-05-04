@@ -129,6 +129,7 @@ Route::middleware('auth:user,admin,parent,teacher')->group(function () {
         'school_years' => 'school_years:slug',
     ])->except(['show', 'destroy']);
     Route::get('school_years/destroy/{slug}', [SchoolYearController::class, 'destroy'])->name('school-years.destroy');
+    Route::get('school_years/activated', [SchoolYearController::class, 'activated'])->name('school-years.activated');
 
     Route::prefix('subject-teacher')->name('subject_teachers.')->group(function () {
         Route::post('updateOrCreate', [SubjectTeacherController::class, 'storeOrUpdateItem'])->name('updateOrCreate');
