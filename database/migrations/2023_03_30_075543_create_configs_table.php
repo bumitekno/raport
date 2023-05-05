@@ -29,6 +29,10 @@ return new class extends Migration
             $table->timestamps();
             $table->softDeletes();
         });
+
+        Schema::table('configs', function (Blueprint $table) {
+            $table->foreign('id_school_year')->references('id')->on('school_years')->onDelete('cascade');
+        });
     }
 
     /**
@@ -38,6 +42,10 @@ return new class extends Migration
      */
     public function down()
     {
+        Schema::table('configs', function (Blueprint $table) {
+            $table->dropForeign('configs_id_school_year_foreign');
+        });
+
         Schema::dropIfExists('configs');
     }
 };

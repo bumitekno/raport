@@ -28,18 +28,31 @@ class CompetenceAchievementController extends Controller
                 $course = Course::find($item->id_course);
                 $studyClass = StudyClass::find($studyClassId);
                 $teacher = Teacher::find($item->id_teacher);
+                if ($course && $studyClass && $teacher) {
+                    $courses[] = [
+                        'id_course' => $course->id,
+                        'name_mapel' => $course->name,
+                        'slug_mapel' => $course->slug,
+                        'id_study_class' => $studyClass->id,
+                        'name_class' => $studyClass->name,
+                        'slug_class' => $studyClass->slug,
+                        'id_teacher' => $teacher->id,
+                        'name_teacher' => $teacher->name,
+                        'slug_teacher' => $teacher->slug,
+                    ];
+                }
 
-                $courses[] = [
-                    'id_course' => $course->id,
-                    'name_mapel' => $course->name,
-                    'slug_mapel' => $course->slug,
-                    'id_study_class' => $studyClass->id,
-                    'name_class' => $studyClass->name,
-                    'slug_class' => $studyClass->slug,
-                    'id_teacher' => $teacher->id,
-                    'name_teacher' => $teacher->name,
-                    'slug_teacher' => $teacher->slug,
-                ];
+                // $courses[] = [
+                //     'id_course' => $course->id,
+                //     'name_mapel' => $course->name,
+                //     'slug_mapel' => $course->slug,
+                //     'id_study_class' => $studyClass->id,
+                //     'name_class' => $studyClass->name,
+                //     'slug_class' => $studyClass->slug,
+                //     'id_teacher' => $teacher->id,
+                //     'name_teacher' => $teacher->name,
+                //     'slug_teacher' => $teacher->slug,
+                // ];
             }
         }
         $courses = collect($courses)->unique(function ($item) {

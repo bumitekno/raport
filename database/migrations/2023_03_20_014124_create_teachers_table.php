@@ -37,6 +37,10 @@ return new class extends Migration
             $table->timestamps();
             $table->softDeletes();
         });
+
+        Schema::table('teachers', function (Blueprint $table) {
+            $table->foreign('id_class')->references('id')->on('study_classes')->onDelete('cascade');
+        });
     }
 
     /**
@@ -46,6 +50,10 @@ return new class extends Migration
      */
     public function down()
     {
+        Schema::table('teachers', function (Blueprint $table) {
+            $table->dropForeign('teachers_id_class_foreign');
+        });
+
         Schema::dropIfExists('teachers');
     }
 };

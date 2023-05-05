@@ -23,6 +23,11 @@ return new class extends Migration
             $table->timestamps();
             $table->softDeletes();
         });
+
+        Schema::table('basic_competencies', function (Blueprint $table) {
+            $table->foreign('id_course')->references('id')->on('courses')->onDelete('cascade');
+            $table->foreign('id_level')->references('id')->on('levels')->onDelete('cascade');
+        });
     }
 
     /**
@@ -32,6 +37,10 @@ return new class extends Migration
      */
     public function down()
     {
+        Schema::table('basic_competencies', function (Blueprint $table) {
+            $table->dropForeign('basic_competencies_id_course_foreign');
+            $table->dropForeign('basic_competencies_id_level_foreign');
+        });
         Schema::dropIfExists('basic_competencies');
     }
 };

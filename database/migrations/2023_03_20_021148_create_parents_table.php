@@ -32,6 +32,10 @@ return new class extends Migration
             $table->timestamps();
             $table->softDeletes();
         });
+
+        Schema::table('parents', function (Blueprint $table) {
+            $table->foreign('id_user')->references('id')->on('users')->onDelete('cascade');
+        });
     }
 
     /**
@@ -41,6 +45,10 @@ return new class extends Migration
      */
     public function down()
     {
+        Schema::table('parents', function (Blueprint $table) {
+            $table->dropForeign('parents_id_user_foreign');
+        });
+
         Schema::dropIfExists('parents');
     }
 };

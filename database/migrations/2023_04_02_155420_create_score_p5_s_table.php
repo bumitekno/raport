@@ -26,6 +26,13 @@ return new class extends Migration
             $table->timestamps();
             $table->softDeletes();
         });
+
+        Schema::table('score_p5_s', function (Blueprint $table) {
+            $table->foreign('id_student_class')->references('id')->on('student_classes')->onDelete('cascade');
+            $table->foreign('id_p5')->references('id')->on('p5_s')->onDelete('cascade');
+            $table->foreign('id_subject_teacher')->references('id')->on('subject_teachers')->onDelete('cascade');
+            $table->foreign('id_school_year')->references('id')->on('school_years')->onDelete('cascade');
+        });
     }
 
     /**
@@ -35,6 +42,13 @@ return new class extends Migration
      */
     public function down()
     {
+        Schema::table('score_p5_s', function (Blueprint $table) {
+            $table->dropForeign('score_p5_s_id_student_class_foreign');
+            $table->dropForeign('score_p5_s_id_p5_foreign');
+            $table->dropForeign('score_p5_s_id_subject_teacher_foreign');
+            $table->dropForeign('score_p5_s_id_school_year_foreign');
+        });
+
         Schema::dropIfExists('score_p5_s');
     }
 };

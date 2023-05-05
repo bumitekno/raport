@@ -24,6 +24,11 @@ return new class extends Migration
             $table->timestamps();
             $table->softDeletes();
         });
+
+        Schema::table('template_configurations', function (Blueprint $table) {
+            $table->foreign('id_major')->references('id')->on('majors')->onDelete('cascade');
+            $table->foreign('id_school_year')->references('id')->on('school_years')->onDelete('cascade');
+        });
     }
 
     /**
@@ -33,6 +38,11 @@ return new class extends Migration
      */
     public function down()
     {
+        Schema::table('template_configurations', function (Blueprint $table) {
+            $table->dropForeign('template_configurations_id_major_foreign');
+            $table->dropForeign('template_configurations_id_school_year_foreign');
+        });
+
         Schema::dropIfExists('template_configurations');
     }
 };

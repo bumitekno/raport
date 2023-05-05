@@ -23,6 +23,11 @@ return new class extends Migration
             $table->timestamps();
             $table->softDeletes();
         });
+
+        Schema::table('sub_elements', function (Blueprint $table) {
+            $table->foreign('id_dimension')->references('id')->on('dimensions')->onDelete('cascade');
+            $table->foreign('id_element')->references('id')->on('elements')->onDelete('cascade');
+        });
     }
 
     /**
@@ -32,6 +37,11 @@ return new class extends Migration
      */
     public function down()
     {
+        Schema::table('sub_elements', function (Blueprint $table) {
+            $table->dropForeign('sub_elements_id_dimension_foreign');
+            $table->dropForeign('sub_elements_id_element_foreign');
+        });
+
         Schema::dropIfExists('sub_elements');
     }
 };

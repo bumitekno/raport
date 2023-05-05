@@ -23,6 +23,11 @@ return new class extends Migration
             $table->timestamps();
             $table->softDeletes();
         });
+
+        Schema::table('study_classes', function (Blueprint $table) {
+            $table->foreign('id_level')->references('id')->on('levels')->onDelete('cascade');
+            $table->foreign('id_major')->references('id')->on('majors')->onDelete('cascade');
+        });
     }
 
     /**
@@ -32,6 +37,11 @@ return new class extends Migration
      */
     public function down()
     {
+        Schema::table('study_classes', function (Blueprint $table) {
+            $table->dropForeign('study_classes_id_level_foreign');
+            $table->dropForeign('study_classes_id_major_foreign');
+        });
+
         Schema::dropIfExists('study_classes');
     }
 };

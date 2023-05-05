@@ -23,6 +23,11 @@ return new class extends Migration
             $table->timestamps();
             $table->softDeletes();
         });
+
+        Schema::table('student_classes', function (Blueprint $table) {
+            $table->foreign('id_student')->references('id')->on('users')->onDelete('cascade');
+            $table->foreign('id_study_class')->references('id')->on('study_classes')->onDelete('cascade');
+        });
     }
 
     /**
@@ -32,6 +37,11 @@ return new class extends Migration
      */
     public function down()
     {
+        Schema::table('student_classes', function (Blueprint $table) {
+            $table->dropForeign('student_classes_id_student_foreign');
+            $table->dropForeign('student_classes_id_study_class_foreign');
+        });
+
         Schema::dropIfExists('student_classes');
     }
 };

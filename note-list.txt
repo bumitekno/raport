@@ -43,3 +43,5 @@ protected function failedValidation(Validator $validator)
 }
 
 <td>{{ $loop->iteration }}</td>
+
+hapus turunan, di competence achievement Migration

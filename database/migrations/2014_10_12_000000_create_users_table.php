@@ -39,6 +39,10 @@ return new class extends Migration
             $table->timestamps();
             $table->softDeletes();
         });
+
+        Schema::table('users', function (Blueprint $table) {
+            $table->foreign('accepted_grade')->references('id')->on('study_classes')->onDelete('cascade');
+        });
     }
 
     /**
@@ -48,6 +52,10 @@ return new class extends Migration
      */
     public function down()
     {
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropForeign('users_accepted_grade_foreign');
+        });
+
         Schema::dropIfExists('users');
     }
 };

@@ -25,6 +25,11 @@ return new class extends Migration
             $table->timestamps();
             $table->softDeletes();
         });
+
+        Schema::table('attendance_scores', function (Blueprint $table) {
+            $table->foreign('id_student_class')->references('id')->on('student_classes')->onDelete('cascade');
+            $table->foreign('id_school_year')->references('id')->on('school_years')->onDelete('cascade');
+        });
     }
 
     /**
@@ -34,6 +39,11 @@ return new class extends Migration
      */
     public function down()
     {
+        Schema::table('attendance_scores', function (Blueprint $table) {
+            $table->dropForeign('attendance_scores_id_student_class_foreign');
+            $table->dropForeign('attendance_scores_id_school_year_foreign');
+        });
+
         Schema::dropIfExists('attendance_scores');
     }
 };
