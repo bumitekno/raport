@@ -124,6 +124,9 @@ Route::middleware('auth:user,admin,parent,teacher')->group(function () {
         'courses' => 'courses:slug',
     ])->except(['destroy']);
     Route::get('courses/destroy/{slug}', [CourseController::class, 'destroy'])->name('courses.destroy');
+    Route::get('course/download/export', [CourseController::class, 'export'])->name('courses.export');
+    Route::post('course/upload/import', [CourseController::class, 'import'])->name('courses.import');
+
 
     Route::resource('school-years', SchoolYearController::class)->parameters([
         'school_years' => 'school_years:slug',
@@ -141,7 +144,8 @@ Route::middleware('auth:user,admin,parent,teacher')->group(function () {
     Route::prefix('student-class')->name('student_classes.')->group(function () {
         Route::get('/', [StudentClassController::class, 'index'])->name('index');
         Route::post('createOrUpdate', [StudentClassController::class, 'storeOrUpdate'])->name('storeOrUpdate');
-        // Route::get('destroy/{id}', [SubjectTeacherController::class, 'destroy'])->name('destroy');
+        Route::get('export', [SubjectTeacherController::class, 'export'])->name('export');
+        Route::post('import', [SubjectTeacherController::class, 'import'])->name('import');
     });
 
     // setelan

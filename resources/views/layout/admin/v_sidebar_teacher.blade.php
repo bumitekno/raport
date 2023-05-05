@@ -82,7 +82,7 @@
                             <a href="{{ route('setting_scores.list_competence') }}"> Capaian Kompetensi </a>
                         </li>
                         <li>
-                            <a href="javascript:void(0);"> Pengaturan Deskripsi </a>
+                            <a href="{{ route('setting_scores.description') }}"> Pengaturan Deskripsi </a>
                         </li>
                     </ul>
                 </li>

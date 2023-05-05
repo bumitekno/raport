@@ -2,16 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\CourseExport;
 use App\Helpers\Helper;
 use App\Http\Requests\Course\CourseRequest;
 use App\Http\Resources\Master\SchoolYearResource;
+use App\Imports\CourseImport;
 use App\Models\Course;
 use App\Models\SchoolYear;
 use App\Models\StudyClass;
 use App\Models\Teacher;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\DataTables;
+use Maatwebsite\Excel\Facades\Excel;
 
 class CourseController extends Controller
 {
@@ -208,5 +213,54 @@ class CourseController extends Controller
         Course::where('slug', $slug)->delete();
         Helper::toast('Berhasil menghapus pelajaran', 'success');
         return redirect()->route('courses.index');
+    }
+
+    public function export()
+    {
+        return Excel::download(new CourseExport, '' . Carbon::now()->timestamp . '_format_mapel.xls');
+    }
+
+    public function import(Request $request)
+    {
+        // dd('tes');
+        $this->validate($request, [
+            'file' => 'required|mimes:csv,xls,xlsx'
+        ]);
+
+        try {
+            $file = $request->file('file');
+            $nama_file = $file->hashName();
+            $path = $file->storeAs('public/excel/', $nama_file);
+            $import = Excel::import(new CourseImport(), storage_path('app/public/excel/' . $nama_file));
+            Storage::delete($path);
+
+            Helper::toast('Data Berhasil Diimport', 'success');
+            return redirect()->route('courses.index');
+        } catch (\Throwable $e) {
+            // dd($e['message']);
+            Helper::toast($e->getMessage(), 'errror');
+            return redirect()->route('courses.index');
+        }
+
+
+
+        $file = $request->file('file');
+        // dd($file);
+
+        // membuat nama file unik
+        $nama_file = $file->hashName();
+        $path = $file->storeAs('public/excel/', $nama_file);
+        $import = Excel::import(new CourseImport(), storage_path('app/public/excel/' . $nama_file));
+        Storage::delete($path);
+
+        if ($import) {
+            //redirect
+            Helper::toast('Data Berhasil Diimport', 'success');
+            return redirect()->route('courses.index')->with(['success' => 'Data Berhasil Diimport!']);
+        } else {
+            //redirect
+            Helper::toast('Data Gagal Diimport!', 'errror');
+            return redirect()->route('courses.index')->with(['error' => 'Data Gagal Diimport!']);
+        }
     }
 }

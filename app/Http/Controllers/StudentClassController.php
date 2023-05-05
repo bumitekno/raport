@@ -147,4 +147,13 @@ class StudentClassController extends Controller
 
         return redirect()->back();
     }
+
+    public function export()
+    {
+        dd('export');
+    }
+
+    public function import()
+    {
+    }
 }

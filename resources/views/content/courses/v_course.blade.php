@@ -44,15 +44,15 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form action="" method="POST" enctype="multipart/form-data">
+                        <form action="{{ route('courses.import') }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="form-group">
                                 <label for="importTemplate">Download Template Excel</label>
-                                <a href="" class="btn btn-success btn-sm"><i class="fas fa-download"></i> Download</a>
+                                <a href="{{ route('courses.export') }}" class="btn btn-success btn-sm"><i class="fas fa-download"></i> Download</a>
                             </div>
                             <div class="form-group">
                                 <label for="importFile">Select Excel File to Import</label>
-                                <input type="file" name="import_file" class="form-control-file" required>
+                                <input type="file" name="file" class="form-control-file" required>
                             </div>
                             <button type="submit" class="btn btn-primary btn-block btn-lg">Import</button>
                         </form>
