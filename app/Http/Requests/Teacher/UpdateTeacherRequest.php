@@ -24,6 +24,8 @@ class UpdateTeacherRequest extends FormRequest
             'name' => 'required',
             'phone' => 'required|numeric',
             'gender' => 'required',
+            'type' => 'required',
+            'id_class' => 'nullable',
             'address' => 'sometimes',
             'place_of_birth' => 'sometimes',
             'date_of_birth' => 'date_format:Y-m-d|before:today',
@@ -51,7 +53,7 @@ class UpdateTeacherRequest extends FormRequest
     protected function getValidatorInstance()
     {
         $data = $this->all();
-        $data['slug'] = str_slug($data['name']).'-'. Helper::str_random(5);
+        $data['slug'] = str_slug($data['name']) . '-' . Helper::str_random(5);
         $this->getInputSource()->replace($data);
 
         return parent::getValidatorInstance();

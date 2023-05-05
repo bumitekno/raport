@@ -40,7 +40,7 @@
                                             $check = '';
                                         }
                                     @endphp
-                                     <p class="d-inline-block">Status Guru</p>
+                                    <p class="d-inline-block">Status Guru</p>
                                     <label class="switch s-icons s-outline  s-outline-primary  mb-4 ml-2">
                                         <input type="checkbox" name="status" value="1" {{ $check }}>
                                         <span class="slider round"></span>
@@ -148,12 +148,14 @@
                                 <label>Jenis Kelamin</label>
                                 <div class="n-chk p-2 my-auto">
                                     <label class="new-control new-radio radio-classic-primary mb-0 mr-2">
-                                        <input type="radio" class="new-control-input" value="male" checked
+                                        <input type="radio" class="new-control-input" value="male"
+                                            {{ isset($teacher) && old('gender', $teacher->gender) == 'male' ? 'checked' : (old('gender') == 'male' ? 'checked' : '') }}
                                             name="gender">
                                         <span class="new-control-indicator"></span>Laki - laki
                                     </label>
                                     <label class="new-control new-radio radio-classic-primary mb-0">
-                                        <input type="radio" class="new-control-input" value="female" name="gender">
+                                        <input type="radio" class="new-control-input" value="female" name="gender"
+                                            {{ isset($teacher) && old('gender', $teacher->gender) == 'female' ? 'checked' : (old('gender') == 'female' ? 'checked' : '') }}>
                                         <span class="new-control-indicator"></span>Perempuan
                                     </label>
                                 </div>
@@ -164,13 +166,27 @@
                             <div class="col-md-6 mb-4">
                                 <label>Agama</label>
                                 <select name="religion" id="religion" class="form-control">
-                                    <option value="islam">Islam</option>
-                                    <option value="protestan">Protestan</option>
-                                    <option value="katolik">Katolik</option>
-                                    <option value="hindu">Hindu</option>
-                                    <option value="budha">Budha</option>
-                                    <option value="konghucu">Konghucu</option>
-                                    <option value="lainnya">Lainnya</option>
+                                    <option value="islam"
+                                        {{ isset($teacher) && old('religion', $teacher->religion) == 'islam' ? 'selected' : (old('religion') == 'islam' ? 'selected' : '') }}>
+                                        Islam</option>
+                                    <option value="protestan"
+                                        {{ isset($teacher) && old('religion', $teacher->religion) == 'protestan' ? 'selected' : (old('religion') == 'protestan' ? 'selected' : '') }}>
+                                        Protestan</option>
+                                    <option value="katolik"
+                                        {{ isset($teacher) && old('religion', $teacher->religion) == 'katolik' ? 'selected' : (old('religion') == 'katolik' ? 'selected' : '') }}>
+                                        Katolik</option>
+                                    <option value="hindu"
+                                        {{ isset($teacher) && old('religion', $teacher->religion) == 'hindu' ? 'selected' : (old('religion') == 'hindu' ? 'selected' : '') }}>
+                                        Hindu</option>
+                                    <option value="budha"
+                                        {{ isset($teacher) && old('religion', $teacher->religion) == 'budha' ? 'selected' : (old('religion') == 'budha' ? 'selected' : '') }}>
+                                        Budha</option>
+                                    <option value="konghucu"
+                                        {{ isset($teacher) && old('religion', $teacher->religion) == 'konghucu' ? 'selected' : (old('religion') == 'konghucu' ? 'selected' : '') }}>
+                                        Konghucu</option>
+                                    <option value="lainnya"
+                                        {{ isset($teacher) && old('religion', $teacher->religion) == 'lainnya' ? 'selected' : (old('religion') == 'lainnya' ? 'selected' : '') }}>
+                                        Lainnya</option>
                                 </select>
                                 @error('religion')
                                     <div class="invalid-feedback d-block">{{ $message }}</div>
@@ -202,17 +218,25 @@
                                     <div class="form-group col-md-12">
                                         <label>Type Guru</label>
                                         <select name="type" id="type" class="form-control">
-                                            <option value="teacher">Pengajar</option>
-                                            <option value="homeroom">Wali kelas</option>
-                                            <option value="other">Lainnya</option>
+                                            <option value="teacher"
+                                                {{ isset($teacher) && old('type', $teacher->type) == 'teacher' ? 'selected' : (old('type') == 'teacher' ? 'selected' : '') }}>
+                                                Pengajar</option>
+                                            <option value="homeroom"
+                                                {{ isset($teacher) && old('type', $teacher->type) == 'homeroom' ? 'selected' : (old('type') == 'homeroom' ? 'selected' : '') }}>
+                                                Wali kelas</option>
+                                            <option value="other"
+                                                {{ isset($teacher) && old('type', $teacher->type) == 'other' ? 'selected' : (old('type') == 'other' ? 'selected' : '') }}>
+                                                Lainnya</option>
                                         </select>
                                     </div>
-                                    <div class="form-group col-md-12 d-none" id="showClass">
+                                    {{-- {{ dd($teacher->type) }} --}}
+                                    <div class="form-group col-md-12 {{ (isset($teacher) && $teacher->type == 'homeroom') || old('type') == 'homeroom' ? '' : 'd-none' }}"
+                                        id="showClass">
                                         <label>Kelas yang di bimbing</label>
                                         <div class="n-chk px-2 my-auto">
                                             @foreach ($classes as $class)
                                                 <label class="new-control new-radio radio-classic-primary mb-0 mr-2">
-                                                    <input type="radio" class="new-control-input"
+                                                    <input type="radio" class="new-control-input" {{ isset($teacher) && old('id_class', $teacher->id_class) == $class['id'] ? 'checked' : (old('id_class') == $class['id'] ? 'checked' : '') }}
                                                         value="{{ $class['id'] }}" name="id_class">
                                                     <span class="new-control-indicator"></span>{{ $class['name'] }}
                                                 </label>
@@ -262,10 +286,18 @@
                                         <div class="form-group">
                                             <label for="password_confirmation">Konfirmasi Password</label>
                                             <div class="input-group">
-                                                <input type="password" class="form-control" id="confirm_password" placeholder="&#8226;&#8226;&#8226;&#8226;&#8226;" name="password_confirmation">
-                                                <button class="btn btn-outline-secondary password-toggle" type="button" onclick="return showPassword('#confirm_password')">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-eye">
-                                                        <path d="M22.239 11.984c-1.395-3.795-5.232-7.984-10.239-7.984s-8.844 4.189-10.239 7.984c1.395 3.795 5.232 7.984 10.239 7.984s8.844-4.189 10.239-7.984zm-10.239 5.016c-2.916 0-5.283-2.368-5.283-5.283s2.368-5.283 5.283-5.283 5.283 2.368 5.283 5.283-2.368 5.283-5.283 5.283z"></path>
+                                                <input type="password" class="form-control" id="confirm_password"
+                                                    placeholder="&#8226;&#8226;&#8226;&#8226;&#8226;"
+                                                    name="password_confirmation">
+                                                <button class="btn btn-outline-secondary password-toggle" type="button"
+                                                    onclick="return showPassword('#confirm_password')">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
+                                                        viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                        class="feather feather-eye">
+                                                        <path
+                                                            d="M22.239 11.984c-1.395-3.795-5.232-7.984-10.239-7.984s-8.844 4.189-10.239 7.984c1.395 3.795 5.232 7.984 10.239 7.984s8.844-4.189 10.239-7.984zm-10.239 5.016c-2.916 0-5.283-2.368-5.283-5.283s2.368-5.283 5.283-5.283 5.283 2.368 5.283 5.283-2.368 5.283-5.283 5.283z">
+                                                        </path>
                                                         <circle cx="12" cy="12" r="2"></circle>
                                                     </svg>
                                                 </button>
@@ -302,6 +334,7 @@
                 });
 
                 $('#type').on('change', function() {
+                    console.log($(this).val());
                     if ($(this).val() === 'homeroom') {
                         $('#showClass').removeClass('d-none');
                     } else {

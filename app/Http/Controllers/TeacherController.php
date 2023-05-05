@@ -79,17 +79,33 @@ class TeacherController extends Controller
 
     public function update(UpdateTeacherRequest $request, $slug)
     {
+        // dd($request);
+        $data = $request->validated();
+        // dd($data);
         $teacher = Teacher::where('slug', $slug)->firstOrFail();
-        if ($request->password) {
-            $teacher->update([
-                'password' => Hash::make($request->password),
-            ]);
-        }
-        $data = $request->input();
         if ($request->hasFile('file')) {
             $data = ImageHelper::upload_asset($request, 'file', 'profile', $data);
+            // dd($data);
+            $teacher->file = $data['file'];
         }
-        $teacher->fill($data)->save();
+        $teacher->name = $data['name'];
+        $teacher->email = $data['email'];
+        $teacher->phone = $data['phone'];
+        $teacher->gender = $data['gender'];
+        $teacher->address = $data['address'];
+        $teacher->place_of_birth = $data['place_of_birth'];
+        $teacher->date_of_birth = $data['date_of_birth'];
+        $teacher->slug = $data['slug'];
+        $teacher->type = $data['type'];
+        $teacher->type = $data['type'];
+        if ($data['password']) {
+            $teacher->password = bcrypt($data['password']);
+        }
+        if ($data['id_class']) {
+            $teacher->id_class = $data['id_class'];
+        }
+        // dd($teacher);
+        $teacher->save();
         Helper::toast('Berhasil mengupdate guru', 'success');
         return redirect()->route('teachers.index');
     }
