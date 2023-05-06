@@ -120,7 +120,7 @@
                     </ul>
                 </li>
                 <li
-                    class="menu {{ session()->has('teachers') && session('teachers.template') != 'k16' ? 'd-none' : '' }}">
+                    class="menu {{ session()->has('teachers') && session('teachers.template') != 'k13' ? 'd-none' : '' }}">
                     <a href="#score-k16" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
                         <div class="">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"

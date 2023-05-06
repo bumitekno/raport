@@ -19,7 +19,7 @@
                         <option value="" selected disabled>Pilih Kurikulum</option>
                         <option value="merdeka" {{ session('template') == 'merdeka' ? 'selected' : '' }}>Kurikulum
                             Merdeka</option>
-                        <option value="k16" {{ session('template') == 'k16' ? 'selected' : '' }}>Kurikulum 16
+                        <option value="k13" {{ session('template') == 'k13' ? 'selected' : '' }}>Kurikulum 13
                         </option>
                     </select>
                 </div>
@@ -75,7 +75,7 @@
                 </ul>
             </li>
 
-            <li class="menu k16 d-none {{ Route::is('attitudes*') ? 'active' : '' }}">
+            <li class="menu k13 d-none {{ Route::is('attitudes*') ? 'active' : '' }}">
                 <a href="#attitude" data-toggle="collapse"
                     aria-expanded="{{ Route::is('attitudes*') ? 'true' : 'false' }}" class="dropdown-toggle">
                     <div class="">
@@ -114,7 +114,7 @@
                 </ul>
             </li>
 
-            <li class="menu k16 d-none {{ Route::is('setting_scores*') ? 'active' : '' }}">
+            <li class="menu k13 d-none {{ Route::is('setting_scores*') ? 'active' : '' }}">
                 <a href="#setting-score" data-toggle="collapse"
                     aria-expanded="{{ Route::is('setting_scores*') ? 'true' : 'false' }}" class="dropdown-toggle">
                     <div class="">
@@ -159,7 +159,7 @@
             </li>
 
             <li
-                class="menu k16 d-none {{ Route::is('basic_competencies*') || Route::is('general_weights*') ? 'active' : '' }}">
+                class="menu k13 d-none {{ Route::is('basic_competencies*') || Route::is('general_weights*') ? 'active' : '' }}">
                 <a href="#setting-other" data-toggle="collapse"
                     aria-expanded="{{ Route::is('basic_competencies*') || Route::is('general_weights*') ? 'true' : 'false' }}"
                     class="dropdown-toggle">
@@ -383,10 +383,10 @@
         function checkTemplate(param) {
             if (param === 'merdeka') {
                 $('.merdeka').removeClass('d-none');
-                $('.k16').addClass('d-none');
+                $('.k13').addClass('d-none');
             }
-            if (param === 'k16') {
-                $('.k16').removeClass('d-none');
+            if (param === 'k13') {
+                $('.k13').removeClass('d-none');
                 $('.merdeka').addClass('d-none');
             }
 
