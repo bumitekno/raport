@@ -56,7 +56,6 @@ class CourseImport implements ToModel, WithHeadingRow, WithValidation, WithStart
 
     public function onError(\Throwable $e)
     {
-        // Menampilkan pesan error pada proses import
         echo "Terjadi kesalahan pada baris ke-{$e->skippedCount}: " . $e->getMessage() . PHP_EOL;
     }
 }

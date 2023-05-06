@@ -13,33 +13,15 @@ class StudyClassSheet implements FromView, WithStyles, ShouldAutoSize
 {
     public function view(): View
     {
-        $data = [];
-
-        $rombel = DB::table('master_rombels as mr')
-            ->join('master_kelas as mk', 'mk.id', '=', 'mr.id_kelas')
-            ->where('mr.id_sekolah', $this->id_sekolah)
-            ->where('mr.deleted_at', '=', null)
-            ->select('mr.*', 'mk.nama as kelas', 'mk.id_jurusan as jurusan_id')
+        $studyClasses = DB::table('study_classes')
+            ->select('study_classes.id', 'study_classes.slug', 'study_classes.name', 'majors.name as major', 'levels.name as level', 'study_classes.status')
+            ->join('majors', 'study_classes.id_major', '=', 'majors.id')
+            ->join('levels', 'study_classes.id_level', '=', 'levels.id')
+            ->where('study_classes.status', '=', 1)
             ->get();
+        // dd($studyClasses);
 
-        $jurusans = DB::table('master_jurusans')
-            ->where('id_sekolah', $this->id_sekolah)
-            ->where('deleted_at', '=', null)
-            ->select('*')
-            ->get();
-
-        foreach ($rombel as $rom) {
-            $jurusan = collect($jurusans)->where('id', $rom->jurusan_id)->first();
-
-            $data[] = [
-                'id' => $rom->id,
-                'nama' => $rom->nama,
-                'kelas' => $rom->kelas,
-                'jurusan' => empty($jurusan) ? null : $jurusan->nama,
-            ];
-        }
-
-        return view('ekport.example.master.jadwal.rombel', ['data' => $data]);
+        return view('export.sheets.v_study_class_sheet', ['data' => $studyClasses]);
     }
 
     public function styles(Worksheet $sheet)

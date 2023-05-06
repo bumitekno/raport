@@ -282,11 +282,11 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form action="{{ route('courses.import') }}" method="POST" enctype="multipart/form-data">
+                        <form action="{{ route('subject_teachers.import', $course['slug']) }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="form-group">
                                 <label for="importTemplate">Download Template Excel</label>
-                                <a href="{{ route('courses.export') }}" class="btn btn-success btn-sm"><i
+                                <a href="{{ route('subject_teachers.export') }}" class="btn btn-success btn-sm"><i
                                         class="fas fa-download"></i> Download</a>
                             </div>
                             <div class="form-group">

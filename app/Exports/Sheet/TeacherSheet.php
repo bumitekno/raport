@@ -2,6 +2,7 @@
 
 namespace App\Exports\Sheet;
 
+use App\Models\Teacher;
 use Illuminate\Contracts\View\View;
 use Maatwebsite\Excel\Concerns\FromView;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
@@ -12,9 +13,9 @@ class TeacherSheet implements FromView, WithStyles, ShouldAutoSize
 {
     public function view(): View
     {
-        $data = Guru::where('id_sekolah', $this->id_sekolah)->get();
-
-        return view('export.sheets.v_teacher', ['data' => $data]);
+        $teachers = Teacher::where('status', 1)->get();
+        // dd($teachers);
+        return view('export.sheets.v_teacher_sheet', ['data' => $teachers]);
     }
 
     public function styles(Worksheet $sheet)

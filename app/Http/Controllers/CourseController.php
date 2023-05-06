@@ -189,6 +189,7 @@ class CourseController extends Controller
             $subjectTeacher->class_names = $classNames;
             $resultTeacher[] = $subjectTeacher;
         }
+        // dd($course);
         // dd($resultTeacher);
         return view('content.courses.v_info_course', compact('course', 'classes', 'teachers', 'years', 'resultTeacher'));
     }
@@ -222,7 +223,6 @@ class CourseController extends Controller
 
     public function import(Request $request)
     {
-        // dd('tes');
         $this->validate($request, [
             'file' => 'required|mimes:csv,xls,xlsx'
         ]);
@@ -231,36 +231,14 @@ class CourseController extends Controller
             $file = $request->file('file');
             $nama_file = $file->hashName();
             $path = $file->storeAs('public/excel/', $nama_file);
-            $import = Excel::import(new CourseImport(), storage_path('app/public/excel/' . $nama_file));
+            Excel::import(new CourseImport(), storage_path('app/public/excel/' . $nama_file));
             Storage::delete($path);
-
             Helper::toast('Data Berhasil Diimport', 'success');
             return redirect()->route('courses.index');
         } catch (\Throwable $e) {
             // dd($e['message']);
             Helper::toast($e->getMessage(), 'errror');
             return redirect()->route('courses.index');
-        }
-
-
-
-        $file = $request->file('file');
-        // dd($file);
-
-        // membuat nama file unik
-        $nama_file = $file->hashName();
-        $path = $file->storeAs('public/excel/', $nama_file);
-        $import = Excel::import(new CourseImport(), storage_path('app/public/excel/' . $nama_file));
-        Storage::delete($path);
-
-        if ($import) {
-            //redirect
-            Helper::toast('Data Berhasil Diimport', 'success');
-            return redirect()->route('courses.index')->with(['success' => 'Data Berhasil Diimport!']);
-        } else {
-            //redirect
-            Helper::toast('Data Gagal Diimport!', 'errror');
-            return redirect()->route('courses.index')->with(['error' => 'Data Gagal Diimport!']);
         }
     }
 }

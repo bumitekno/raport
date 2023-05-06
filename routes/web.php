@@ -139,6 +139,8 @@ Route::middleware('auth:user,admin,parent,teacher')->group(function () {
         Route::get('show', [SubjectTeacherController::class, 'show'])->name('show');
         Route::get('destroy/{id}', [SubjectTeacherController::class, 'destroy'])->name('destroy');
         Route::get('study_class', [SubjectTeacherController::class, 'get_study_class'])->name('study_class');
+        Route::get('export', [SubjectTeacherController::class, 'export'])->name('export');
+        Route::post('import/{slug}', [SubjectTeacherController::class, 'import'])->name('import');
     });
 
     Route::prefix('student-class')->name('student_classes.')->group(function () {

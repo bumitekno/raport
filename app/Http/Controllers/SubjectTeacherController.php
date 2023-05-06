@@ -2,10 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\FullSubjectTeacherExport;
 use App\Helpers\Helper;
 use App\Http\Requests\SubjectTeacher\SubjectTeacherRequest;
+use App\Imports\SubjectTeacherMultipleImport;
 use App\Models\SubjectTeacher;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Maatwebsite\Excel\Facades\Excel;
 
 class SubjectTeacherController extends Controller
 {
@@ -49,5 +54,31 @@ class SubjectTeacherController extends Controller
             ->get();
         return response()->json($teachers);
         // dd($teachers);
+    }
+
+    public function export()
+    {
+        return Excel::download(new FullSubjectTeacherExport(), '' . Carbon::now()->timestamp . '_format_guru_mapel.xls');
+    }
+
+    public function import(Request $request, $slug)
+    {
+        $this->validate($request, [
+            'file' => 'required|mimes:csv,xls,xlsx'
+        ]);
+
+        try {
+            $file = $request->file('file');
+            $nama_file = $file->hashName();
+            $path = $file->storeAs('public/excel/', $nama_file);
+            Excel::import(new SubjectTeacherMultipleImport($slug), storage_path('app/public/excel/' . $nama_file));
+            Storage::delete($path);
+            Helper::toast('Data Berhasil Diimport', 'success');
+            return redirect()->route('courses.show', $slug);
+        } catch (\Throwable $e) {
+            // dd($e['message']);
+            Helper::toast($e->getMessage(), 'errror');
+            return redirect()->route('courses.show', $slug);
+        }
     }
 }
