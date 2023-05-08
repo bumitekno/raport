@@ -271,6 +271,12 @@ Route::middleware('auth:user,admin,parent,teacher')->group(function () {
         Route::get('edit/{slug}', [BasicCompetencyController::class, 'edit'])->name('edit');
         Route::post('update/{id?}', [BasicCompetencyController::class, 'storeOrUpdate'])->name('storeOrUpdate');
         Route::get('destroy/{slug}', [BasicCompetencyController::class, 'destroy'])->name('destroy');
+
+        // Route::get('export', [SubjectTeacherController::class, 'export'])->name('export');
+        // Route::post('import', [SubjectTeacherController::class, 'import'])->name('import');
+
+        Route::get('export', [BasicCompetencyController::class, 'export'])->name('export');
+        Route::post('imprt', [BasicCompetencyController::class, 'import'])->name('import');
     });
 
     //Score Manual

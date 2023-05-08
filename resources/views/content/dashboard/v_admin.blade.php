@@ -56,150 +56,84 @@
                     </div>
                 </div>
             </div>
-            <div class="col-xl-8 col-lg-12 col-md-12 col-sm-12 col-12 layout-spacing">
+            <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 layout-spacing">
                 <div class="widget widget-chart-one">
                     <div class="widget-heading">
-                        <h5 class="">Revenue</h5>
-                        <ul class="tabs tab-pills">
-                            <li><a href="javascript:void(0);" id="tb_1" class="tabmenu">Monthly</a></li>
-                        </ul>
+                        <h5 class="">Sebelum Aplikasi digunakan, silahkan atur terlebih dahulu</h5>
                     </div>
 
                     <div class="widget-content">
                         <div class="tabs tab-content">
                             <div id="content_1" class="tabcontent">
-                                <div id="revenueMonthly"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-xl-4 col-lg-12 col-md-12 col-sm-12 col-12 layout-spacing">
-                <div class="widget widget-table-one">
-                    <div class="widget-heading d-flex justify-content-between">
-                        <h5 class="my-auto">Nilai Siswa</h5>
-                        <div class="form-group my-auto">
-                            <select name="id_school_year" class="form-control">
-                                <option value="" selected>Tertinggi</option>
-                                <option value="">Terendah</option>
-
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="widget-content">
-                        <div class="transactions-list">
-                            <div class="t-item">
-                                <div class="t-company-name">
-                                    <div class="t-icon">
-                                        <div class="icon">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                                stroke-linecap="round" stroke-linejoin="round"
-                                                class="feather feather-home">
-                                                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-                                                <polyline points="9 22 9 12 15 12 15 22"></polyline>
-                                            </svg>
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <div class="row align-items-center">
+                                                    <div class="col">
+                                                        <h6 class="text-uppercase text-muted mb-2">Pengaturan</h6>
+                                                        <p>Meliputi : Sekolah, Konfigurasi, Sampul, Kop Surat dll</p>
+                                                    </div>
+                                                    <div class="col-auto">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="51" height="51" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="t-name">
-                                        <h4>Electricity Bill</h4>
-                                        <p class="meta-date">4 Aug 1:00PM</p>
-                                    </div>
-
-                                </div>
-                                <div class="t-rate rate-dec">
-                                    <p><span>-$16.44</span> <svg xmlns="http://www.w3.org/2000/svg" width="24"
-                                            height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                            class="feather feather-arrow-down">
-                                            <line x1="12" y1="5" x2="12" y2="19"></line>
-                                            <polyline points="19 12 12 19 5 12"></polyline>
-                                        </svg></p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="transactions-list">
-                            <div class="t-item">
-                                <div class="t-company-name">
-                                    <div class="t-icon">
-                                        <div class="avatar avatar-xl">
-                                            <span class="avatar-title rounded-circle">SP</span>
+                                    <div class="col-md-3">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <div class="row align-items-center">
+                                                    <div class="col">
+                                                        <h6 class="text-uppercase text-muted mb-2">Master</h6>
+                                                        <p>Meliputi : Tahun ajaran, Jurusan, Tingkat, Rombel dll</p>
+                                                    </div>
+                                                    <div class="col-auto">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="51" height="51" viewBox="0 0 24 24"
+                                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                        stroke-linejoin="round">
+                                                        <path d="M11 21H4a2 2 0 0 1-2-2V5c0-1.1.9-2 2-2h5l2 3h9a2 2 0 0 1 2 2v2M19 15v6M16 18h6" />
+                                                    </svg>                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="t-name">
-                                        <h4>Shaun Park</h4>
-                                        <p class="meta-date">4 Aug 1:00PM</p>
-                                    </div>
-                                </div>
-                                <div class="t-rate rate-inc">
-                                    <p><span>+$66.44</span> <svg xmlns="http://www.w3.org/2000/svg" width="24"
-                                            height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                            class="feather feather-arrow-up">
-                                            <line x1="12" y1="19" x2="12" y2="5"></line>
-                                            <polyline points="5 12 12 5 19 12"></polyline>
-                                        </svg></p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="transactions-list">
-                            <div class="t-item">
-                                <div class="t-company-name">
-                                    <div class="t-icon">
-                                        <div class="avatar avatar-xl">
-                                            <span class="avatar-title rounded-circle">AD</span>
+                                    <div class="col-md-3">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <div class="row align-items-center">
+                                                    <div class="col">
+                                                        <h6 class="text-uppercase text-muted mb-2">User</h6>
+                                                        <p>Meliputi : Admin, Guru, Siswa dll</p>
+                                                    </div>
+                                                    <div class="col-auto">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="51" height="51" viewBox="0 0 24 24"
+                                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                        stroke-linejoin="round">
+                                                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                                        <circle cx="9" cy="7" r="4"></circle>
+                                                        <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                                                        <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                                                    </svg>                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="t-name">
-                                        <h4>Amy Diaz</h4>
-                                        <p class="meta-date">4 Aug 1:00PM</p>
-                                    </div>
-
-                                </div>
-                                <div class="t-rate rate-inc">
-                                    <p><span>+$66.44</span> <svg xmlns="http://www.w3.org/2000/svg" width="24"
-                                            height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                            class="feather feather-arrow-up">
-                                            <line x1="12" y1="19" x2="12" y2="5"></line>
-                                            <polyline points="5 12 12 5 19 12"></polyline>
-                                        </svg></p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="transactions-list">
-                            <div class="t-item">
-                                <div class="t-company-name">
-                                    <div class="t-icon">
-                                        <div class="icon">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                                class="feather feather-home">
-                                                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-                                                <polyline points="9 22 9 12 15 12 15 22"></polyline>
-                                            </svg>
+                                    <div class="col-md-3">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <div class="row align-items-center">
+                                                    <div class="col">
+                                                        <h6 class="text-uppercase text-muted mb-2">Template</h6>
+                                                        <p>Meliputi : Menu yang tampil, berdasarkan template yang dipilih</p>
+                                                    </div>
+                                                    <div class="col-auto">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="51" height="51" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M21 12H3M12 3v18"/></svg>                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="t-name">
-                                        <h4>Netflix</h4>
-                                        <p class="meta-date">4 Aug 1:00PM</p>
-                                    </div>
-
-                                </div>
-                                <div class="t-rate rate-dec">
-                                    <p><span>-$32.00</span> <svg xmlns="http://www.w3.org/2000/svg" width="24"
-                                            height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                            class="feather feather-arrow-down">
-                                            <line x1="12" y1="5" x2="12" y2="19"></line>
-                                            <polyline points="19 12 12 19 5 12"></polyline>
-                                        </svg></p>
                                 </div>
                             </div>
                         </div>

@@ -2,13 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\FullBasicCompetencyExport;
 use App\Helpers\Helper;
 use App\Http\Requests\K16\BasicCompetencyRequest;
+use App\Imports\BasicCompetencyMultipleImport;
 use App\Models\BasicCompetency;
 use App\Models\Course;
 use App\Models\Level;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\DataTables;
 
 class BasicCompetencyController extends Controller
@@ -105,5 +110,32 @@ class BasicCompetencyController extends Controller
         BasicCompetency::where('slug', $slug)->delete();
         Helper::toast('Berhasil menghapus data', 'success');
         return redirect()->back();
+    }
+
+    public function export()
+    {
+        return Excel::download(new FullBasicCompetencyExport(), '' . Carbon::now()->timestamp . '_format_kompetensi_dasar.xls');
+    }
+
+    public function import(Request $request)
+    {
+        // dd($request);
+        $this->validate($request, [
+            'file' => 'required|mimes:csv,xls,xlsx'
+        ]);
+
+        try {
+            $file = $request->file('file');
+            $nama_file = $file->hashName();
+            $path = $file->storeAs('public/excel/', $nama_file);
+            Excel::import(new BasicCompetencyMultipleImport(), storage_path('app/public/excel/' . $nama_file));
+            Storage::delete($path);
+            Helper::toast('Data Berhasil Diimport', 'success');
+            return redirect()->back();
+        } catch (\Throwable $e) {
+            // dd($e['message']);
+            Helper::toast($e->getMessage(), 'errror');
+            return redirect()->back();
+        }
     }
 }
