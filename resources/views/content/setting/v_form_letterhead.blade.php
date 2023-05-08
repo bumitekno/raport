@@ -28,7 +28,7 @@
                                             @if (!empty($kop) && $kop['left_logo'])
                                                 <td class="b-0">
                                                     <img alt="logo kiri" id="prev-left-logo"
-                                                        src="{{ !empty($kop) && $kop['left_logo'] ? $kop['left_logo'] : asset('asset/img/90x90.jpg') }}"
+                                                        src="{{ !empty($kop) && $kop['left_logo'] ? asset($kop['left_logo']) : asset('asset/img/90x90.jpg') }}"
                                                         style="width: 85%;">
                                                 </td>
                                             @endif
@@ -54,7 +54,7 @@
                                             @if (!empty($kop) && $kop['right_logo'])
                                                 <td class="b-0">
                                                     <img alt="logo kiri" id="prev-right-logo"
-                                                        src="{{ !empty($kop) && $kop['right_logo'] ? $kop['right_logo'] : asset('asset/img/90x90.jpg') }}"
+                                                        src="{{ !empty($kop) && $kop['right_logo'] ? asset($kop['right_logo']) : asset('asset/img/90x90.jpg') }}"
                                                         style="width: 85%;">
                                                 </td>
                                             @endif

@@ -17,6 +17,7 @@ use App\Http\Controllers\DescriptionCompetenceController;
 use App\Http\Controllers\ExtracurricularController;
 use App\Http\Controllers\GeneralWeightingController;
 use App\Http\Controllers\KkmController;
+use App\Http\Controllers\LegerController;
 use App\Http\Controllers\LetterheadController;
 use App\Http\Controllers\LevelController;
 use App\Http\Controllers\MajorController;
@@ -323,7 +324,11 @@ Route::middleware('auth:user,admin,parent,teacher')->group(function () {
 
     Route::prefix('score-extra/{slug}')->name('score_extras.')->group(function () {
         Route::get('/', [ScoreExtracurricularController::class, 'index'])->name('index');
-        // Route::get('print', [PreviewController::class, 'print'])->name('print');
         Route::post('update', [ScoreExtracurricularController::class, 'storeOrUpdate'])->name('storeOrUpdate');
+    });
+
+    Route::prefix('leger')->name('legers.')->group(function () {
+        Route::get('prev-classes/{slug}', [LegerController::class, 'byClass'])->name('by_classes');
+        Route::get('list-classes', [LegerController::class, 'listClass'])->name('list_classes');
     });
 });
