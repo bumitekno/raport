@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Helpers\Helper;
 use App\Http\Requests\P5\ScoreRequest;
 use App\Models\AssesmentWeighting;
+use App\Models\Config;
 use App\Models\ScoreMerdeka;
 use App\Models\StudentClass;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -97,6 +99,17 @@ class ScoreMerdekaController extends Controller
             ['id_course', session('teachers.id_course')],
             ['id_school_year', session('id_school_year')]
         ])->first();
+        $config = Config::where([
+            ['id_school_year', session('id_school_year')],
+            ['status', 1]
+        ])->first();
+        $status_form = true;
+        if (!empty($config) && $config->closing_date != null) {
+            $closing_date = Carbon::parse($config->closing_date)->startOfDay();
+            if ($closing_date < now()->startOfDay()) {
+                $status_form = false;
+            }
+        }
 
         $result = [
             'id_study_class' => session('teachers.id_study_class'),
@@ -111,6 +124,7 @@ class ScoreMerdekaController extends Controller
             'score_uts' => $score ? $score->score_uts : 0,
             'score_uas' => $score ? $score->score_uas : 0,
             'final_score' => $score ? $score->final_score : 0,
+            'status_form' => $status_form
         ];
         if (empty($weight)) {
             session()->put('message', 'Terjadi kesalahan: Dikarenakan bobot nilai belum di setting ');
@@ -118,10 +132,6 @@ class ScoreMerdekaController extends Controller
         }
         // dd($result);
         return view('content.score_p5.v_create_student_score', compact('weight', 'result'));
-        // } catch (\Throwable $e) {
-        //     session()->put('message', 'Terjadi kesalahan: Dikarenakan bobot nilai belum di setting ');
-        //     return view('pages.v_error');
-        // }
     }
 
     public function storeOrUpdate(ScoreRequest $request)

@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Helpers\Helper;
 use App\Http\Requests\HomeRoom\TeacherNoteRequest;
+use App\Models\Config;
 use App\Models\StudentClass;
 use App\Models\TeacherNote;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -22,6 +24,17 @@ class TeacherNoteController extends Controller
                 ['year', session('year')],
                 ['student_classes.status', 1],
             ])->get();
+        $config = Config::where([
+            ['id_school_year', session('id_school_year')],
+            ['status', 1]
+        ])->first();
+        $status_form = true;
+        if (!empty($config) && $config->closing_date != null) {
+            $closing_date = Carbon::parse($config->closing_date)->startOfDay();
+            if ($closing_date < now()->startOfDay()) {
+                $status_form = false;
+            }
+        }
 
         $result = [];
         foreach ($students as $student) {
@@ -41,6 +54,7 @@ class TeacherNoteController extends Controller
                 'id_school_year' => session('id_school_year'),
                 'promotion' => $score ? $score->promotion : 'Y',
                 'description' => $score ? $score->description : null,
+                'status_form' => $status_form
             ];
         }
         // dd($students);

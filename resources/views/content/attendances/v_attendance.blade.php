@@ -58,19 +58,19 @@
                                                         value="{{ $student['id_student_class'] }}">
                                                     <td>
                                                         <input type="text" class="form-control" name="ill[]"
-                                                            value="{{ $student['ill'] != null ? $student['ill'] : '0' }}">
+                                                            value="{{ $student['ill'] != null ? $student['ill'] : '0' }}" {{ $student['status_form'] == false ? 'readonly' : '' }}>
                                                         @error('ill.' . $index)
                                                             <div class="invalid-feedback">{{ $message }}</div>
                                                         @enderror
                                                     </td>
                                                     <td><input type="text" class="form-control" name="excused[]"
-                                                            value="{{ $student['excused'] != null ? $student['excused'] : '0' }}">
+                                                            value="{{ $student['excused'] != null ? $student['excused'] : '0' }}" {{ $student['status_form'] == false ? 'readonly' : '' }}>
                                                         @error('excused.' . $index)
                                                             <div class="invalid-feedback">{{ $message }}</div>
                                                         @enderror
                                                     </td>
                                                     <td><input type="text" class="form-control" name="unexcused[]"
-                                                            value="{{ $student['unexcused'] != null ? $student['unexcused'] : '0' }}">
+                                                            value="{{ $student['unexcused'] != null ? $student['unexcused'] : '0' }}" {{ $student['status_form'] == false ? 'readonly' : '' }}>
                                                         @error('unexcused.' . $index)
                                                             <div class="invalid-feedback">{{ $message }}</div>
                                                         @enderror

@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string('nip_headmaster');
             $table->string('signature')->nullable();
             $table->string('place')->nullable();
+            $table->date('closing_date')->nullable();
             $table->integer('id_school_year');
             $table->tinyInteger('status')->default(1);
             $table->timestamps();

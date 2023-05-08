@@ -72,7 +72,7 @@
                                                 <input type="hidden" name="id_student_class[]" value="{{ $student['id_student_class'] }}">
                                                 <td>{{ $student['nis'] }}</td>
                                                 <td>
-                                                    <select name="promotion[]" class="form-control">
+                                                    <select name="promotion[]" class="form-control" {{ $student['status_form'] == false ? 'disabled' : '' }}>
                                                         <option value="Y" {{ $student['promotion'] == 'Y' ? 'selected' : '' }}>Ya</option>
                                                         <option value="N" {{ $student['promotion'] == 'N' ? 'selected' : '' }}>Tidak</option>
                                                     </select>
@@ -81,7 +81,7 @@
                                                     @enderror
                                                 </td>
                                                 <td>
-                                                    <textarea name="description[]" rows="2" class="form-control">{{ $student['description'] }}</textarea>
+                                                    <textarea name="description[]" rows="2" class="form-control" {{ $student['status_form'] == false ? 'readonly' : '' }}>{{ $student['description'] }}</textarea>
                                                     @error('description.'.$index)
                                                     <div class="invalid-feedback d-block">{{ $message }}</div>
                                                     @enderror

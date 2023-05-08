@@ -26,6 +26,7 @@ class ConfigController extends Controller
         if ($config) {
             $data_array['config'] = $config;
         }
+        // dd($config);
         return view('content.setting.v_form_config', $data_array);
     }
 

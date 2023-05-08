@@ -19,6 +19,7 @@ class ConfigRequest extends FormRequest
             'last_pts_date' => 'nullable|date|date_format:Y-m-d',
             'report_date' => 'nullable|date|date_format:Y-m-d',
             'final_report_date' => 'nullable|date|date_format:Y-m-d',
+            'closing_date' => 'nullable|date|date_format:Y-m-d',
             'headmaster' => 'required|string',
             'id_school_year' => 'required',
             'nip_headmaster' => 'required',

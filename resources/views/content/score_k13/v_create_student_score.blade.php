@@ -102,19 +102,19 @@
                                                         <td>
                                                             @if ($index == 0)
                                                                 <button class="btn btn-outline-primary add-row"
-                                                                    type="button">
+                                                                    type="button" {{ $result['status_form'] == false ? 'disabled' : '' }}>
                                                                     <i class="fas fa-plus"></i>
                                                                 </button>
                                                             @else
                                                                 <button class="btn btn-outline-danger remove-row"
-                                                                    type="button">
+                                                                    type="button" {{ $result['status_form'] == false ? 'disabled' : '' }}>
                                                                     <i class="fas fa-minus"></i>
                                                                 </button>
                                                             @endif
                                                         </td>
                                                         <td>
                                                             <select name="id_kd_assesment[]" id=""
-                                                                class="form-control">
+                                                                class="form-control" {{ $result['status_form'] == false ? 'disabled' : '' }}>
                                                                 <option value="" disabled>Pilih KD</option>
                                                                 @foreach ($basic_competencies as $basic_competency)
                                                                     @php
@@ -128,11 +128,11 @@
                                                             <input type="number" class="form-control mt-2"
                                                                 name="nilai_pengetahuan[]" placeholder="Nilai Pengetahuan"
                                                                 min="0" max="100"
-                                                                value="{{ $assessment->score }}">
+                                                                value="{{ $assessment->score }}" {{ $result['status_form'] == false ? 'readonly' : '' }}>
                                                         </td>
                                                         <td>
                                                             <select name="id_kd_skill[]" id=""
-                                                                class="form-control">
+                                                                class="form-control" {{ $result['status_form'] == false ? 'disabled' : '' }}>
                                                                 <option value="" disabled>Pilih KD</option>
                                                                 @foreach ($basic_competencies as $basic_competency)
                                                                     @php
@@ -146,7 +146,7 @@
                                                             <input type="number" class="form-control mt-2"
                                                                 name="nilai_ketrampilan[]" placeholder="Nilai Ketrampilan"
                                                                 min="0" max="100"
-                                                                value="{{ $result['skill_score'][$index]->score }}">
+                                                                value="{{ $result['skill_score'][$index]->score }}" {{ $result['status_form'] == false ? 'readonly' : '' }}>
                                                         </td>
                                                         <td>
                                                             <p class="hasil-akhir-assesment">
@@ -170,7 +170,7 @@
                                                 <td colspan="2">
                                                     <input type="number" class="form-control uts" name="uts"
                                                         placeholder="Nilai UTS" min="0" max="100"
-                                                        value="{{ $result['score_uts'] }}">
+                                                        value="{{ $result['score_uts'] }}" {{ $result['status_form'] == false ? 'readonly' : '' }}>
                                                 </td>
                                                 <td></td>
                                             </tr>
@@ -179,7 +179,7 @@
                                                 <td colspan="2">
                                                     <input type="number" class="form-control uas" name="uas"
                                                         placeholder="Nilai UAS" min="0" max="100"
-                                                        value="{{ $result['score_uas'] }}">
+                                                        value="{{ $result['score_uas'] }}" {{ $result['status_form'] == false ? 'readonly' : '' }}>
                                                 </td>
                                                 <td></td>
                                             </tr>

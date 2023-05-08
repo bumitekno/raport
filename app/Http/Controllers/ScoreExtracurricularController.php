@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Helpers\Helper;
 use App\Http\Requests\Score\ExtracurricularRequest;
+use App\Models\Config;
 use App\Models\Extracurricular;
 use App\Models\ScoreExtracurricular;
 use App\Models\StudentClass;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -28,6 +30,17 @@ class ScoreExtracurricularController extends Controller
             ])->get();
 
         $result = [];
+        $config = Config::where([
+            ['id_school_year', session('id_school_year')],
+            ['status', 1]
+        ])->first();
+        $status_form = true;
+        if (!empty($config) && $config->closing_date != null) {
+            $closing_date = Carbon::parse($config->closing_date)->startOfDay();
+            if ($closing_date < now()->startOfDay()) {
+                $status_form = false;
+            }
+        }
         foreach ($students as $student) {
             $score = ScoreExtracurricular::where([
                 ['id_study_class', session('id_study_class')],
@@ -61,6 +74,7 @@ class ScoreExtracurricularController extends Controller
                 'id_school_year' => session('id_school_year'),
                 'score' => $score,
                 'description' => $description,
+                'status_form' => $status_form,
             ];
         }
         // dd($result);

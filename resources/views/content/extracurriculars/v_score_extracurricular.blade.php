@@ -160,7 +160,7 @@
                                                                                 <td>{{ $student['nis'] }}</td>
                                                                                 <td>
                                                                                     <select name="score[]"
-                                                                                        class="form-control">
+                                                                                        class="form-control" {{ $student['status_form'] == false ? 'disabled' : '' }}>
                                                                                         <option value="sangat_baik" {{ $student['score'] == 'sangat_baik' ? 'selected' : '' }}>Sangat
                                                                                             Baik
                                                                                         </option>
@@ -177,7 +177,7 @@
                                                                                     @enderror
                                                                                 </td>
                                                                                 <td>
-                                                                                    <textarea name="description[]" rows="2" class="form-control">{{ $student['description'] }}</textarea>
+                                                                                    <textarea name="description[]" rows="2" class="form-control" {{ $student['status_form'] == false ? 'readonly' : '' }}>{{ $student['description'] }}</textarea>
                                                                                     @error('description.' . $index)
                                                                                         <div class="invalid-feedback d-block">
                                                                                             {{ $message }}</div>

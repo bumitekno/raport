@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Helpers\Helper;
 use App\Http\Requests\Attendances\AttendanceRequest;
 use App\Models\AttendanceScore;
+use App\Models\Config;
 use App\Models\StudentClass;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class AttendanceScoreController extends Controller
@@ -20,7 +22,17 @@ class AttendanceScoreController extends Controller
                 ['year', session('year')],
                 ['student_classes.status', 1],
             ])->get();
-
+        $config = Config::where([
+            ['id_school_year', session('id_school_year')],
+            ['status', 1]
+        ])->first();
+        $status_form = true;
+        if (!empty($config) && $config->closing_date != null) {
+            $closing_date = Carbon::parse($config->closing_date)->startOfDay();
+            if ($closing_date < now()->startOfDay()) {
+                $status_form = false;
+            }
+        }
         $result = [];
         foreach ($students as $student) {
             $score = AttendanceScore::where([
@@ -37,6 +49,7 @@ class AttendanceScoreController extends Controller
                 'ill' => $score ? $score->ill : 0,
                 'excused' => $score ? $score->excused : 0,
                 'unexcused' => $score ? $score->unexcused : 0,
+                'status_form' => $status_form
             ];
         }
         return view('content.attendances.v_attendance', compact('result'));

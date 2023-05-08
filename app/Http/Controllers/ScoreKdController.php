@@ -5,10 +5,12 @@ namespace App\Http\Controllers;
 use App\Helpers\Helper;
 use App\Http\Requests\K16\ScoreKdRequest;
 use App\Models\BasicCompetency;
+use App\Models\Config;
 use App\Models\GeneralWeighting;
 use App\Models\ScoreKd;
 use App\Models\StudentClass;
 use App\Models\SubjectTeacher;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\DataTables;
@@ -95,6 +97,17 @@ class ScoreKdController extends Controller
             ['id_school_year', session('id_school_year')],
             ['type', session('teachers.type')],
         ])->first();
+        $config = Config::where([
+            ['id_school_year', session('id_school_year')],
+            ['status', 1]
+        ])->first();
+        $status_form = true;
+        if (!empty($config) && $config->closing_date != null) {
+            $closing_date = Carbon::parse($config->closing_date)->startOfDay();
+            if ($closing_date < now()->startOfDay()) {
+                $status_form = false;
+            }
+        }
         // dd($weight);
         $student_class = StudentClass::where('slug', $slug)->first();
         $subject_teacher = SubjectTeacher::whereRaw('JSON_CONTAINS(id_study_class, \'["' . session('teachers.id_study_class') . '"]\')')
@@ -122,6 +135,7 @@ class ScoreKdController extends Controller
             'score_uas' => $score ? $score->score_uas : 0,
             'final_assesment' => $score ? $score->final_assesment : 0,
             'final_skill' => $score ? $score->final_skill : 0,
+            'status_form' => $status_form
         ];
         // dd($result);
         if (empty($weight)) {

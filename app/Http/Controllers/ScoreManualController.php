@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Helpers\Helper;
 use App\Http\Requests\Manual\ScoreRequest;
+use App\Models\Config;
 use App\Models\ScoreManual;
 use App\Models\StudentClass;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -13,6 +15,7 @@ class ScoreManualController extends Controller
 {
     public function index()
     {
+        // dd(session()->all());
         $students = StudentClass::join('users', 'student_classes.id_student', '=', 'users.id')
             ->select('student_classes.id', 'student_classes.slug', 'student_classes.id_student', 'student_classes.status',  'student_classes.year', 'users.name', 'users.gender', 'users.file', 'users.email', 'users.place_of_birth', 'users.date_of_birth')
             ->where([
@@ -20,6 +23,18 @@ class ScoreManualController extends Controller
                 ['year', session('year')],
                 ['student_classes.status', 1],
             ])->get();
+        $config = Config::where([
+            ['id_school_year', session('id_school_year')],
+            ['status', 1]
+        ])->first();
+        $status_form = true;
+        if (!empty($config) && $config->closing_date != null) {
+            $closing_date = Carbon::parse($config->closing_date)->startOfDay();
+            if ($closing_date < now()->startOfDay()) {
+                $status_form = false;
+            }
+        }
+        // dd($config);
 
         $result = [];
         foreach ($students as $student) {
@@ -46,6 +61,7 @@ class ScoreManualController extends Controller
                 'score_final' => $score ? $score->score_final : 0,
                 'predicate' => $score ? $score->predicate : null,
                 'description' => $score ? $score->description : null,
+                'status_form' => $status_form
             ];
         }
         // dd($result);

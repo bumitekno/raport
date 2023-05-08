@@ -92,7 +92,7 @@
                                     <div class="col-xl-2 col-lg-12 col-md-4 text-center">
                                         <div class="upload mt-4 pr-md-4">
                                             <input type="file" name="signature" id="input-file-max-fs" class="dropify"
-                                                data-default-file="{{ isset($config) ? old('signature', asset($config->signature)) : old('signature', asset('asset/img/200x200.jpg')) }}"
+                                                data-default-file="{{ isset($config) && $config['signature'] != null ? old('signature', asset($config->signature)) : old('signature', asset('asset/img/200x200.jpg')) }}"
                                                 data-max-file-size="2M" />
                                             <p class="mt-2"><i class="flaticon-cloud-upload mr-1"></i> Tanda Tangan Kepsek
                                             </p>
@@ -118,22 +118,40 @@
                                                 <div class="form-group">
                                                     <label for="fullName">Tempat Surat</label>
                                                     <input type="text" class="form-control" name="place" id="place"
-                                                        placeholder="Lokasi Surat" value="{{ isset($config) ? old('place', $config->place) : old('place') }}">
+                                                        placeholder="Lokasi Surat"
+                                                        value="{{ isset($config) ? old('place', $config->place) : old('place') }}">
                                                     @error('place')
                                                         <div class="invalid-feedback d-block">{{ $message }}</div>
                                                     @enderror
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="form-group">
-                                            <label for="profession">NIP Kepala Sekolah</label>
-                                            <input type="text" class="form-control" name="nip_headmaster"
-                                                placeholder="NIP Kepala Sekolah"
-                                                value="{{ isset($config) ? old('nip_headmaster', $config->nip_headmaster) : old('nip_headmaster') }}">
-                                            @error('nip_headmaster')
-                                                <div class="invalid-feedback d-block">{{ $message }}</div>
-                                            @enderror
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="profession">NIP Kepala Sekolah</label>
+                                                    <input type="text" class="form-control" name="nip_headmaster"
+                                                        placeholder="NIP Kepala Sekolah"
+                                                        value="{{ isset($config) ? old('nip_headmaster', $config->nip_headmaster) : old('nip_headmaster') }}">
+                                                    @error('nip_headmaster')
+                                                        <div class="invalid-feedback d-block">{{ $message }}</div>
+                                                    @enderror
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group">
+                                                    <label for="profession">Tanggal Kunci Raport</label>
+                                                    <input
+                                                        value="{{ isset($config) ? old('closing_date', $config->closing_date) : old('closing_date', now()) }}"
+                                                        class="form-control basicPicker active" type="text"
+                                                        name="closing_date" placeholder="Select Date..">
+                                                    @error('closing_date')
+                                                        <div class="invalid-feedback d-block">{{ $message }}</div>
+                                                    @enderror
+                                                </div>
+                                            </div>
                                         </div>
+
                                     </div>
                                 </div>
                             </div>

@@ -52,23 +52,23 @@
                                                     <input type="hidden" name="id_student_class[]"
                                                         value="{{ $student['id_student_class'] }}">
                                                     <td><input type="text" class="form-control" name="assigment_grade[]"
-                                                            value="{{ $student['assigment_grade'] != null ? $student['assigment_grade'] : '0' }}">
+                                                            value="{{ $student['assigment_grade'] != null ? $student['assigment_grade'] : '0' }}" {{ $student['status_form'] == false ? 'readonly' : '' }}>
                                                     </td>
                                                     <td><input type="text" class="form-control" name="daily_test_score[]"
-                                                            value="{{ $student['daily_test_score'] != null ? $student['daily_test_score'] : '0' }}">
+                                                            value="{{ $student['daily_test_score'] != null ? $student['daily_test_score'] : '0' }}" {{ $student['status_form'] == false ? 'readonly' : '' }}>
                                                     </td>
                                                     <td><input type="text" class="form-control" name="score_uts[]"
-                                                            value="{{ $student['score_uts'] != null ? $student['score_uts'] : '0' }}">
+                                                            value="{{ $student['score_uts'] != null ? $student['score_uts'] : '0' }}" {{ $student['status_form'] == false ? 'readonly' : '' }}>
                                                     </td>
                                                     <td><input type="text" class="form-control" name="score_uas[]"
-                                                            value="{{ $student['score_uas'] != null ? $student['score_uas'] : '0' }}">
+                                                            value="{{ $student['score_uas'] != null ? $student['score_uas'] : '0' }}" {{ $student['status_form'] == false ? 'readonly' : '' }}>
                                                     </td>
                                                     <td>{{ $student['score_final'] }}</td>
                                                     <td>{{ $student['predicate'] }}</td>
                                                     <td>
                                                         <input type="hidden" name="score_final[]" value="{{ $student['score_final'] }}">
                                                         <input type="hidden" name="predicate[]" value="{{ $student['predicate'] }}">
-                                                        <textarea class="form-control" rows="1" name="description[]">{{ $student['description'] }}</textarea>
+                                                        <textarea class="form-control" rows="1" name="description[]" {{ $student['status_form'] == false ? 'readonly' : '' }}>{{ $student['description'] }}</textarea>
                                                     </td>
                                                 </tr>
                                             @endforeach
