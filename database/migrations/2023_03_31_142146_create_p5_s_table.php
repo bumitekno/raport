@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('slug')->nullable();
             $table->string('title');
             $table->unsignedInteger('id_tema');
-            $table->unsignedInteger('id_subject_teacher');
+            $table->unsignedBigInteger('id_subject_teacher');
             $table->unsignedInteger('id_study_class');
             $table->text('description')->nullable();
             $table->json('sub_element')->nullable();

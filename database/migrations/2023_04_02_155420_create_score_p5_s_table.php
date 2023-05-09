@@ -18,8 +18,8 @@ return new class extends Migration
             $table->string('slug')->nullable();
             $table->unsignedBigInteger('id_student_class')->nullable();
             $table->unsignedInteger('id_school_year');
-            $table->integer('id_p5');
-            $table->unsignedInteger('id_subject_teacher');
+            $table->unsignedInteger('id_p5');
+            $table->unsignedBigInteger('id_subject_teacher');
             $table->json('score');
             $table->text('description')->nullable();
             $table->tinyInteger('status')->default(1);

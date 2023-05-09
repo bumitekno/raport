@@ -26,7 +26,7 @@ return new class extends Migration
             $table->integer('score_uts')->nullable();
             $table->integer('final_assesment')->nullable();
             $table->integer('final_skill')->nullable();
-            $table->unsignedInteger('id_subject_teacher')->nullable();
+            $table->unsignedBigInteger('id_subject_teacher')->nullable();
             $table->unsignedInteger('id_study_class')->nullable();
             $table->tinyInteger('status')->default(1);
             $table->timestamps();
