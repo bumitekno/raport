@@ -52,6 +52,7 @@ class SessionController extends Controller
             Session::forget('teachers');
             session(['id_study_class' => Auth::guard('teacher')->user()->id_class]);
             $study_class = StudyClass::find(session('id_study_class'));
+            session(['slug_class' => $study_class->slug]);
             $template = TemplateConfiguration::where([
                 ['id_major', $study_class->id_major],
                 ['id_school_year', session('id_school_year')]

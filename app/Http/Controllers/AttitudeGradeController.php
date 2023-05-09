@@ -13,6 +13,7 @@ class AttitudeGradeController extends Controller
 {
     public function index($type)
     {
+        // dd(session()->all());
         $title = $type == 'social' ? 'Sosial' : 'Spiritual';
         session()->put('title', 'Nilai Sipak ' . $title);
 

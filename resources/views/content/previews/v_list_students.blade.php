@@ -22,8 +22,19 @@
                     <div class="statbox widget box box-shadow">
                         <div class="widget-header">
                             <div class="row">
-                                <div class="col-xl-12 col-md-12 col-sm-12 col-12">
+                                <div class="col-xl-12 col-md-12 col-sm-12 col-12 d-flex justify-content-between">
                                     <h4>{{ session('title') }}</h4>
+                                    <div class="form-group my-auto">
+                                        <select name="id_school_year" class="form-control" id="school_year">
+                                            <option value="" selected disabled>-- Pilih Tahun Ajaran --</option>
+                                            @foreach ($years as $school_year)
+                                                <option value="{{ $school_year['slug'] }}"
+                                                    {{ $school_year['slug'] == $_GET['year'] ? 'selected' : '' }}>
+                                                    {{ $school_year['school_year'] . ' ' . $school_year['semester']['name'] }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -49,10 +60,11 @@
                                             <th></th>
                                             <th>Siswa</th>
                                             <th>NIS</th>
-                                            <th></th>
+                                            <th class="text-center">Sampul Raport</th>
+                                            <th class="text-center">Raport</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody id="student-table">
                                         @foreach ($students as $student)
                                             <tr>
                                                 <td class="text-enter">{{ $loop->iteration }}</td>
@@ -67,7 +79,16 @@
                                                     </div>
                                                 </td>
                                                 <td>{{ $student->nis }}</td>
-                                                <td></td>
+                                                <td class="text-center">
+                                                    <a href="{{ route('previews.print_cover', ['year' => $_GET['year'], 'student' => $student->slug]) }}" target="_blank" class="text-primary">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 15v4c0 1.1.9 2 2 2h14a2 2 0 0 0 2-2v-4M17 9l-5 5-5-5M12 12.8V2.5"/></svg> Download
+                                                    </a>
+                                                </td>
+                                                <td class="text-center text-primary">
+                                                    <a href="{{ route('previews.print_other', ['year' => $_GET['year'], 'student' => $student->slug]) }}" target="_blank"  class="text-primary">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 15v4c0 1.1.9 2 2 2h14a2 2 0 0 0 2-2v-4M17 9l-5 5-5-5M12 12.8V2.5"/></svg> Download
+                                                    </a>
+                                                </td>
                                             </tr>
                                         @endforeach
                                     </tbody>
@@ -89,6 +110,10 @@
                     $('#student-table tr').filter(function() {
                         return rex.test($(this).text());
                     }).show();
+                });
+
+                $('#school_year').change(function() {
+                    window.location.href = "preview?template=k13&year=" + $(this).val();
                 });
             });
         </script>

@@ -147,13 +147,13 @@
                         </svg>
                     </div>
                 </a>
-                <ul class="collapse submenu list-unstyled {{ Route::is('admins.*') || Route::is('teachers.*') || Route::is('users.*') ? 'recent-submenu mini-recent-submenu show' : '' }}"
+                <ul class="collapse submenu list-unstyled {{ Route::is('previews.*') || Route::is('legers.*') ? 'recent-submenu mini-recent-submenu show' : '' }}"
                     id="side-user" data-parent="#accordionExample">
-                    <li class="{{ Route::is('admins.*') ? 'active' : '' }}">
-                        <a href="{{ route('previews.index', ['template' => 'k13']) }}"> Cetak Raport</a>
+                    <li class="{{ Route::is('previews.*') ? 'active' : '' }}">
+                        <a href="{{ route('previews.index', ['template' => 'k13', 'year' => session('slug_year')]) }}"> Cetak Raport</a>
                     </li>
-                    <li class="{{ Route::is('teachers.*') ? 'active' : '' }}">
-                        <a href="{{ route('attitude_grades.index', 'spiritual') }}"> Cetak Leger </a>
+                    <li class="{{ Route::is('legers.*') ? 'active' : '' }}">
+                        <a href="{{ route('legers.by_classes', session('slug_class')) }}"> Cetak Leger </a>
                     </li>
 
                 </ul>

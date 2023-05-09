@@ -82,20 +82,21 @@ class PreviewController extends Controller
                     ['id_study_class', session('id_study_class')],
                     ['student_classes.status', 1],
                 ])->get();
+            $years = SchoolYear::all();
+            $years = SchoolYearResource::collection($years)->toArray(request());
             if ($_GET['template'] == 'merdeka') {
                 $detail_year = SchoolYear::where('slug', $_GET['year'])->first();
                 $students = $students->where('year', substr($detail_year->name, 0, 4));
                 // dd($students);
-                $years = SchoolYear::all();
-                $years = SchoolYearResource::collection($years)->toArray(request());
+
                 // dd($years);
                 $view = 'content.previews.v_list_merdeka_students';
             } else {
-                $years = [];
+                // $years = [];
                 $students = $students->where('year', session('year'));
                 $view = 'content.previews.v_list_students';
             }
-            // dd(session()->all());
+            // dd($students);
 
             return view($view, compact('students', 'years'));
         }

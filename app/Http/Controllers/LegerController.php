@@ -4,10 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\Kkm;
 use App\Models\ScoreKd;
+use App\Models\ScoreManual;
+use App\Models\ScoreMerdeka;
 use App\Models\StudentClass;
 use App\Models\StudyClass;
 use App\Models\SubjectTeacher;
 use App\Models\Teacher;
+use App\Models\TemplateConfiguration;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -16,6 +19,7 @@ class LegerController extends Controller
     //
     public function byClass($slug)
     {
+        // dd(session()->all());
         $setting = json_decode(Storage::get('settings.json'), true);
         $study_class = StudyClass::where('slug', $slug)->first();
         $setting['study_class'] = $study_class->name;
@@ -35,8 +39,9 @@ class LegerController extends Controller
         $subject_teachers = SubjectTeacher::join('courses as c', 'c.id', '=', 'subject_teachers.id_course')
             ->whereRaw('JSON_CONTAINS(id_study_class, \'["' . $study_class->id . '"]\')')
             ->where('subject_teachers.id_school_year', session('id_school_year'))
-            ->select('subject_teachers.id', 'c.name')
+            ->select('subject_teachers.id', 'c.name', 'subject_teachers.id_course', 'subject_teachers.id_teacher')
             ->get();
+        // dd($subject_teachers);
 
         $code_course = SubjectTeacher::join('courses as c', 'c.id', '=', 'subject_teachers.id_course')
             ->leftJoin('kkms', function ($join) use ($study_class) {
@@ -50,11 +55,44 @@ class LegerController extends Controller
             ->get()
             ->toArray();
 
-        // dd($code_course);
+        // dd($template);
 
         $id_subject_teacher = collect($subject_teachers)->pluck('id');
 
-        $scores = ScoreKd::whereIn('id_subject_teacher', $id_subject_teacher)->get();
+        $template = TemplateConfiguration::where([
+            ['id_major', $study_class->id_major],
+            ['id_school_year', session('id_school_year')],
+        ])->first();
+
+        $scores = [];
+
+        $template = TemplateConfiguration::where([
+            ['id_major', $study_class->id_major],
+            ['id_school_year', session('id_school_year')],
+        ])->first();
+        // dd($template);
+
+        if ($template['template'] == 'merdeka') {
+            // dd($subject_teachers->pluck('id_course')->unique()->toArray());
+            $scores = ScoreMerdeka::whereIn('id_study_class', [$study_class->id])
+                ->whereIn('id_course', $subject_teachers->pluck('id_course')->unique()->toArray())
+                ->whereIn('id_teacher', $subject_teachers->pluck('id_teacher')->unique()->toArray())
+                ->where('id_school_year', session('id_school_year'))
+                ->get();
+        } else if ($template['template'] == 'k13') {
+            $scores = ScoreKd::whereIn('id_study_class', [$study_class->id])
+                ->whereIn('id_subject_teacher', $subject_teachers->pluck('id')->unique()->toArray())
+                ->where('id_school_year', session('id_school_year'))
+                ->get();
+        } else if ($template['template'] == 'manual') {
+            $scores = ScoreManual::whereIn('id_study_class', [$study_class->id])
+                ->whereIn('id_course', $subject_teachers->pluck('id_course')->unique()->toArray())
+                ->whereIn('id_teacher', $subject_teachers->pluck('id_teacher')->unique()->toArray())
+                ->where('id_school_year', session('id_school_year'))
+                ->get();
+        }
+        // dd($scores);
+
 
         foreach ($student_class as $student) {
             $arr_student_class[] = [
@@ -69,19 +107,39 @@ class LegerController extends Controller
             return (array) $a;
         })->toArray();
 
-        foreach ($nilai_map as $nmk => $nmv) {
-            $n_akhir = [];
-            foreach ($nmv['score'] as $nmn) {
-                $raport_ = $scores->where('id_subject_teacher', $nmn->id)->where('id_student_class', $nmv['id'])->first();
-                // dd($raport_);
-                $n_akhir[] = [
+        foreach ($nilai_map as &$nmv) {
+            if ($template['template'] == 'k13') {
+                $scoresFiltered = $scores->whereIn('id_subject_teacher', collect($nmv['score'])->pluck('id')->unique())
+                    ->where('id_student_class', $nmv['id'])
+                    ->where('id_school_year', session('id_school_year'));
+            } else {
+                $scoresFiltered = $scores->whereIn('id_course', collect($nmv['score'])->pluck('id_course')->unique())
+                    ->whereIn('id_teacher', collect($nmv['score'])->pluck('id_teacher')->unique())
+                    ->where('id_student_class', $nmv['id'])
+                    ->where('id_school_year', session('id_school_year'));
+            }
+
+            $nmv['score'] = collect($nmv['score'])->map(function ($nmn) use ($template, $scoresFiltered) {
+                if ($template['template'] == 'k13') {
+                    $raport_ = $scoresFiltered->where('id_subject_teacher', $nmn->id)->first();
+                    // dd($raport_);
+                    $final_score = $raport_ ? $raport_->final_assesment : 0;
+                } else {
+                    $raport_ = $scoresFiltered->where('id_course', $nmn->id_course)
+                        ->where('id_teacher', $nmn->id_teacher)
+                        ->first();
+                    $final_score = $raport_ ? ($template['template'] == 'merdeka' ? $raport_->final_score : $raport_->score_final) : 0;
+                }
+
+                return [
                     'id' => $nmn->id,
                     'name' => $nmn->name,
-                    'score' => empty($raport_) ? 0 : $raport_->final_assesment,
+                    'score' => $final_score,
                 ];
-            }
-            $nilai_map[$nmk]['score'] = $n_akhir;
+            })->toArray();
         }
+
+        unset($nmv);
 
         $results = array(
             'score' => $nilai_map,
