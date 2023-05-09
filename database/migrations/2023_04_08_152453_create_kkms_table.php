@@ -16,10 +16,10 @@ return new class extends Migration
         Schema::create('kkms', function (Blueprint $table) {
             $table->increments('id');
             $table->string('slug')->nullable();
-            $table->integer('id_study_class')->nullable();
-            $table->integer('id_course')->nullable();
+            $table->unsignedInteger('id_study_class')->nullable();
+            $table->unsignedInteger('id_course')->nullable();
             $table->integer('score')->nullable();
-            $table->integer('id_school_year')->nullable();
+            $table->unsignedInteger('id_school_year')->nullable();
             $table->tinyInteger('status')->default(1);
             $table->timestamps();
             $table->softDeletes();

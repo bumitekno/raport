@@ -30,7 +30,7 @@ return new class extends Migration
             $table->enum('family_status', ['kandung', 'angkat']);
             $table->string('child_off')->nullable();
             $table->string('school_from')->nullable();
-            $table->integer('accepted_grade')->nullable();
+            $table->unsignedInteger('accepted_grade')->nullable();
             $table->date('accepted_date')->nullable();
             $table->string('password');
             $table->string('entry_year')->nullable();

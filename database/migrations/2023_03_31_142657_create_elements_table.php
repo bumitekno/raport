@@ -17,7 +17,7 @@ return new class extends Migration
             $table->increments('id');
             $table->string('slug')->nullable();
             $table->string('name')->nullable();
-            $table->integer('id_dimension');
+            $table->unsignedInteger('id_dimension');
             $table->tinyInteger('status')->default(1);
             $table->timestamps();
             $table->softDeletes();

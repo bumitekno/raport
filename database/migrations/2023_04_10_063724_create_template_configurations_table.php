@@ -16,10 +16,10 @@ return new class extends Migration
         Schema::create('template_configurations', function (Blueprint $table) {
             $table->tinyIncrements('id');
             $table->string('slug')->nullable();
-            $table->integer('id_major')->nullable();
+            $table->unsignedInteger('id_major')->nullable();
             $table->enum('type', ['uas', 'uts']);
             $table->string('template')->nullable();
-            $table->integer('id_school_year')->nullable();
+            $table->unsignedInteger('id_school_year')->nullable();
             $table->tinyInteger('status')->default(1);
             $table->timestamps();
             $table->softDeletes();

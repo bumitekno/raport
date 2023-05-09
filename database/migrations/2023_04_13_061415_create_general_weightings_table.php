@@ -17,10 +17,10 @@ return new class extends Migration
             $table->increments('id');
             $table->string('slug')->nullable();
             $table->enum('type', ['uts', 'uas']);
-            $table->integer('id_teacher');
-            $table->integer('id_course');
-            $table->integer('id_study_class');
-            $table->integer('id_school_year');
+            $table->unsignedInteger('id_teacher');
+            $table->unsignedInteger('id_course');
+            $table->unsignedInteger('id_study_class');
+            $table->unsignedInteger('id_school_year');
             $table->integer('score_weight')->nullable();
             $table->integer('uts_weight')->nullable();
             $table->integer('uas_weight')->nullable();

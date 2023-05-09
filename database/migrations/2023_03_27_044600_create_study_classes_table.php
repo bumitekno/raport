@@ -17,8 +17,8 @@ return new class extends Migration
             $table->increments('id');
             $table->string('slug')->nullable();
             $table->string('name');
-            $table->integer('id_major');
-            $table->integer('id_level');
+            $table->unsignedInteger('id_major');
+            $table->unsignedInteger('id_level');
             $table->tinyInteger('status')->default(1);
             $table->timestamps();
             $table->softDeletes();

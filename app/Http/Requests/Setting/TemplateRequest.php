@@ -22,7 +22,7 @@ class TemplateRequest extends FormRequest
             'id_school_year.*' => 'required|integer',
             'type.*' => 'required|present|in:uas,uts',
             'id_major.*' => 'required|integer',
-            'template.*' => 'required|present|in:k13,merdeka,manual',
+            'template.*' => 'required|present|in:k13,merdeka,manual,manual2',
         ];
     }
 
@@ -39,7 +39,7 @@ class TemplateRequest extends FormRequest
             'id_major.*.integer' => 'Kolom jurusan harus berisi angka',
 
             'template.*.required' => 'Kolom template harus diisi',
-            'template.*.in' => 'Kolom template harus berisi k13, merdeka atau manual',
+            'template.*.in' => 'Kolom template harus berisi k13, merdeka, manual atau manual v2',
         ];
     }
 }

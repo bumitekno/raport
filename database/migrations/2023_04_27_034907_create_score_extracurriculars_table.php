@@ -16,10 +16,10 @@ return new class extends Migration
         Schema::create('score_extracurriculars', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('slug')->nullable();
-            $table->integer('id_school_year')->nullable();
-            $table->integer('id_study_class')->nullable();
-            $table->integer('id_teacher')->nullable();
-            $table->integer('id_extra')->nullable();
+            $table->unsignedInteger('id_school_year')->nullable();
+            $table->unsignedInteger('id_study_class')->nullable();
+            $table->unsignedInteger('id_teacher')->nullable();
+            $table->unsignedInteger('id_extra')->nullable();
             $table->json('score')->nullable();
             $table->tinyInteger('status')->default(1);
             $table->timestamps();

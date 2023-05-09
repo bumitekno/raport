@@ -16,8 +16,8 @@ return new class extends Migration
         Schema::create('basic_competencies', function (Blueprint $table) {
             $table->increments('id');
             $table->string('slug')->nullable();
-            $table->integer('id_course')->nullable();
-            $table->integer('id_level')->nullable();
+            $table->unsignedInteger('id_course')->nullable();
+            $table->unsignedInteger('id_level')->nullable();
             $table->json('name')->nullable();
             $table->tinyInteger('status')->default(1);
             $table->timestamps();

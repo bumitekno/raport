@@ -17,6 +17,7 @@ class DashboardController extends Controller
 {
     public function admin()
     {
+        // dd(session()->all());
         session()->put('title', 'Dashboard Admin');
         $settings = json_decode(Storage::get('settings.json'), true);
         session()->put('logo', isset($setting['logo']) ? asset($setting['logo']) : asset('asset/img/90x90.jpg'));

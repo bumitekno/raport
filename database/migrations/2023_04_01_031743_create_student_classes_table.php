@@ -16,8 +16,8 @@ return new class extends Migration
         Schema::create('student_classes', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('slug')->nullable();
-            $table->bigInteger('id_student')->nullable();
-            $table->integer('id_study_class');
+            $table->unsignedBigInteger('id_student')->nullable();
+            $table->unsignedInteger('id_study_class');
             $table->year('year')->nullable();
             $table->tinyInteger('status')->default(1);
             $table->timestamps();

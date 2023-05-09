@@ -90,6 +90,9 @@
                                                         <option value="manual"
                                                             {{ old('template', $template['template']) == 'manual' ? 'selected' : (old('template') == 'manual' ? 'selected' : '') }}>
                                                             Input Manual</option>
+                                                        <option value="manual2"
+                                                            {{ old('template', $template['template']) == 'manual2' ? 'selected' : (old('template') == 'manual2' ? 'selected' : '') }}>
+                                                            Input Manual V2</option>
                                                         <option value="k13"
                                                             {{ old('template', $template['template']) == 'k13' ? 'selected' : (old('template') == 'k13' ? 'selected' : '') }}>
                                                             Kurikulum 13</option>

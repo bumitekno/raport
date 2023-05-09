@@ -16,11 +16,11 @@ return new class extends Migration
         Schema::create('score_manuals', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('slug')->nullable();
-            $table->bigInteger('id_student_class')->nullable();
-            $table->integer('id_teacher');
-            $table->integer('id_course');
-            $table->integer('id_study_class');
-            $table->integer('id_school_year');
+            $table->unsignedBigInteger('id_student_class')->nullable();
+            $table->unsignedInteger('id_teacher');
+            $table->unsignedInteger('id_course');
+            $table->unsignedInteger('id_study_class');
+            $table->unsignedInteger('id_school_year');
             $table->integer('assigment_grade')->nullable();
             $table->integer('daily_test_score')->nullable();
             $table->integer('score_uts')->nullable();

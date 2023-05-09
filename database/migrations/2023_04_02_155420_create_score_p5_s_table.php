@@ -16,10 +16,10 @@ return new class extends Migration
         Schema::create('score_p5_s', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('slug')->nullable();
-            $table->bigInteger('id_student_class')->nullable();
-            $table->integer('id_school_year');
+            $table->unsignedBigInteger('id_student_class')->nullable();
+            $table->unsignedInteger('id_school_year');
             $table->integer('id_p5');
-            $table->bigInteger('id_subject_teacher');
+            $table->unsignedInteger('id_subject_teacher');
             $table->json('score');
             $table->text('description')->nullable();
             $table->tinyInteger('status')->default(1);

@@ -16,11 +16,11 @@ return new class extends Migration
         Schema::create('score_merdekas', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('slug')->nullable();
-            $table->bigInteger('id_student_class')->nullable();
-            $table->integer('id_course')->nullable();
-            $table->integer('id_study_class')->nullable();
-            $table->integer('id_teacher')->nullable();
-            $table->integer('id_school_year')->nullable();
+            $table->unsignedBigInteger('id_student_class')->nullable();
+            $table->unsignedInteger('id_course')->nullable();
+            $table->unsignedInteger('id_study_class')->nullable();
+            $table->unsignedInteger('id_teacher')->nullable();
+            $table->unsignedInteger('id_school_year')->nullable();
             $table->json('score_formative')->nullable();
             $table->integer('average_formative')->nullable();
             $table->json('score_summative')->nullable();

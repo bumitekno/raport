@@ -28,6 +28,7 @@ use App\Http\Controllers\PredicatedScoreController;
 use App\Http\Controllers\PreviewController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PtsConfigurationController;
+use App\Http\Controllers\RaportController;
 use App\Http\Controllers\SchoolYearController;
 use App\Http\Controllers\ScoreCompetencyController;
 use App\Http\Controllers\ScoreExtracurricularController;
@@ -330,5 +331,10 @@ Route::middleware('auth:user,admin,parent,teacher')->group(function () {
     Route::prefix('leger')->name('legers.')->group(function () {
         Route::get('prev-classes/{slug}', [LegerController::class, 'byClass'])->name('by_classes');
         Route::get('list-classes', [LegerController::class, 'listClass'])->name('list_classes');
+    });
+
+    Route::prefix('raport')->name('raports.')->group(function () {
+        Route::get('prev-classes', [RaportController::class, 'byClass'])->name('by_classes');
+        Route::get('list-classes', [RaportController::class, 'listClass'])->name('list_classes');
     });
 });

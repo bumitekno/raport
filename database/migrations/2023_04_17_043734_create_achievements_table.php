@@ -16,12 +16,12 @@ return new class extends Migration
         Schema::create('achievements', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('slug')->nullable();
-            $table->bigInteger('id_student_class')->nullable();
-            $table->integer('id_teacher');
-            $table->integer('id_study_class');
+            $table->unsignedBigInteger('id_student_class')->nullable();
+            $table->unsignedInteger('id_teacher');
+            $table->unsignedInteger('id_study_class');
             $table->string('ranking')->nullable();
             $table->string('level')->nullable();
-            $table->integer('id_school_year');
+            $table->unsignedInteger('id_school_year');
             $table->string('name');
             $table->text('description')->nullable();
             $table->tinyInteger('status')->default(1);

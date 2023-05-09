@@ -19,7 +19,6 @@ class LegerController extends Controller
     //
     public function byClass($slug)
     {
-        // dd(session()->all());
         $setting = json_decode(Storage::get('settings.json'), true);
         $study_class = StudyClass::where('slug', $slug)->first();
         $setting['study_class'] = $study_class->name;
@@ -91,7 +90,6 @@ class LegerController extends Controller
                 ->where('id_school_year', session('id_school_year'))
                 ->get();
         }
-        // dd($scores);
 
 
         foreach ($student_class as $student) {
@@ -152,6 +150,7 @@ class LegerController extends Controller
 
     public function listClass()
     {
+        session()->put('title', 'Daftar Kelas');
         $classes = StudyClass::where('status', 1)->get();
 
         $results = [];

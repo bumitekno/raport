@@ -16,9 +16,9 @@ return new class extends Migration
         Schema::create('teacher_notes', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('slug')->nullable();
-            $table->bigInteger('id_student_class')->nullable();
-            $table->integer('id_school_year');
-            $table->integer('id_teacher')->nullable();
+            $table->unsignedBigInteger('id_student_class')->nullable();
+            $table->unsignedInteger('id_school_year');
+            $table->unsignedInteger('id_teacher')->nullable();
             $table->enum('promotion', ['Y', 'N']);
             $table->text('description')->nullable();
             $table->tinyInteger('status')->default(1);

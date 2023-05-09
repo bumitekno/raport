@@ -26,7 +26,7 @@ return new class extends Migration
             $table->string('job')->nullable();
             $table->string('file')->nullable();
             $table->text('address')->nullable();
-            $table->bigInteger('id_user');
+            $table->unsignedBigInteger('id_user');
             $table->dateTimeTz('last_login')->nullable();
             $table->tinyInteger('status')->default(1);
             $table->timestamps();

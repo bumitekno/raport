@@ -16,10 +16,10 @@ return new class extends Migration
         Schema::create('assesment_weightings', function (Blueprint $table) {
             $table->increments('id');
             $table->string('slug')->nullable();
-            $table->integer('id_teacher');
-            $table->integer('id_course');
-            $table->integer('id_study_class');
-            $table->integer('id_school_year');
+            $table->unsignedInteger('id_teacher');
+            $table->unsignedInteger('id_course');
+            $table->unsignedInteger('id_study_class');
+            $table->unsignedInteger('id_school_year');
             $table->integer('formative_weight')->nullable();
             $table->integer('sumative_weight')->nullable();
             $table->integer('uts_weight')->nullable();

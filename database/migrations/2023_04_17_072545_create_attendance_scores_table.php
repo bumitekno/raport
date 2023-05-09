@@ -16,8 +16,8 @@ return new class extends Migration
         Schema::create('attendance_scores', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('slug')->nullable();
-            $table->bigInteger('id_student_class')->nullable();
-            $table->integer('id_school_year');
+            $table->unsignedBigInteger('id_student_class')->nullable();
+            $table->unsignedInteger('id_school_year');
             $table->tinyInteger('ill')->default(0);
             $table->tinyInteger('excused')->default(0);
             $table->tinyInteger('unexcused')->default(0);

@@ -16,11 +16,11 @@ return new class extends Migration
         Schema::create('competence_achievements', function (Blueprint $table) {
             $table->increments('id');
             $table->string('slug')->nullable();
-            $table->tinyInteger('id_type_competence')->nullable();
-            $table->integer('id_course');
-            $table->integer('id_study_class');
-            $table->integer('id_teacher');
-            $table->integer('id_school_year');
+            $table->unsignedTinyInteger('id_type_competence')->nullable();
+            $table->unsignedInteger('id_course');
+            $table->unsignedInteger('id_study_class');
+            $table->unsignedInteger('id_teacher');
+            $table->unsignedInteger('id_school_year');
             $table->string('code')->nullable();
             $table->string('achievement')->nullable();
             $table->text('description')->nullable();

@@ -22,7 +22,7 @@ return new class extends Migration
             $table->text('instruction')->nullable();
             $table->string('top_logo')->nullable();
             $table->string('middle_logo')->nullable();
-            $table->integer('id_school_year');
+            $table->unsignedInteger('id_school_year');
             $table->tinyInteger('status')->default(1);
             $table->timestamps();
             $table->softDeletes();

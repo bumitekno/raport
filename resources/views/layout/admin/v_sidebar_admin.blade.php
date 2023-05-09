@@ -352,9 +352,9 @@
                 </ul>
             </li>
             <li
-                class="menu {{ Route::is('legers.*')? 'active' : '' }}">
+                class="menu {{ Route::is('legers.*') || Route::is('raports.*') ? 'active' : '' }}">
                 <a href="#side-user" data-toggle="collapse"
-                    aria-expanded="{{ Route::is('legers.*') ? 'true' : 'false' }}"
+                    aria-expanded="{{ Route::is('legers.*') || Route::is('raports.*')  ? 'true' : 'false' }}"
                     class="dropdown-toggle">
                     <div class="">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -376,17 +376,14 @@
                         </svg>
                     </div>
                 </a>
-                <ul class="collapse submenu list-unstyled {{ Route::is('legers.*') ? 'recent-submenu mini-recent-submenu show' : '' }}"
+                <ul class="collapse submenu list-unstyled {{ Route::is('legers.*') || Route::is('raports.*') ? 'recent-submenu mini-recent-submenu show' : '' }}"
                     id="side-user" data-parent="#accordionExample">
                     <li class="{{ Route::is('legers.*') ? 'active' : '' }}">
                         <a href="{{ route('legers.list_classes') }}"> Leger</a>
                     </li>
-                    {{-- <li class="{{ Route::is('teachers.*') ? 'active' : '' }}">
-                        <a href="{{ route('teachers.index') }}"> Guru </a>
+                    <li class="{{ Route::is('raports.*') ? 'active' : '' }}">
+                        <a href="{{ route('raports.list_classes') }}"> Raport </a>
                     </li>
-                    <li class="{{ Route::is('users.*') ? 'active' : '' }}">
-                        <a href="{{ route('users.index') }}"> Siswa</a>
-                    </li> --}}
                 </ul>
             </li>
         </ul>

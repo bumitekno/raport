@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('slug')->nullable();
             $table->integer('average_daily_rate')->nullable();
             $table->integer('score_uts')->nullable();
-            $table->integer('id_school_year')->nullable();
+            $table->unsignedInteger('id_school_year')->nullable();
             $table->tinyInteger('status')->default(1);
             $table->timestamps();
             $table->softDeletes();
