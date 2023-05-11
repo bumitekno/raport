@@ -65,6 +65,7 @@
                                                     </td>
                                                     <td class="text-center predicate_skill">{{ $student['predicate_skill'] }}</td>
                                                     <input type="hidden" name="predicate_skill[]" value="{{ $student['predicate_skill'] }}">
+                                                    <input type="hidden" name="kkm[]" value="{{ $student['kkm'] }}">
                                                     <input type="hidden" name="predicate_assegment[]" value="{{ $student['predicate_assegment'] }}">
                                                     <input type="hidden" name="id_student_class[]" value="{{ $student['id_student_class'] }}">
                                                 </tr>
@@ -151,10 +152,7 @@
                     $('#btnSubmit').addClass('d-none');
                 });
             });
-
-
-
-
+            
             function submitForm() {
                 $('form').submit();
             }

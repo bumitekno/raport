@@ -21,6 +21,7 @@ use App\Models\ScoreCompetency;
 use App\Models\ScoreExtracurricular;
 use App\Models\ScoreKd;
 use App\Models\ScoreManual;
+use App\Models\ScoreManual2;
 use App\Models\ScoreMerdeka;
 use App\Models\ScoreP5;
 use App\Models\StudentClass;
@@ -152,6 +153,9 @@ class PreviewController extends Controller
             case 'merdeka':
                 return $this->preview_merdeka($student_class, $setting, $school_year, $subjects);
                 break;
+            case 'manual2':
+                return $this->preview_manual2($student_class, $setting, $school_year, $subjects);
+                break;
             default:
                 return $this->preview_manual($student_class, $setting, $school_year, $subjects);
                 break;
@@ -177,12 +181,16 @@ class PreviewController extends Controller
             ])->get();
 
         $setting = json_decode(Storage::get('settings.json'), true);
+        // dd($template->template);
         switch ($template->template) {
             case 'k13':
                 return $this->preview_k13($student_class, $setting, $school_year, $subjects);
                 break;
             case 'merdeka':
                 return $this->preview_merdeka($student_class, $setting, $school_year, $subjects);
+                break;
+            case 'manual2':
+                return $this->preview_manual2($student_class, $setting, $school_year, $subjects);
                 break;
             default:
                 return $this->preview_manual($student_class, $setting, $school_year, $subjects);
@@ -608,6 +616,159 @@ class PreviewController extends Controller
         }
         // $pdf = PDF::loadView('content.previews.manual.v_print_pas', compact('result_profile', 'result_kop', 'result_attitude', 'result_extra', 'result_other', 'result_achievement', 'result_attendance'));
         $pdf = PDF::loadView('content.previews.manual.v_print_pas', compact('result_profile', 'result_kop', 'result_attitude', 'result_score', 'result_extra', 'result_other', 'result_achievement', 'result_attendance'));
+        return $pdf->stream();
+    }
+
+    function preview_manual2($student_class, $setting, $school_year, $subjects)
+    {
+        // dd($subjects);
+        $letter_head = Letterhead::first();
+        $result_kop = [
+            'text1' => $letter_head ? $letter_head->text1 : null,
+            'text2' => $letter_head ? $letter_head->text2 : null,
+            'text3' => $letter_head ? $letter_head->text3 : null,
+            'text4' => $letter_head ? $letter_head->text4 : null,
+            'text5' => $letter_head ? $letter_head->text5 : null,
+            'left_logo' => $letter_head ? $letter_head->left_logo : null,
+            'right_logo' => $letter_head ? $letter_head->right_logo : null,
+        ];
+        $result_profile = [
+            'name' => strtoupper($student_class->student->name),
+            'nisn' => $student_class->student->nisn,
+            'school' => strtoupper($setting['name_school']),
+            'address_school' => $setting['address'],
+            'study_class' => $student_class->study_class->name,
+            'major' => $student_class->study_class->major->name,
+            'fase' => $student_class->study_class->level->fase,
+            'level' => $student_class->study_class->level->name,
+            'semester_number' => substr($school_year->name, -1),
+            'semester' => substr($school_year->name, -1) == 1 ? 'Ganjil' : 'Genap',
+            'school_year' => substr($school_year->name, 0, 9),
+        ];
+
+        $score_attitude = AttitudeGrade::where([
+            ['id_student_class', $student_class->id],
+            ['id_school_year', $school_year->id],
+        ])->get();
+
+        $result_attitude = [];
+
+        foreach ($score_attitude as $score) {
+            $type = $score['type'];
+            $predicate = $score['predicate'];
+            $attitude_ids = json_decode($score['attitudes']);
+
+            $attitude_names = Attitude::whereIn('id', $attitude_ids)
+                ->pluck('name')
+                ->toArray();
+
+            $attitude_data = [
+                "type" => $type,
+                "predicate" => $predicate,
+                "attitudes" => $attitude_names
+            ];
+
+            array_push($result_attitude, $attitude_data);
+        }
+
+        $result_attitude = collect($result_attitude)->groupBy('type')->map(function ($item) {
+            $first = $item->first();
+
+            return [
+                "type" => $first["type"],
+                "predicate" => $first["predicate"],
+                "attitudes" => $item->pluck('attitudes')->flatten()->toArray()
+            ];
+        })->toArray();
+
+        $result_extra = [];
+
+        $extras = Extracurricular::where('status', 1)->get();
+
+        foreach ($extras as $extra) {
+            $score_extra = ScoreExtracurricular::where([
+                ['id_study_class', $student_class->id_study_class],
+                // ['id_teacher', Auth::guard('teacher')->user()->id],
+                ['id_school_year', $school_year->id],
+                ['id_extra', $extra->id],
+            ])->first();
+
+            $id_extra = $extra->id;
+            $name = $extra->name;
+            $score = null;
+            $description = null;
+            if ($score_extra) {
+                $scoreData = json_decode($score_extra->score);
+                foreach ($scoreData as $data) {
+                    if ($data->id_student_class == $student_class->id) {
+                        $score = $data->score;
+                        $description = $data->description;
+                        break;
+                    }
+                }
+            }
+            $result_extra[] = [
+                'id_extra' => $id_extra,
+                'name' => $name,
+                'score' => $score ? $score : null,
+                'description' => $description ? $description : null
+            ];
+        }
+
+        $note = TeacherNote::where([
+            ['id_student_class', $student_class->id],
+            ['id_school_year', $school_year->id]
+        ])->first();
+        // dd($note);
+        $config = Config::where('id_school_year', $school_year->id)->first();
+        // dd($config);
+        $result_other = [
+            'note_teacher' => $note ? $note->description : '',
+            'promotion' => $note ? $note->promotion : 'Y',
+            'place' => $config ? $config->place : '',
+            'date' => $config ? $config->report_date : now(),
+            'headmaster' => $config ? $config->headmaster : '',
+            'nip_headmaster' => $config ? $config->nip_headmaster : '',
+            'signature' => $config ? public_path($config->signature) : null,
+        ];
+        // dd($result_other);
+
+        $result_achievement = Achievement::where([
+            ['id_student_class', $student_class->id],
+            ['id_school_year', $school_year->id],
+        ])->get();
+
+        $attendance = AttendanceScore::where([
+            ['id_student_class', $student_class->id],
+            ['id_school_year', $school_year->id],
+        ])->first();
+
+        $result_attendance = [
+            'ill' => $attendance ? $attendance->ill : 0,
+            'excused' => $attendance ? $attendance->excused : 0,
+            'unexcused' => $attendance ? $attendance->unexcused : 0,
+        ];
+
+        $result_score = [];
+        foreach ($subjects as $subject) {
+            $score_manual2 = ScoreManual2::where([
+                ['id_student_class', $student_class->id],
+                ['id_school_year', $school_year->id],
+                ['id_teacher', $subject->id_teacher],
+                ['id_course', $subject->id_course]
+            ])->first();
+
+            $result_score[$subject->course->group][] = [
+                'course' => $subject->course->name,
+                'final_assegment' => $score_manual2 ? $score_manual2->final_assegment : null,
+                'final_skill' => $score_manual2 ? $score_manual2->final_skill : null,
+                'predicate_assegment' => $score_manual2 ? $score_manual2->predicate_assegment : null,
+                'predicate_skill' => $score_manual2 ? $score_manual2->predicate_skill : null,
+                'kkm' => $score_manual2 ? $score_manual2->kkm : null,
+            ];
+        }
+        // dd($result_score);
+        $pdf = PDF::loadView('content.previews.manual2.v_print_pas', compact('result_profile', 'result_kop', 'result_attitude', 'result_score', 'result_extra', 'result_other', 'result_achievement', 'result_attendance'));
         return $pdf->stream();
     }
 

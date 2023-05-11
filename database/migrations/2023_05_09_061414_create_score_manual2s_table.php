@@ -21,6 +21,7 @@ return new class extends Migration
             $table->unsignedInteger('id_course');
             $table->unsignedInteger('id_study_class');
             $table->unsignedInteger('id_school_year');
+            $table->integer('kkm')->nullable();
             $table->integer('final_assegment')->nullable();
             $table->integer('final_skill')->nullable();
             $table->string('predicate_assegment')->nullable();

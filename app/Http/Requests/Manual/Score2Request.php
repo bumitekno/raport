@@ -26,6 +26,7 @@ class Score2Request extends FormRequest
         return [
             'final_assegment.*' => ['required', 'numeric'],
             'final_skill.*' => ['required', 'numeric'],
+            'kkm.*' => ['required', 'numeric'],
             'predicate_skill.*' => ['required', 'string', 'max:1'],
             'predicate_assegment.*' => ['required', 'string', 'max:1'],
             'id_student_class.*' => ['required', 'numeric'],
@@ -39,6 +40,8 @@ class Score2Request extends FormRequest
             'final_assegment.*.numeric' => 'Final assesgment must be a number.',
             'final_skill.*.required' => 'Final skill is required.',
             'final_skill.*.numeric' => 'Final skill must be a number.',
+            'kkm.*.required' => 'KKM is required.',
+            'kkm.*.numeric' => 'KKM must be a number.',
             'predicate_skill.*.required' => 'Predicate skill is required.',
             'predicate_skill.*.string' => 'Predicate skill must be a string.',
             'predicate_skill.*.max' => 'Predicate skill may not be greater than :max characters.',
