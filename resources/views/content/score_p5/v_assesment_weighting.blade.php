@@ -30,7 +30,8 @@
                                             <label for="inputUsername" class="col-auto col-form-label my-auto">Pilih
                                                 Kelas</label>
                                             <div class="col">
-                                                <select name="id_class" id="id_class" class="form-control">
+                                                <select name="id_class" id="id_class" class="form-control"
+                                                    data-type="{{ $type }}">
                                                     <option value="" selected disabled>-- Pilih Kelas --</option>
                                                     @foreach ($classes as $class)
                                                         <option value="{{ $class['slug'] }}"
@@ -156,15 +157,14 @@
                 });
 
                 $('#id_class').change(function() {
-                    var url = window.location.href;
-                    var segments = url.split('/');
+                    var type = $(this).data('type'); // Ambil nilai type dari data-type attribute
+                    var studyClass = $(this).val(); // Ambil nilai id_class yang dipilih
 
-                    // Ambil segment setelah "assesment-weight"
-                    var type = segments[segments.indexOf("assesment-weight") + 1];
+                    // Bangun URL baru dengan menggunakan nilai type dan study_class
+                    var newUrl = 'assesment-weight/' + type + '?study_class=' + studyClass;
 
-                    var newUrl = type + "?study_class=" + $(this).val();
-                    history.replaceState(null, null, newUrl);
-                    location.reload();
+                    // Arahkan ke URL baru
+                    window.location.href = newUrl;
                 });
 
 
