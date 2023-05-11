@@ -33,7 +33,7 @@ class SchoolYearController extends Controller
                 })
                 ->editColumn('status', function ($row) {
                     $check = '';
-                    if ($row['status'] === 1) {
+                    if ($row['status'] == 1) {
                         $check = 'checked';
                     }
                     return '<label class="switch s-icons s-outline  s-outline-primary mb-0">
