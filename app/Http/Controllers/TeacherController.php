@@ -60,10 +60,12 @@ class TeacherController extends Controller
 
     public function store(StoreTeacherRequest $request)
     {
-        $data = $request->toArray();
+        // dd($request);
+        $data = $request->validated();
         // dd($data);
         if ($request->hasFile('file')) {
-            $data = ImageHelper::upload_asset($request, 'file', 'profile', $data);
+            $image = ImageHelper::upload_asset($request, 'file', 'profile', $data);
+            $data['file'] = $image['file'];
         }
         Teacher::create($data);
         Helper::toast('Berhasil menambah guru', 'success');
