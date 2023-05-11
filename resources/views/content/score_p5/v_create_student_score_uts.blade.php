@@ -28,7 +28,7 @@
                             @csrf
                             <div class="widget-content widget-content-area br-8">
                                 <div class="table-responsive">
-                                    <input type="hidden" name="type" value="uas">
+                                    <input type="hidden" name="type" value="uts">
                                     <table class="table table-bordered">
                                         <thead>
                                             <tr>
@@ -99,10 +99,6 @@
                                                                 <td><input type="text" class="form-control uts"
                                                                         name="uts" placeholder="Nilai UTS"
                                                                         value="{{ old('uts', $result['score_uts']) }}" {{ $result['status_form'] == false ? 'readonly' : '' }}>
-                                                                </td>
-                                                                <td><input type="text" class="form-control uas"
-                                                                        name="uas" placeholder="Nilai UAS"
-                                                                        value="{{ old('uas', $result['score_uas']) }}" {{ $result['status_form'] == false ? 'readonly' : '' }}>
                                                                 </td>
                                                                 <td><button class="btn btn-outline-danger remove-uas"
                                                                         type="button" {{ $result['status_form'] == false ? 'disabled' : '' }}><i class="fas fa-trash"></i></button>
@@ -224,7 +220,6 @@
                 });
 
                 $(document).on("click", ".remove-uas", function() {
-                    $('.uas').val('');
                     $('.uts').val('');
                     hitungRataRataSumatif();
                     hitungNilaiAkhir();
@@ -234,7 +229,7 @@
                     hitungRataRataFormatif();
                 });
 
-                $(document).on("keyup", ".sumatif, .uts, .uas", function() {
+                $(document).on("keyup", ".sumatif, .uts", function() {
                     hitungRataRataSumatif();
                     hitungNilaiAkhir();
                 });
@@ -300,9 +295,7 @@
                 let bobotFormative = '{{ $weight['formative_weight'] }}' * 0.01;
                 let bobotSumative = '{{ $weight['sumative_weight'] }}' * 0.01;
                 let bobotUts = '{{ $weight['uts_weight'] }}' * 0.01;
-                let bobotUas = '{{ $weight['uas_weight'] }}' * 0.01;
-                let nilaiAkhir = (bobotFormative * averageFormatif) + (bobotSumative * averageSumatif) + (bobotUts * uts) + (
-                    bobotUas * uas);
+                let nilaiAkhir = (bobotFormative * averageFormatif) + (bobotSumative * averageSumatif) + (bobotUts * uts);
                 if (isNaN(nilaiAkhir)) {
                     nilaiAkhir = 0;
                 }

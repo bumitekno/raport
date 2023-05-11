@@ -32,7 +32,12 @@ class ScoreRequest extends FormRequest
             'sumatif' => 'required|array',
             'sumatif.*' => 'required|numeric',
             'uts' => 'required|numeric',
-            'uas' => 'required|numeric',
+            'type' => 'required|in:uts,uas',
+            'uas' => [
+                'sometimes',
+                'required_if:type,uas',
+                'integer',
+            ],
         ];
     }
 

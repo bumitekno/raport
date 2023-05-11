@@ -114,7 +114,7 @@
                         </li>
                         <li>
                             <a
-                                href="{{ route('setting_scores.assesment_weight', ['study_class' => session('teachers.slug_classes')]) }}">
+                                href="{{ url('/setting-score/assesment-weight/' . session('teachers.type') . '?study_class=' . session('teachers.slug_classes')) }}">
                                 Bobot Penilaian</a>
                         </li>
                     </ul>

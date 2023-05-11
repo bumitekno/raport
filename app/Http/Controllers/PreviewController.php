@@ -151,7 +151,7 @@ class PreviewController extends Controller
                 return $this->preview_k13($student_class, $setting, $school_year, $subjects, $template->type);
                 break;
             case 'merdeka':
-                return $this->preview_merdeka($student_class, $setting, $school_year, $subjects);
+                return $this->preview_merdeka($student_class, $setting, $school_year, $subjects, $template->type);
                 break;
             case 'manual2':
                 return $this->preview_manual2($student_class, $setting, $school_year, $subjects);
@@ -187,7 +187,7 @@ class PreviewController extends Controller
                 return $this->preview_k13($student_class, $setting, $school_year, $subjects, $template->type);
                 break;
             case 'merdeka':
-                return $this->preview_merdeka($student_class, $setting, $school_year, $subjects);
+                return $this->preview_merdeka($student_class, $setting, $school_year, $subjects, $_GET['type']);
                 break;
             case 'manual2':
                 return $this->preview_manual2($student_class, $setting, $school_year, $subjects);
@@ -327,7 +327,7 @@ class PreviewController extends Controller
         return $pdf->stream();
     }
 
-    function preview_merdeka($student_class, $setting, $school_year, $subjects)
+    function preview_merdeka($student_class, $setting, $school_year, $subjects, $type_template)
     {
         // dd($student_class);
         $result_profile = [
@@ -350,11 +350,13 @@ class PreviewController extends Controller
             $score = ScoreMerdeka::where([
                 ['id_student_class', $student_class->id],
                 ['id_school_year', $school_year->id],
+                ['type', $type_template],
                 ['id_teacher', $subject->id_teacher],
             ])->get()->map(function ($item) {
                 $item->id_study_class = json_decode($item->id_study_class);
                 return $item;
             });
+            // dd($score);
             $score_competencies = ScoreCompetency::where([
                 ['id_student_class', $student_class->id],
                 ['id_teacher', $subject->id_teacher],
@@ -369,6 +371,7 @@ class PreviewController extends Controller
                     ->firstWhere('id_teacher', $subject->id_teacher)
                     ->where('id_study_class', $student_class->id_study_class)
                     ->where('id_course', $subject->id_course)
+                    ->where('type', $type_template)
                     ->where('id_school_year', intval($subject->id_school_year))->first();
             }
 

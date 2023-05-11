@@ -33,6 +33,7 @@ class ScoreMerdekaController extends Controller
                 ['id_study_class', session('teachers.id_study_class')],
                 ['id_teacher', Auth::guard('teacher')->user()->id],
                 ['id_course', session('teachers.id_course')],
+                ['type', session('teachers.type')],
                 ['id_school_year', session('id_school_year')]
             ])->first();
             $result[] = [
@@ -86,6 +87,7 @@ class ScoreMerdekaController extends Controller
             ['id_study_class', session('teachers.id_study_class')],
             ['id_teacher', Auth::guard('teacher')->user()->id],
             ['id_course', session('teachers.id_course')],
+            ['type', session('teachers.type')],
             ['id_school_year', session('id_school_year')],
         ])->first();
 
@@ -97,6 +99,7 @@ class ScoreMerdekaController extends Controller
             ['id_study_class', session('teachers.id_study_class')],
             ['id_teacher', Auth::guard('teacher')->user()->id],
             ['id_course', session('teachers.id_course')],
+            ['type', session('teachers.type')],
             ['id_school_year', session('id_school_year')]
         ])->first();
         $config = Config::where([
@@ -130,8 +133,11 @@ class ScoreMerdekaController extends Controller
             session()->put('message', 'Terjadi kesalahan: Dikarenakan bobot nilai belum di setting ');
             return view('pages.v_error');
         }
-        // dd($result);
-        return view('content.score_p5.v_create_student_score', compact('weight', 'result'));
+        if (session('teachers.type') == 'uas') {
+            return view('content.score_p5.v_create_student_score', compact('weight', 'result'));
+        } else {
+            return view('content.score_p5.v_create_student_score_uts', compact('weight', 'result'));
+        }
     }
 
     public function storeOrUpdate(ScoreRequest $request)
@@ -143,6 +149,7 @@ class ScoreMerdekaController extends Controller
                 'id_course' => $data['id_course'],
                 'id_study_class' => $data['id_study_class'],
                 'id_teacher' => $data['id_teacher'],
+                'type' => $data['type'],
                 'id_school_year' => $data['id_school_year'],
             ],
             [
@@ -151,7 +158,7 @@ class ScoreMerdekaController extends Controller
                 'score_summative' =>  $data['sumatif'],
                 'average_summative' =>  $data['average_summative'],
                 'score_uts' =>  $data['uts'],
-                'score_uas' =>  $data['uas'],
+                'score_uas' =>  $request['type'] == 'uas' ? $data['uas'] : null,
                 'final_score' =>  $data['final_score'],
             ]
         );

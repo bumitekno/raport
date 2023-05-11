@@ -161,7 +161,10 @@
 
                     // Ambil segment setelah "assesment-weight"
                     var type = segments[segments.indexOf("assesment-weight") + 1];
-                    window.location.href = type + "?study_class=" + $(this).val();
+
+                    var newUrl = type + "?study_class=" + $(this).val();
+                    history.replaceState(null, null, newUrl);
+                    location.reload();
                 });
 
 

@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('score_merdekas', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('slug')->nullable();
+            $table->enum('type', ['uts', 'uas'])->nullable();
             $table->unsignedBigInteger('id_student_class')->nullable();
             $table->unsignedInteger('id_course')->nullable();
             $table->unsignedInteger('id_study_class')->nullable();
