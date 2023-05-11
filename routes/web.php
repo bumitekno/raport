@@ -33,6 +33,7 @@ use App\Http\Controllers\SchoolYearController;
 use App\Http\Controllers\ScoreCompetencyController;
 use App\Http\Controllers\ScoreExtracurricularController;
 use App\Http\Controllers\ScoreKdController;
+use App\Http\Controllers\ScoreManual2Controller;
 use App\Http\Controllers\ScoreManualController;
 use App\Http\Controllers\ScoreMerdekaController;
 use App\Http\Controllers\ScoreP5Controller;
@@ -286,6 +287,14 @@ Route::middleware('auth:user,admin,parent,teacher')->group(function () {
         Route::prefix('score')->name('scores.')->group(function () {
             Route::get('/', [ScoreManualController::class, 'index'])->name('index');
             Route::post('update', [ScoreManualController::class, 'storeOrUpdate'])->name('storeOrUpdate');
+        });
+    });
+
+    //Score Manual
+    Route::prefix('manual-v2')->name('manual2s.')->group(function () {
+        Route::prefix('score')->name('scores.')->group(function () {
+            Route::get('/', [ScoreManual2Controller::class, 'index'])->name('index');
+            Route::post('update', [ScoreManual2Controller::class, 'storeOrUpdate'])->name('storeOrUpdate');
         });
     });
 

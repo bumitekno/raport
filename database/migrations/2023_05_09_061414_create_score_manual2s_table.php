@@ -23,6 +23,8 @@ return new class extends Migration
             $table->unsignedInteger('id_school_year');
             $table->integer('final_assegment')->nullable();
             $table->integer('final_skill')->nullable();
+            $table->string('predicate_assegment')->nullable();
+            $table->string('predicate_skill')->nullable();
             $table->tinyInteger('status')->default(1);
             $table->timestamps();
             $table->softDeletes();
