@@ -201,7 +201,7 @@
                 });
 
                 $('#id_school_year').change(function() {
-                    window.location.href = "config?year=" + $(this).val();
+                    window.location.href = "home?year=" + $(this).val();
                 });
             });
 

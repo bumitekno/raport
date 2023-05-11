@@ -155,7 +155,7 @@ Route::middleware('auth:user,admin,parent,teacher')->group(function () {
 
     // setelan
     Route::prefix('config')->name('configs.')->group(function () {
-        Route::get('/', [ConfigController::class, 'index'])->name('index');
+        Route::get('home', [ConfigController::class, 'index'])->name('index');
         Route::post('updateOrCreate', [ConfigController::class, 'updateOrCreate'])->name('updateOrCreate');
     });
 
