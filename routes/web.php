@@ -201,7 +201,7 @@ Route::middleware('auth:user,admin,parent,teacher')->group(function () {
         Route::get('description', [DescriptionCompetenceController::class, 'index'])->name('description');
         Route::post('description/update', [DescriptionCompetenceController::class, 'storeOrUpdate'])->name('description.storeOrUpdate');
 
-        Route::get('assesment-weight', [AssesmentWeightingController::class, 'index'])->name('assesment_weight');
+        Route::get('assesment-weight/{type}', [AssesmentWeightingController::class, 'index'])->name('assesment_weight');
         Route::post('assesment-weight/update', [AssesmentWeightingController::class, 'storeOrUpdate'])->name('assesment_weight.storeOrUpdate');
 
         Route::get('score', [ScoreMerdekaController::class, 'index'])->name('score');

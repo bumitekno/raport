@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('score_manuals', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('slug')->nullable();
+            $table->enum('type', ['uas', 'uts'])->nullable();
             $table->unsignedBigInteger('id_student_class')->nullable();
             $table->unsignedInteger('id_teacher');
             $table->unsignedInteger('id_course');

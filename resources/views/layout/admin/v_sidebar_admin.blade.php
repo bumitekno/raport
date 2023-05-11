@@ -19,7 +19,7 @@
                         <option value="" selected disabled>Pilih Kurikulum</option>
                         <option value="merdeka" {{ session('template') == 'merdeka' ? 'selected' : '' }}>Kurikulum
                             Merdeka</option>
-                        <option value="k13" {{ session('template') == 'k13' ? 'selected' : '' }}>Kurikulum 13
+                        <option value="k13" {{ session('template') == 'k13' ? 'selected' : '' }}>Umum
                         </option>
                     </select>
                 </div>
@@ -70,7 +70,20 @@
                         <a href="{{ route('setting_scores.description') }}"> Deskripsi CP </a>
                     </li>
                     <li class="{{ Route::is('setting_scores.assesment_weight*') ? 'active' : '' }}">
-                        <a href="{{ route('setting_scores.assesment_weight') }}"> Bobot Penilaian </a>
+                        <a href="#pages-error" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                            Bobot Penilaian <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
+                                <polyline points="9 18 15 12 9 6"></polyline>
+                            </svg> </a>
+                        <ul class="collapse list-unstyled sub-submenu" id="pages-error" data-parent="#submenu">
+                            <li>
+                                <a href="{{ route('setting_scores.assesment_weight', 'uas') }}"> UAS </a>
+                            </li>
+                            <li>
+                                <a href="{{ route('setting_scores.assesment_weight', 'uts') }}"> UTS </a>
+                            </li>
+                        </ul>
                     </li>
                 </ul>
             </li>
@@ -146,12 +159,12 @@
                     <li class="{{ Route::is('setting_scores.predicated_scores*') ? 'active' : '' }}">
                         <a href="{{ route('setting_scores.predicated_scores.index') }}"> Nilai Predikat Raport</a>
                     </li>
-                    <li class="{{ Route::is('setting_scores.pts_configurations*') ? 'active' : '' }}">
+                    {{-- <li class="{{ Route::is('setting_scores.pts_configurations*') ? 'active' : '' }}">
                         <a href="{{ route('setting_scores.pts_configurations.index') }}"> Nilai PTS</a>
                     </li>
                     <li class="{{ Route::is('setting_scores.pas_configurations*') ? 'active' : '' }}">
                         <a href="{{ route('setting_scores.pas_configurations.index') }}"> Nilai PAS</a>
-                    </li>
+                    </li> --}}
                     <li class="{{ Route::is('setting_scores.kkm*') ? 'active' : '' }}">
                         <a href="{{ route('setting_scores.kkm.index', ['year' => session('slug_year')]) }}"> KKM</a>
                     </li>
@@ -196,7 +209,8 @@
             </li>
 
             <li class="menu merdeka d-none {{ Route::is('manages*') ? 'true' : 'false' }}">
-                <a href="{{ route('manages.index') }}" aria-expanded="{{ Route::is('manages*') ? 'true' : 'false' }}" class="dropdown-toggle">
+                <a href="{{ route('manages.index') }}"
+                    aria-expanded="{{ Route::is('manages*') ? 'true' : 'false' }}" class="dropdown-toggle">
                     <div class="">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                             fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -226,7 +240,8 @@
                 </a>
             </li>
 
-            <li class="menu {{ Route::is('settings*') || Route::is('configs*') || Route::is('covers*') || Route::is('letterheads*') || Route::is('templates*') ? 'active' : '' }}">
+            <li
+                class="menu {{ Route::is('settings*') || Route::is('configs*') || Route::is('covers*') || Route::is('letterheads*') || Route::is('templates*') ? 'active' : '' }}">
                 <a href="#submenu2" data-toggle="collapse"
                     aria-expanded="{{ Route::is('settings*') || Route::is('configs*') || Route::is('covers*') || Route::is('letterheads*') || Route::is('templates*') ? 'true' : 'false' }}"
                     class="dropdown-toggle">
@@ -249,7 +264,8 @@
                         </svg>
                     </div>
                 </a>
-                <ul class="collapse submenu list-unstyled {{ Route::is('settings*') || Route::is('configs*') || Route::is('covers*') || Route::is('letterheads*') || Route::is('templates*') ? 'recent-submenu mini-recent-submenu show' : '' }}" id="submenu2" data-parent="#accordionExample">
+                <ul class="collapse submenu list-unstyled {{ Route::is('settings*') || Route::is('configs*') || Route::is('covers*') || Route::is('letterheads*') || Route::is('templates*') ? 'recent-submenu mini-recent-submenu show' : '' }}"
+                    id="submenu2" data-parent="#accordionExample">
                     <li class="{{ Route::is('settings*') ? 'active' : '' }}">
                         <a href="{{ route('settings.index') }}"> Sekolah</a>
                     </li>
@@ -351,13 +367,19 @@
                     </li>
                 </ul>
             </li>
-            <li
-                class="menu {{ Route::is('legers.*') || Route::is('raports.*') ? 'active' : '' }}">
+            <li class="menu {{ Route::is('legers.*') || Route::is('raports.*') ? 'active' : '' }}">
                 <a href="#print-raport" data-toggle="collapse"
-                    aria-expanded="{{ Route::is('legers.*') || Route::is('raports.*')  ? 'true' : 'false' }}"
+                    aria-expanded="{{ Route::is('legers.*') || Route::is('raports.*') ? 'true' : 'false' }}"
                     class="dropdown-toggle">
                     <div class="">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round">
+                            <polyline points="6 9 6 2 18 2 18 9"></polyline>
+                            <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2">
+                            </path>
+                            <rect x="6" y="14" width="12" height="8"></rect>
+                        </svg>
                         <span>Cetak</span>
                     </div>
                     <div>

@@ -33,7 +33,7 @@
                                         <thead>
                                             <tr>
                                                 <th rowspan="2" class="align-middle">Siswa</th>
-                                                <th colspan="4" class="align-middle text-center">Nilai</th>
+                                                <th colspan="3" class="align-middle text-center">Nilai</th>
                                                 <th rowspan="2" class="align-middle">Nilai Akhir</th>
                                                 <th rowspan="2" class="align-middle">Predikat</th>
                                                 <th rowspan="2" class="align-middle">Deskripsi</th>
@@ -42,9 +42,8 @@
                                                 <th class="align-middle">Tugas</th>
                                                 <th class="align-middle">Ulangan Harian</th>
                                                 <th class="align-middle">Ulangan Tengah Semester</th>
-                                                <th class="align-middle">Ulangan Akhir Semester</th>
                                             </tr>
-                                            <input type="hidden" name="type" value="uas">
+                                            <input type="hidden" name="type" value="uts">
                                         </thead>
                                         <tbody>
                                             @foreach ($result as $student)
@@ -62,10 +61,6 @@
                                                     </td>
                                                     <td><input type="text" class="form-control" name="score_uts[]"
                                                             value="{{ $student['score_uts'] != null ? $student['score_uts'] : '0' }}"
-                                                            {{ $student['status_form'] == false ? 'readonly' : '' }}>
-                                                    </td>
-                                                    <td><input type="text" class="form-control" name="score_uas[]"
-                                                            value="{{ $student['score_uas'] != null ? $student['score_uas'] : '0' }}"
                                                             {{ $student['status_form'] == false ? 'readonly' : '' }}>
                                                     </td>
                                                     <td>{{ $student['score_final'] }}</td>
@@ -122,20 +117,17 @@
                             "input[name='daily_test_score[]']").val()) || 0;
                         var score_uts = parseFloat($(this).closest("tr").find("input[name='score_uts[]']").val()) ||
                             0;
-                        var score_uas = parseFloat($(this).closest("tr").find("input[name='score_uas[]']").val()) ||
-                            0;
 
                         // let  bobot_nilai = (bobot_tugas * nilai_tugas) + (bobot_ulangan_harian * nilai_ulangan_harian)
                         let bobotScore = '{{ $weight['score_weight'] }}';
                         let bobotUts = '{{ $weight['uts_weight'] }}';
-                        let bobotUas = '{{ $weight['uas_weight'] }}';
 
                         let score_daily = (assigment_grade + daily_test_score) / 2;
-                        let score_final = (bobotScore * score_daily + bobotUts * score_uts + bobotUas * score_uas) /
+                        let score_final = (bobotScore * score_daily + bobotUts * score_uts) /
                             100;
 
                         // tampilkan nilai akhir
-                        $(this).closest("tr").find("td:eq(5)").text(score_final.toFixed(2));
+                        $(this).closest("tr").find("td:eq(4)").text(score_final.toFixed(2));
                         $(this).closest("tr").find("input[name='score_final[]']").val(score_final.toFixed(2));
 
                         var predikat;
@@ -150,7 +142,7 @@
                             }
                         });
                         // tampilkan predikat
-                        $(this).closest("tr").find("td:eq(6)").text(predikat);
+                        $(this).closest("tr").find("td:eq(5)").text(predikat);
                         $(this).closest("tr").find("input[name='predicate[]']").val(predikat);
                     });
 

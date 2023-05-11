@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('score_kds', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('slug')->nullable();
+            $table->enum('type', ['uts', 'uas'])->nullable();
             $table->unsignedInteger('id_school_year')->nullable();
             $table->unsignedBigInteger('id_student_class')->nullable();
             $table->json('assessment_score')->nullable();

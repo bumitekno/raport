@@ -39,7 +39,8 @@ class ScoreKdController extends Controller
                 ['id_student_class', $student->id],
                 ['id_study_class', session('teachers.id_study_class')],
                 ['id_subject_teacher', $subject_teacher->id],
-                ['id_school_year', session('id_school_year')]
+                ['id_school_year', session('id_school_year')],
+                ['type', session('teachers.type')]
             ])->first();
             $result[] = [
                 'slug' => $student->slug,
@@ -85,6 +86,7 @@ class ScoreKdController extends Controller
 
     public function create($slug)
     {
+        // dd(session('teachers.type'));
         $basic_competencies = BasicCompetency::where([
             ['id_course', session('teachers.id_course')],
             ['id_level', session('teachers.id_level')]
@@ -120,7 +122,8 @@ class ScoreKdController extends Controller
             ['id_student_class', $student_class->id],
             ['id_subject_teacher', $subject_teacher->id],
             ['id_study_class', session('teachers.id_study_class')],
-            ['id_school_year', session('id_school_year')]
+            ['id_school_year', session('id_school_year')],
+            ['type', session('teachers.type')]
         ])->first();
         $result = [
             'id_study_class' => session('teachers.id_study_class'),
@@ -143,7 +146,13 @@ class ScoreKdController extends Controller
             return view('pages.v_error');
         }
         // dd($weight);
-        return view('content.score_k13.v_create_student_score', compact('weight', 'basic_competencies', 'result'));
+        if (session('teachers.type') == 'uas') {
+            return view('content.score_k13.v_create_student_score', compact('weight', 'basic_competencies', 'result'));
+        } else {
+            return view('content.score_k13.v_create_student_score_uts', compact('weight', 'basic_competencies', 'result'));
+        }
+
+        // return view('content.score_k13.v_create_student_score', compact('weight', 'basic_competencies', 'result'));
     }
 
     public function update(ScoreKdRequest $request)
@@ -155,6 +164,7 @@ class ScoreKdController extends Controller
                 'id_subject_teacher' => $data['id_subject_teacher'],
                 'id_study_class' => $data['id_study_class'],
                 'id_school_year' => $data['id_school_year'],
+                'type' => $data['type'],
             ],
             [
                 'assessment_score' =>  $data['assesment_score'],
@@ -162,7 +172,7 @@ class ScoreKdController extends Controller
                 'skill_score' =>  $data['skill_score'],
                 'averege_skill' =>  $data['average_skill'],
                 'score_uts' =>  $data['uts'],
-                'score_uas' =>  $data['uas'],
+                'score_uas' => $data['type'] == 'uas' ? $data['uas'] : null,
                 'final_assesment' =>  $data['final_assesment'],
                 'final_skill' =>  $data['final_skill'],
             ]

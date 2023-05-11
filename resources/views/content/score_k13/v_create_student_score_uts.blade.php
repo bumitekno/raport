@@ -37,7 +37,6 @@
                                                 <th scope="col">Hasil Akhir</th>
                                             </tr>
                                         </thead>
-                                        <input type="hidden" name="type" value="uas">
                                         <input type="hidden" name="id_school_year" value="{{ $result['id_school_year'] }}">
                                         <input type="hidden" name="id_student_class"
                                             value={{ $result['id_student_class'] }}>
@@ -50,6 +49,7 @@
                                             value="{{ $result['average_skill'] }}">
                                         <input type="hidden" name="final_assesment" id="hasil-akhir-assesment-input"
                                             value="{{ $result['final_assesment'] }}">
+                                        <input type="hidden" name="type" value="uts">
                                         <input type="hidden" name="final_skill" id="hasil-akhir-ketrampilan-input"
                                             value="{{ $result['final_skill'] }}">
                                         <tbody>
@@ -175,15 +175,6 @@
                                                 </td>
                                                 <td></td>
                                             </tr>
-                                            <tr>
-                                                <td>UAS</td>
-                                                <td colspan="2">
-                                                    <input type="number" class="form-control uas" name="uas"
-                                                        placeholder="Nilai UAS" min="0" max="100"
-                                                        value="{{ $result['score_uas'] }}" {{ $result['status_form'] == false ? 'readonly' : '' }}>
-                                                </td>
-                                                <td></td>
-                                            </tr>
                                         </tbody>
                                     </table>
                                 </div>
@@ -236,15 +227,12 @@
                     $('.average-skill').text(average_skill.toFixed(2));
 
                     let uts = parseInt($("input[name='uts']").val()) || 0;
-                    let uas = parseInt($("input[name='uas']").val()) || 0;
 
 
                     let bobotAssesment = '{{ $weight['score_weight'] }}' * 0.01;
                     let bobotUts = '{{ $weight['uts_weight'] }}' * 0.01;
-                    let bobotUas = '{{ $weight['uas_weight'] }}' * 0.01;
 
-                    let hasil_akhir_assesment = (average_assesment * bobotAssesment) + (uts * bobotUts) + (uas *
-                        bobotUas);
+                    let hasil_akhir_assesment = (average_assesment * bobotAssesment) + (uts * bobotUts);
                     let hasil_akhir_ketrampilan = average_skill;
 
                     $('.hasil-akhir-assesment').text(hasil_akhir_assesment.toFixed(2));

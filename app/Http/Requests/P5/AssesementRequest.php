@@ -16,11 +16,6 @@ class AssesementRequest extends FormRequest
         return true;
     }
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, mixed>
-     */
     public function rules()
     {
         $rules = [
@@ -29,9 +24,10 @@ class AssesementRequest extends FormRequest
             'id_study_class.*' => 'required|integer',
             'formative_weight.*' => 'required|integer|between:0,100',
             'sumative_weight.*' => 'required|integer|between:0,100',
-            'uts_weight.*' => 'required|integer|between:0,100',
-            'uas_weight.*' => 'required|integer|between:0,100',
+            'uts_weight.*' => 'required_if:type,uts|integer|between:0,100',
+            'uas_weight.*' => 'required_if:type,uas|integer|between:0,100',
             'total_weight.*' => 'required|in:100',
+            'type' => 'required|in:uts,uas',
         ];
 
         $messages = [
@@ -41,14 +37,22 @@ class AssesementRequest extends FormRequest
             'in' => 'Jumlah bobot pada :attribute harus sama dengan 100.'
         ];
 
-        $this->merge([
-            'total_weight' => array_map(function ($formative, $sumative, $uts, $uas) {
-                return $formative + $sumative + $uts + $uas;
-            }, $this->formative_weight, $this->sumative_weight, $this->uts_weight, $this->uas_weight),
-        ]);
-
-        $rules['total_weight.*'] = 'required|in:100';
-
         return $rules;
+    }
+
+    public function withValidator($validator)
+    {
+        $type = $this->input('type');
+        $totalWeight = $this->input('formative_weight') + $this->input('sumative_weight');
+
+        if ($type == 'uts') {
+            $totalWeight += $this->input('uts_weight');
+        } elseif ($type == 'uas') {
+            $totalWeight += $this->input('uas_weight');
+        }
+
+        if ($totalWeight !== 100) {
+            $validator->errors()->add('total_weight', 'Total bobot harus sama dengan 100.');
+        }
     }
 }

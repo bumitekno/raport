@@ -56,9 +56,12 @@
                                             <th>Bobot Formatif</th>
                                             <th>Bobot Sumatif</th>
                                             <th>Bobot UTS</th>
-                                            <th>Bobot UAS</th>
+                                            @if ($type == 'uas')
+                                                <th>Bobot UAS</th>
+                                            @endif
                                         </tr>
                                     </thead>
+                                    <input type="hidden" name="type" value="{{ $type }}">
                                     <tbody>
                                         @if (isset($_GET['study_class']))
                                             @foreach ($result as $index => $data)
@@ -93,16 +96,18 @@
                                                             <div class="invalid-feedback d-block">{{ $message }}</div>
                                                         @enderror
                                                     </td>
-                                                    <td>
-                                                        <input type="number" name="uas_weight[]" class="form-control"
-                                                            value="{{ old('uas_weight.' . $index, $data['uas_weight']) }}">
-                                                        @error('uas_weight.' . $index)
-                                                            <div class="invalid-feedback d-block">{{ $message }}</div>
-                                                        @enderror
-                                                        @error('total_weight.' . $index)
-                                                            <div class="invalid-feedback d-block">{{ $message }}</div>
-                                                        @enderror
-                                                    </td>
+                                                    @if ($type == 'uas')
+                                                        <td>
+                                                            <input type="number" name="uas_weight[]" class="form-control"
+                                                                value="{{ old('uas_weight.' . $index, $data['uas_weight']) }}">
+                                                            @error('uas_weight.' . $index)
+                                                                <div class="invalid-feedback d-block">{{ $message }}</div>
+                                                            @enderror
+                                                            @error('total_weight.' . $index)
+                                                                <div class="invalid-feedback d-block">{{ $message }}</div>
+                                                            @enderror
+                                                        </td>
+                                                    @endif
 
                                                 </tr>
                                             @endforeach
@@ -151,7 +156,12 @@
                 });
 
                 $('#id_class').change(function() {
-                    window.location.href = "assesment-weight?study_class=" + $(this).val();
+                    var url = window.location.href;
+                    var segments = url.split('/');
+
+                    // Ambil segment setelah "assesment-weight"
+                    var type = segments[segments.indexOf("assesment-weight") + 1];
+                    window.location.href = type + "?study_class=" + $(this).val();
                 });
 
 

@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('assesment_weightings', function (Blueprint $table) {
             $table->increments('id');
             $table->string('slug')->nullable();
+            $table->enum('type', ['uts', 'uas'])->nullable();
             $table->unsignedInteger('id_teacher');
             $table->unsignedInteger('id_course');
             $table->unsignedInteger('id_study_class');

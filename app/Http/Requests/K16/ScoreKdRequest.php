@@ -3,6 +3,8 @@
 namespace App\Http\Requests\K16;
 
 use Illuminate\Foundation\Http\FormRequest;
+// use Illuminate\Contracts\Validation\Validator;
+// use Illuminate\Http\Exceptions\HttpResponseException;
 
 class ScoreKdRequest extends FormRequest
 {
@@ -37,7 +39,12 @@ class ScoreKdRequest extends FormRequest
             'id_kd_skill.*' => 'required|integer',
             'nilai_ketrampilan.*' => 'required|integer',
             'uts' => 'required|integer',
-            'uas' => 'required|integer',
+            'type' => 'required|in:uts,uas',
+            'uas' => [
+                'sometimes',
+                'required_if:type,uas',
+                'integer',
+            ],
         ];
     }
 
@@ -61,4 +68,12 @@ class ScoreKdRequest extends FormRequest
 
         return $validated;
     }
+
+    // protected function failedValidation(Validator $validator)
+    // {
+    //     throw new HttpResponseException(response()->json([
+    //         'message' => 'The given data is invalid',
+    //         'errors' => $validator->errors(),
+    //     ], 422));
+    // }
 }

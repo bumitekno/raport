@@ -30,6 +30,12 @@ class ScoreRequest extends FormRequest
             'score_uts.*' => 'required|numeric|min:0|max:100',
             'score_uas.*' => 'required|numeric|min:0|max:100',
             'description.*' => 'nullable|string|max:255',
+            'type' => 'required|in:uts,uas',
+            'uas' => [
+                'sometimes',
+                'required_if:type,uas',
+                'integer',
+            ],
         ];
     }
 

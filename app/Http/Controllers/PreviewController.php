@@ -148,7 +148,7 @@ class PreviewController extends Controller
         $setting = json_decode(Storage::get('settings.json'), true);
         switch ($template->template) {
             case 'k13':
-                return $this->preview_k13($student_class, $setting, $school_year, $subjects);
+                return $this->preview_k13($student_class, $setting, $school_year, $subjects, $template->type);
                 break;
             case 'merdeka':
                 return $this->preview_merdeka($student_class, $setting, $school_year, $subjects);
@@ -157,7 +157,7 @@ class PreviewController extends Controller
                 return $this->preview_manual2($student_class, $setting, $school_year, $subjects);
                 break;
             default:
-                return $this->preview_manual($student_class, $setting, $school_year, $subjects);
+                return $this->preview_manual($student_class, $setting, $school_year, $subjects, $template->type);
                 break;
         }
     }
@@ -184,7 +184,7 @@ class PreviewController extends Controller
         // dd($template->template);
         switch ($template->template) {
             case 'k13':
-                return $this->preview_k13($student_class, $setting, $school_year, $subjects);
+                return $this->preview_k13($student_class, $setting, $school_year, $subjects, $template->type);
                 break;
             case 'merdeka':
                 return $this->preview_merdeka($student_class, $setting, $school_year, $subjects);
@@ -193,7 +193,7 @@ class PreviewController extends Controller
                 return $this->preview_manual2($student_class, $setting, $school_year, $subjects);
                 break;
             default:
-                return $this->preview_manual($student_class, $setting, $school_year, $subjects);
+                return $this->preview_manual($student_class, $setting, $school_year, $subjects, $template->type);
                 break;
         }
     }
@@ -472,7 +472,7 @@ class PreviewController extends Controller
         return $pdf->stream();
     }
 
-    function preview_manual($student_class, $setting, $school_year, $subjects)
+    function preview_manual($student_class, $setting, $school_year, $subjects, $type_template)
     {
         $letter_head = Letterhead::first();
         $result_kop = [
@@ -604,7 +604,8 @@ class PreviewController extends Controller
                 ['id_student_class', $student_class->id],
                 ['id_school_year', $school_year->id],
                 ['id_teacher', $subject->id_teacher],
-                ['id_course', $subject->id_course]
+                ['id_course', $subject->id_course],
+                ['type', $type_template]
             ])->first();
 
             $result_score[] = [
@@ -772,7 +773,7 @@ class PreviewController extends Controller
         return $pdf->stream();
     }
 
-    function preview_k13($student_class, $setting, $school_year, $subjects)
+    function preview_k13($student_class, $setting, $school_year, $subjects, $type_template)
     {
         $letter_head = Letterhead::first();
         $result_kop = [
@@ -832,6 +833,7 @@ class PreviewController extends Controller
 
         $score_kd = ScoreKd::where([
             ['id_student_class', $student_class->id],
+            ['type', $$type_template],
             ['id_school_year', $school_year->id],
         ])->get();
         $result_score = [];
@@ -841,7 +843,8 @@ class PreviewController extends Controller
             $score_kd = ScoreKd::where([
                 ['id_student_class', $student_class->id],
                 ['id_school_year', $school_year->id],
-                ['id_subject_teacher', $subject->id]
+                ['id_subject_teacher', $subject->id],
+                ['type', $$type_template],
             ])->first();
 
             if ($score_kd) {

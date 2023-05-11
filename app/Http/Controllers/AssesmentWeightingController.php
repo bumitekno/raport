@@ -12,8 +12,9 @@ use Illuminate\Support\Facades\DB;
 
 class AssesmentWeightingController extends Controller
 {
-    public function index()
+    public function index($type)
     {
+        // dd($type);
         $subjectTeachers = SubjectTeacher::where('status', 1)->get(['id_study_class']);
 
         $idStudyClasses = collect([]);
@@ -36,7 +37,9 @@ class AssesmentWeightingController extends Controller
             $assesment_weightings = DB::table('assesment_weightings')
                 ->join('teachers', 'teachers.id', '=', 'assesment_weightings.id_teacher')
                 ->where('assesment_weightings.id_study_class', $study_class->id)
+                ->where('assesment_weightings.type', $type)
                 ->get();
+            // dd($assesment_weightings);
 
             $result = [];
             foreach ($datas as $data) {
@@ -69,7 +72,7 @@ class AssesmentWeightingController extends Controller
             $result = [];
         }
         // dd($datas);
-        return view('content.score_p5.v_assesment_weighting', compact('classes', 'result'));
+        return view('content.score_p5.v_assesment_weighting', compact('classes', 'result', 'type'));
     }
 
     public function storeOrUpdate(AssesementRequest $request)
@@ -85,13 +88,14 @@ class AssesmentWeightingController extends Controller
                     'id_teacher' => $id[$i],
                     'id_course' => $data['id_course'][$i],
                     'id_study_class' => $data['id_study_class'][$i],
-                    'id_school_year' => session('id_school_year')
+                    'id_school_year' => session('id_school_year'),
+                    'type' => $data['type']
                 ],
                 [
                     'formative_weight' => $data['formative_weight'][$i],
                     'sumative_weight' => $data['sumative_weight'][$i],
                     'uts_weight' => $data['uts_weight'][$i],
-                    'uas_weight' => $data['uas_weight'][$i]
+                    'uas_weight' => $data['type'] == 'uas' ? $data['uas_weight'][$i] : null
                 ]
             );
         }
