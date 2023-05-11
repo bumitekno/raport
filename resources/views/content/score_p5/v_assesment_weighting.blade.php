@@ -161,7 +161,7 @@
                     var studyClass = $(this).val(); // Ambil nilai id_class yang dipilih
 
                     // Bangun URL baru dengan menggunakan nilai type dan study_class
-                    var newUrl = 'assesment-weight/' + type + '?study_class=' + studyClass;
+                    var newUrl = type + '?study_class=' + studyClass;
 
                     // Arahkan ke URL baru
                     window.location.href = newUrl;
