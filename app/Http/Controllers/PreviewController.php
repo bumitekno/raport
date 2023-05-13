@@ -220,7 +220,7 @@ class PreviewController extends Controller
         $result_other = [
             'headmaster' => $config ? $config->headmaster : '',
             'nip_headmaster' => $config ? $config->nip_headmaster : '',
-            'signature' => $config ? public_path($config->signature) : null,
+            'signature' => $config && $config['signature'] != null ? public_path($config->signature) : null,
         ];
         // return view('content.previews.v_print_cover', compact('cover', 'student_class', 'setting', 'result_other'));
         $pdf = PDF::loadView('content.previews.v_print_cover', compact('cover', 'student_class', 'setting', 'result_other'));
@@ -733,7 +733,7 @@ class PreviewController extends Controller
             'date' => $config ? $config->report_date : now(),
             'headmaster' => $config ? $config->headmaster : '',
             'nip_headmaster' => $config ? $config->nip_headmaster : '',
-            'signature' => $config ? public_path($config->signature) : null,
+            'signature' => $config && $config['signature'] != null ? public_path($config->signature) : null,
         ];
         // dd($result_other);
 
