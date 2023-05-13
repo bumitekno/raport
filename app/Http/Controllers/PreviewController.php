@@ -469,7 +469,7 @@ class PreviewController extends Controller
             'date' => $config ? $config->report_date : now(),
             'headmaster' => $config ? $config->headmaster : '',
             'nip_headmaster' => $config ? $config->nip_headmaster : '',
-            'signature' => $config ? public_path($config->signature) : null,
+            'signature' => $config && $config['signature'] != null ? public_path($config->signature) : null,
         ];
         $pdf = PDF::loadView('content.previews.merdeka.v_print_pas', compact('result_score', 'result_extra', 'result_attendance', 'result_kop', 'result_profile', 'result_other'));
         return $pdf->stream();

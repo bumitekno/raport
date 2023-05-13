@@ -63,9 +63,17 @@
                                     <td class="text-center">{{ $loop->iteration }}</td>
                                     <td>{{ $score['nis'] }}</td>
                                     <td>{{ $score['name'] }}</td>
+                            
                                     @foreach ($score['score'] as $score_student)
-                                        <td class="text-center">{{ $score_student['score'] }}</td>
+                                        <td class="text-center">
+                                            @if (is_array($score_student['score']))
+                                                {{ '--' }}
+                                            @else
+                                                {{ $score_student['score'] }}
+                                            @endif
+                                        </td>
                                     @endforeach
+                            
                                 </tr>
                             @endforeach
                         </tbody>

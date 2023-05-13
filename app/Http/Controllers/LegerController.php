@@ -90,6 +90,7 @@ class LegerController extends Controller
                 ->where('id_school_year', session('id_school_year'))
                 ->get();
         }
+        // dd($scores);
 
 
         foreach ($student_class as $student) {
@@ -104,34 +105,37 @@ class LegerController extends Controller
         $nilai_map = collect($arr_student_class)->map(function ($a) {
             return (array) $a;
         })->toArray();
+        // dd($nilai_map);
 
         foreach ($nilai_map as &$nmv) {
             if ($template['template'] == 'k13') {
-                $scoresFiltered = $scores->whereIn('id_subject_teacher', collect($nmv['score'])->pluck('id')->unique())
+                $scoresFiltered = collect($scores)->whereIn('id_subject_teacher', collect($nmv['score'])->pluck('id')->unique())
                     ->where('id_student_class', $nmv['id'])
                     ->where('id_school_year', session('id_school_year'));
             } else {
-                $scoresFiltered = $scores->whereIn('id_course', collect($nmv['score'])->pluck('id_course')->unique())
-                    ->whereIn('id_teacher', collect($nmv['score'])->pluck('id_teacher')->unique())
-                    ->where('id_student_class', $nmv['id'])
+                $scoresFiltered = collect($scores)->where('id_student_class', $nmv['id'])
                     ->where('id_school_year', session('id_school_year'));
+
+                if (!empty($nmv['score'])) {
+                    $scoresFiltered = $scoresFiltered->whereIn('id_course', collect($nmv['score'])->pluck('id_course')->unique())
+                        ->whereIn('id_teacher', collect($nmv['score'])->pluck('id_teacher')->unique());
+                }
             }
 
             $nmv['score'] = collect($nmv['score'])->map(function ($nmn) use ($template, $scoresFiltered) {
                 if ($template['template'] == 'k13') {
                     $raport_ = $scoresFiltered->where('id_subject_teacher', $nmn->id)->first();
-                    // dd($raport_);
-                    $final_score = $raport_ ? $raport_->final_assesment : 0;
+                    $final_score = $raport_ ? $raport_['final_assesment'] : [];
                 } else {
-                    $raport_ = $scoresFiltered->where('id_course', $nmn->id_course)
-                        ->where('id_teacher', $nmn->id_teacher)
+                    $raport_ = $scoresFiltered->where('id_course', $nmn['id_course'])
+                        ->where('id_teacher', $nmn['id_teacher'])
                         ->first();
-                    $final_score = $raport_ ? ($template['template'] == 'merdeka' ? $raport_->final_score : $raport_->score_final) : 0;
+                    $final_score = $raport_ ? ($template['template'] == 'merdeka' ? $raport_['final_score'] : $raport_['score_final']) : [];
                 }
 
                 return [
-                    'id' => $nmn->id,
-                    'name' => $nmn->name,
+                    'id' => $nmn['id'],
+                    'name' => $nmn['name'],
                     'score' => $final_score,
                 ];
             })->toArray();

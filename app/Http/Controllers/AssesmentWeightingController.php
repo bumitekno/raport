@@ -8,6 +8,7 @@ use App\Models\AssesmentWeighting;
 use App\Models\StudyClass;
 use App\Models\SubjectTeacher;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class AssesmentWeightingController extends Controller
@@ -15,6 +16,7 @@ class AssesmentWeightingController extends Controller
     public function index($type)
     {
         // dd($type);
+        session()->put('title', 'Bobot Penilaian');
         $subjectTeachers = SubjectTeacher::where('status', 1)->get(['id_study_class']);
 
         $idStudyClasses = collect([]);
@@ -31,15 +33,23 @@ class AssesmentWeightingController extends Controller
             $study_class = StudyClass::where('slug', $_GET['study_class'])->first();
             $datas = SubjectTeacher::with('teacher', 'course')
                 ->whereRaw('JSON_CONTAINS(id_study_class, \'["' . $study_class->id . '"]\')')
-                ->where('status', 1)
-                ->get();
+                ->where('status', 1);
+            if (Auth::guard('teacher')->check()) {
+                $datas = $datas->where('subject_teachers.id_teacher', Auth::guard('teacher')->user()->id);
+            }
+            $datas = $datas->get();
 
             $assesment_weightings = DB::table('assesment_weightings')
                 ->join('teachers', 'teachers.id', '=', 'assesment_weightings.id_teacher')
                 ->where('assesment_weightings.id_study_class', $study_class->id)
-                ->where('assesment_weightings.type', $type)
-                ->get();
-            // dd($assesment_weightings);
+                ->where('assesment_weightings.type', $type);
+
+            if (Auth::guard('teacher')->check()) {
+                $assesment_weightings = $assesment_weightings->where('assesment_weightings.id_teacher', Auth::guard('teacher')->user()->id);
+            }
+
+            $assesment_weightings = $assesment_weightings->get();
+
 
             $result = [];
             foreach ($datas as $data) {

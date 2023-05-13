@@ -67,6 +67,42 @@
             </div>
         </div>
     </div>
+    @push('modals')
+        <div class="modal fade" id="importModal" tabindex="-1" aria-labelledby="importModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="importExportModalLabel">Import / Export Excel</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="{{ route('courses.import') }}" method="POST" enctype="multipart/form-data">
+                            @csrf
+                            <input type="text" name="code_course">
+                            <input type="text" name="code_study_class">
+                            <input type="text" name="code_teacher">
+                            <div class="form-group">
+                                <label for="importTemplate">Download Template Excel</label>
+                                <a href="{{ route('setting_scores.competence.export') }}" class="btn btn-success btn-sm"><svg
+                                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round">
+                                        <path d="M3 15v4c0 1.1.9 2 2 2h14a2 2 0 0 0 2-2v-4M17 9l-5 5-5-5M12 12.8V2.5" />
+                                    </svg> Download</a>
+                            </div>
+                            <div class="form-group">
+                                <label for="importFile">Select Excel File to Import</label>
+                                <input type="file" name="file" class="form-control-file" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-block btn-lg">Import</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endpush
     @push('scripts')
         @include('package.datatable.datatable_js')
         <script>
@@ -80,23 +116,31 @@
                         "<'table-responsive'tr>" +
                         "<'inv-list-bottom-section d-sm-flex justify-content-sm-between text-center'<'inv-list-pages-count  mb-sm-0 mb-3'i><'inv-list-pagination'p>>",
                     buttons: [{
-                        text: 'Tambah Baru',
-                        className: 'btn btn-primary addData',
-                        action: function(e, dt, node, config) {
-
-
-                            var selectedOption = $('#id_course option:selected');
-                            var course = selectedOption.data('slug-course');
-                            var studyClass = selectedOption.data('slug-study-class');
-                            var teacher = selectedOption.data('slug-teacher');
-                            var url = '{{ route('setting_scores.competence.create') }}' +
-                                '?course=' + course +
-                                '&study_class=' + studyClass + '&teacher=' + teacher;
-                            window.location = url;
-
-
+                            text: 'Tambah Baru',
+                            className: 'btn btn-primary addData',
+                            action: function(e, dt, node, config) {
+                                var selectedOption = $('#id_course option:selected');
+                                var course = selectedOption.data('slug-course');
+                                var studyClass = selectedOption.data('slug-study-class');
+                                var teacher = selectedOption.data('slug-teacher');
+                                var url = '{{ route('setting_scores.competence.create') }}' +
+                                    '?course=' + course +
+                                    '&study_class=' + studyClass + '&teacher=' + teacher;
+                                window.location = url;
+                            }
+                        },
+                        {
+                            text: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="8" x2="8" y2="8"></line><line x1="16" y1="16" x2="8" y2="16"></line><line x1="10" y1="12" x2="3" y2="12"></line></svg>',
+                            className: 'btn btn-success importData',
+                            action: function(e, dt, node, config) {
+                                var selectedOption = $('#id_course option:selected');
+                                $('[name="code_course"]').val(selectedOption.data('slug-course'));
+                                $('[name="code_study_class"]').val(selectedOption.data('slug-study-class'));
+                                $('[name="code_teacher"]').val(selectedOption.data('slug-teacher'));
+                                $('#importModal').modal('show');
+                            }
                         }
-                    }],
+                    ],
                     columns: [{
                         data: 'DT_RowIndex',
                         name: 'DT_RowIndex',
@@ -129,7 +173,7 @@
 
 
                 // Simpan tombol Tambah Baru ke variabel
-                const tambahBaruBtn = $('button.addData');
+                const tambahBaruBtn = $('button.addData, button.importData');
 
                 // Dapatkan select dropdown
                 const mapelDropdown = $('select#id_course');

@@ -197,6 +197,7 @@ Route::middleware('auth:user,admin,parent,teacher')->group(function () {
         Route::get('competence/edit', [CompetenceAchievementController::class, 'edit'])->name('competence.edit');
         Route::post('competence/update/{id?}', [CompetenceAchievementController::class, 'storeOrUpdate'])->name('competence.storeOrUpdate');
         Route::get('competence/delete/{slug}', [CompetenceAchievementController::class, 'destroy'])->name('competence.destroy');
+        Route::get('competence/download/export', [CompetenceAchievementController::class, 'export'])->name('competence.export');
 
         Route::get('description', [DescriptionCompetenceController::class, 'index'])->name('description');
         Route::post('description/update', [DescriptionCompetenceController::class, 'storeOrUpdate'])->name('description.storeOrUpdate');

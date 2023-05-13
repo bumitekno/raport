@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\FullCompetenceArchievement;
 use App\Helpers\Helper;
 use App\Http\Requests\P5\CompetenceRequest;
 use App\Models\CompetenceAchievement;
@@ -10,9 +11,11 @@ use App\Models\StudyClass;
 use App\Models\SubjectTeacher;
 use App\Models\Teacher;
 use App\Models\TypeCompetenceAchievement;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\DataTables;
+use Maatwebsite\Excel\Facades\Excel;
 
 class CompetenceAchievementController extends Controller
 {
@@ -183,5 +186,10 @@ class CompetenceAchievementController extends Controller
         // dd($data);
         Helper::toast('Berhasil menghapus kompetensi', 'success');
         return redirect()->back();
+    }
+
+    public function export()
+    {
+        return Excel::download(new FullCompetenceArchievement, '' . Carbon::now()->timestamp . '_format_competency.xls');
     }
 }
