@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Kkm;
 use App\Models\ScoreKd;
 use App\Models\ScoreManual;
+use App\Models\ScoreManual2;
 use App\Models\ScoreMerdeka;
 use App\Models\StudentClass;
 use App\Models\StudyClass;
@@ -62,6 +63,7 @@ class LegerController extends Controller
             ['id_major', $study_class->id_major],
             ['id_school_year', session('id_school_year')],
         ])->first();
+        // dd($template);
 
         $scores = [];
 
@@ -77,20 +79,30 @@ class LegerController extends Controller
                 ->whereIn('id_course', $subject_teachers->pluck('id_course')->unique()->toArray())
                 ->whereIn('id_teacher', $subject_teachers->pluck('id_teacher')->unique()->toArray())
                 ->where('id_school_year', session('id_school_year'))
+                ->where('type', $template['template'])
                 ->get();
         } else if ($template['template'] == 'k13') {
             $scores = ScoreKd::whereIn('id_study_class', [$study_class->id])
                 ->whereIn('id_subject_teacher', $subject_teachers->pluck('id')->unique()->toArray())
                 ->where('id_school_year', session('id_school_year'))
+                ->where('type', $template['template'])
                 ->get();
         } else if ($template['template'] == 'manual') {
             $scores = ScoreManual::whereIn('id_study_class', [$study_class->id])
                 ->whereIn('id_course', $subject_teachers->pluck('id_course')->unique()->toArray())
                 ->whereIn('id_teacher', $subject_teachers->pluck('id_teacher')->unique()->toArray())
                 ->where('id_school_year', session('id_school_year'))
+                ->where('type', $template['template'])
+                ->get();
+        } elseif ($template['template'] == 'manual2') {
+            $scores = ScoreManual2::whereIn('id_study_class', [$study_class->id])
+                ->whereIn('id_course', $subject_teachers->pluck('id_course')->unique()->toArray())
+                ->whereIn('id_teacher', $subject_teachers->pluck('id_teacher')->unique()->toArray())
+                ->where('id_school_year', session('id_school_year'))
                 ->get();
         }
         // dd($scores);
+
 
 
         foreach ($student_class as $student) {
@@ -105,7 +117,6 @@ class LegerController extends Controller
         $nilai_map = collect($arr_student_class)->map(function ($a) {
             return (array) $a;
         })->toArray();
-        // dd($nilai_map);
 
         foreach ($nilai_map as &$nmv) {
             if ($template['template'] == 'k13') {
