@@ -78,11 +78,12 @@
                         </button>
                     </div>
                     <div class="modal-body">
-                        <form action="{{ route('courses.import') }}" method="POST" enctype="multipart/form-data">
+                        <form action="{{ route('setting_scores.competence.import') }}" method="POST"
+                            enctype="multipart/form-data">
                             @csrf
-                            <input type="text" name="code_course">
-                            <input type="text" name="code_study_class">
-                            <input type="text" name="code_teacher">
+                            <input type="hidden" name="code_course">
+                            <input type="hidden" name="code_study_class">
+                            <input type="hidden" name="code_teacher">
                             <div class="form-group">
                                 <label for="importTemplate">Download Template Excel</label>
                                 <a href="{{ route('setting_scores.competence.export') }}" class="btn btn-success btn-sm"><svg
@@ -111,7 +112,14 @@
                     processing: true,
                     serverSide: true,
                     responsive: true,
-                    ajax: "",
+                    ajax: {
+                        url: "", // URL untuk permintaan Ajax
+                        data: function(d) {
+                            d.course = $('#id_course option:selected').data('slug-course');
+                            d.study_class = $('#id_course option:selected').data('slug-study-class');
+                            d.teacher = $('#id_course option:selected').data('slug-teacher');
+                        }
+                    },
                     dom: "<'inv-list-top-section'<'row'<'col-sm-12 col-md-6 d-flex justify-content-md-start justify-content-center'l<'dt-action-buttons align-self-center'B>><'col-sm-12 col-md-6 d-flex justify-content-md-end justify-content-center mt-md-0 mt-3'f<'toolbar align-self-center'>>>>" +
                         "<'table-responsive'tr>" +
                         "<'inv-list-bottom-section d-sm-flex justify-content-sm-between text-center'<'inv-list-pages-count  mb-sm-0 mb-3'i><'inv-list-pagination'p>>",
@@ -135,7 +143,8 @@
                             action: function(e, dt, node, config) {
                                 var selectedOption = $('#id_course option:selected');
                                 $('[name="code_course"]').val(selectedOption.data('slug-course'));
-                                $('[name="code_study_class"]').val(selectedOption.data('slug-study-class'));
+                                $('[name="code_study_class"]').val(selectedOption.data(
+                                    'slug-study-class'));
                                 $('[name="code_teacher"]').val(selectedOption.data('slug-teacher'));
                                 $('#importModal').modal('show');
                             }
@@ -189,6 +198,7 @@
                     } else {
                         tambahBaruBtn.hide();
                     }
+                    table.ajax.reload();
                 });
 
             });

@@ -70,13 +70,29 @@
                                                         value="{{ $student['id'] }}">
                                                     <input type="hidden" name="count_each[]" value="{{ $index + 1 }}">
                                                     <td>
+                                                        <div class="form-group form-check pl-0 mb-0">
+                                                            <div class="custom-control custom-checkbox checkbox-info">
+                                                                <input type="checkbox"
+                                                                    class="custom-control-input select-all-checkbox"
+                                                                    id="check_all_archieved_{{ $index }}"
+                                                                    data-student-index="{{ $index }}"
+                                                                    data-competency-type="competency_archieved">
+                                                                <label class="custom-control-label"
+                                                                    for="check_all_archieved_{{ $index }}">Pilih
+                                                                    Semua</label>
+                                                            </div>
+                                                        </div>
                                                         @foreach ($student['competency_archieved'] as $competency_archieved)
                                                             <div class="form-group form-check pl-0 mb-0">
                                                                 <div class="custom-control custom-checkbox checkbox-info">
-                                                                    <input type="checkbox" class="custom-control-input"
+                                                                    <input type="checkbox"
+                                                                        class="custom-control-input competency-checkbox"
                                                                         id="competency_achieved_{{ $student['id'] . '_' . $competency_archieved['id'] }}"
                                                                         name="competency_achieved_{{ $index + 1 }}[]"
-                                                                        value="{{ $competency_archieved['id'] }}" {{ $competency_archieved['checked'] == true ? 'checked' : '' }}>
+                                                                        data-student-index="{{ $index }}"
+                                                                        data-competency-type="competency_archieved"
+                                                                        value="{{ $competency_archieved['id'] }}"
+                                                                        {{ $competency_archieved['checked'] == true ? 'checked' : '' }}>
                                                                     <label class="custom-control-label"
                                                                         for="competency_achieved_{{ $student['id'] . '_' . $competency_archieved['id'] }}">{{ $competency_archieved['achievement'] }}</label>
                                                                 </div>
@@ -84,13 +100,29 @@
                                                         @endforeach
                                                     </td>
                                                     <td>
+                                                        <div class="form-group form-check pl-0 mb-0">
+                                                            <div class="custom-control custom-checkbox checkbox-info">
+                                                                <input type="checkbox"
+                                                                    class="custom-control-input select-all-checkbox"
+                                                                    id="check_all_improved_{{ $index }}"
+                                                                    data-student-index="{{ $index }}"
+                                                                    data-competency-type="competency_improved">
+                                                                <label class="custom-control-label"
+                                                                    for="check_all_improved_{{ $index }}">Pilih
+                                                                    Semua</label>
+                                                            </div>
+                                                        </div>
                                                         @foreach ($student['competency_improved'] as $competency_improved)
                                                             <div class="form-group form-check pl-0 mb-0">
                                                                 <div class="custom-control custom-checkbox checkbox-info">
-                                                                    <input type="checkbox" class="custom-control-input"
+                                                                    <input type="checkbox"
+                                                                        class="custom-control-input competency-checkbox"
                                                                         id="competency_improved_{{ $student['id'] . '_' . $competency_improved['id'] }}"
                                                                         name="competency_improved_{{ $index + 1 }}[]"
-                                                                        value="{{ $competency_improved['id'] }}" {{ $competency_improved['checked'] == true ? 'checked' : '' }}>
+                                                                        value="{{ $competency_improved['id'] }}"
+                                                                        data-student-index="{{ $index }}"
+                                                                        data-competency-type="competency_improved"
+                                                                        {{ $competency_improved['checked'] == true ? 'checked' : '' }}>
                                                                     <label class="custom-control-label"
                                                                         for="competency_improved_{{ $student['id'] . '_' . $competency_improved['id'] }}">{{ $competency_improved['achievement'] }}</label>
                                                                 </div>
@@ -138,7 +170,24 @@
                     $('#btnLoader').removeClass('d-none');
                     $('#btnSubmit').addClass('d-none');
                 });
+
+                $('.select-all-checkbox').click(toggleSelectAllCheckbox);
             });
+
+            function toggleCompetencyCheckboxes(studentIndex, competencyType, isChecked) {
+                $('.competency-checkbox[data-student-index="' + studentIndex + '"][data-competency-type="' + competencyType +
+                    '"]').prop('checked', isChecked);
+            }
+
+            function toggleSelectAllCheckbox() {
+                var selectAllCheckbox = $(this);
+                var studentIndex = selectAllCheckbox.data('student-index');
+                var competencyType = selectAllCheckbox.data('competency-type');
+                var isChecked = selectAllCheckbox.prop('checked');
+
+                toggleCompetencyCheckboxes(studentIndex, competencyType, isChecked);
+            }
+
 
             function submitForm() {
                 $('form').submit();

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Exports\FullCompetenceArchievement;
 use App\Helpers\Helper;
 use App\Http\Requests\P5\CompetenceRequest;
+use App\Imports\CompetenceArchievementMultipleImport;
 use App\Models\CompetenceAchievement;
 use App\Models\Course;
 use App\Models\StudyClass;
@@ -14,6 +15,7 @@ use App\Models\TypeCompetenceAchievement;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\DataTables;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -61,9 +63,32 @@ class CompetenceAchievementController extends Controller
         $courses = collect($courses)->unique(function ($item) {
             return $item['id_course'] . $item['id_study_class'];
         })->values()->all();
-        // dd($courses);
         if ($request->ajax()) {
-            $data = CompetenceAchievement::with('type', 'course', 'study_class')->select('*');
+            $course = $request->input('course');
+            $studyClass = $request->input('study_class');
+            $teacher = $request->input('teacher');
+
+            $data = CompetenceAchievement::with('type', 'course', 'study_class')
+                ->when($course, function ($query) use ($course) {
+                    return $query->whereHas('course', function ($subquery) use ($course) {
+                        $subquery->where('slug', $course);
+                    });
+                })
+                ->when($studyClass, function ($query) use ($studyClass) {
+                    return $query->whereHas('study_class', function ($subquery) use ($studyClass) {
+                        $subquery->where('slug', $studyClass);
+                    });
+                })
+                ->when($teacher, function ($query) use ($teacher) {
+                    return $query->whereHas('teacher', function ($subquery) use ($teacher) {
+                        $subquery->where('slug', $teacher);
+                    });
+                })
+                ->select('*');
+
+            if (!$course && !$studyClass && !$teacher) {
+                $data->withoutGlobalScopes();
+            }
             return DataTables::of($data)
                 ->addIndexColumn()
                 ->addColumn('action', function ($row) {
@@ -100,6 +125,7 @@ class CompetenceAchievementController extends Controller
         //     ['id_school_year', session('id_school_year')],
         // ])->get();
         // dd($data);
+        session()->put('title', 'Capaian Kompetensi');
         if ($request->ajax()) {
             $data = CompetenceAchievement::with('type', 'course', 'study_class')->select('*')->where([
                 ['id_study_class', session('teachers.id_study_class')],
@@ -191,5 +217,35 @@ class CompetenceAchievementController extends Controller
     public function export()
     {
         return Excel::download(new FullCompetenceArchievement, '' . Carbon::now()->timestamp . '_format_competency.xls');
+    }
+
+    public function import(Request $request)
+    {
+        // dd(session()->all());
+        // dd($request);
+        $this->validate($request, [
+            'file' => 'required|mimes:csv,xls,xlsx'
+        ]);
+
+        try {
+            $file = $request->file('file');
+            $nama_file = $file->hashName();
+            $path = $file->storeAs('public/excel/', $nama_file);
+            Excel::import(new CompetenceArchievementMultipleImport($request->code_course, $request->code_study_class, $request->code_teacher, session('id_school_year')), storage_path('app/public/excel/' . $nama_file));
+            Storage::delete($path);
+            Helper::toast('Data Berhasil Diimport', 'success');
+            if (Auth::guard('admin')->check()) {
+                return redirect()->route('setting_scores.competence');
+            } else {
+                return redirect()->route('setting_scores.list_competence');
+            }
+        } catch (\Throwable $e) {
+            Helper::toast($e->getMessage(), 'errror');
+            if (Auth::guard('admin')->check()) {
+                return redirect()->route('setting_scores.competence');
+            } else {
+                return redirect()->route('setting_scores.list_competence');
+            }
+        }
     }
 }
