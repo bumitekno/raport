@@ -89,11 +89,15 @@ Route::middleware('auth:user,admin,parent,teacher')->group(function () {
         'teachers' => 'teachers:slug',
     ])->except(['show', 'destroy']);
     Route::get('teachers/destroy/{slug}', [TeacherController::class, 'destroy'])->name('teachers.destroy');
+    Route::get('teachers/export', [TeacherController::class, 'export'])->name('teachers.export');
+    Route::post('teachers/import', [TeacherController::class, 'import'])->name('teachers.import');
 
     Route::resource('users', UserController::class)->parameters([
         'users' => 'users:slug',
     ])->except(['show', 'destroy']);
     Route::get('users/destroy/{slug}', [UserController::class, 'destroy'])->name('users.destroy');
+    Route::get('users/export', [UserController::class, 'export'])->name('users.export');
+    Route::post('users/import', [UserController::class, 'import'])->name('users.import');
 
     Route::prefix('family')->name('families.')->group(function () {
         Route::get('/', [ParentController::class, 'index'])->name('index');

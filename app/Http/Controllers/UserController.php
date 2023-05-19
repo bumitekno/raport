@@ -2,15 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\FullStudentExport;
 use App\Helpers\Helper;
 use App\Helpers\ImageHelper;
 use App\Http\Requests\User\StoreUserRequest;
 use App\Http\Requests\User\UpdateUserRequest;
+use App\Imports\StudentMultipleImport;
 use App\Models\User;
 use App\Models\UserParent;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\DataTables;
+use Maatwebsite\Excel\Facades\Excel;
 
 class UserController extends Controller
 {
@@ -60,7 +64,7 @@ class UserController extends Controller
     public function store(StoreUserRequest $request)
     {
         // dd($request);
-        $data = $request->toArray();
+        $data = $request->validated();
         if ($request->hasFile('file')) {
             $data = ImageHelper::upload_asset($request, 'file', 'profile', $data);
         }
@@ -97,19 +101,30 @@ class UserController extends Controller
         return view('content.users.v_form_user', compact('user'));
     }
 
-    public function update(UpdateUserRequest $request, User $user, $slug)
+    public function update(UpdateUserRequest $request, $slug)
     {
+        $data = $request->validated();
+
         $user = User::where('slug', $slug)->firstOrFail();
-        if ($request->password) {
-            $user->update([
-                'password' => Hash::make($request->password),
-            ]);
+
+        if ($request->has('password')) {
+            $user->password = bcrypt($data['password']);
         }
-        $data = $request->input();
+
+        // Update atribut lainnya
+        $user->email = $data['email'];
+        $user->name = $data['name'];
+        $user->phone = $data['phone'];
+        $user->slug = $data['slug'];
+        $user->entry_year = $data['entry_year'];
+        $user->date_of_birth = $data['date_of_birth'];
         if ($request->hasFile('file')) {
-            $data = ImageHelper::upload_asset($request, 'file', 'profile', $data);
+            $file = ImageHelper::upload_asset($request, 'file', 'profile', $data);
+            $user->file = $file;
         }
-        $user->fill($data)->save();
+        // Tambahkan atribut lainnya sesuai kebutuhan
+
+        $user->save();
         Helper::toast('Berhasil mengupdate siswa', 'success');
         return redirect()->route('users.index');
     }
@@ -119,5 +134,30 @@ class UserController extends Controller
         User::where('slug', $slug)->delete();
         Helper::toast('Berhasil menghapus siswa', 'success');
         return redirect()->route('users.index');
+    }
+
+    public function export()
+    {
+        return Excel::download(new FullStudentExport(), '' . Carbon::now()->timestamp . '_format_student.xls');
+    }
+
+    public function import(Request $request)
+    {
+        $this->validate($request, [
+            'file' => 'required|mimes:csv,xls,xlsx'
+        ]);
+
+        try {
+            $file = $request->file('file');
+            $nama_file = $file->hashName();
+            $path = $file->storeAs('public/excel/', $nama_file);
+            Excel::import(new StudentMultipleImport(), storage_path('app/public/excel/' . $nama_file));
+            Storage::delete($path);
+            Helper::toast('Data Berhasil Diimport', 'success');
+            return redirect()->route('users.index');
+        } catch (\Throwable $e) {
+            Helper::toast($e->getMessage(), 'errror');
+            return redirect()->route('users.index');
+        }
     }
 }

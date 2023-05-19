@@ -2,15 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\FullTeacherExport;
 use App\Helpers\Helper;
 use App\Helpers\ImageHelper;
 use App\Http\Requests\Teacher\StoreTeacherRequest;
 use App\Http\Requests\Teacher\UpdateTeacherRequest;
+use App\Imports\TeacherMultipleImport;
 use App\Models\StudyClass;
 use App\Models\Teacher;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\DataTables;
-use Illuminate\Support\Facades\Hash;
+use Maatwebsite\Excel\Facades\Excel;
 
 class TeacherController extends Controller
 {
@@ -117,5 +121,30 @@ class TeacherController extends Controller
         Teacher::where('slug', $slug)->delete();
         Helper::toast('Berhasil menghapus guru', 'success');
         return redirect()->route('teachers.index');
+    }
+
+    public function export()
+    {
+        return Excel::download(new FullTeacherExport(), '' . Carbon::now()->timestamp . '_format_guru.xls');
+    }
+
+    public function import(Request $request)
+    {
+        $this->validate($request, [
+            'file' => 'required|mimes:csv,xls,xlsx'
+        ]);
+
+        try {
+            $file = $request->file('file');
+            $nama_file = $file->hashName();
+            $path = $file->storeAs('public/excel/', $nama_file);
+            Excel::import(new TeacherMultipleImport(), storage_path('app/public/excel/' . $nama_file));
+            Storage::delete($path);
+            Helper::toast('Data Berhasil Diimport', 'success');
+            return redirect()->route('teachers.index');
+        } catch (\Throwable $e) {
+            Helper::toast($e->getMessage(), 'errror');
+            return redirect()->route('teachers.index');
+        }
     }
 }

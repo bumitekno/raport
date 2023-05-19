@@ -18,11 +18,11 @@ class UpdateUserRequest extends FormRequest
     {
         $user = User::where('slug', $this->users)->firstOrFail();
         return [
-            'day' => ['required'],
-            'month' => ['required'],
-            'year' => ['required'],
+            // 'day' => ['required'],
+            // 'month' => ['required'],
+            // 'year' => ['required'],
             'date_of_birth' => 'required|date',
-            'email' => ['sometimes', 'required','email:rfc,dns', ($user->email === $this->email) ? '' : 'unique:users,email', 'max:255'],
+            'email' => ['sometimes', 'required', 'email:rfc,dns', ($user->email === $this->email) ? '' : 'unique:users,email', 'max:255'],
             'name' => ['required'],
             'phone' => 'required|numeric',
             'slug' => 'required|string',
@@ -34,7 +34,7 @@ class UpdateUserRequest extends FormRequest
                 'max:2048',
             ],
             'password' => 'nullable',
-            'password_confirmation' => 'same:password'
+            // 'password_confirmation' => 'same:password'
         ];
     }
 
@@ -52,7 +52,14 @@ class UpdateUserRequest extends FormRequest
         // dd($this->rules('email'));
         // $data['slug'] = str_slug($data['name']);
         $data['slug'] = str_slug($data['name']) . '-' . Helper::code_slug($this->users);
-        $data['date_of_birth'] = $this->year . '-' . $this->month . '-' . $this->day;
+        if (isset($data['date_of_birth'])) {
+            unset($data['day']);
+            unset($data['month']);
+            unset($data['year']);
+        } else {
+            $data['date_of_birth'] = $this->year . '-' . $this->month . '-' . $this->day;
+        }
+
         $this->getInputSource()->replace($data);
 
         return parent::getValidatorInstance();

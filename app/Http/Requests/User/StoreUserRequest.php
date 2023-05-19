@@ -22,15 +22,15 @@ class StoreUserRequest extends FormRequest
     {
         // dd($this->request);
         return [
-            'day' => ['required'],
-            'month' => ['required'],
-            'year' => ['required'],
+            // 'day' => ['required'],
+            // 'month' => ['required'],
+            // 'year' => ['required'],
             'date_of_birth' => 'required|date',
             'email' => ['required', 'unique:users,email,' . optional($this->user)->id,],
             'name' => ['required'],
             'phone' => 'required|numeric',
             'password' => (empty($this->user->password)) ? ['required', Password::defaults(), 'required_with:password_confirmation', 'same:password_confirmation'] : '',
-            'password_confirmation' => ['min:8'],
+            // 'password_confirmation' => ['min:8'],
             'slug' => 'required|string',
             'entry_year' => 'digits:4|integer|min:1900|max:' . (date('Y') + 1),
             'file'  => [
@@ -56,7 +56,14 @@ class StoreUserRequest extends FormRequest
     {
         $data = $this->all();
         $data['slug'] = str_slug($data['name']) . '-' . Helper::str_random(5);
-        $data['date_of_birth'] = $this->year . '-' . $this->month . '-' . $this->day;
+        if (isset($data['date_of_birth'])) {
+            unset($data['day']);
+            unset($data['month']);
+            unset($data['year']);
+        } else {
+            $data['date_of_birth'] = $this->year . '-' . $this->month . '-' . $this->day;
+        }
+
         $this->getInputSource()->replace($data);
 
         return parent::getValidatorInstance();
