@@ -193,16 +193,13 @@ class PreviewController extends Controller
         switch ($template->template) {
             case 'k13':
                 return $this->preview_k13($student_class, $setting, $school_year, $subjects, $template->type);
-                break;
             case 'merdeka':
-                return $this->preview_merdeka($student_class, $setting, $school_year, $subjects, $_GET['type']);
-                break;
+                $type = (session('role') == 'admin') ? $template->type : $_GET['type'];
+                return $this->preview_merdeka($student_class, $setting, $school_year, $subjects, $type);
             case 'manual2':
                 return $this->preview_manual2($student_class, $setting, $school_year, $subjects);
-                break;
             default:
                 return $this->preview_manual($student_class, $setting, $school_year, $subjects, $template->type);
-                break;
         }
     }
 
