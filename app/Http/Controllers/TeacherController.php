@@ -103,7 +103,6 @@ class TeacherController extends Controller
         $teacher->date_of_birth = $data['date_of_birth'];
         $teacher->slug = $data['slug'];
         $teacher->type = $data['type'];
-        $teacher->type = $data['type'];
         if ($data['password']) {
             $teacher->password = bcrypt($data['password']);
         }

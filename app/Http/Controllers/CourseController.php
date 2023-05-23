@@ -218,7 +218,15 @@ class CourseController extends Controller
 
     public function export()
     {
-        return Excel::download(new CourseExport, '' . Carbon::now()->timestamp . '_format_mapel.xls');
+        $title = '' . Carbon::now()->timestamp . '_format_mapel.xls';
+        $MAX_LENGTH = 31;
+
+        if (mb_strlen($title) > $MAX_LENGTH) {
+            $truncated_title = mb_substr($title, 0, 28) . '...';
+            $title = $truncated_title;
+        }
+
+        return Excel::download(new CourseExport, $title);
     }
 
     public function import(Request $request)

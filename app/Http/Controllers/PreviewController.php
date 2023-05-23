@@ -111,9 +111,17 @@ class PreviewController extends Controller
                 $pdf = PDF::loadView('content.previews.k13.v_print_sample_pas');
                 return $pdf->stream();
                 break;
-
+            case 'merdeka':
+                $pdf = PDF::loadView('content.previews.merdeka.v_print_sample_pas');
+                return $pdf->stream();
+                break;
+            case 'manual2':
+                $pdf = PDF::loadView('content.previews.manual2.v_print_sample_pas');
+                return $pdf->stream();
+                break;
             default:
-                # code...
+                $pdf = PDF::loadView('content.previews.manual.v_print_sample_pas');
+                return $pdf->stream();
                 break;
         }
     }

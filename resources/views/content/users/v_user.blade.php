@@ -35,7 +35,7 @@
                                         <th>Nama</th>
                                         <th>NISN</th>
                                         <th>Email</th>
-                                        <th>Status Akun</th>
+                                        <th>Telepon</th>
                                         <th class="no-content text-center"></th>
                                     </tr>
                                 </thead>
@@ -119,11 +119,11 @@
                         data: 'name',
                         name: 'name',
                     }, {
+                        data: 'nisn',
+                        name: 'nisn',
+                    }, {
                         data: 'email',
                         name: 'email',
-                    }, {
-                        data: 'address',
-                        name: 'address',
                     }, {
                         data: 'phone',
                         name: 'phone',
