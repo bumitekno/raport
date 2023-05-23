@@ -51,7 +51,7 @@ class DashboardController extends Controller
             ['id_student', session('id_student')],
             ['year', session('year')],
             ['status', 1],
-        ])->last()->first();
+        ])->latest()->first();
         $study_class = StudyClass::find($student_class->id_study_class);
         session()->put('id_study_class', $student_class->id_study_class);
         session()->put('id_student_class', $student_class->id);

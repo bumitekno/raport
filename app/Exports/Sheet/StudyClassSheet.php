@@ -17,6 +17,7 @@ class StudyClassSheet implements FromView, WithStyles, ShouldAutoSize
             ->select('study_classes.id', 'study_classes.slug', 'study_classes.name', 'majors.name as major', 'levels.name as level', 'study_classes.status')
             ->join('majors', 'study_classes.id_major', '=', 'majors.id')
             ->join('levels', 'study_classes.id_level', '=', 'levels.id')
+            ->whereNull('study_classes.deleted_at')
             ->where('study_classes.status', '=', 1)
             ->get();
 
