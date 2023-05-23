@@ -15,7 +15,7 @@ class AttitudeGradeController extends Controller
     {
         // dd(session()->all());
         $title = $type == 'social' ? 'Sosial' : 'Spiritual';
-        session()->put('title', 'Nilai Sipak ' . $title);
+        session()->put('title', 'Nilai Sikap ' . $title);
 
         $students = StudentClass::join('users', 'student_classes.id_student', '=', 'users.id')
             ->select('student_classes.id', 'student_classes.id_student', 'student_classes.status',  'student_classes.year', 'users.name', 'users.file', 'users.nis')
