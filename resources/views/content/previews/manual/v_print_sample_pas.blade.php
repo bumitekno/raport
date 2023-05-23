@@ -82,29 +82,28 @@
 <body>
     <table class="table">
         <tr>
-            <td colspan="8" class="b-0">
+            <td colspan="5" class="b-0">
                 <table style="width: 100%">
                     <tr>
                         <td class="b-0">
                             <img alt="logo kiri" id="prev-logo-kiri-print" src="{{ public_path('asset/img/logo.png') }}"
                                 style="width: 85%;">
-
-
                         </td>
+
                         <td style="width:70%; text-align: center;" class="b-0">
                             <div class="text-uppercase" style="line-height: 1.1; font-family: 'Arial'; font-size: 12pt">
-                                BADAN PENGEMBANGAN SUMBER DAYA MANUSIA
+                                BADAN PENGEMBANGAN SUMBER DAYA MANUSIA INDUSTRI
                             </div>
                             <div style="line-height: 1.1; font-family: 'Arial'; font-size: 16pt" class="text-uppercase">
-                                SEKOLAH MENENGAH ATAS
+                                SEKOLAH MENENGAH KEJURUAN
                             </div>
                             <div style="line-height: 1.2; font-family: 'Arial'; font-size: 16pt"
                                 class="text-uppercase text-bold">
-                                KABUPATEN TEMANGGUNG
+                                TEMANGGUNG
                             </div>
                             <div style="line-height: 1.2; font-family: 'Arial'; font-size: 8pt">
-                                Jl. Kranggan Pringsurat No. 43, Telp (01234) 56789001, NPSN 10010120, Website :
-                                www.mysch.id
+                                Jl. Jenderal Sudirman No. 43, Telp (0721) 4343245, NPSN 343243, Website :
+                                www.sekolahku.sch.id
                             </div>
                         </td>
                     </tr>
@@ -113,48 +112,39 @@
             </td>
         </tr>
         <tr>
-            <td colspan="8" class="b-0" style="padding: 0px !important">
+            <td colspan="5" class="b-0" style="padding: 0px !important">
                 <hr style="border: solid 2px #000">
             </td>
         </tr>
         <tr>
-            <td colspan="8" style="font-size: 14pt !important" class="b-0 text-bold text-uppercase text-center">
+            <td colspan="5" style="font-size: 14pt !important" class="b-0 text-bold text-uppercase text-center">
                 RAPOR PESERTA DIDIK DAN PROFIL PESERTA DIDIK
             </td>
         </tr>
         <thead>
             <tr>
-                <td colspan="8" class="b-0">
+                <td colspan="5" class="b-0">
                     <table class="table b-0">
                         <tr class="b-0">
                             <td class="b-0" style="padding: 0px; vertical-align: top">Nama Peserta Didik</td>
                             <td class="b-0" style="padding: 0px; vertical-align: top">:</td>
-                            <td class="b-0" style="padding: 0px">
-                                NAILIL FITRI
-                            </td>
+                            <td class="b-0" style="padding: 0px">John Doe</td>
                             <td class="b-0" style="padding: 0px; vertical-align: top">Kelas</td>
                             <td class="b-0" style="padding: 0px; vertical-align: top">:</td>
-                            <td class="b-0" style="padding: 0px; vertical-align: top">XI
-                            </td>
+                            <td class="b-0" style="padding: 0px">12A</td>
                         </tr>
                         <tr>
                             <td class="b-0" style="padding: 0px">NISN</td>
                             <td class="b-0" style="padding: 0px">:</td>
-                            <td class="b-0" style="padding: 0px">
-                                00123456
-                            </td>
+                            <td class="b-0" style="padding: 0px">1234567890</td>
                             <td class="b-0" style="padding: 0px;">Semester</td>
                             <td class="b-0" style="padding: 0px;">:</td>
-                            <td class="b-0" style="padding: 0px;">2
-                                (Genap)
-                            </td>
+                            <td class="b-0" style="padding: 0px;">1</td>
                         </tr>
                         <tr>
                             <td class="b-0" style="padding: 0px; vertical-align: top">Sekolah</td>
                             <td class="b-0" style="padding: 0px; vertical-align: top">:</td>
-                            <td class="b-0" style="padding: 0px; vertical-align: top">
-                                SMKN MYSCH TEMANGGUNG
-                            </td>
+                            <td class="b-0" style="padding: 0px; vertical-align: top">SMA Negeri 1</td>
                             <td class="b-0" style="padding: 0px; vertical-align: top">Tahun Pelajaran</td>
                             <td class="b-0" style="padding: 0px; vertical-align: top">:</td>
                             <td class="b-0" style="padding: 0px; vertical-align: top">2022/2023</td>
@@ -162,11 +152,8 @@
                         <tr>
                             <td class="b-0" style="padding: 0px; vertical-align: top">Alamat</td>
                             <td class="b-0" style="padding: 0px; vertical-align: top">:</td>
-                            <td class="b-0" style="padding: 0px;" colspan="4">
-                                Jl. Kranggan Temanggung No. 23 Pringsurat Temanggung No. 23 Pringsurat
-                            </td>
+                            <td class="b-0" style="padding: 0px;" colspan="4">Jl. Jendral Sudirman No. 123, Kota ABC</td>
                         </tr>
-
                         <tr>
                             <td style="height: 10px" class="b-0"></td>
                         </tr>
@@ -176,341 +163,172 @@
         </thead>
         <tbody>
             <tr>
-                <td colspan="8" class="b-0" style="padding: 0px !important">
+                <td colspan="5" class="b-0" style="padding: 0px !important">
                     <table class="table">
                         <tr>
-                            <td class="b-0" colspan="2" style="font-size: 12pt">A. SIKAP
-                            </td>
+                            <td class="b-0" colspan="2" style="font-size: 12pt">A. SIKAP</td>
                         </tr>
                         <tr>
-                            <th class="text-center" colspan="2">
-                                Deskripsi</th>
+                            <th class="text-center" colspan="2">Deskripsi</th>
                         </tr>
                         <tr>
                             <td class="text-center" style="width: 150px">
-                                <b>1. Sikap Spiritual </b>
+                                <b>1. Sikap Sosial</b>
                             </td>
-                            <td>NAILIL FITRI memiliki sikap spiritual Baik, antara lain
-                                Konsisten dalam berdoa sebelum dan sesudah melakukan kegiatan, Ketaatan beribadah ,
-                                toleransi dalam beribadah, dan berperilaku syukur. </td>
+                            <td>Nama Siswa memiliki sikap sosial yang baik, antara lain sopan santun, kerjasama, dan
+                                tanggung jawab.</td>
                         </tr>
                         <tr>
-                            <td class="text-center">
-                                <b>2. Sikap Sosial </b>
+                            <td class="text-center" style="width: 150px">
+                                <b>2. Sikap Spiritual</b>
                             </td>
-                            <td> AFIFA SILFI KURNIA PUTRI memiliki sikap sosial Baik, antara lain
-                                Konsisten dalam peduli, jujur, tanggung jawab, disiplin, santun, dan percaya diri. </td>
+                            <td>Nama Siswa memiliki sikap spiritual yang kuat, antara lain kejujuran, ketulusan, dan
+                                ketekunan dalam ibadah.</td>
                         </tr>
                     </table>
                 </td>
             </tr>
             <tr>
-                <td style="height: 10px" colspan="4" class="b-0"></td>
+                <td style="height: 10px" colspan="5" class="b-0"></td>
             </tr>
-            <tr>
-                <td class="b-0" colspan="8" style="font-size: 12pt">B. PENGETAHUAN DAN KETERAMPILAN</td>
-            </tr>
-            <tr>
-                <td class="b-0" colspan="8" style="font-size: 12pt">Kriteria Ketuntasan Minimal Satuan Pendidikan= 65</td>
-            </tr>
-            <tr>
-                <th class="text-center vertical-middle" rowspan="2">
-                    No
-                </th>
-                <th class="text-center" rowspan="2">
-                    Mata Pelajaran</th>
-                <th class="text-center" colspan="3">
-                    Pengetahuan</th>
-                <th class="text-center" colspan="3">
-                    Ketrampilan</th>
 
+            <tr>
+                <td class="b-0" colspan="5" style="font-size: 12pt">B. PENGETAHUAN DAN KETERAMPILAN</td>
             </tr>
             <tr>
-                <th class="text-center">
-                    Angka</th>
-                <th class="text-center">
-                    Predikat</th>
-                <th class="text-center">
-                    Deskripsi</th>
-                <th class="text-center">
-                    Angka</th>
-                <th class="text-center">
-                    Predikat</th>
-                <th class="text-center">
-                    Deskripsi</th>
+                <th class="text-center vertical-middle" rowspan="2">No</th>
+                <th class="text-center" rowspan="2">Mata Pelajaran</th>
+                <th class="text-center" colspan="2">Nilai</th>
+                <th class="text-center" rowspan="2">Deskripsi</th>
             </tr>
             <tr>
-                <td class="text-center">
-                    1</td>
-                <td>
-                    Pendidikan Agama Islam</td>
-                <td class="text-center">
-                    88</td>
-                <td class="text-center">
-                    A
-                </td>
-                <td>
-                    <p>Penguasaan pengetahuan
-                        baik, bahkan sangat baik
-                        dalam memahami kisah Nabi
-                        Muhammad saw., dan cukup
-                        baik dalam memahami kisah
-                        keteladanan sahabat-sahabat
-                        Nabi</p>
-                </td>
-                <td class="text-center">89</td>
-                <td class="text-center">A</td>
-                <td>
-                    <p>Penguasaan keterampilan
-                        sangat baik, terutama dalam
-                        menceritakan kisah
-                        keteladanan Nabi Muhammad
-                        saw.</p>
-                </td>
+                <th class="text-center">Predikat</th>
+                <th class="text-center">Angka</th>
             </tr>
             <tr>
-                <td class="text-center">
-                    2</td>
-                <td>
-                    Pendidikan Pancasila dan
-                    Kewarganegaraan </td>
-                <td class="text-center">
-                    86</td>
-                <td class="text-center">
-                    B
-                </td>
-                <td>
-                    <p>Penguasaan pengetahuan
-                        baik, bahkan sangat baik
-                        dalam Menelaah persatuan
-                        dan kesatuan terhadap
-                        kehidupan berbangsa.</p>
-                </td>
-                <td class="text-center">88</td>
-                <td class="text-center">A</td>
-                <td>
-                    <p>Penguasaan keterampilan
-                        baik, bahkan sangat terampil
-                        dalam Menyajikan hasil telaah
-                        persatuan dan kesatuan</p>
-                </td>
-            </tr>
-            <tr>
-                <td class="text-center">
-                    3</td>
-                <td>
-                    Bahasa Indonesia </td>
-                <td class="text-center">
-                    84</td>
-                <td class="text-center">
-                    B
-                </td>
-                <td>
-                    <p>Penguasaan pengetahuan
-                        baik, bahkan sangat baik
-                        dalam Menggali isi teks
-                        penjelasan ilmiah yang
-                        didengar dan dibaca.</p>
-                </td>
-                <td class="text-center">87</td>
-                <td class="text-center">B</td>
-                <td>
-                    <p>Penguasaan keterampilan
-                        baik, bahkan sangat terampil
-                        dalam Menyajikan simpulan
-                        dari teks laporan hasil
-                        pengamatan</p>
-                </td>
-            </tr>
-            <tr>
-                <td class="text-center">
-                    4</td>
-                <td>
-                    Matematika</td>
-                <td class="text-center">
-                    84</td>
-                <td class="text-center">
-                    B
-                </td>
-                <td>
-                    <p>Penguasaan pengetahuan
-                        baik, terutama dalam
-                        Menjelaskan dan melakukan
-                        operasi hitung campuran.</p>
-                </td>
-                <td class="text-center">87</td>
-                <td class="text-center">B</td>
-                <td>
-                    <p>Penguasaan keterampilan
-                        baik, bahkan sangat terampil
-                        dalam Menyelesaikan
-                        masalah operasi hitung
-                        bilangan bulat</p>
-                </td>
-            </tr>
-            <tr>
-                <td class="text-center">
-                    5</td>
-                <td>
-                    Ilmu Pengetahuan Alam </td>
-                <td class="text-center">
-                    86</td>
-                <td class="text-center">
-                    B
-                </td>
-                <td>
-                    <p>Penguasaan pengetahuan
-                        baik, bahkan sangat baik
-                        dalam Menjelaskan cara
-                        menghasilkan, menyalurkan,
-                        dan menghemat .</p>
-                </td>
-                <td class="text-center">87</td>
-                <td class="text-center">B</td>
-                <td>
-                    <p>Penguasaan keterampilan
-                        baik, bahkan sangat terampil
-                        dalam Membuat laporan hasil
-                        percobaan tentang sifat-sifat
-                        magnet</p>
-                </td>
-            </tr>
-            <tr>
-                <td class="text-center">
-                    6</td>
-                <td>
-                    Ilmu Pengetahuan Sosial </td>
-                <td class="text-center">
-                    85</td>
-                <td class="text-center">
-                    B
-                </td>
-                <td>
-                    <p>Penguasaan pengetahuan
-                        baik, terutama dalam
-                        Menganalisis posisi dan peran
-                        Indonesia kerja sama ASEAN.</p>
-                </td>
-                <td class="text-center">86</td>
-                <td class="text-center">B</td>
-                <td>
-                    <p>Penguasaan keterampilan
-                        baik, bahkan sangat terampil
-                        dalam Menyajikan laporan
-                        tentang makna proklamasi
-                        kemerdekaan</p>
-                </td>
-            </tr>
-            <tr>
-                <td class="text-center">
-                    7</td>
-                <td>
-                    Seni Budaya dan Prakarya</td>
-                <td class="text-center">
-                    87</td>
-                <td class="text-center">
-                    B
-                </td>
-                <td>
-                    <p>Penguasaan pengetahuan
-                        baik, bahkan sangat baik
-                        dalam memahami penampilan
-                        tari kreasi daerah.</p>
-                </td>
+                <td class="text-center">1</td>
+                <td>Bahasa Indonesia</td>
+                <td class="text-center">Baik</td>
                 <td class="text-center">85</td>
-                <td class="text-center">B</td>
                 <td>
-                    <p>Penguasaan keterampilan
-                        baik, terutama dalam
-                        menampilkan tari kreasi
-                        daerah</p>
+                    <p>Pencapaian dalam pemahaman dan penggunaan Bahasa Indonesia dengan baik.</p>
                 </td>
             </tr>
             <tr>
-                <td class="text-center">
-                    8</td>
+                <td class="text-center">2</td>
+                <td>Matematika</td>
+                <td class="text-center">Sangat Baik</td>
+                <td class="text-center">92</td>
                 <td>
-                    Pendidikan Jasmani,
-Olahraga, dan Kesehatan</td>
-                <td class="text-center">
-                    79</td>
-                <td class="text-center">
-                    B
-                </td>
-                <td>
-                    <p>Penguasaan pengetahuan
-                        baik, terutama dalam
-                        Memahami variasi dan
-                        kombinasi gerak dasar
-                        melalui permainan, dan cukup
-                        baik dalam Memahami variasi
-                        dan kombinasi gerak
-                        dasarbola besar</p>
-                </td>
-                <td class="text-center">80</td>
-                <td class="text-center">B</td>
-                <td>
-                    <p>Penguasaan keterampilan
-                        baik, dan cukup terampil
-                        dalam Mempratikkan latihan
-                        kebugaran jasmani kebugaran
-                        jasmani</p>
+                    <p>Pencapaian yang sangat baik dalam pemahaman dan penerapan konsep Matematika.</p>
                 </td>
             </tr>
             <tr>
-                <td style="height: 10px" colspan="8" class="b-0"></td>
+                <td class="text-center">3</td>
+                <td>IPA (Ilmu Pengetahuan Alam)</td>
+                <td class="text-center">Cemerlang</td>
+                <td class="text-center">88</td>
+                <td>
+                    <p>Pemahaman yang cemerlang dalam konsep-konsep Ilmu Pengetahuan Alam.</p>
+                </td>
+            </tr>
+            <tr>
+                <td class="text-center">4</td>
+                <td>IPS (Ilmu Pengetahuan Sosial)</td>
+                <td class="text-center">Hebat</td>
+                <td class="text-center">95</td>
+                <td>
+                    <p>Pemahaman yang hebat dalam konsep-konsep Ilmu Pengetahuan Sosial.</p>
+                </td>
+            </tr>
+            <tr>
+                <td class="text-center">5</td>
+                <td>Bahasa Inggris</td>
+                <td class="text-center">Sempurna</td>
+                <td class="text-center">100</td>
+                <td>
+                    <p>Pencapaian yang sempurna dalam pemahaman dan penggunaan Bahasa Inggris.</p>
+                </td>
+            </tr>
+            <tr>
+                <td class="text-center">6</td>
+                <td>Seni Budaya</td>
+                <td class="text-center">Baik</td>
+                <td class="text-center">87</td>
+                <td>
+                    <p>Pencapaian dalam pemahaman dan pengembangan bakat seni budaya dengan baik.</p>
+                </td>
+            </tr>
+            <tr>
+                <td class="text-center">7</td>
+                <td>Pendidikan Jasmani</td>
+                <td class="text-center">Cukup</td>
+                <td class="text-center">75</td>
+                <td>
+                    <p>Pemahaman dan partisipasi yang cukup dalam kegiatan pendidikan jasmani.</p>
+                </td>
+            </tr>
+            <tr>
+                <td class="text-center">8</td>
+                <td>IPA Terapan</td>
+                <td class="text-center">Baik</td>
+                <td class="text-center">83</td>
+                <td>
+                    <p>Pencapaian yang baik dalam penerapan konsep-konsep Ilmu Pengetahuan Alam pada situasi nyata.</p>
+                </td>
+            </tr>
+            <tr>
+                <td style="height: 10px" colspan="5" class="b-0"></td>
             </tr>
 
             <tr>
-                <td colspan="8" class="b-0" style="padding: 0px !important">
+                <td colspan="5" class="b-0" style="padding: 0px !important">
                     <table class="table">
                         <tr>
                             <td class="b-0" colspan="3" style="font-size: 12pt">C. EKSTRAKURIKULER
                             </td>
                         </tr>
                         <tr>
-                            <th class="text-center">
-                                No</th>
-                            <th class="text-center">
-                                Kegiatan Ekstrakurikuler</th>
-                            <th class="text-center">
-                                Keterangan</th>
+                            <td class="text-center">1</td>
+                            <td>Klub Musik</td>
+                            <td>Kegiatan musik yang meliputi latihan bernyanyi dan memainkan alat musik.</td>
                         </tr>
                         <tr>
-                            <td class="text-center">
-                                1</td>
-                            <td>Seni Bina Musika</td>
-                            <td></td>
+                            <td class="text-center">2</td>
+                            <td>Klub Teater</td>
+                            <td>Kegiatan teater yang meliputi latihan berakting, menyutradarai, dan mempersiapkan
+                                pertunjukan teater.</td>
                         </tr>
                         <tr>
-                            <td class="text-center">
-                                2</td>
-                            <td>DCV</td>
-                            <td></td>
+                            <td class="text-center">3</td>
+                            <td>Klub Olahraga</td>
+                            <td>Kegiatan olahraga yang meliputi latihan dan partisipasi dalam berbagai cabang olahraga
+                                seperti sepak bola, basket, dan renang.</td>
                         </tr>
                         <tr>
-                            <td class="text-center">
-                                3</td>
-                            <td>Karya Ilmiah Remaja (KIR)</td>
-                            <td></td>
+                            <td class="text-center">4</td>
+                            <td>Klub Kewirausahaan</td>
+                            <td>Kegiatan yang mengembangkan kreativitas dan jiwa wirausaha siswa melalui berbagai
+                                kegiatan seperti pelatihan bisnis, pembuatan produk, dan pameran.</td>
                         </tr>
                     </table>
                 </td>
             </tr>
             <tr>
-                <td style="height: 10px" colspan="4" class="b-0"></td>
+                <td style="height: 10px" colspan="5" class="b-0"></td>
             </tr>
 
             <tr>
-                <td colspan="8" class="b-0" style="padding: 0px !important">
+                <td colspan="5" class="b-0" style="padding: 0px !important">
                     <table class="table">
                         <tr>
-                            <td class="b-0" style="font-size: 12pt">D. SARAN-SARAN</td>
+                            <td class="b-0" style="font-size: 12pt">D. CATATAN WALIKELAS</td>
                         </tr>
                         <tr>
                             <td class="text-left vertical-middle">
                                 <div style="width: 100%; min-height: 60px">
-                                    <p class="m-0">
+                                    <p class="m-0">Siswa yang aktif dalam kegiatan kelas dan memiliki partisipasi
+                                        yang baik
                                     </p>
                                 </div>
                             </td>
@@ -519,136 +337,53 @@ Olahraga, dan Kesehatan</td>
                 </td>
             </tr>
             <tr>
-                <td style="height: 10px" colspan="8" class="b-0"></td>
+                <td style="height: 10px" colspan="5" class="b-0"></td>
             </tr>
-            <tr>
-                <td colspan="8" class="b-0" style="padding: 0px !important">
-                    <table class="table">
-                        <tr>
-                            <td class="b-0" colspan="3" style="font-size: 12pt">E. TINGGI DAN BERAT BADAN
-                            </td>
-                        </tr>
-                        <tr>
-                            <th class="text-center" rowspan="2">
-                                No</th>
-                            <th class="text-center" rowspan="2">
-                                Aspek Yang Dinilai</th>
-                            <th class="text-center" colspan="2">
-                                Semester</th>
-                        </tr>
-                        <tr>
-                            <th class="text-center">1 (Satu)</th>
-                            <th class="text-center">2 (Dua)</th>
-                        </tr>
-                        <tr>
-                            <td class="text-center">
-                                1</td>
-                            <td>Tinggi Badan</td>
-                            <td class="text-center">-</td>
-                            <td class="text-center">-</td>
-                        </tr>
-                        <tr>
-                            <td class="text-center">
-                                2</td>
-                            <td>Berat Badan</td>
-                            <td class="text-center">-</td>
-                            <td class="text-center">-</td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
-            <tr>
-                <td style="height: 10px" colspan="8" class="b-0"></td>
-            </tr>
-            <tr>
-                <td colspan="8" class="b-0" style="padding: 0px !important">
-                    <table class="table">
-                        <tr>
-                            <td class="b-0" colspan="3" style="font-size: 12pt">F. KONDISI KESEHATAN
-                            </td>
-                        </tr>
-                        <tr>
-                            <th class="text-center">
-                                No</th>
-                            <th class="text-center">
-                                Aspek Yang Dinilai</th>
-                            <th class="text-center">
-                                Keterangan</th>
-                        </tr>
-                        <tr>
-                            <td class="text-center">
-                                1</td>
-                            <td>Pendengaran</td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td class="text-center">
-                                2</td>
-                            <td>Penglihatan</td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td class="text-center">
-                                3</td>
-                            <td>Gigi</td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td class="text-center">
-                                4</td>
-                            <td>Lainnya</td>
-                            <td></td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
-            <tr>
-                <td style="height: 10px" colspan="8" class="b-0"></td>
-            </tr>
-            <tr>
-                <td colspan="8" class="b-0" style="padding: 0px !important">
-                    <table class="table">
-                        <tr>
-                            <td class="b-0" colspan="3" style="font-size: 12pt">G. PRESTASI
-                            </td>
-                        </tr>
-                        <tr>
-                            <th class="text-center">
-                                No</th>
-                            <th class="text-center">
-                                Jenis Prestasi</th>
-                            <th class="text-center">
-                                Keterangan</th>
-                        </tr>
-                        <tr>
-                            <td class="text-center">
-                                1</td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td class="text-center">
-                                2</td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td class="text-center" style="height: 12px"></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
-            <tr>
-                <td style="height: 10px" colspan="8" class="b-0"></td>
-            </tr>
-
             <tr>
                 <td colspan="5" class="b-0" style="padding: 0px !important">
                     <table class="table">
                         <tr>
-                            <td class="b-0" colspan="2" style="font-size: 12pt">H. KETIDAK HADIRAN</td>
+                            <td class="b-0" colspan="3" style="font-size: 12pt">E. PRESTASI
+                            </td>
+                        </tr>
+                        <tr>
+                            <th class="text-center">
+                                No
+                            </th>
+                            <th class="text-center">
+                                Jenis Prestasi
+                            </th>
+                            <th class="text-center">
+                                Keterangan
+                            </th>
+                        </tr>
+                        <tr>
+                            <td class="text-center">1</td>
+                            <td>Prestasi Olahraga</td>
+                            <td>Meraih medali emas pada Kejuaraan Bulu Tangkis Tingkat Provinsi</td>
+                        </tr>
+                        <tr>
+                            <td class="text-center">2</td>
+                            <td>Prestasi Seni</td>
+                            <td>Menjuarai Festival Seni Nasional dalam kategori tari tradisional</td>
+                        </tr>
+                        <tr>
+                            <td class="text-center">3</td>
+                            <td>Prestasi Akademik</td>
+                            <td>Mendapatkan peringkat pertama dalam Olimpiade Matematika Sekolah</td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td style="height: 10px" colspan="5" class="b-0"></td>
+            </tr>
+
+            <tr>
+                <td colspan="4" class="b-0" style="padding: 0px !important">
+                    <table class="table">
+                        <tr>
+                            <td class="b-0" colspan="2" style="font-size: 12pt">F. KETIDAK HADIRAN</td>
                         </tr>
                         <tr>
                             <td>
@@ -668,7 +403,7 @@ Olahraga, dan Kesehatan</td>
                             <td>
                                 Tanpa Keterangan</td>
                             <td class="text-center">
-                                0 Hari
+                                - Hari
                             </td>
                         </tr>
                     </table>
@@ -685,16 +420,22 @@ Olahraga, dan Kesehatan</td>
                         <p>Orang tua peserta didik</p>
                         <p style="margin-top: 80px;">___________________</p>
                     </div>
-            
+
                     <div style="float: right; width: 40%;">
-                        <p>Kab Temanggung, 20 Desember 2023</p>
+                        <p>Temanggung, 20 Mei 2023
+                        </p>
                         <p>TTD Wali Kelas</p>
                         <p style="margin-top: 80px;">___________________</p>
                     </div>
-            
+
                     <div style="margin: 0 auto; width: 40%;">
                         <p class="text-uppercase text-center">TTD Kepala Sekolah</p>
-                        <p style="margin-top: 80px; text-align: center;">___________________</p>
+                       
+                        <p
+                            style="text-align: center; margin-bottom: 0; margin-top: 80px;">
+                            Prof. Dr. Ir. Novi Wahyuningsih M. Kom., S.Kom., M.Sc., Ph.D., D.Kom., CFA, CPA, CFP, CFE, CFM</p>
+                        <p style="text-align: center; margin-top : -15px">___________________</p>
+                        <p style="text-align: center">NIP 53454354656</p>
                     </div>
                 </div>
             </td>

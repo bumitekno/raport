@@ -33,6 +33,7 @@ class AppServiceProvider extends ServiceProvider
                 $query->select(['id', 'name']);
             }])
                 ->where('id_teacher', Auth::guard('teacher')->user()->id)
+                ->where('id_school_year', session('id_school_year'))
                 ->get(['id_course', 'id_study_class']);
 
             $studyClassIds = $mapelData->pluck('id_study_class')->flatMap(function ($item) {
@@ -84,7 +85,10 @@ class AppServiceProvider extends ServiceProvider
 
         View()->composer('layout.admin.v_sidebar_homeroom', function ($view) {
             $extra = Extracurricular::where('status', 1)->first();
-            // dd($extra);
+            if (empty($extra)) {
+                session()->put('message', 'Harap tambahkan minimal 1 ekstrakurikuler di admin');
+                return view('pages.v_error');
+            }
             $view->with(['side_extra' => $extra]);
         });
 
