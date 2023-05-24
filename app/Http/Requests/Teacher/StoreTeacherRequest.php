@@ -39,6 +39,7 @@ class StoreTeacherRequest extends FormRequest
             'place_of_birth' => 'nullable|string|max:255',
             'date_of_birth' => 'nullable|date_format:Y-m-d',
             'gender' => 'required|in:male,female',
+            'id_class' => 'nullable',
             'religion' => 'nullable|string|max:255',
             'type' => 'required|in:teacher,other,homeroom',
             'password' => 'required|string|min:8|confirmed',
