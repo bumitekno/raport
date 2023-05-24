@@ -83,7 +83,7 @@ class ParentController extends Controller
         ]);
 
         if (!$request->id && $request->has('password')) {
-            $userParent->password = bcrypt($data['password']);
+            $userParent->password = $data['password'];
         }
 
         $userParent->save();
@@ -111,7 +111,7 @@ class ParentController extends Controller
 
         // jika password diisi, hash password
         if ($data['password']) {
-            $userParent->password = bcrypt($data['password']);
+            $userParent->password = $data['password'];
         }
 
         $userParent->save();
