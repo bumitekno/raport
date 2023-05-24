@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\Helper;
 use App\Models\SchoolYear;
 use App\Models\StudentClass;
 use App\Models\StudyClass;
@@ -52,6 +53,10 @@ class DashboardController extends Controller
             ['year', session('year')],
             ['status', 1],
         ])->latest()->first();
+        if ($student_class == null) {
+            Helper::toast('Siswa belum terdaftar di kelas manapun', 'error');
+            return redirect()->back();
+        }
         $study_class = StudyClass::find($student_class->id_study_class);
         session()->put('id_study_class', $student_class->id_study_class);
         session()->put('id_student_class', $student_class->id);

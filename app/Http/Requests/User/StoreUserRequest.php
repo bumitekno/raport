@@ -22,17 +22,20 @@ class StoreUserRequest extends FormRequest
     {
         // dd($this->request);
         return [
-            // 'day' => ['required'],
-            // 'month' => ['required'],
-            // 'year' => ['required'],
             'date_of_birth' => 'required|date',
             'email' => ['required', 'unique:users,email,' . optional($this->user)->id,],
-            'name' => ['required'],
             'phone' => 'required|numeric',
+            'name' => 'required|string',
+            'gender' => 'required|in:male,female',
+            'nis' => 'required|string',
+            'nisn' => 'required|string',
+            'religion' => 'required|string',
+            'place_of_birth' => 'required|string',
+            'entry_year' => 'required|date_format:Y',
+            'address' => 'required|string',
             'password' => (empty($this->user->password)) ? ['required', Password::defaults(), 'required_with:password_confirmation', 'same:password_confirmation'] : '',
             // 'password_confirmation' => ['min:8'],
             'slug' => 'required|string',
-            'entry_year' => 'digits:4|integer|min:1900|max:' . (date('Y') + 1),
             'file'  => [
                 'nullable',
                 'image',
@@ -46,9 +49,20 @@ class StoreUserRequest extends FormRequest
     public function messages()
     {
         return [
-            'email.required' => 'Email is required!',
-            'name.required' => 'Name is required!',
-            'password.required' => 'Password is required!'
+            'name.required' => 'Kolom nama harus diisi.',
+            'email.required' => 'Kolom email harus diisi.',
+            'email.email' => 'Format email tidak valid.',
+            'phone.required' => 'Kolom nomor telepon harus diisi.',
+            'phone.numeric' => 'Kolom nomor telepon harus berupa angka.',
+            'gender.required' => 'Kolom jenis kelamin harus diisi.',
+            'gender.in' => 'Kolom jenis kelamin harus "male" atau "female".',
+            'nis.required' => 'Kolom NIS harus diisi.',
+            'nisn.required' => 'Kolom NISN harus diisi.',
+            'religion.required' => 'Kolom agama harus diisi.',
+            'place_of_birth.required' => 'Kolom tempat lahir harus diisi.',
+            'entry_year.required' => 'Kolom tahun masuk harus diisi.',
+            'entry_year.date_format' => 'Format tahun masuk tidak valid.',
+            'address.required' => 'Kolom alamat harus diisi.',
         ];
     }
 

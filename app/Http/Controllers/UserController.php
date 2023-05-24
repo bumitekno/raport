@@ -103,21 +103,28 @@ class UserController extends Controller
 
     public function update(UpdateUserRequest $request, $slug)
     {
+        // dd($request);
         $data = $request->validated();
+        // dd($data);
 
         $user = User::where('slug', $slug)->firstOrFail();
-
-        if ($request->has('password')) {
-            $user->password = bcrypt($data['password']);
-        }
 
         // Update atribut lainnya
         $user->email = $data['email'];
         $user->name = $data['name'];
         $user->phone = $data['phone'];
+        $user->gender = $data['gender'];
+        $user->nis = $data['nis'];
+        $user->nisn = $data['nisn'];
+        $user->religion = $data['religion'];
         $user->slug = $data['slug'];
         $user->entry_year = $data['entry_year'];
         $user->date_of_birth = $data['date_of_birth'];
+        $user->place_of_birth = $data['place_of_birth'];
+        $user->address = $data['address'];
+        if ($data['password'] != null) {
+            $user->password = $data['password'];
+        }
         if ($request->hasFile('file')) {
             $file = ImageHelper::upload_asset($request, 'file', 'profile', $data);
             $user->file = $file;
