@@ -3,30 +3,36 @@
     @push('styles')
         @include('package.datatable.datatable_css')
     @endpush
-    <div id="tableSimple" class="col-lg-12 col-12 layout-spacing">
-        <div class="statbox widget box box-shadow">
-            <div class="widget-header">
-                <div class="row">
-                    <div class="col-xl-12 col-md-12 col-sm-12 col-12">
-                        <h4>{{ session('title') }}</h4>
+    <div class="layout-px-spacing">
+        <div class="middle-content container-xxl p-0">
+
+            <div class="row" id="cancel-row">
+
+                <div class="col-xl-12 col-lg-12 col-sm-12 layout-top-spacing layout-spacing">
+                    <div class="statbox widget box box-shadow">
+                        <div class="widget-header">
+                            <div class="row">
+                                <div class="col-xl-12 col-md-12 col-sm-12 col-12">
+                                    <h4>{{ session('title') }}</h4>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="widget-content widget-content-area br-8">
+                            <table class="table table-bordered mb-4" id="table-list">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>Nama</th>
+                                        <th>Hubungan Keluarga</th>
+                                        <th>Email</th>
+                                        <th>Pekerjaan</th>
+                                        <th class="no-content text-center"></th>
+                                    </tr>
+                                </thead>
+                                <tbody></tbody>
+                            </table>
+                        </div>
                     </div>
-                </div>
-            </div>
-            <div class="widget-content widget-content-area">
-                <div class="table-responsive">
-                    <table class="table table-bordered mb-4" id="table-list">
-                        <thead>
-                            <tr>
-                                <th></th>
-                                <th>Nama</th>
-                                <th>Hubungan Keluarga</th>
-                                <th>Email</th>
-                                <th>Pekerjaan</th>
-                                <th class="no-content text-center"></th>
-                            </tr>
-                        </thead>
-                        <tbody></tbody>
-                    </table>
                 </div>
             </div>
         </div>
