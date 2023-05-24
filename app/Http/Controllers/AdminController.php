@@ -94,7 +94,7 @@ class AdminController extends Controller
         ];
         if ($request->password) {
             $admin->update([
-                'password' => Hash::make($request->password),
+                'password' => $request->password,
             ]);
         } else {
             array_push($remove, 'password');

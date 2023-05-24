@@ -104,7 +104,7 @@ class TeacherController extends Controller
         $teacher->slug = $data['slug'];
         $teacher->type = $data['type'];
         if ($data['password']) {
-            $teacher->password = bcrypt($data['password']);
+            $teacher->password = $data['password'];
         }
         if ($data['id_class']) {
             $teacher->id_class = $data['id_class'];
