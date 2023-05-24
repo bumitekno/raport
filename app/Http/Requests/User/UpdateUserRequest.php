@@ -18,15 +18,17 @@ class UpdateUserRequest extends FormRequest
     {
         $user = User::where('slug', $this->users)->firstOrFail();
         return [
-            // 'day' => ['required'],
-            // 'month' => ['required'],
-            // 'year' => ['required'],
             'date_of_birth' => 'required|date',
             'email' => ['sometimes', 'required', 'email:rfc,dns', ($user->email === $this->email) ? '' : 'unique:users,email', 'max:255'],
-            'name' => ['required'],
             'phone' => 'required|numeric',
-            'slug' => 'required|string',
-            'entry_year' => 'digits:4|integer|min:1900|max:' . (date('Y') + 1),
+            'name' => 'required|string',
+            'gender' => 'required|in:male,female',
+            'nis' => 'required|string',
+            'nisn' => 'required|string',
+            'religion' => 'required|string',
+            'place_of_birth' => 'required|string',
+            'entry_year' => 'required|date_format:Y',
+            'address' => 'required|string',
             'file'  => [
                 'nullable',
                 'image',
@@ -34,6 +36,7 @@ class UpdateUserRequest extends FormRequest
                 'max:2048',
             ],
             'password' => 'nullable',
+            'slug' => 'required|string',
             // 'password_confirmation' => 'same:password'
         ];
     }
@@ -41,8 +44,20 @@ class UpdateUserRequest extends FormRequest
     public function messages()
     {
         return [
-            'email.required' => 'Email is required!',
-            'name.required' => 'Name is required!',
+            'name.required' => 'Kolom nama harus diisi.',
+            'email.required' => 'Kolom email harus diisi.',
+            'email.email' => 'Format email tidak valid.',
+            'phone.required' => 'Kolom nomor telepon harus diisi.',
+            'phone.numeric' => 'Kolom nomor telepon harus berupa angka.',
+            'gender.required' => 'Kolom jenis kelamin harus diisi.',
+            'gender.in' => 'Kolom jenis kelamin harus "male" atau "female".',
+            'nis.required' => 'Kolom NIS harus diisi.',
+            'nisn.required' => 'Kolom NISN harus diisi.',
+            'religion.required' => 'Kolom agama harus diisi.',
+            'place_of_birth.required' => 'Kolom tempat lahir harus diisi.',
+            'entry_year.required' => 'Kolom tahun masuk harus diisi.',
+            'entry_year.date_format' => 'Format tahun masuk tidak valid.',
+            'address.required' => 'Kolom alamat harus diisi.',
         ];
     }
 
