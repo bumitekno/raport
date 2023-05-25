@@ -15,7 +15,30 @@
     @endpush
     <div class="col-lg-12 col-12 layout-spacing">
         <div class="statbox widget box box-shadow">
-            <div class="widget-header">
+
+
+            <div class="widget-content widget-content-area">
+                <div class="d-flex justify-content-between">
+                    <h5 class=""></h5>
+                    <div class="dropdown custom-dropdown">
+                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink-1" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="feather feather-more-horizontal">
+                                <circle cx="12" cy="12" r="1"></circle>
+                                <circle cx="19" cy="12" r="1"></circle>
+                                <circle cx="5" cy="12" r="1"></circle>
+                            </svg>
+                        </a>
+
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuLink-1"
+                            style="will-change: transform;">
+                            <a class="dropdown-item" href="{{ url('/leger/prev-classes/' . $slug . '?pdf=1') }}" target="_blank">Download
+                                PDF</a>
+                        </div>
+                    </div>
+                </div>
                 <div class="row">
                     <div class="col-xl-12 col-md-12 col-sm-12 col-12 text-center">
                         <h4 class="pb-0">LEGER SEMESTER {{ session('semester') == 1 ? 'GANJIL' : 'GENAP' }}</h4>
@@ -23,9 +46,6 @@
                         <h4 class="py-0">TAHUN AJARAN {{ session('school_year') }}</h4>
                     </div>
                 </div>
-            </div>
-            
-            <div class="widget-content widget-content-area">
                 <table>
                     <tr>
                         <td>Kelas</td>
@@ -63,7 +83,7 @@
                                     <td class="text-center">{{ $loop->iteration }}</td>
                                     <td>{{ $score['nis'] }}</td>
                                     <td>{{ $score['name'] }}</td>
-                            
+
                                     @foreach ($score['score'] as $score_student)
                                         <td class="text-center">
                                             @if (is_array($score_student['score']))
@@ -73,7 +93,7 @@
                                             @endif
                                         </td>
                                     @endforeach
-                            
+
                                 </tr>
                             @endforeach
                         </tbody>

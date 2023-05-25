@@ -14,11 +14,12 @@ use App\Models\Teacher;
 use App\Models\TemplateConfiguration;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use PDF;
 
 class LegerController extends Controller
 {
     //
-    public function byClass($slug)
+    public function byClass(Request $request, $slug)
     {
         $setting = json_decode(Storage::get('settings.json'), true);
         $study_class = StudyClass::where('slug', $slug)->first();
@@ -159,8 +160,12 @@ class LegerController extends Controller
             'course' => $code_course,
             'setting' => $setting
         );
+        if ($request->pdf) {
+            $pdf = PDF::loadView('content.legers.v_print_leger', compact('results'))->setPaper('landscape');
+            return $pdf->stream();
+        }
         // dd($results);
-        return view('content.legers.v_list_leger', compact('results'));
+        return view('content.legers.v_list_leger', compact('results', 'slug'));
     }
 
     public function listClass()
