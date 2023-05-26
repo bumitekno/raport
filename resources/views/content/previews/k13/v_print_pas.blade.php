@@ -118,11 +118,13 @@
                 </table>
             </td>
         </tr>
-        <tr>
-            <td colspan="8" class="b-0" style="padding: 0px !important">
-                <hr style="border: solid 2px #000">
-            </td>
-        </tr>
+        @if ($result_kop['text1'] != null)
+            <tr>
+                <td colspan="8" class="b-0" style="padding: 0px !important">
+                    <hr style="border: solid 2px #000">
+                </td>
+            </tr>
+        @endif
         <tr>
             <td colspan="8" style="font-size: 14pt !important" class="b-0 text-bold text-uppercase text-center">
                 RAPOR PESERTA DIDIK DAN PROFIL PESERTA DIDIK
@@ -270,7 +272,7 @@
                         <td class="text-center">{{ $score['predicate_skill'] }}</td>
                         <td>
                             @if ($score['description_skill'])
-                                <p>Penguasaan pengetahuan {{ $score['description_skill'] }}
+                                <p>Penguasaan ketrampilan {{ $score['description_skill'] }}
                                     dalam {{ implode(', ', $score['kd_skill']) }}</p>
                             @endif
                         </td>
@@ -487,6 +489,57 @@
         </tbody>
     </table>
     <table style="width:100%">
+        @if ($type_template == 'uas')
+            <tr>
+                <td>
+                    <div style="height: 10px"></div>
+                    <table class="table">
+                        <tr>
+                            <td class="b-0">Diberikan di</td>
+                            <td class="b-0">: {{ $result_other['place'] ?? 'Tidak diketahui' }}</td>
+                            <td class="b-0" style="width: 50px"></td>
+                            <td class="b-0" colspan="2">KEPUTUSAN</td>
+                        </tr>
+                        <tr>
+                            <td class="b-0">tanggal</td>
+                            <td class="b-0">:
+                                {{ isset($result_other['date']) ? DateHelper::getTanggal($result_other['date']) : '' }}
+                            </td>
+                            <td class="b-0"></td>
+                            <td class="b-0" colspan="2">Dengan memperhatikan hasil yang dicapai</td>
+                        </tr>
+                        <tr>
+                            <td colspan="3" class="b-0"></td>
+                            <td class="b-0" colspan="2">semester 1 dan 2, maka peserta didik ini ditetapkan
+                            </td>
+                        </tr>
+                        @if ($result_other['promotion'] == 'Y')
+                            <tr>
+                                <td colspan="3" class="b-0"></td>
+                                <td class="b-0" style="width: 80px">Naik kelas</td>
+                                <td class="b-0">: {{ $result_profile['level'] + 1 }}</td>
+                            </tr>
+                            <tr>
+                                <td colspan="3" class="b-0"></td>
+                                <td class="b-0" colspan="2"><s>Tinggal di Kelas</s></td>
+                            </tr>
+                        @else
+                            <tr>
+                                <td colspan="3" class="b-0"></td>
+                                <td class="b-0" style="width: 80px"><s>Naik kelas</s></td>
+                                <td class="b-0">: </td>
+                            </tr>
+                            <tr>
+                                <td colspan="3" class="b-0"></td>
+                                <td class="b-0">Tinggal di Kelas</td>
+                                <td class="b-0">: {{ $result_profile['level'] }}</td>
+                            </tr>
+                        @endif
+
+                    </table>
+                </td>
+            </tr>
+        @endif
         <tr>
             <td>
                 <div class="signature">
@@ -497,14 +550,19 @@
                     </div>
 
                     <div style="float: right; width: 40%;">
-                        <p>{{ $result_other['place'] ?? 'Tidak diketahui' . ', ' . (isset($result_other['date']) ? DateHelper::getTanggal($result_other['date']) : '') }}
+                        <p>
+                            {{ $result_other['place'] ?? 'Tidak diketahui' }},
+                            {{ isset($result_other['date']) ? DateHelper::getTanggal($result_other['date']) : '' }}
                         </p>
-                        <p>TTD Wali Kelas</p>
-                        <p style="margin-top: 80px;">___________________</p>
+                        <p>Wali Kelas</p>
+                        <p style="margin-bottom: 0; margin-top: 80px">
+                            {{ $result_other['teacher'] }}</p>
+                        <p style="margin-top : -15px">______________________</p>
+                        <p>NIP {{ $result_other['nip_teacher'] }}</p>
                     </div>
 
                     <div style="margin: 0 auto; width: 40%;">
-                        <p class="text-uppercase text-center">TTD Kepala Sekolah</p>
+                        <p class="text-uppercase text-center">Kepala Sekolah</p>
                         @if ($result_other['signature'] != null)
                             <center>
                                 <img src="{{ $result_other['signature'] }}" alt="" srcset=""
