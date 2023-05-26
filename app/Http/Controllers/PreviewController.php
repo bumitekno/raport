@@ -140,7 +140,7 @@ class PreviewController extends Controller
         $student_class = StudentClass::with('student', 'study_class', 'study_class.level', 'study_class.major')->where([
             ['id_student', session('id_student')],
             ['year', substr($school_year->name, 0, 4)],
-        ])->first();
+        ])->latest()->first();
 
         $template = TemplateConfiguration::where([
             ['id_major', $student_class->study_class->major->id],
@@ -176,8 +176,7 @@ class PreviewController extends Controller
         // dd('print other');
         $school_year = SchoolYear::where('slug', $_GET['year'])->first();
 
-        $student_class = StudentClass::with('student', 'study_class', 'study_class.level', 'study_class.major')->where('slug', $_GET['student'])->first();
-
+        $student_class = StudentClass::with('student', 'study_class', 'study_class.level', 'study_class.major')->where('slug', $_GET['student'])->latest()->first();
         $template = TemplateConfiguration::where([
             ['id_major', $student_class->study_class->major->id],
             ['id_school_year', $school_year->id],
