@@ -10,6 +10,7 @@ class DescriptionCompetenceController extends Controller
 {
     public function index()
     {
+        // dd(session('role'));
         session()->put('title', 'Kelola Deskirpsi Capaian Kompetensi');
         $description = DescriptionCompetence::all();
         return view('content.score_p5.v_description_competence', compact('description'));

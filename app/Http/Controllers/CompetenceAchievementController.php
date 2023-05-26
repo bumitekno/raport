@@ -46,18 +46,6 @@ class CompetenceAchievementController extends Controller
                         'slug_teacher' => $teacher->slug,
                     ];
                 }
-
-                // $courses[] = [
-                //     'id_course' => $course->id,
-                //     'name_mapel' => $course->name,
-                //     'slug_mapel' => $course->slug,
-                //     'id_study_class' => $studyClass->id,
-                //     'name_class' => $studyClass->name,
-                //     'slug_class' => $studyClass->slug,
-                //     'id_teacher' => $teacher->id,
-                //     'name_teacher' => $teacher->name,
-                //     'slug_teacher' => $teacher->slug,
-                // ];
             }
         }
         $courses = collect($courses)->unique(function ($item) {
@@ -84,6 +72,7 @@ class CompetenceAchievementController extends Controller
                         $subquery->where('slug', $teacher);
                     });
                 })
+                ->whereNull('deleted_at')
                 ->select('*');
 
             if (!$course && !$studyClass && !$teacher) {
@@ -117,14 +106,6 @@ class CompetenceAchievementController extends Controller
 
     public function list_competence(Request $request)
     {
-        // dd(session()->all());
-        // $data = CompetenceAchievement::with('type', 'course', 'study_class')->select('*')->where([
-        //     ['id_study_class', session('teachers.id_study_class')],
-        //     ['id_course', session('teachers.id_course')],
-        //     ['id_teacher', Auth::guard('teacher')->user()->id],
-        //     ['id_school_year', session('id_school_year')],
-        // ])->get();
-        // dd($data);
         session()->put('title', 'Capaian Kompetensi');
         if ($request->ajax()) {
             $data = CompetenceAchievement::with('type', 'course', 'study_class')->select('*')->where([

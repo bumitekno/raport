@@ -1,0 +1,31 @@
+version: '3'
+services:
+  php:
+    ports:
+      - 8000:80
+    image: php:8.1-apache
+    networks:
+      - my-network
+    # Konfigurasi lainnya untuk kontainer PHP
+
+  mysql:
+    image: mysql:latest
+    environment:
+      - MYSQL_ROOT_PASSWORD=''
+      - MYSQL_DATABASE=db_raport
+      - MYSQL_USER=username
+      - MYSQL_PASSWORD=''
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./Users/macbook/Documents/project/raport:/var/www/html
+    networks:
+      - my-network
+    # Konfigurasi lainnya untuk kontainer MySQL
+
+volumes:
+  mysql-data:
+    driver: local
+
+networks:
+  my-network:
+    # Konfigurasi jaringan seperti driver, opsi, dll.

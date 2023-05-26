@@ -517,17 +517,15 @@
                             <td class="b-0" colspan="2">semester 1 dan 2, maka peserta didik ini ditetapkan
                             </td>
                         </tr>
-                            <tr>
-                                <td colspan="3" class="b-0"></td>
-                                <td class="b-0" style="width: 80px">Naik kelas</td>
-                                <td class="b-0">: 3</td>
-                            </tr>
-                            <tr>
-                                <td colspan="3" class="b-0"></td>
-                                <td class="b-0" colspan="2"><s>Tinggal di Kelas</s></td>
-                            </tr>
-                        
-
+                        <tr>
+                            <td colspan="3" class="b-0"></td>
+                            <td class="b-0" style="width: 80px">Naik kelas</td>
+                            <td class="b-0">: 3</td>
+                        </tr>
+                        <tr>
+                            <td colspan="3" class="b-0"></td>
+                            <td class="b-0" colspan="2"><s>Tinggal di Kelas</s></td>
+                        </tr>
                     </table>
                     <table class="table">
                         <tr>
@@ -544,9 +542,9 @@
                             <td colspan="3" class="b-0 text-center" style="vertical-align: top">
                                 <div style="margin: 0 auto; width: 40%;">
                                     <p class="text-uppercase text-center">TTD Kepala Sekolah</p>
-                                    <p
-                                        style="text-align: center; margin-bottom: 0; margin-top: 80px;">
-                                        Prof. Dr. Ir. Novi Wahyuningsih M. Kom., S.Kom., M.Sc., Ph.D., D.Kom., CFA, CPA, CFP, CFE, CFM</p>
+                                    <p style="text-align: center; margin-bottom: 0; margin-top: 80px;">
+                                        Prof. Dr. Ir. Novi Wahyuningsih M. Kom., S.Kom., M.Sc., Ph.D., D.Kom., CFA, CPA,
+                                        CFP, CFE, CFM</p>
                                     <p style="text-align: center; margin-top : -15px">___________________</p>
                                     <p style="text-align: center">NIP 344234234234</p>
                                 </div>
@@ -554,7 +552,7 @@
                             </td>
                             <td colspan="2" class="b-0 text-center" style="vertical-align: top">
                                 Wali Kelas
-                                    <br><br><br><br>
+                                <br><br><br><br>
                                 <b>Asep</b>
                                 <p class="m-0">NIP. 7837538457</p>
                             </td>

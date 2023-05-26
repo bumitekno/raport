@@ -22,7 +22,7 @@
                             $setting = json_decode(file_get_contents(storage_path('app/settings.json')), true);
                         @endphp
 
-                        <h1 class="">Log In to <a href="{{ route('first_page') }}"><span
+                        <h1 class=""><a href="{{ route('first_page') }}"><span
                                     class="brand-name text-uppercase">{{ isset($setting['name_school']) ? $setting['name_school'] : 'E-Raport' }}</span></a>
                         </h1>
                         <form class="text-left" action="{{ route('auth.verify') }}" method="POST">

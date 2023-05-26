@@ -78,7 +78,7 @@
                             </svg> </a>
                         <ul class="collapse list-unstyled sub-submenu" id="pages-error" data-parent="#submenu">
                             <li>
-                                <a href="{{ route('setting_scores.assesment_weight', 'uas') }}"> UAS </a>
+                                <a href="{{ route('setting_scores.assesment_weight', 'uas') }}"> SAS </a>
                             </li>
                             <li>
                                 <a href="{{ route('setting_scores.assesment_weight', 'uts') }}"> UTS </a>

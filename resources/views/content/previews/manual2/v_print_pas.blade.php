@@ -470,7 +470,8 @@
                         <tr>
                             <td class="b-0">tanggal</td>
                             <td class="b-0">:
-                                {{ (isset($result_other['date']) ? DateHelper::getTanggal($result_other['date']) : '') }}</td>
+                                {{ isset($result_other['date']) ? DateHelper::getTanggal($result_other['date']) : '' }}
+                            </td>
                             <td class="b-0"></td>
                             <td class="b-0" colspan="2">Dengan memperhatikan hasil yang dicapai</td>
                         </tr>
@@ -483,7 +484,7 @@
                             <tr>
                                 <td colspan="3" class="b-0"></td>
                                 <td class="b-0" style="width: 80px">Naik kelas</td>
-                                <td class="b-0">: {{  $result_profile['level'] + 1 }}</td>
+                                <td class="b-0">: {{ $result_profile['level'] + 1 }}</td>
                             </tr>
                             <tr>
                                 <td colspan="3" class="b-0"></td>
@@ -506,22 +507,23 @@
                     <table class="table">
                         <tr>
                             <td class="b-0" style="text-align: right" colspan="7">
-                                {{ $result_other['place'] ?? 'Tidak diketahui' . ', ' . (isset($result_other['date']) ? DateHelper::getTanggal($result_other['date']) : '') }}
+                                {{ $result_other['place'] ?? 'Tidak diketahui' }},
+                                {{ isset($result_other['date']) ? DateHelper::getTanggal($result_other['date']) : '' }}
                             </td>
                         </tr>
                         <tr>
                             <td colspan="2" class="text-center b-0" style="vertical-align: top">
-                                Orang Tua / Wali <br> Peserta Didik
+                                <p class="text-uppercase text-center">Orang Tua / Wali</p>
                                 <br><br><br><br>
                                 <p>&nbsp;</p>
                             </td>
                             <td colspan="3" class="b-0 text-center" style="vertical-align: top">
-                                <div style="margin: 0 auto; width: 40%;">
-                                    <p class="text-uppercase text-center">TTD Kepala Sekolah</p>
+                                <div style="margin: 0 auto; width: 50%;">
+                                    <p class="text-uppercase text-center">Kepala Sekolah</p>
                                     @if ($result_other['signature'] != null)
                                         <center>
-                                            <img src="{{ $result_other['signature'] }}" alt="" srcset=""
-                                                style="height: 150px">
+                                            <img src="{{ $result_other['signature'] }}" alt=""
+                                                srcset="" style="height: 150px">
                                         </center>
                                     @endif
                                     <p
@@ -530,17 +532,17 @@
                                     <p style="text-align: center; margin-top : -15px">___________________</p>
                                     <p style="text-align: center">NIP {{ $result_other['nip_headmaster'] }}</p>
                                 </div>
-            
+
                             </td>
                             <td colspan="2" class="b-0 text-center" style="vertical-align: top">
-                                Wali Kelas
-                                @if (!empty($lihat['wali_kelas']['paraf']))
-                                    <img src="{{ $lihat['wali_kelas']['paraf'] }}" alt="" height="150">
-                                @else
-                                    <br><br><br><br>
-                                @endif
-                                <b>{{ $lihat['wali_kelas']['nama'] ?? '-' }}</b>
-                                <p class="m-0">NIP. {{ $lihat['wali_kelas']['nip'] ?? '-' }}</p>
+                                <div style="margin: 0 auto;">
+                                    <p class="text-uppercase text-center">Wali Kelas</p>
+                                    <p
+                                        style="text-align: center; margin-bottom: 0; margin-top: 80px;">
+                                        {{ $result_other['teacher'] }}</p>
+                                    <p style="text-align: center; margin-top : -15px">___________________</p>
+                                    <p style="text-align: center">NIP {{ $result_other['nip_teacher'] }}</p>
+                                </div>
                             </td>
                         </tr>
                     </table>

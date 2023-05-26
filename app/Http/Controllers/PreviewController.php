@@ -27,6 +27,7 @@ use App\Models\ScoreP5;
 use App\Models\StudentClass;
 use App\Models\SubElement;
 use App\Models\SubjectTeacher;
+use App\Models\Teacher;
 use App\Models\TeacherNote;
 use App\Models\TemplateConfiguration;
 use Illuminate\Http\Request;
@@ -139,7 +140,7 @@ class PreviewController extends Controller
         $student_class = StudentClass::with('student', 'study_class', 'study_class.level', 'study_class.major')->where([
             ['id_student', session('id_student')],
             ['year', substr($school_year->name, 0, 4)],
-        ])->first();
+        ])->latest()->first();
 
         $template = TemplateConfiguration::where([
             ['id_major', $student_class->study_class->major->id],
@@ -175,8 +176,7 @@ class PreviewController extends Controller
         // dd('print other');
         $school_year = SchoolYear::where('slug', $_GET['year'])->first();
 
-        $student_class = StudentClass::with('student', 'study_class', 'study_class.level', 'study_class.major')->where('slug', $_GET['student'])->first();
-
+        $student_class = StudentClass::with('student', 'study_class', 'study_class.level', 'study_class.major')->where('slug', $_GET['student'])->latest()->first();
         $template = TemplateConfiguration::where([
             ['id_major', $student_class->study_class->major->id],
             ['id_school_year', $school_year->id],
@@ -341,13 +341,16 @@ class PreviewController extends Controller
             'school' => strtoupper($setting['name_school']),
             'address_school' => $setting['address'],
             'study_class' => $student_class->study_class->name,
+            'level' => $student_class->study_class->level->name,
             'fase' => $student_class->study_class->level->fase,
             'semester_number' => substr($school_year->name, -1),
             'semester' => substr($school_year->name, -1) == 1 ? 'Ganjil' : 'Genap',
             'school_year' => substr($school_year->name, 0, 9),
         ];
-
-
+        $teacher = Teacher::where([
+            ['type', 'homeroom'],
+            ['id_class', $student_class->study_class->id],
+        ])->latest()->first();
 
         $competencies = CompetenceAchievement::where('status', 1)->get();
         // dd($student_class);
@@ -464,7 +467,6 @@ class PreviewController extends Controller
             ['id_student_class', $student_class->id],
             ['id_school_year', $school_year->id]
         ])->first();
-        // dd($note);
         $config = Config::where('id_school_year', $school_year->id)->first();
         // dd($config);
         $result_other = [
@@ -474,9 +476,11 @@ class PreviewController extends Controller
             'date' => $config ? $config->report_date : now(),
             'headmaster' => $config ? $config->headmaster : '',
             'nip_headmaster' => $config ? $config->nip_headmaster : '',
+            'teacher' => $teacher ? $teacher->name : '',
+            'nip_teacher' => $teacher ? $teacher->nip : '',
             'signature' => $config && $config['signature'] != null ? public_path($config->signature) : null,
         ];
-        $pdf = PDF::loadView('content.previews.merdeka.v_print_pas', compact('result_score', 'result_extra', 'result_attendance', 'result_kop', 'result_profile', 'result_other'));
+        $pdf = PDF::loadView('content.previews.merdeka.v_print_pas', compact('result_score', 'result_extra', 'result_attendance', 'result_kop', 'result_profile', 'result_other', 'type_template'));
         return $pdf->stream();
     }
 
@@ -499,10 +503,16 @@ class PreviewController extends Controller
             'address_school' => $setting['address'],
             'study_class' => $student_class->study_class->name,
             'fase' => $student_class->study_class->level->fase,
+            'level' => $student_class->study_class->level->name,
             'semester_number' => substr($school_year->name, -1),
             'semester' => substr($school_year->name, -1) == 1 ? 'Ganjil' : 'Genap',
             'school_year' => substr($school_year->name, 0, 9),
         ];
+        $teacher = Teacher::where([
+            ['type', 'homeroom'],
+            ['id_class', $student_class->study_class->id],
+        ])->latest()->first();
+        // dd($teacher);
 
         $score_attitude = AttitudeGrade::where([
             ['id_student_class', $student_class->id],
@@ -587,7 +597,9 @@ class PreviewController extends Controller
             'date' => $config ? $config->report_date : now(),
             'headmaster' => $config ? $config->headmaster : '',
             'nip_headmaster' => $config ? $config->nip_headmaster : '',
-            'signature' => $config ? public_path($config->signature) : null,
+            'teacher' => $teacher ? $teacher->name : '',
+            'nip_teacher' => $teacher ? $teacher->nip : '',
+            'signature' => $config && $config->signature != null ? public_path($config->signature) : null,
         ];
 
         $result_achievement = Achievement::where([
@@ -624,7 +636,7 @@ class PreviewController extends Controller
             ];
         }
         // $pdf = PDF::loadView('content.previews.manual.v_print_pas', compact('result_profile', 'result_kop', 'result_attitude', 'result_extra', 'result_other', 'result_achievement', 'result_attendance'));
-        $pdf = PDF::loadView('content.previews.manual.v_print_pas', compact('result_profile', 'result_kop', 'result_attitude', 'result_score', 'result_extra', 'result_other', 'result_achievement', 'result_attendance'));
+        $pdf = PDF::loadView('content.previews.manual.v_print_pas', compact('result_profile', 'result_kop', 'result_attitude', 'result_score', 'result_extra', 'result_other', 'result_achievement', 'result_attendance', 'type_template'));
         return $pdf->stream();
     }
 
@@ -654,6 +666,11 @@ class PreviewController extends Controller
             'semester' => substr($school_year->name, -1) == 1 ? 'Ganjil' : 'Genap',
             'school_year' => substr($school_year->name, 0, 9),
         ];
+
+        $teacher = Teacher::where([
+            ['type', 'homeroom'],
+            ['id_class', $student_class->study_class->id],
+        ])->latest()->first();
 
         $score_attitude = AttitudeGrade::where([
             ['id_student_class', $student_class->id],
@@ -738,6 +755,8 @@ class PreviewController extends Controller
             'date' => $config ? $config->report_date : now(),
             'headmaster' => $config ? $config->headmaster : '',
             'nip_headmaster' => $config ? $config->nip_headmaster : '',
+            'teacher' => $teacher ? $teacher->name : '',
+            'nip_teacher' => $teacher ? $teacher->nip : '',
             'signature' => $config && $config['signature'] != null ? public_path($config->signature) : null,
         ];
         // dd($result_other);
@@ -800,10 +819,17 @@ class PreviewController extends Controller
             'address_school' => $setting['address'],
             'study_class' => $student_class->study_class->name,
             'fase' => $student_class->study_class->level->fase,
+            'level' => $student_class->study_class->level->name,
             'semester_number' => substr($school_year->name, -1),
             'semester' => substr($school_year->name, -1) == 1 ? 'Ganjil' : 'Genap',
             'school_year' => substr($school_year->name, 0, 9),
         ];
+
+        $teacher = Teacher::where([
+            ['type', 'homeroom'],
+            ['id_class', $student_class->study_class->id],
+        ])->latest()->first();
+
         $score_attitude = AttitudeGrade::where([
             ['id_student_class', $student_class->id],
             ['id_school_year', $school_year->id],
@@ -841,7 +867,7 @@ class PreviewController extends Controller
 
         $score_kd = ScoreKd::where([
             ['id_student_class', $student_class->id],
-            ['type', $$type_template],
+            ['type', $type_template],
             ['id_school_year', $school_year->id],
         ])->get();
         $result_score = [];
@@ -852,7 +878,7 @@ class PreviewController extends Controller
                 ['id_student_class', $student_class->id],
                 ['id_school_year', $school_year->id],
                 ['id_subject_teacher', $subject->id],
-                ['type', $$type_template],
+                ['type', $type_template],
             ])->first();
 
             if ($score_kd) {
@@ -879,6 +905,11 @@ class PreviewController extends Controller
                 }, $kd_skill);
 
                 // Cari predikat dari nilai final_assessment dan final_skill
+                $predicate_score = PredicatedScore::where('score', '<=', $final_assessment)->orderBy('score', 'desc')->first();
+                if ($predicate_score == null) {
+                    session()->put('message', 'Harap admin suruh mengisi dulu nilai predikat raport');
+                    return view('pages.v_error');
+                }
                 $predicate_assessment = PredicatedScore::where('score', '<=', $final_assessment)->orderBy('score', 'desc')->first()->name;
                 $description_assessment = PredicatedScore::where('score', '<=', $final_assessment)->orderBy('score', 'desc')->first()->description;
                 $predicate_skill = PredicatedScore::where('score', '<=', $final_skill)->orderBy('score', 'desc')->first()->name;
@@ -957,8 +988,10 @@ class PreviewController extends Controller
             'place' => $config ? $config->place : '',
             'date' => $config ? $config->report_date : now(),
             'headmaster' => $config ? $config->headmaster : '',
+            'teacher' => $teacher ? $teacher->name : '',
+            'nip_teacher' => $teacher ? $teacher->nip : '',
             'nip_headmaster' => $config ? $config->nip_headmaster : '',
-            'signature' => $config ? public_path($config->signature) : null,
+            'signature' => $config && $config->signature != null ? public_path($config->signature) : null,
         ];
 
         $result_achievement = Achievement::where([
@@ -978,7 +1011,7 @@ class PreviewController extends Controller
         ];
         // dd($result_achievement);
 
-        $pdf = PDF::loadView('content.previews.k13.v_print_pas', compact('result_profile', 'result_kop', 'result_attitude', 'result_score', 'result_extra', 'result_other', 'result_achievement', 'result_attendance'));
+        $pdf = PDF::loadView('content.previews.k13.v_print_pas', compact('result_profile', 'result_kop', 'result_attitude', 'result_score', 'result_extra', 'result_other', 'result_achievement', 'result_attendance', 'type_template'));
         return $pdf->stream();
     }
 }

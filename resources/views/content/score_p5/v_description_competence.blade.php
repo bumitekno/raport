@@ -33,19 +33,24 @@
                                             <th>No</th>
                                             <th>Kriteria</th>
                                             <th>Deskripsi Capaian Kompetensi</th>
-                                            <th>
-                                                <a href="javascript:void(0)" id="addMore">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                        viewBox="0 0 24 24" fill="none" stroke="#00b15f" stroke-width="2"
-                                                        stroke-linecap="round" stroke-linejoin="round">
-                                                        <circle cx="12" cy="12" r="10"></circle>
-                                                        <line x1="12" y1="8" x2="12" y2="16">
-                                                        </line>
-                                                        <line x1="8" y1="12" x2="16" y2="12">
-                                                        </line>
-                                                    </svg>
-                                                </a>
-                                            </th>
+                                            @if (session('role') == 'admin')
+                                                <th>
+                                                    <a href="javascript:void(0)" id="addMore">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24"
+                                                            height="24" viewBox="0 0 24 24" fill="none"
+                                                            stroke="#00b15f" stroke-width="2" stroke-linecap="round"
+                                                            stroke-linejoin="round">
+                                                            <circle cx="12" cy="12" r="10"></circle>
+                                                            <line x1="12" y1="8" x2="12"
+                                                                y2="16">
+                                                            </line>
+                                                            <line x1="8" y1="12" x2="16"
+                                                                y2="12">
+                                                            </line>
+                                                        </svg>
+                                                    </a>
+                                                </th>
+                                            @endif
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -56,19 +61,22 @@
                                                     <input type="text" name="criteria[]" class="form-control">
                                                 </td>
                                                 <td><input type="text" name="description[]" class="form-control"></td>
-                                                <td>
-                                                    <a href="javascript:void(0);" class="remove">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24"
-                                                            height="24" viewBox="0 0 24 24" fill="none"
-                                                            stroke="#f00931" stroke-width="2" stroke-linecap="round"
-                                                            stroke-linejoin="round">
-                                                            <circle cx="12" cy="12" r="10"></circle>
-                                                            <line x1="8" y1="12" x2="16"
-                                                                y2="12">
-                                                            </line>
-                                                        </svg>
-                                                    </a>
-                                                </td>
+                                                @if (session('role') == 'admin')
+                                                    <td>
+                                                        <a href="javascript:void(0);" class="remove">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                height="24" viewBox="0 0 24 24" fill="none"
+                                                                stroke="#f00931" stroke-width="2" stroke-linecap="round"
+                                                                stroke-linejoin="round">
+                                                                <circle cx="12" cy="12" r="10">
+                                                                </circle>
+                                                                <line x1="8" y1="12" x2="16"
+                                                                    y2="12">
+                                                                </line>
+                                                            </svg>
+                                                        </a>
+                                                    </td>
+                                                @endif
                                                 <input type="hidden" name="deleted_id[]" value="">
                                             </tr>
                                         @else
@@ -83,21 +91,24 @@
                                                         <input type="text" name="description[]" class="form-control"
                                                             value="{{ $criteria->description }}">
                                                     </td>
-                                                    <td>
-                                                        <a href="javascript:void(0);" class="remove"
-                                                            data-id="{{ $criteria->id }}" data-row="{{ $index + 1 }}">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24"
-                                                                height="24" viewBox="0 0 24 24" fill="none"
-                                                                stroke="#f00931" stroke-width="2" stroke-linecap="round"
-                                                                stroke-linejoin="round">
-                                                                <circle cx="12" cy="12" r="10">
-                                                                </circle>
-                                                                <line x1="8" y1="12" x2="16"
-                                                                    y2="12">
-                                                                </line>
-                                                            </svg>
-                                                        </a>
-                                                    </td>
+                                                    @if (session('role') == 'admin')
+                                                        <td>
+                                                            <a href="javascript:void(0);" class="remove"
+                                                                data-id="{{ $criteria->id }}"
+                                                                data-row="{{ $index + 1 }}">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                    height="24" viewBox="0 0 24 24" fill="none"
+                                                                    stroke="#f00931" stroke-width="2" stroke-linecap="round"
+                                                                    stroke-linejoin="round">
+                                                                    <circle cx="12" cy="12" r="10">
+                                                                    </circle>
+                                                                    <line x1="8" y1="12" x2="16"
+                                                                        y2="12">
+                                                                    </line>
+                                                                </svg>
+                                                            </a>
+                                                        </td>
+                                                    @endif
                                                     <input type="hidden" name="id[]" value="{{ $criteria->id }}">
                                                     <input type="hidden" name="deleted_id[]" class="deleted_id"
                                                         value="">
