@@ -20,6 +20,6 @@ class ScoreP5 extends Model
 
     public function p5()
     {
-        return $this->belongsTo(p5::class, 'id_p5');
+        return $this->belongsTo(P5::class, 'id_p5');
     }
 }
