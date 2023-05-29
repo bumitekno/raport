@@ -260,8 +260,8 @@ class PreviewController extends Controller
         $result_score = [];
 
         foreach ($scores_p5 as $score_p5) {
-            $title = $score_p5->p5->title;
-            $tema = $score_p5->p5->tema->name;
+            $title = optional($score_p5->p5)->title;
+            $tema = optional(optional($score_p5->p5)->tema)->name;
 
             $dimensions = Dimension::where('status', 1)->get();
             $dimension_data = [];
@@ -321,7 +321,7 @@ class PreviewController extends Controller
             'date' => $config ? $config->report_date : now(),
             'headmaster' => $config ? $config->headmaster : '',
             'nip_headmaster' => $config ? $config->nip_headmaster : '',
-            'signature' => $config ? public_path($config->signature) : null,
+            'signature' => $config && $config->signature != null ? public_path($config->signature) : null,
         ];
         // dd($result_score);
         // return view('content.previews.merdeka.v_print_p5', compact('result_score', 'result_profile', 'result_other'));
