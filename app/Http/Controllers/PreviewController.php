@@ -794,6 +794,20 @@ class PreviewController extends Controller
                 'predicate_skill' => $score_manual2 ? $score_manual2->predicate_skill : null,
                 'kkm' => $score_manual2 ? $score_manual2->kkm : null,
             ];
+
+            usort($result_score[$subject->course->group], function ($a, $b) {
+                $aParts = explode(' ', $a['course']);
+                $bParts = explode(' ', $b['course']);
+
+                $aNumber = intval($aParts[0]);
+                $bNumber = intval($bParts[0]);
+
+                if ($aNumber === $bNumber) {
+                    return strcasecmp($a['course'], $b['course']);
+                } else {
+                    return $aNumber - $bNumber;
+                }
+            });
         }
         // dd($result_score);
         $pdf = PDF::loadView('content.previews.manual2.v_print_pas', compact('result_profile', 'result_kop', 'result_attitude', 'result_score', 'result_extra', 'result_other', 'result_achievement', 'result_attendance'));
