@@ -55,6 +55,12 @@ class PreviewController extends Controller
                                 ['id_school_year', $year->id],
                             ])->exists();
                             break;
+                        case 'manual2':
+                            $score = ScoreManual2::where([
+                                ['id_student_class', session('id_student_class')],
+                                ['id_school_year', $year->id],
+                            ])->exists();
+                            break;
                         case 'k16':
                             $score = ScoreKd::where([
                                 ['id_student_class', session('id_student_class')],
