@@ -58,7 +58,7 @@
                                             <th>Bobot Sumatif</th>
                                             <th>Bobot UTS</th>
                                             @if ($type == 'uas')
-                                                <th>Bobot UAS</th>
+                                                <th>Bobot SAS</th>
                                             @endif
                                         </tr>
                                     </thead>
