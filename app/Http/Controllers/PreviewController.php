@@ -359,6 +359,7 @@ class PreviewController extends Controller
         ])->latest()->first();
 
         $competencies = CompetenceAchievement::where('status', 1)->get();
+        $result_score = [];
         // dd($student_class);
         foreach ($subjects as $subject) {
             $score = ScoreMerdeka::where([

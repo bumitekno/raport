@@ -24,35 +24,30 @@ class LetterheadController extends Controller
 
     public function updateOrCreate(LetterHeadRequest $request)
     {
-        // dd($request);
         $data = $request->validated();
-        // dd($data);
+        // dd($request);
+
+        $letterhead = Letterhead::updateOrCreate([], [
+            'text1' => $data['text1'],
+            'text2' => $data['text2'],
+            'text3' => $data['text3'],
+            'text4' => $data['text4'],
+            'text5' => $data['text5'],
+        ]);
+
         if ($request->hasFile('left_logo')) {
             $data = ImageHelper::upload_asset($request, 'left_logo', 'letter_head', $data);
-        }
-        if ($request->hasFile('right_logo')) {
-            $data = ImageHelper::upload_asset($request, 'right_logo', 'letter_head', $data);
-        }
-        // dd($data);
-        $letterhead = Letterhead::updateOrCreate(
-            [
-                'text1' => $data['text1'],
-            ],
-            [
-                'text2' => $data['text2'],
-                'text3' => $data['text3'],
-                'text4' => $data['text4'],
-                'text5' => $data['text5'],
-            ]
-        );
-        if ($request->hasFile('left_logo')) {
             $letterhead->left_logo = $data['left_logo'];
         }
+
         if ($request->hasFile('right_logo')) {
+            $data = ImageHelper::upload_asset($request, 'right_logo', 'letter_head', $data);
             $letterhead->right_logo = $data['right_logo'];
         }
+        // dd($letterhead);
 
         $letterhead->save();
+
         Helper::toast('Berhasil menyimpan atau mengupdate data', 'success');
         return redirect()->back();
     }

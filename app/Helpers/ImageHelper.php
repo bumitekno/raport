@@ -20,7 +20,7 @@ class ImageHelper
     {
         $setting = self::get_settings();
         $file = $request->file($name);
-        $profileImage = date('YmdHis') . "." . $file->getClientOriginalExtension();
+        $profileImage = date('YmdHis') . Helper::str_random(5) . "." . $file->getClientOriginalExtension();
         $resolution = isset($setting['size_compress']) ? $setting['size_compress'] : 200;
         $thumb = Image::make($file->getRealPath())->resize($resolution, $resolution, function ($constraint) {
             $constraint->aspectRatio();
