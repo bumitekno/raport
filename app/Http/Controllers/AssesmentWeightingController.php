@@ -7,9 +7,11 @@ use App\Http\Requests\P5\AssesementRequest;
 use App\Models\AssesmentWeighting;
 use App\Models\StudyClass;
 use App\Models\SubjectTeacher;
+use App\Models\TemplateConfiguration;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use SebastianBergmann\Template\Template;
 
 class AssesmentWeightingController extends Controller
 {
@@ -17,12 +19,22 @@ class AssesmentWeightingController extends Controller
     {
         // dd($type);
         session()->put('title', 'Bobot Penilaian');
-        $subjectTeachers = SubjectTeacher::where('status', 1)->get(['id_study_class']);
+        if (session('role') == 'admin') {
+            $template = TemplateConfiguration::where([
+                ['template', session('template')],
+                ['status', 1]
+            ])->pluck('id_major');
+            $idStudyClasses = StudyClass::whereIn('id_major', $template)
+                ->get(['slug', 'id', 'name'])
+                ->pluck('id');
+        } else {
+            $subjectTeachers = SubjectTeacher::where('status', 1)->get(['id_study_class']);
 
-        $idStudyClasses = collect([]);
+            $idStudyClasses = collect([]);
 
-        foreach ($subjectTeachers as $subjectTeacher) {
-            $idStudyClasses = $idStudyClasses->merge(json_decode($subjectTeacher->id_study_class));
+            foreach ($subjectTeachers as $subjectTeacher) {
+                $idStudyClasses = $idStudyClasses->merge(json_decode($subjectTeacher->id_study_class));
+            }
         }
 
         $classes = StudyClass::whereIn('id', $idStudyClasses->unique())

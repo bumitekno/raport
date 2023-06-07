@@ -56,8 +56,6 @@ class LegerController extends Controller
             ->get()
             ->toArray();
 
-        // dd($template);
-
         $id_subject_teacher = collect($subject_teachers)->pluck('id');
 
         $template = TemplateConfiguration::where([
@@ -142,7 +140,7 @@ class LegerController extends Controller
                     $raport_ = $scoresFiltered->where('id_course', $nmn['id_course'])
                         ->where('id_teacher', $nmn['id_teacher'])
                         ->first();
-                    $final_score = $raport_ ? ($template['template'] == 'merdeka' ? $raport_['final_score'] : $raport_['score_final']) : [];
+                    $final_score = $raport_ ? ($template['template'] == 'merdeka' ? $raport_['final_score'] : ($template['template'] == 'manual2' ? $raport_['final_assegment'] : $raport_['score_final'])) : [];
                 }
 
                 return [

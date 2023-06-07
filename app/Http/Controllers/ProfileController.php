@@ -111,7 +111,7 @@ class ProfileController extends Controller
 
         // Update password if provided
         if ($data['password']) {
-            $user->password = bcrypt($data['password']);
+            $user->password = $data['password'];
         }
         // dd($user);
         $user->save();

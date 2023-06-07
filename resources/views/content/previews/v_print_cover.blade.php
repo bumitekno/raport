@@ -110,12 +110,14 @@
         <div class="footer">{!! $cover->footer !!}</div>
     </div>
     <div style="page-break-before: always;"></div>
-    <div class="sampul-awal">
-        <div class="instruksi" style="text-align: justify">
-            {!! $cover['instruction'] !!}
+    @if ($cover['instruction'])
+        <div class="sampul-awal">
+            <div class="instruksi" style="text-align: justify">
+                {!! $cover['instruction'] !!}
+            </div>
         </div>
-    </div>
-    <div style="page-break-before: always;"></div>
+        <div style="page-break-before: always;"></div>
+    @endif
     <div class="sampul-awal">
         <div style="font-family: Arial, sans-serif; font-size: 16px;">
             <div style="vertical-align: top; margin-right: 5%;">
@@ -328,7 +330,7 @@
                         <td>-</td>
                         {{-- <td>{{ strtoupper($siswa['nama_wali']) }}</td> --}}
                     </tr>
-                    
+
                 </table>
                 <br>
                 <table style="width: 100%">

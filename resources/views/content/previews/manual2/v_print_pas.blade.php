@@ -118,11 +118,13 @@
                 </table>
             </td>
         </tr>
-        <tr>
-            <td colspan="7" class="b-0" style="padding: 0px !important">
-                <hr style="border: solid 2px #000">
-            </td>
-        </tr>
+        @if ($result_kop['text1'] != null)
+            <tr>
+                <td colspan="7" class="b-0" style="padding: 0px !important">
+                    <hr style="border: solid 2px #000">
+                </td>
+            </tr>
+        @endif
         <tr>
             <td colspan="7" style="font-size: 14pt !important" class="b-0 text-bold text-uppercase text-center">
                 LAPORAN HASIL BELAJAR
@@ -537,8 +539,7 @@
                             <td colspan="2" class="b-0 text-center" style="vertical-align: top">
                                 <div style="margin: 0 auto;">
                                     <p class="text-uppercase text-center">Wali Kelas</p>
-                                    <p
-                                        style="text-align: center; margin-bottom: 0; margin-top: 80px;">
+                                    <p style="text-align: center; margin-bottom: 0; margin-top: 80px;">
                                         {{ $result_other['teacher'] }}</p>
                                     <p style="text-align: center; margin-top : -15px">___________________</p>
                                     <p style="text-align: center">NIP {{ $result_other['nip_teacher'] }}</p>
