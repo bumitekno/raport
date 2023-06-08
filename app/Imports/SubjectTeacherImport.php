@@ -45,9 +45,9 @@ class SubjectTeacherImport implements ToModel, WithHeadingRow, WithValidation, W
             $studyClassIds = json_decode($subjectTeacher->id_study_class, true) ?? [];
 
             // Cek apakah id_study_class sudah ada di dalam array
-            if (!in_array($study_class->id, $studyClassIds)) {
+            if (!in_array(strval($study_class->id), $studyClassIds)) {
                 // Tambahkan id_study_class ke dalam array
-                $studyClassIds[] = $study_class->id;
+                $studyClassIds[] = strval($study_class->id);
 
                 // Update data SubjectTeacher dengan id_study_class baru
                 $subjectTeacher->update([
@@ -60,7 +60,7 @@ class SubjectTeacherImport implements ToModel, WithHeadingRow, WithValidation, W
                 'id_teacher' => $teacher->id,
                 'id_course' => $course->id,
                 'id_school_year' => session('id_school_year'),
-                'id_study_class' => json_encode([$study_class->id]),
+                'id_study_class' => json_encode([strval($study_class->id)]),
                 'status' => 1,
             ]);
         }

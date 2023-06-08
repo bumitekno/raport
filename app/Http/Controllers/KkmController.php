@@ -28,11 +28,10 @@ class KkmController extends Controller
             // dd($study_class);
             $name_class = $study_class->name;
             $subject_teachers =  SubjectTeacher::with('teacher', 'course')
-                // ->where('id_school_year', $school_year->id)
+                ->where('id_school_year', $school_year->id)
                 ->whereRaw('JSON_CONTAINS(id_study_class, \'["' . $study_class->id . '"]\')')
                 ->where('status', 1)
                 ->get();
-            dd($subject_teachers);
 
             $kkm = DB::table('kkms')
                 ->where('id_study_class', $study_class->id)
