@@ -809,13 +809,26 @@ class PreviewController extends Controller
                 $aParts = explode(' ', $a['course']);
                 $bParts = explode(' ', $b['course']);
 
-                $aNumber = intval($aParts[0]);
-                $bNumber = intval($bParts[0]);
+                $aNumber = $aParts[0];
+                $bNumber = $bParts[0];
 
-                if ($aNumber === $bNumber) {
-                    return strcasecmp($a['course'], $b['course']);
+                $aNumberParts = explode('.', $aNumber);
+                $bNumberParts = explode('.', $bNumber);
+
+                $aMainNumber = intval($aNumberParts[0]);
+                $bMainNumber = intval($bNumberParts[0]);
+
+                if ($aMainNumber === $bMainNumber) {
+                    $aSubNumber = isset($aNumberParts[1]) ? intval($aNumberParts[1]) : 0;
+                    $bSubNumber = isset($bNumberParts[1]) ? intval($bNumberParts[1]) : 0;
+
+                    if ($aSubNumber === $bSubNumber) {
+                        return strnatcasecmp($a['course'], $b['course']);
+                    } else {
+                        return $aSubNumber - $bSubNumber;
+                    }
                 } else {
-                    return $aNumber - $bNumber;
+                    return $aMainNumber - $bMainNumber;
                 }
             });
         }
