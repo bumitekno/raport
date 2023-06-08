@@ -83,7 +83,6 @@
             <!--                <select name="id_school_year" class="form-control">-->
             <!--                    <option value="" selected>Tertinggi</option>-->
             <!--                    <option value="">Terendah</option>-->
-
             <!--                </select>-->
             <!--            </div>-->
             <!--        </div>-->
@@ -190,7 +189,6 @@
             <!--                            <h4>Netflix</h4>-->
             <!--                            <p class="meta-date">4 Aug 1:00PM</p>-->
             <!--                        </div>-->
-
             <!--                    </div>-->
             <!--                    <div class="t-rate rate-dec">-->
             <!--                        <p><span>-$32.00</span> <svg xmlns="http://www.w3.org/2000/svg" width="24"-->

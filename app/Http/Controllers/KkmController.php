@@ -25,18 +25,20 @@ class KkmController extends Controller
         if (isset($_GET['class'])) {
             $school_year = SchoolYear::where('slug', $_GET['year'])->first();
             $study_class = StudyClass::where('slug', $_GET['class'])->first();
+            // dd($study_class);
             $name_class = $study_class->name;
             $subject_teachers =  SubjectTeacher::with('teacher', 'course')
-                ->where('id_school_year', $school_year->id)
+                // ->where('id_school_year', $school_year->id)
                 ->whereRaw('JSON_CONTAINS(id_study_class, \'["' . $study_class->id . '"]\')')
                 ->where('status', 1)
                 ->get();
+            dd($subject_teachers);
 
             $kkm = DB::table('kkms')
                 ->where('id_study_class', $study_class->id)
                 ->where('id_school_year', $school_year->id)
                 ->get();
-
+            
             $result = [];
             foreach ($subject_teachers as $data) {
                 $found = $kkm->first(function ($item) use ($data) {

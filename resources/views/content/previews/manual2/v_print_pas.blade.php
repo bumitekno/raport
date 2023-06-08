@@ -37,7 +37,7 @@
         .table td p {
             margin: 0px;
             text-align: justify;
-            font-size: 9pt;
+            /* font-size: 9pt; */
         }
 
         .table th {
@@ -85,37 +85,46 @@
             <td colspan="7" class="b-0">
                 <table style="width: 100%">
                     <tr>
-                        <td class="b-0">
-                            <img alt="logo kiri" id="prev-logo-kiri-print" src="{{ public_path('asset/img/logo.png') }}"
-                                style="width: 85%;">
-                        </td>
+                        @if ($result_kop['left_logo'] != null)
+                            <td class="b-0">
+                                <img alt="logo kiri" id="prev-logo-kiri-print"
+                                    src="{{ public_path($result_kop['left_logo']) }}" style="width: 85%;">
+                            </td>
+                        @endif
 
                         <td style="width:70%; text-align: center;" class="b-0">
                             <div class="text-uppercase" style="line-height: 1.1; font-family: 'Arial'; font-size: 12pt">
-                                BADAN PENGEMBANGAN SUMBER DAYA MANUSIA INDUSTRI
+                                {{ $result_kop['text1'] }}
                             </div>
                             <div style="line-height: 1.1; font-family: 'Arial'; font-size: 16pt" class="text-uppercase">
-                                SEKOLAH MENENGAH KEJURUAN
+                                {{ $result_kop['text2'] }}
                             </div>
                             <div style="line-height: 1.2; font-family: 'Arial'; font-size: 16pt"
                                 class="text-uppercase text-bold">
-                                TEMANGGUNG
+                                {{ $result_kop['text3'] }}
                             </div>
                             <div style="line-height: 1.2; font-family: 'Arial'; font-size: 8pt">
-                                Jl. Jenderal Sudirman No. 43, Telp (0721) 4343245, NPSN 343243, Website :
-                                www.sekolahku.sch.id
+                                {{ $result_kop['text5'] }}
                             </div>
                         </td>
+                        @if ($result_kop['right_logo'] != null)
+                            <td class="b-0">
+                                <img alt="logo kiri" id="prev-logo-kiri-print"
+                                    src="{{ public_path($result_kop['right_logo']) }}" style="width: 85%;">
+                            </td>
+                        @endif
                     </tr>
 
                 </table>
             </td>
         </tr>
-        <tr>
-            <td colspan="7" class="b-0" style="padding: 0px !important">
-                <hr style="border: solid 2px #000">
-            </td>
-        </tr>
+        @if ($result_kop['text1'] != null)
+            <tr>
+                <td colspan="7" class="b-0" style="padding: 0px !important">
+                    <hr style="border: solid 2px #000">
+                </td>
+            </tr>
+        @endif
         <tr>
             <td colspan="7" style="font-size: 14pt !important" class="b-0 text-bold text-uppercase text-center">
                 LAPORAN HASIL BELAJAR
@@ -129,7 +138,7 @@
                             <td class="b-0" style="padding: 0px; vertical-align: top">Nama Peserta Didik</td>
                             <td class="b-0" style="padding: 0px; vertical-align: top">:</td>
                             <td class="b-0" style="padding: 0px">
-                                John Doe
+                                {{ $result_profile['name'] }}
                             </td>
                             <td class="b-0" style="padding: 0px; vertical-align: top">Tahun Pelajaran</td>
                             <td class="b-0" style="padding: 0px; vertical-align: top">:</td>
@@ -139,25 +148,25 @@
                             <td class="b-0" style="padding: 0px">NISN</td>
                             <td class="b-0" style="padding: 0px">:</td>
                             <td class="b-0" style="padding: 0px">
-                                1234567890
+                                {{ $result_profile['nisn'] }}
                             </td>
+
                             <td class="b-0" style="padding: 0px;">Semester</td>
                             <td class="b-0" style="padding: 0px;">:</td>
                             <td class="b-0" style="padding: 0px;">
-                                2 (Genap)
+                                {{ $result_profile['semester_number'] . ' (' . $result_profile['semester'] . ')' }}
                             </td>
                         </tr>
                         <tr>
                             <td class="b-0" style="padding: 0px; vertical-align: top">Kelas</td>
                             <td class="b-0" style="padding: 0px; vertical-align: top">:</td>
                             <td class="b-0" style="padding: 0px; vertical-align: top">
-                                12A
+                                {{ $result_profile['study_class'] }}
                             </td>
                             <td class="b-0" style="padding: 0px; vertical-align: top">Jurusan</td>
                             <td class="b-0" style="padding: 0px; vertical-align: top">:</td>
                             <td class="b-0" style="padding: 0px; vertical-align: top">
-                                IPA (Ilmu Pengetahuan Alam)
-                            </td>
+                                {{ ucwords($result_profile['major']) }}</td>
                         </tr>
                         <tr>
                             <td style="height: 10px" class="b-0"></td>
@@ -197,124 +206,88 @@
                 <th class="text-center">
                     Predikat</th>
             </tr>
-            <tr>
-                <td colspan="7"><b>Kelompok 1</b></td>
-            </tr>
-            <tr>
-                <td class="text-center">1</td>
-                <td>
-                    Matematika</td>
-                <td class="text-center">
-                    75</td>
-                <td class="text-center">
-                    80
-                </td>
-                <td class="text-center">
-                    A
-                </td>
-                <td class="text-center">
-                    85
-                </td>
-                <td class="text-center">
-                    A
-                </td>
-            </tr>
-            <tr>
-                <td class="text-center">2</td>
-                <td>
-                    Bahasa Inggris</td>
-                <td class="text-center">
-                    70</td>
-                <td class="text-center">
-                    75
-                </td>
-                <td class="text-center">
-                    A-
-                </td>
-                <td class="text-center">
-                    80
-                </td>
-                <td class="text-center">
-                    B+
-                </td>
-            </tr>
-            <tr>
-                <td colspan="3" class="text-center"><b>Sub Total</b></td>
-                <td class="text-center">155</td>
-                <td></td>
-                <td class="text-center">165</td>
-                <td></td>
-            </tr>
-            <tr>
-                <td colspan="7"><b>Kelompok 2</b></td>
-            </tr>
-            <tr>
-                <td class="text-center">1</td>
-                <td>
-                    Fisika</td>
-                <td class="text-center">
-                    70</td>
-                <td class="text-center">
-                    75
-                </td>
-                <td class="text-center">
-                    A-
-                </td>
-                <td class="text-center">
-                    80
-                </td>
-                <td class="text-center">
-                    B+
-                </td>
-            </tr>
-            <tr>
-                <td class="text-center">2</td>
-                <td>
-                    Kimia</td>
-                <td class="text-center">
-                    75</td>
-                <td class="text-center">
-                    80
-                </td>
-                <td class="text-center">
-                    A
-                </td>
-                <td class="text-center">
-                    85
-                </td>
-                <td class="text-center">
-                    A
-                </td>
-            </tr>
-            <tr>
-                <td colspan="3" class="text-center"><b>Sub Total</b></td>
-                <td class="text-center">155</td>
-                <td></td>
-                <td class="text-center">165</td>
-                <td></td>
-            </tr>
-            <tr>
-                <td colspan="3" class="text-center">
-                    <b>Total</b>
-                </td>
-                <td class="text-center">310</td>
-                <td></td>
-                <td class="text-center">330</td>
-                <td></td>
-            </tr>
-            <tr>
-                <td colspan="3" class="text-center">
-                    Rata - rata
-                </td>
-                <td colspan="2" class="text-center">155</td>
-                <td colspan="2" class="text-center">165</td>
-            </tr>
-            <tr>
-                <td colspan="5" class="b-0"></td>
-                <td colspan="2" class="text-center">
-                    <b>PERINGKAT KE:</b><br><br><br>Dari .... Siswa
-                </td>
-            </tr>
+            @if (!empty($result_score))
+                @php
+                    $total_assegment = 0;
+                    $total_skill = 0;
+                @endphp
+                @foreach ($result_score as $group => $scores)
+                    <tr>
+                        <td colspan="7"><b>Kelompok {{ $group }}</b></td>
+                    </tr>
+                    @if (!empty($scores))
+                        @php
+                            $no_course = 1;
+                            $sub_total_assegment = 0;
+                            $sub_total_skill = 0;
+                        @endphp
+                        @foreach ($scores as $score)
+                            @php
+                                $sub_total_assegment += (float) $score['final_assegment'];
+                                $sub_total_skill += (float) $score['final_skill'];
+                            @endphp
+                            <tr>
+                                <td class="text-center">{{ $no_course++ }}</td>
+                                <td>
+                                    {{ $score['course'] }}</td>
+                                <td class="text-center">
+                                    {{ $score['kkm'] }}</td>
+                                <td class="text-center">
+                                    {{ $score['final_assegment'] }}
+                                </td>
+                                <td class="text-center">
+                                    {{ $score['predicate_assegment'] }}
+                                </td>
+                                <td class="text-center">
+                                    {{ $score['final_skill'] }}
+                                </td>
+                                <td class="text-center">
+                                    {{ $score['predicate_skill'] }}
+                                </td>
+                            </tr>
+                        @endforeach
+                        @php
+                            $total_assegment += (float) $sub_total_assegment;
+                            $total_skill += (float) $sub_total_skill;
+                        @endphp
+                        <tr>
+                            <td colspan="3" class="text-center"><b>Sub
+                                    Total</b></td>
+                            <td class="text-center">{{ $sub_total_assegment }}</td>
+                            <td></td>
+                            <td class="text-center">{{ $sub_total_skill }}</td>
+                            <td></td>
+                        </tr>
+                    @endif
+                @endforeach
+                <tr>
+                    <td colspan="3" class="text-center">
+                        <b>Total</b>
+                    </td>
+                    <td class="text-center">{{ $total_assegment }}</td>
+                    <td></td>
+                    <td class="text-center">{{ $total_skill }}</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td colspan="3" class="text-center">
+                        Rata - rata
+                    </td>
+                    <td colspan="2" class="text-center">{{ round($total_assegment / $no_course, 1) }}</td>
+                    <td colspan="2" class="text-center">{{ round($total_skill / $no_course, 1) }}</td>
+                </tr>
+                <tr>
+                    <td colspan="5" class="b-0"></td>
+                    <td colspan="2" class="text-center">
+                        <b>PERINGKAT KE:</b><br><br><br>Dari .... Siswa
+                    </td>
+                </tr>
+            @else
+                <tr>
+                    <td colspan="7" class="text-center">Belum ada mapel yang dinilai</td>
+                </tr>
+            @endif
+
             <tr>
                 <td style="height: 10px" colspan="7" class="b-0"></td>
             </tr>
@@ -328,8 +301,8 @@
                             <tr>
                                 <td class="text-left vertical-middle">
                                     <div style="width: 100%; min-height: 60px">
-                                        <p class="m-0">Siswa yang aktif dalam kegiatan kelas dan memiliki
-                                            partisipasi yang baik.</p>
+                                        <p class="m-0">{!! $result_other['note_teacher'] !!}
+                                        </p>
                                     </div>
                                 </td>
                             </tr>
@@ -397,27 +370,19 @@
                                 <th class="text-center">
                                     Keterangan</th>
                             </tr>
-                            <tr>
-                                <td class="text-center">1</td>
-                                <td>Futsal</td>
-                                <td>Kegiatan olahraga sepak bola dalam ruangan</td>
-                            </tr>
-                            <tr>
-                                <td class="text-center">2</td>
-                                <td>Pramuka</td>
-                                <td>Kegiatan kepramukaan yang meliputi kegiatan perkemahan dan keterampilan alam</td>
-                            </tr>
-                            <tr>
-                                <td class="text-center">3</td>
-                                <td>Basketball</td>
-                                <td>Kegiatan olahraga bola basket</td>
-                            </tr>
-                            <tr>
-                                <td class="text-center">4</td>
-                                <td>Paduan Suara</td>
-                                <td>Kegiatan bermusik dalam bentuk paduan suara</td>
-                            </tr>
-
+                            @if (!empty($result_extra))
+                                @foreach ($result_extra as $extra)
+                                    <tr>
+                                        <td class="text-center">{{ $loop->iteration }}</td>
+                                        <td>{{ $extra['name'] }}</td>
+                                        <td>{{ $extra['description'] }}</td>
+                                    </tr>
+                                @endforeach
+                            @else
+                                <tr>
+                                    <td colspan="3" class="text-center">Ekstrakurikuler belum tersedia</td>
+                                </tr>
+                            @endif
                         </tbody>
                     </table>
                 </td>
@@ -436,21 +401,21 @@
                             <td>
                                 Sakit</td>
                             <td class="text-center">
-                                1 Hari
+                                {{ $result_attendance['ill'] }} Hari
                             </td>
                         </tr>
                         <tr>
                             <td>
                                 Izin</td>
                             <td class="text-center">
-                                2 Hari
+                                {{ $result_attendance['excused'] }} Hari
                             </td>
                         </tr>
                         <tr>
                             <td>
                                 Tanpa Keterangan</td>
                             <td class="text-center">
-                                - Hari
+                                {{ $result_attendance['unexcused'] }} Hari
                             </td>
                         </tr>
                     </table>
@@ -500,14 +465,14 @@
                     <table class="table">
                         <tr>
                             <td class="b-0">Diberikan di</td>
-                            <td class="b-0">: Temanggung</td>
+                            <td class="b-0">: {{ $result_other['place'] ?? 'Tidak diketahui' }}</td>
                             <td class="b-0" style="width: 50px"></td>
                             <td class="b-0" colspan="2">KEPUTUSAN</td>
                         </tr>
                         <tr>
                             <td class="b-0">tanggal</td>
                             <td class="b-0">:
-                                20 Mei 2023
+                                {{ isset($result_other['date']) ? DateHelper::getTanggal($result_other['date']) : '' }}
                             </td>
                             <td class="b-0"></td>
                             <td class="b-0" colspan="2">Dengan memperhatikan hasil yang dicapai</td>
@@ -517,44 +482,68 @@
                             <td class="b-0" colspan="2">semester 1 dan 2, maka peserta didik ini ditetapkan
                             </td>
                         </tr>
-                        <tr>
-                            <td colspan="3" class="b-0"></td>
-                            <td class="b-0" style="width: 80px">Naik kelas</td>
-                            <td class="b-0">: 3</td>
-                        </tr>
-                        <tr>
-                            <td colspan="3" class="b-0"></td>
-                            <td class="b-0" colspan="2"><s>Tinggal di Kelas</s></td>
-                        </tr>
+                        @if ($result_other['promotion'] == 'Y')
+                            <tr>
+                                <td colspan="3" class="b-0"></td>
+                                <td class="b-0" style="width: 80px">Naik kelas</td>
+                                <td class="b-0">: {{ $result_profile['level'] + 1 }}</td>
+                            </tr>
+                            <tr>
+                                <td colspan="3" class="b-0"></td>
+                                <td class="b-0" colspan="2"><s>Tinggal di Kelas</s></td>
+                            </tr>
+                        @else
+                            <tr>
+                                <td colspan="3" class="b-0"></td>
+                                <td class="b-0" style="width: 80px"><s>Naik kelas</s></td>
+                                <td class="b-0">: </td>
+                            </tr>
+                            <tr>
+                                <td colspan="3" class="b-0"></td>
+                                <td class="b-0">Tinggal di Kelas</td>
+                                <td class="b-0">: {{ $result_profile['level'] }}</td>
+                            </tr>
+                        @endif
+
                     </table>
                     <table class="table">
                         <tr>
                             <td class="b-0" style="text-align: right" colspan="7">
-                                Temangung, 20 Mei 2023
+                                {{ $result_other['place'] ?? 'Tidak diketahui' }},
+                                {{ isset($result_other['date']) ? DateHelper::getTanggal($result_other['date']) : '' }}
                             </td>
                         </tr>
                         <tr>
                             <td colspan="2" class="text-center b-0" style="vertical-align: top">
-                                Orang Tua / Wali <br> Peserta Didik
+                                <p class="text-uppercase text-center">Orang Tua / Wali</p>
                                 <br><br><br><br>
                                 <p>&nbsp;</p>
                             </td>
-                            <td colspan="3" class="b-0 text-center" style="vertical-align: top">
-                                <div style="margin: 0 auto; width: 40%;">
-                                    <p class="text-uppercase text-center">TTD Kepala Sekolah</p>
-                                    <p style="text-align: center; margin-bottom: 0; margin-top: 80px;">
-                                        Prof. Dr. Ir. Novi Wahyuningsih M. Kom., S.Kom., M.Sc., Ph.D., D.Kom., CFA, CPA,
-                                        CFP, CFE, CFM</p>
+                            <td colspan="3" class="b-0 text-center" style="vertical-align: top; width: 50%">
+                                <div style="margin: 0 auto;">
+                                    <p class="text-uppercase text-center">Kepala Sekolah</p>
+                                    @if ($result_other['signature'] != null)
+                                        <center>
+                                            <img src="{{ $result_other['signature'] }}" alt=""
+                                                srcset="" style="height: 150px">
+                                        </center>
+                                    @endif
+                                    <p
+                                        style="text-align: center; margin-bottom: 0; {{ $result_other['signature'] == null ? 'margin-top: 80px;' : '' }}">
+                                        {{ $result_other['headmaster'] }}</p>
                                     <p style="text-align: center; margin-top : -15px">___________________</p>
-                                    <p style="text-align: center">NIP 344234234234</p>
+                                    <p style="text-align: center">NIP {{ $result_other['nip_headmaster'] }}</p>
                                 </div>
 
                             </td>
                             <td colspan="2" class="b-0 text-center" style="vertical-align: top">
-                                Wali Kelas
-                                <br><br><br><br>
-                                <b>Asep</b>
-                                <p class="m-0">NIP. 7837538457</p>
+                                <div style="margin: 0 auto;">
+                                    <p class="text-uppercase text-center">Wali Kelas</p>
+                                    <p style="text-align: center; margin-bottom: 0; margin-top: 80px;">
+                                        {{ $result_other['teacher'] }}</p>
+                                    <p style="text-align: center; margin-top : -15px">___________________</p>
+                                    <p style="text-align: center">NIP {{ $result_other['nip_teacher'] }}</p>
+                                </div>
                             </td>
                         </tr>
                     </table>

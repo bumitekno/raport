@@ -51,23 +51,46 @@
                                                     <td>{{ $loop->iteration }}</td>
                                                     <td>{{ $student['name'] }}</td>
                                                     <td>{{ $student['nis'] }}</td>
-                                                    <td>{{ $student['kkm'] }}</td>
+                                                    <td>{{ $student['kkm'] }}
+                                                        @error('kkm.*')
+                                                            <div class="text-danger">{{ $message }}</div>
+                                                        @enderror
+                                                    </td>
                                                     <td>
                                                         <input type="text" class="form-control" name="final_assegment[]"
                                                             value="{{ $student['final_assegment'] != null ? $student['final_assegment'] : '0' }}"
                                                             {{ $student['status_form'] == false ? 'readonly' : '' }}>
+                                                        @error('final_assegment.*')
+                                                            <div class="text-danger">{{ $message }}</div>
+                                                        @enderror
                                                     </td>
-                                                    <td class="text-center predicate_assegement">{{ $student['predicate_assegment'] }}</td>
+                                                    <td class="text-center predicate_assegement">
+                                                        {{ $student['predicate_assegment'] }}
+                                                        @error('predicate_assegment.*')
+                                                            <div class="text-danger">{{ $message }}</div>
+                                                        @enderror
+                                                    </td>
                                                     <td>
                                                         <input type="text" class="form-control" name="final_skill[]"
                                                             value="{{ $student['final_skill'] != null ? $student['final_skill'] : '0' }}"
                                                             {{ $student['status_form'] == false ? 'readonly' : '' }}>
+                                                        @error('final_skill.*')
+                                                            <div class="text-danger">{{ $message }}</div>
+                                                        @enderror
                                                     </td>
-                                                    <td class="text-center predicate_skill">{{ $student['predicate_skill'] }}</td>
-                                                    <input type="hidden" name="predicate_skill[]" value="{{ $student['predicate_skill'] }}">
+                                                    <td class="text-center predicate_skill">
+                                                        {{ $student['predicate_skill'] }}
+                                                        @error('predicate_skill.*')
+                                                            <div class="text-danger">{{ $message }}</div>
+                                                        @enderror
+                                                    </td>
+                                                    <input type="hidden" name="predicate_skill[]"
+                                                        value="{{ $student['predicate_skill'] }}">
                                                     <input type="hidden" name="kkm[]" value="{{ $student['kkm'] }}">
-                                                    <input type="hidden" name="predicate_assegment[]" value="{{ $student['predicate_assegment'] }}">
-                                                    <input type="hidden" name="id_student_class[]" value="{{ $student['id_student_class'] }}">
+                                                    <input type="hidden" name="predicate_assegment[]"
+                                                        value="{{ $student['predicate_assegment'] }}">
+                                                    <input type="hidden" name="id_student_class[]"
+                                                        value="{{ $student['id_student_class'] }}">
                                                 </tr>
                                             @endforeach
                                         </tbody>
@@ -152,7 +175,7 @@
                     $('#btnSubmit').addClass('d-none');
                 });
             });
-            
+
             function submitForm() {
                 $('form').submit();
             }
