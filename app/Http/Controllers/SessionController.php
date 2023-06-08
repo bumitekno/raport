@@ -38,7 +38,7 @@ class SessionController extends Controller
             'id_level' => $study_class->id_level,
             'template' => $template->template,
             'type' => $template->type,
-            'id_subject_teacher' => $subject_teacher->id,
+            'id_subject_teacher' => $subject_teacher ? $subject_teacher->id : null,
         ];
 
         session(['teachers' => $array_session]);
