@@ -444,7 +444,7 @@
             </tr>
             <tr>
                 <td colspan="7" class="b-0" style="padding: 0px !important">
-                    <table class="table">
+                    {{-- <table class="table">
                         <tr>
                             <td class="b-0"style="font-size: 12pt">G. KEPUTUSAN
                             </td>
@@ -458,7 +458,7 @@
                             </td>
                         </tr>
                     </table>
-                    <div style="height: 10px"></div>
+                    <div style="height: 10px"></div> --}}
                     <table class="table">
                         <tr>
                             <td class="b-0">Diberikan di</td>
