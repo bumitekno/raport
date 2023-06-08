@@ -386,7 +386,7 @@
                     <table class="table">
                         <tbody>
                             <tr>
-                                <td class="b-0" colspan="3" style="font-size: 12pt">D. EKSTRAKULIKULER
+                                <td class="b-0" colspan="3" style="font-size: 12pt">D. EKSTRAKURIKULER
                                 </td>
                             </tr>
                             <tr>
@@ -430,7 +430,7 @@
                 <td colspan="7" class="b-0" style="padding: 0px !important">
                     <table class="table">
                         <tr>
-                            <td class="b-0" colspan="2" style="font-size: 12pt">E. KETIDAK HADIRAN</td>
+                            <td class="b-0" colspan="2" style="font-size: 12pt">E. KETIDAKHADIRAN</td>
                         </tr>
                         <tr>
                             <td>
@@ -530,7 +530,7 @@
                     <table class="table">
                         <tr>
                             <td class="b-0" style="text-align: right" colspan="7">
-                                Temangung, '20 Mei 2023
+                                Temangung, 20 Mei 2023
                             </td>
                         </tr>
                         <tr>

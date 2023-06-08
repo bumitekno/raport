@@ -56,7 +56,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-xl-8 col-lg-12 col-md-12 col-sm-12 col-12 layout-spacing">
+            {{-- <div class="col-xl-8 col-lg-12 col-md-12 col-sm-12 col-12 layout-spacing">
                 <div class="widget widget-chart-one">
                     <div class="widget-heading">
                         <h5 class="">Revenue</h5>
@@ -73,9 +73,9 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> --}}
 
-            <div class="col-xl-4 col-lg-12 col-md-12 col-sm-12 col-12 layout-spacing">
+            {{-- <div class="col-xl-4 col-lg-12 col-md-12 col-sm-12 col-12 layout-spacing">
                 <div class="widget widget-table-one">
                     <div class="widget-heading d-flex justify-content-between">
                         <h5 class="my-auto">Nilai Siswa</h5>
@@ -205,7 +205,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> --}}
         </div>
     </div>
 @endsection

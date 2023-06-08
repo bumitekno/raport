@@ -272,7 +272,7 @@
                 <td colspan="3" class="b-0" style="padding: 0px !important">
                     <table class="table">
                         <tr>
-                            <td class="b-0" colspan="2" style="font-size: 12pt">C. KETIDAK HADIRAN</td>
+                            <td class="b-0" colspan="2" style="font-size: 12pt">C. KETIDAKHADIRAN</td>
                         </tr>
                         <tr>
                             <td>
