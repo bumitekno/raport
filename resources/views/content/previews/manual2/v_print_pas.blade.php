@@ -180,10 +180,7 @@
                 <td class="b-0" colspan="7" style="font-size: 12pt">A. NILAI AKADEMIK</td>
             </tr>
             <tr>
-                <th class="text-center vertical-middle" style="width: 45px" rowspan="3">
-                    No
-                </th>
-                <th class="text-center" rowspan="3">
+                <th class="text-center" rowspan="3" colspan="2">
                     Mata Pelajaran</th>
                 <th class="text-center" rowspan="3" style="width: 70px">
                     Kriteria Ketuntasan Minimum (KKM)</th>
@@ -225,10 +222,10 @@
                             @php
                                 $sub_total_assegment += (float) $score['final_assegment'];
                                 $sub_total_skill += (float) $score['final_skill'];
+                                $no_course++;
                             @endphp
                             <tr>
-                                <td class="text-center">{{ $no_course++ }}</td>
-                                <td>
+                                <td colspan="2">
                                     {{ $score['course'] }}</td>
                                 <td class="text-center">
                                     {{ $score['kkm'] }}</td>
