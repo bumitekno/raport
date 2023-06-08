@@ -769,7 +769,7 @@ class PreviewController extends Controller
             'nip_teacher' => $teacher ? $teacher->nip : '',
             'signature' => $config && $config['signature'] != null ? public_path($config->signature) : null,
         ];
-        // dd("ping");
+        dd("hallo user");
 
         $result_achievement = Achievement::where([
             ['id_student_class', $student_class->id],
