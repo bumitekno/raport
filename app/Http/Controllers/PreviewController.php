@@ -726,11 +726,13 @@ class PreviewController extends Controller
                 ['id_extra', $extra->id],
             ])->first();
 
-            $id_extra = $extra->id;
-            $name = $extra->name;
-            $score = null;
-            $description = null;
+
             if ($score_extra) {
+                $id_extra = $extra->id;
+                $name = $extra->name;
+                $score = null;
+                $description = null;
+
                 $scoreData = json_decode($score_extra->score);
                 foreach ($scoreData as $data) {
                     if ($data->id_student_class == $student_class->id) {
@@ -739,13 +741,14 @@ class PreviewController extends Controller
                         break;
                     }
                 }
+
+                $result_extra[] = [
+                    'id_extra' => $id_extra,
+                    'name' => $name,
+                    'score' => $score ? $score : null,
+                    'description' => $description ? $description : null
+                ];
             }
-            $result_extra[] = [
-                'id_extra' => $id_extra,
-                'name' => $name,
-                'score' => $score ? $score : null,
-                'description' => $description ? $description : null
-            ];
         }
 
         $note = TeacherNote::where([
