@@ -20,3 +20,5 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
+resources/views/content/previews/manual2/v_print_pas.blade.php
+app/Http/Controllers/PreviewController.php
