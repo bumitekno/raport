@@ -210,7 +210,7 @@
                 @endphp
                 @foreach ($result_score as $group => $scores)
                     <tr>
-                        <td colspan="7"><b>Kelompok {{ $group }}</b></td>
+                        <td colspan="7"><b>{{ $group }}</b></td>
                     </tr>
                     @if (!empty($scores))
                         @php
