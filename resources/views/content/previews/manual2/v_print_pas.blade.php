@@ -37,7 +37,7 @@
         .table td p {
             margin: 0px;
             text-align: justify;
-            font-size: 9pt;
+            /* font-size: 9pt; */
         }
 
         .table th {
@@ -519,8 +519,8 @@
                                 <br><br><br><br>
                                 <p>&nbsp;</p>
                             </td>
-                            <td colspan="3" class="b-0 text-center" style="vertical-align: top">
-                                <div style="margin: 0 auto; width: 50%;">
+                            <td colspan="3" class="b-0 text-center" style="vertical-align: top; width: 50%">
+                                <div style="margin: 0 auto;">
                                     <p class="text-uppercase text-center">Kepala Sekolah</p>
                                     @if ($result_other['signature'] != null)
                                         <center>
