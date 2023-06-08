@@ -37,7 +37,7 @@
         .table td p {
             margin: 0px;
             text-align: justify;
-            font-size: 9pt;
+            /*font-size: 9pt;*/
         }
 
         .table th {
@@ -180,10 +180,7 @@
                 <td class="b-0" colspan="7" style="font-size: 12pt">A. NILAI AKADEMIK</td>
             </tr>
             <tr>
-                <th class="text-center vertical-middle" style="width: 45px" rowspan="3">
-                    No
-                </th>
-                <th class="text-center" rowspan="3">
+                <th class="text-center" rowspan="3" colspan="2">
                     Mata Pelajaran</th>
                 <th class="text-center" rowspan="3" style="width: 70px">
                     Kriteria Ketuntasan Minimum (KKM)</th>
@@ -225,10 +222,10 @@
                             @php
                                 $sub_total_assegment += (float) $score['final_assegment'];
                                 $sub_total_skill += (float) $score['final_skill'];
+                                $no_course++;
                             @endphp
                             <tr>
-                                <td class="text-center">{{ $no_course++ }}</td>
-                                <td>
+                                <td colspan="2">
                                     {{ $score['course'] }}</td>
                                 <td class="text-center">
                                     {{ $score['kkm'] }}</td>
@@ -519,8 +516,8 @@
                                 <br><br><br><br>
                                 <p>&nbsp;</p>
                             </td>
-                            <td colspan="3" class="b-0 text-center" style="vertical-align: top">
-                                <div style="margin: 0 auto; width: 50%;">
+                            <td colspan="3" class="b-0 text-center" style="vertical-align: top; width: 50%">
+                                <div style="margin: 0 auto;">
                                     <p class="text-uppercase text-center">Kepala Sekolah</p>
                                     @if ($result_other['signature'] != null)
                                         <center>

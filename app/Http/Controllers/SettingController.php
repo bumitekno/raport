@@ -13,7 +13,6 @@ class SettingController extends Controller
     {
         session()->put('title', 'Setelan Sekolah');
         $setting = json_decode(Storage::get('settings.json'), true);
-        // dd($setting);
         return view('content.setting.v_form_setting', compact('setting'));
     }
 
@@ -25,8 +24,6 @@ class SettingController extends Controller
             $data = ImageHelper::upload_asset($request, 'logo', 'logo', $data);
             $settings['logo'] = $data['logo'];
         }
-        // dd($data);
-
 
         $settings['name_school'] = $data['name_school'];
         $settings['name_application'] = $data['name_application'];

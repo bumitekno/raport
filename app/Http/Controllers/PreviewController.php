@@ -726,11 +726,13 @@ class PreviewController extends Controller
                 ['id_extra', $extra->id],
             ])->first();
 
-            $id_extra = $extra->id;
-            $name = $extra->name;
-            $score = null;
-            $description = null;
+
             if ($score_extra) {
+                $id_extra = $extra->id;
+                $name = $extra->name;
+                $score = null;
+                $description = null;
+
                 $scoreData = json_decode($score_extra->score);
                 foreach ($scoreData as $data) {
                     if ($data->id_student_class == $student_class->id) {
@@ -739,13 +741,14 @@ class PreviewController extends Controller
                         break;
                     }
                 }
+
+                $result_extra[] = [
+                    'id_extra' => $id_extra,
+                    'name' => $name,
+                    'score' => $score ? $score : null,
+                    'description' => $description ? $description : null
+                ];
             }
-            $result_extra[] = [
-                'id_extra' => $id_extra,
-                'name' => $name,
-                'score' => $score ? $score : null,
-                'description' => $description ? $description : null
-            ];
         }
 
         $note = TeacherNote::where([
@@ -802,17 +805,30 @@ class PreviewController extends Controller
                 'kkm' => $score_manual2 ? $score_manual2->kkm : null,
             ];
 
-            usort($result_score[$subject->course->group], function ($a, $b) {
+           usort($result_score[$subject->course->group], function ($a, $b) {
                 $aParts = explode(' ', $a['course']);
                 $bParts = explode(' ', $b['course']);
-
-                $aNumber = intval($aParts[0]);
-                $bNumber = intval($bParts[0]);
-
-                if ($aNumber === $bNumber) {
-                    return strcasecmp($a['course'], $b['course']);
+            
+                $aNumber = $aParts[0];
+                $bNumber = $bParts[0];
+            
+                $aNumberParts = explode('.', $aNumber);
+                $bNumberParts = explode('.', $bNumber);
+            
+                $aMainNumber = intval($aNumberParts[0]);
+                $bMainNumber = intval($bNumberParts[0]);
+            
+                if ($aMainNumber === $bMainNumber) {
+                    $aSubNumber = isset($aNumberParts[1]) ? intval($aNumberParts[1]) : 0;
+                    $bSubNumber = isset($bNumberParts[1]) ? intval($bNumberParts[1]) : 0;
+            
+                    if ($aSubNumber === $bSubNumber) {
+                        return strnatcasecmp($a['course'], $b['course']);
+                    } else {
+                        return $aSubNumber - $bSubNumber;
+                    }
                 } else {
-                    return $aNumber - $bNumber;
+                    return $aMainNumber - $bMainNumber;
                 }
             });
         }
