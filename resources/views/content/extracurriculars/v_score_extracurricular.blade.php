@@ -132,8 +132,8 @@
                                                                             <th class="align-middle">No</th>
                                                                             <th class="align-middle">Siswa</th>
                                                                             <th class="align-middle text-center">NIS</th>
-                                                                            <th class="align-middle">Status Naik</th>
-                                                                            <th class="align-middle">Deskripsi</th>
+                                                                            <th class="align-middle">Predikat</th>
+                                                                            <th class="align-middle">Keterangan</th>
                                                                         </tr>
 
                                                                     </thead>
@@ -159,18 +159,7 @@
                                                                                     value="{{ $student['id_student_class'] }}">
                                                                                 <td>{{ $student['nis'] }}</td>
                                                                                 <td>
-                                                                                    <select name="score[]"
-                                                                                        class="form-control" {{ $student['status_form'] == false ? 'disabled' : '' }}>
-                                                                                        <option value="sangat_baik" {{ $student['score'] == 'sangat_baik' ? 'selected' : '' }}>Sangat
-                                                                                            Baik
-                                                                                        </option>
-                                                                                        <option value="baik" {{ $student['score'] == 'baik' ? 'selected' : '' }}>Baik
-                                                                                        </option>
-                                                                                        <option value="cukup" {{ $student['score'] == 'cukup' ? 'selected' : '' }}>Cukup
-                                                                                        </option>
-                                                                                        <option value="kurang" {{ $student['score'] == 'kurang' ? 'selected' : '' }}>Kurang
-                                                                                        </option>
-                                                                                    </select>
+                                                                                    <input type="text" class="form-control" name="score[]" {{ $student['status_form'] == false ? 'readonly' : '' }} value="{{ $student['score'] }}">
                                                                                     @error('score.' . $index)
                                                                                         <div class="invalid-feedback d-block">
                                                                                             {{ $message }}</div>
