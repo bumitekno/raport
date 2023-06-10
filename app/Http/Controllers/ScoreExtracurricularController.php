@@ -60,7 +60,7 @@ class ScoreExtracurricularController extends Controller
                     }
                 }
             } else {
-                $score = 'baik';
+                $score = '';
                 $description = null;
             }
 
