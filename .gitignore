@@ -21,4 +21,5 @@ yarn-error.log
 /.idea
 /.vscode
 resources/views/content/previews/manual2/v_print_pas.blade.php
+/resources/views/layout/admin/v_sidebar_admin.blade.php
 app/Http/Controllers/PreviewController.php

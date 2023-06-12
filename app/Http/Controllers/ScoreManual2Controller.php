@@ -2,21 +2,27 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\ScoreManual2Export;
 use App\Helpers\Helper;
 use App\Http\Requests\Manual\Score2Request;
+use App\Imports\ScoreManual2Import;
 use App\Models\Config;
 use App\Models\Kkm;
 use App\Models\PredicatedScore;
 use App\Models\ScoreManual2;
 use App\Models\StudentClass;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ScoreManual2Controller extends Controller
 {
     public function index()
     {
         $predicated = PredicatedScore::all();
+        // dd($predicated);
         session()->put('title', 'Input Nilai');
         $students = StudentClass::join('users', 'student_classes.id_student', '=', 'users.id')
             ->select('student_classes.id', 'student_classes.slug', 'student_classes.id_student', 'student_classes.status',  'student_classes.year', 'users.name', 'users.gender', 'users.file', 'users.email', 'users.nis')
@@ -99,5 +105,38 @@ class ScoreManual2Controller extends Controller
         }
         Helper::toast('Berhasil menyimpan nilai', 'success');
         return redirect()->back();
+    }
+
+    public function export()
+    {
+        $title = '' . Carbon::now()->timestamp . '_format_mapel.xls';
+        $MAX_LENGTH = 31;
+
+        if (mb_strlen($title) > $MAX_LENGTH) {
+            $truncated_title = mb_substr($title, 0, 28) . '...';
+            $title = $truncated_title;
+        }
+        return Excel::download(new ScoreManual2Export, $title);
+    }
+
+    public function import(Request $request)
+    {
+        $this->validate($request, [
+            'file' => 'required|mimes:csv,xls,xlsx'
+        ]);
+
+        try {
+            $file = $request->file('file');
+            $nama_file = $file->hashName();
+            $path = $file->storeAs('public/excel/', $nama_file);
+            Excel::import(new ScoreManual2Import(), storage_path('app/public/excel/' . $nama_file));
+            Storage::delete($path);
+            Helper::toast('Data Berhasil Diimport', 'success');
+            return redirect()->route('manual2s.scores.index');
+        } catch (\Throwable $e) {
+            Helper::toast($e->getMessage(), 'errror');
+            // dd($e->getMessage());
+            return redirect()->route('manual2s.scores.index');
+        }
     }
 }

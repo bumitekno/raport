@@ -27,10 +27,10 @@ class ExtracurricularRequest extends FormRequest
             'id_extra' => ['required', 'integer'],
             'id_student_class' => 'required|array|min:1',
             'id_student_class.*' => 'required|integer',
-            'score' => 'array|min:1',
-            'score.*' => 'string',
-            'description' => 'required|array|min:1',
-            'description.*' => 'required|string',
+            'score' => 'nullable|array|min:1',
+            'score.*' => 'nullable|string',
+            'description' => 'nullable|array|min:1',
+            'description.*' => 'nullable|string',
         ];
     }
 
@@ -42,7 +42,10 @@ class ExtracurricularRequest extends FormRequest
             'id_student_class.min' => 'At least one student class must be selected',
             'id_student_class.*.required' => 'The student class is required',
             'id_student_class.*.integer' => 'The student class must be an integer',
+            'score.required' => 'The score is required',
             'score.min' => 'At least one score must be selected',
+            'score.*.required' => 'The score is required',
+            'score.*.in' => 'The score must be one of sangat_baik, baik, cukup, or kurang',
             'description.required' => 'The description is required',
             'description.min' => 'At least one description must be provided',
             'description.*.required' => 'The description is required',

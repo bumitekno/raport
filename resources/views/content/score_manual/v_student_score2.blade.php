@@ -4,6 +4,7 @@
         @include('package.loader.loader_css')
         @include('package.fonts.fontawesome_css')
         <link rel="stylesheet" type="text/css" href="{{ asset('asset/custom/account-setting.css') }}">
+        @include('package.modal.modal_css')
     @endpush
     <div class="layout-px-spacing">
         <div class="middle-content container-xxl p-0">
@@ -22,7 +23,21 @@
                 <div class="col-xl-12 col-lg-12 col-sm-12 layout-top-spacing layout-spacing">
                     <div class="statbox widget box box-shadow">
                         <div class="widget-header">
-                            <h4>{{ session('title') }}</h4>
+                            <div class="d-flex justify-content-between">
+                                <h4>{{ session('title') }}</h4>
+                                <a href="javascript:void(0)" data-toggle="modal" data-target="#importModal"
+                                    class="mx-3 text-info my-auto">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round">
+                                        <rect x="3" y="3" width="18" height="18" rx="2"
+                                            ry="2"></rect>
+                                        <line x1="16" y1="8" x2="8" y2="8"></line>
+                                        <line x1="16" y1="16" x2="8" y2="16"></line>
+                                        <line x1="10" y1="12" x2="3" y2="12"></line>
+                                    </svg>
+                                </a>
+                            </div>
                         </div>
                         <form action="{{ route('manual2s.scores.storeOrUpdate') }}" method="post">
                             @csrf
@@ -121,12 +136,45 @@
             </div>
         </div>
     </div>
+    @push('modals')
+        <div class="modal fade" id="importModal" tabindex="-1" aria-labelledby="importModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="importExportModalLabel">Import / Export Excel</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form action="{{ route('manual2s.scores.import') }}" method="POST"
+                            enctype="multipart/form-data">
+                            @csrf
+                            <div class="form-group">
+                                <label for="importTemplate">Download Template Excel</label>
+                                <a href="{{ route('manual2s.scores.export') }}" class="btn btn-success btn-sm">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M3 15v4c0 1.1.9 2 2 2h14a2 2 0 0 0 2-2v-4M17 9l-5 5-5-5M12 12.8V2.5" />
+                                    </svg>
+                                    Download</a>
+                            </div>
+                            <div class="form-group">
+                                <label for="importFile">Select Excel File to Import</label>
+                                <input type="file" name="file" class="form-control-file" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-block btn-lg">Import</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    @endpush
     @push('scripts')
         <script>
             $(document).ready(function() {
                 var predicated = @json($predicated);
-                // console.log(predicated);
-                // saat nilai diinputkan
                 $("input[name='final_assegment[]']").keyup(function() {
                     // ambil nilai-nilai yang dibutuhkan
                     var final_assegment = parseFloat($(this).closest("tr").find(

@@ -374,6 +374,8 @@
                                 <th class="text-center">
                                     Kegiatan Ekstrakurikuler</th>
                                 <th class="text-center">
+                                    Predikat</th>
+                                <th class="text-center">
                                     Keterangan</th>
                             </tr>
                             @if (!empty($result_extra))
@@ -381,12 +383,13 @@
                                     <tr>
                                         <td class="text-center">{{ $loop->iteration }}</td>
                                         <td>{{ $extra['name'] }}</td>
+                                        <td class="text-center">{{ $extra['score'] }}</td>
                                         <td>{{ $extra['description'] }}</td>
                                     </tr>
                                 @endforeach
                             @else
                                 <tr>
-                                    <td colspan="3" class="text-center">Ekstrakurikuler belum tersedia</td>
+                                    <td colspan="4" class="text-center">Ekstrakurikuler belum tersedia</td>
                                 </tr>
                             @endif
                         </tbody>
