@@ -341,7 +341,7 @@
                         </td>
                         <td style="width: 500px">
                             <div
-                                @if ($result_other['signature'] != null) style="background: url('{{ $result_other['signature'] }}') no-repeat left; background-size: 200px" @endif>
+                                @if ($result_other['signature'] != null) style="background: url('{{ $result_other['signature'] }}') no-repeat left; background-size: 100px" @endif>
                                 <p> Kepala Sekolah</p>
 
                                 <br><br><br><br>

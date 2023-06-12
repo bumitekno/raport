@@ -15,6 +15,7 @@ use App\Models\TemplateConfiguration;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use PDF;
+use DB;
 
 class LegerController extends Controller
 {
@@ -42,7 +43,6 @@ class LegerController extends Controller
             ->where('subject_teachers.id_school_year', session('id_school_year'))
             ->select('subject_teachers.id', 'c.name', 'subject_teachers.id_course', 'subject_teachers.id_teacher')
             ->get();
-        // dd($subject_teachers);
 
         $code_course = SubjectTeacher::join('courses as c', 'c.id', '=', 'subject_teachers.id_course')
             ->leftJoin('kkms', function ($join) use ($study_class) {
@@ -52,7 +52,8 @@ class LegerController extends Controller
             })
             ->where('subject_teachers.id_school_year', session('id_school_year'))
             ->whereRaw('JSON_CONTAINS(subject_teachers.id_study_class, \'["' . $study_class->id . '"]\')')
-            ->select('subject_teachers.id', 'c.code as code', 'kkms.score')
+            ->select('subject_teachers.id', 'c.code as code', DB::raw('MAX(kkms.score) as score'))
+            ->groupBy('subject_teachers.id', 'c.code')
             ->get()
             ->toArray();
 
@@ -158,8 +159,11 @@ class LegerController extends Controller
             'course' => $code_course,
             'setting' => $setting
         );
+        
+        // dd($results);
         if ($request->pdf) {
-            $pdf = PDF::loadView('content.legers.v_print_leger', compact('results'))->setPaper('landscape');
+            $pdf = PDF::loadView('content.legers.v_print_leger', compact('results'));
+            $pdf->setPaper('A4', 'landscape');
             return $pdf->stream();
         }
         // dd($results);

@@ -27,10 +27,10 @@ class ExtracurricularRequest extends FormRequest
             'id_extra' => ['required', 'integer'],
             'id_student_class' => 'required|array|min:1',
             'id_student_class.*' => 'required|integer',
-            'score' => 'required|array|min:1',
-            'score.*' => 'required|string|in:sangat_baik,baik,cukup,kurang',
-            'description' => 'required|array|min:1',
-            'description.*' => 'required|string',
+            'score' => 'nullable|array|min:1',
+            'score.*' => 'nullable|string',
+            'description' => 'nullable|array|min:1',
+            'description.*' => 'nullable|string',
         ];
     }
 

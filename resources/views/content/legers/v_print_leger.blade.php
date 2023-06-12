@@ -19,7 +19,6 @@
             margin: 5px 0;
         }
 
-
         table {
             width: 100%;
             border-collapse: collapse;
@@ -29,8 +28,10 @@
         th,
         td {
             border: 1px solid #000;
-            padding: 8px;
+            padding: 4px;
             text-align: center;
+            height: 30px;
+            /* Tinggi baris */
         }
 
         th {
@@ -45,7 +46,25 @@
         .vertical-text span {
             display: inline-block;
             transform: rotate(90deg);
+            width: 13px;
             writing-mode: vertical-lr;
+        }
+
+        /* Mengurangi ukuran font pada kolom nilai dan nama mata pelajaran */
+        td.score,
+        th.vertical-text span {
+            font-size: 8px;
+        }
+
+        /* Mengatur lebar kolom agar tidak terpotong */
+        .student-column {
+            width: 100px;
+            /* Sesuaikan lebar kolom siswa */
+        }
+
+        .score-column {
+            width: 15px;
+            /* Sesuaikan lebar kolom nilai */
         }
     </style>
 </head>
@@ -74,17 +93,17 @@
                 <tr>
                     <th class="text-center">No</th>
                     <th>NIS</th>
-                    <th>Nama</th>
+                    <th class="student-column">Nama</th>
                     @foreach ($results['course'] as $course)
                         <th class="text-center vertical-text">
-                            <span>{{ $course['code'] }}</span>
+                            <span style="font-size: 8px;">{{ $course['code'] }}</span>
                         </th>
                     @endforeach
                 </tr>
                 <tr>
                     <td colspan="3" class="text-center"><b>KKM</b></td>
                     @foreach ($results['course'] as $course)
-                        <td class="text-center"><b>{{ $course['score'] }}</b></td>
+                        <td class="text-center" style="font-size: 8px;"><b>{{ $course['score'] }}</b></td>
                     @endforeach
                 </tr>
             </thead>
@@ -93,10 +112,10 @@
                     <tr>
                         <td class="text-center">{{ $loop->iteration }}</td>
                         <td>{{ $score['nis'] }}</td>
-                        <td>{{ $score['name'] }}</td>
+                        <td class="student-column">{{ $score['name'] }}</td>
 
                         @foreach ($score['score'] as $score_student)
-                            <td class="text-center">
+                            <td class="text-center score-column score">
                                 @if (is_array($score_student['score']))
                                     {{ '--' }}
                                 @else

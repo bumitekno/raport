@@ -90,7 +90,7 @@
                                 style="width: 85%;">
                         </td>
 
-                        <td style="width:70%; text-align: center;" class="b-0">
+                        <td style="width:75%; text-align: center;" class="b-0">
                             <div class="text-uppercase" style="line-height: 1.1; font-family: 'Arial'; font-size: 12pt">
                                 BADAN PENGEMBANGAN SUMBER DAYA MANUSIA INDUSTRI
                             </div>
@@ -505,7 +505,7 @@
                             <td class="b-0" colspan="2">KEPUTUSAN</td>
                         </tr>
                         <tr>
-                            <td class="b-0">tanggal</td>
+                            <td class="b-0">Tanggal</td>
                             <td class="b-0">:
                                 20 Mei 2023
                             </td>
@@ -530,7 +530,7 @@
                     <table class="table">
                         <tr>
                             <td class="b-0" style="text-align: right" colspan="7">
-                                Temangung, 20 Mei 2023
+                                Temanggung, 20 Mei 2023
                             </td>
                         </tr>
                         <tr>
