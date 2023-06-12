@@ -87,6 +87,23 @@
                 <td>: {{ $results['setting']['teacher'] }}</td>
             </tr>
         </table>
+        @php
+            $totalScores = [];
+            
+            foreach ($results['score'] as $index => $score) {
+                $totalScore = 0;
+                foreach ($score['score'] as $score_student) {
+                    $assigmentScore = $score_student['score']['assigment'] ?? 0;
+                    $skillScore = $score_student['score']['skill'] ?? 0;
+                    $totalScore += $assigmentScore + $skillScore;
+                }
+            
+                $totalScores[$index] = $totalScore;
+            }
+            
+            arsort($totalScores);
+            $rankings = array_keys($totalScores);
+        @endphp
 
         <table>
             <thead>
@@ -115,15 +132,6 @@
                         <td class="text-center">{{ $loop->iteration }}</td>
                         <td>{{ $score['nis'] }}</td>
                         <td>{{ $score['name'] }}</td>
-                        @php
-                            $totalScore = 0;
-                            foreach ($score['score'] as $score_student) {
-                                $assigmentScore = $score_student['score']['assigment'];
-                                $skillScore = $score_student['score']['skill'];
-                                $totalScore += ($assigmentScore !== null ? $assigmentScore : 0) + ($skillScore !== null ? $skillScore : 0);
-                            }
-                            $totalScores[] = $totalScore;
-                        @endphp
 
                         @foreach ($score['score'] as $score_student)
                             <td class="text-center score-column score">
@@ -141,8 +149,17 @@
                                 @endif
                             </td>
                         @endforeach
-                        <td class="text-center score-column score">{{ $totalScore }}</td>
-                        <td class="text-center score-column score">{{ array_search($totalScore, $totalScores) + 1 }}
+                        <td class="text-center score-column score"> @php
+                            $totalScore = 0;
+                            foreach ($score['score'] as $score_student) {
+                                $assigmentScore = $score_student['score']['assigment'] ?? 0;
+                                $skillScore = $score_student['score']['skill'] ?? 0;
+                                $totalScore += $assigmentScore + $skillScore;
+                            }
+                            
+                            echo $totalScore;
+                        @endphp</td>
+                        <td class="text-center score-column score"> {{ array_search($index, $rankings) + 1 }}
                         </td>
                     </tr>
                 @endforeach
