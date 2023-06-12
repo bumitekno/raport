@@ -301,6 +301,8 @@ Route::middleware('auth:user,admin,parent,teacher')->group(function () {
         Route::prefix('score')->name('scores.')->group(function () {
             Route::get('/', [ScoreManual2Controller::class, 'index'])->name('index');
             Route::post('update', [ScoreManual2Controller::class, 'storeOrUpdate'])->name('storeOrUpdate');
+            Route::get('export', [ScoreManual2Controller::class, 'export'])->name('export');
+            Route::post('imprt', [ScoreManual2Controller::class, 'import'])->name('import');
         });
     });
 

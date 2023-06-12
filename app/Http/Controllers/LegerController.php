@@ -19,7 +19,6 @@ use DB;
 
 class LegerController extends Controller
 {
-    //
     public function byClass(Request $request, $slug)
     {
         $setting = json_decode(Storage::get('settings.json'), true);
@@ -101,10 +100,6 @@ class LegerController extends Controller
                 ->where('id_school_year', session('id_school_year'))
                 ->get();
         }
-        // dd($scores);
-
-
-
         foreach ($student_class as $student) {
             $arr_student_class[] = [
                 'id' => $student->id,
@@ -159,7 +154,6 @@ class LegerController extends Controller
             'course' => $code_course,
             'setting' => $setting
         );
-        
         // dd($results);
         if ($request->pdf) {
             $pdf = PDF::loadView('content.legers.v_print_leger', compact('results'));
