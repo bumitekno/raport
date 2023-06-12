@@ -207,6 +207,7 @@
                 @php
                     $total_assegment = 0;
                     $total_skill = 0;
+                    $jumlah_course = 0;
                 @endphp
                 @foreach ($result_score as $group => $scores)
                     <tr>
@@ -220,9 +221,11 @@
                         @endphp
                         @foreach ($scores as $score)
                             @php
-                                $sub_total_assegment += (float) $score['final_assegment'];
-                                $sub_total_skill += (float) $score['final_skill'];
-                                $no_course++;
+                                if (!empty($score['final_assegment']) && !empty($score['final_skill'])) {
+                                    $sub_total_assegment += (float) $score['final_assegment'];
+                                    $sub_total_skill += (float) $score['final_skill'];
+                                    $no_course++;
+                                }
                             @endphp
                             <tr>
                                 <td colspan="2">
@@ -244,12 +247,14 @@
                             </tr>
                         @endforeach
                         @php
-                            $total_assegment += (float) $sub_total_assegment;
-                            $total_skill += (float) $sub_total_skill;
+                            if ($no_course > 1) {
+                                $total_assegment += (float) $sub_total_assegment;
+                                $total_skill += (float) $sub_total_skill;
+                                $jumlah_course += $no_course - 1;
+                            }
                         @endphp
                         <tr>
-                            <td colspan="3" class="text-center"><b>Sub
-                                    Total</b></td>
+                            <td colspan="3" class="text-center"><b>Sub Total</b></td>
                             <td class="text-center">{{ $sub_total_assegment }}</td>
                             <td></td>
                             <td class="text-center">{{ $sub_total_skill }}</td>
@@ -257,6 +262,10 @@
                         </tr>
                     @endif
                 @endforeach
+                @php
+                    $rata_assegment = $jumlah_course > 0 ? round($total_assegment / $jumlah_course, 1) : 0;
+                    $rata_skill = $jumlah_course > 0 ? round($total_skill / $jumlah_course, 1) : 0;
+                @endphp
                 <tr>
                     <td colspan="3" class="text-center">
                         <b>Total</b>
@@ -268,10 +277,10 @@
                 </tr>
                 <tr>
                     <td colspan="3" class="text-center">
-                        Rata - rata
+                        Rata-rata
                     </td>
-                    <td colspan="2" class="text-center">{{ round($total_assegment / $no_course, 1) }}</td>
-                    <td colspan="2" class="text-center">{{ round($total_skill / $no_course, 1) }}</td>
+                    <td colspan="2" class="text-center">{{ $rata_assegment }}</td>
+                    <td colspan="2" class="text-center">{{ $rata_skill }}</td>
                 </tr>
                 <tr>
                     <td colspan="5" class="b-0"></td>
@@ -522,7 +531,7 @@
                                     @if ($result_other['signature'] != null)
                                         <center>
                                             <img src="{{ $result_other['signature'] }}" alt=""
-                                                srcset="" style="height: 150px">
+                                                srcset="" style="height: 80px">
                                         </center>
                                     @endif
                                     <p
