@@ -15,6 +15,7 @@ use App\Models\TemplateConfiguration;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use PDF;
+use Illuminate\Support\Facades\DB;
 
 class LegerController extends Controller
 {
@@ -69,7 +70,6 @@ class LegerController extends Controller
             ['id_major', $study_class->id_major],
             ['id_school_year', session('id_school_year')],
         ])->first();
-        // dd($template);
 
         if ($template['template'] == 'merdeka') {
             // dd($subject_teachers->pluck('id_course')->unique()->toArray());
@@ -99,6 +99,7 @@ class LegerController extends Controller
                 ->where('id_school_year', session('id_school_year'))
                 ->get();
         }
+        // dd($scores);
         foreach ($student_class as $student) {
             $arr_student_class[] = [
                 'id' => $student->id,
@@ -107,6 +108,7 @@ class LegerController extends Controller
                 'score' => $subject_teachers,
             ];
         }
+        // dd($arr_student_class);
 
         $nilai_map = collect($arr_student_class)->map(function ($a) {
             return (array) $a;
@@ -125,6 +127,8 @@ class LegerController extends Controller
                     $scoresFiltered = $scoresFiltered->whereIn('id_course', collect($nmv['score'])->pluck('id_course')->unique())
                         ->whereIn('id_teacher', collect($nmv['score'])->pluck('id_teacher')->unique());
                 }
+
+                // dd($scoresFiltered);
             }
 
             $nmv['score'] = collect($nmv['score'])->map(function ($nmn) use ($template, $scoresFiltered) {
@@ -135,7 +139,11 @@ class LegerController extends Controller
                     $raport_ = $scoresFiltered->where('id_course', $nmn['id_course'])
                         ->where('id_teacher', $nmn['id_teacher'])
                         ->first();
-                    $final_score = $raport_ ? ($template['template'] == 'merdeka' ? $raport_['final_score'] : ($template['template'] == 'manual2' ? $raport_['final_assegment'] : $raport_['score_final'])) : [];
+                    if ($template['template'] == 'manual2') {
+                        $final_score = $raport_ ? ['assigment' => $raport_['final_assegment'], 'skill' => $raport_['final_skill']] : ['assigment' => null, 'skill' => null];
+                    } else {
+                        $final_score = $raport_ ? ($template['template'] == 'merdeka' ? $raport_['final_score'] : $raport_['score_final']) : [];
+                    }
                 }
 
                 return [
@@ -156,12 +164,20 @@ class LegerController extends Controller
 
         // dd($results);
         if ($request->pdf) {
-            $pdf = PDF::loadView('content.legers.v_print_leger', compact('results'));
+            if ($template['template'] == 'manual2') {
+                $pdf = PDF::loadView('content.legers.v_print_leger_skill', compact('results'));
+            } else {
+                $pdf = PDF::loadView('content.legers.v_print_leger', compact('results'));
+            }
             $pdf->setPaper('A4', 'landscape');
             return $pdf->stream();
         }
         // dd($results);
-        return view('content.legers.v_list_leger', compact('results', 'slug'));
+        if ($template['template'] == 'manual2') {
+            return view('content.legers.v_list_leger_skill', compact('results', 'slug'));
+        } else {
+            return view('content.legers.v_list_leger', compact('results', 'slug'));
+        }
     }
 
     public function listClass()
