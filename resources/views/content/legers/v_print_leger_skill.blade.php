@@ -108,16 +108,16 @@
         <table>
             <thead>
                 <tr>
-                    <th class="text-center" rowspan="2">No</th>
+                    <th class="text-center" rowspan="2" style="width: 10px">No</th>
                     <th rowspan="2" style="font-size: 8px; width: 20px">NIS</th>
-                    <th rowspan="2" class="student-column" style="font-size: 8px; width: 40px">Nama</th>
+                    <th rowspan="2" class="student-column" style="font-size: 8px;">Nama</th>
                     @foreach ($results['course'] as $course)
                         <th class="text-center vertical-text" colspan="2" style="width: 10px">
                             <div class="rotate-text" style="font-size: 8px;">{{ $course['code'] }}</div>
                         </th>
                     @endforeach
-                    <th rowspan="2">Jumlah</th>
-                    <th rowspan="2">Ranking</th>
+                    <th rowspan="2" style="font-size: 8px;">Jumlah</th>
+                    <th rowspan="2" style="font-size: 8px;">Ranking</th>
                 </tr>
                 <tr>
                     @foreach ($results['course'] as $course)
@@ -127,9 +127,9 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($results['score'] as $score)
+                @foreach ($results['score'] as $index => $score)
                     <tr>
-                        <td class="text-center">{{ $loop->iteration }}</td>
+                        <td class="text-center">{{ $index + 1 }}</td>
                         <td style="font-size: 8px;">{{ $score['nis'] }}</td>
                         <td style="font-size: 8px;">{{ $score['name'] }}</td>
 
