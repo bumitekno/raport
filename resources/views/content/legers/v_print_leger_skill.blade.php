@@ -46,7 +46,7 @@
         .vertical-text span {
             display: inline-block;
             transform: rotate(90deg);
-            width: 13px;
+            width: 8px;
             writing-mode: vertical-lr;
         }
 
@@ -109,10 +109,10 @@
             <thead>
                 <tr>
                     <th class="text-center" rowspan="2">No</th>
-                    <th rowspan="2">NIS</th>
-                    <th rowspan="2" class="student-column">Nama</th>
+                    <th rowspan="2" style="font-size: 8px; width: 20px">NIS</th>
+                    <th rowspan="2" class="student-column" style="font-size: 8px; width: 40px">Nama</th>
                     @foreach ($results['course'] as $course)
-                        <th class="text-center vertical-text" colspan="2">
+                        <th class="text-center vertical-text" colspan="2" style="width: 10px">
                             <div class="rotate-text" style="font-size: 8px;">{{ $course['code'] }}</div>
                         </th>
                     @endforeach
@@ -121,8 +121,8 @@
                 </tr>
                 <tr>
                     @foreach ($results['course'] as $course)
-                        <th class="text-center vertical-text" style="font-size: 8px;">P</th>
-                        <th class="text-center vertical-text" style="font-size: 8px;">K</th>
+                        <th class="text-center vertical-text" style="font-size: 8px; width: 5px">P</th>
+                        <th class="text-center vertical-text" style="font-size: 8px; width: 5px"">K</th>
                     @endforeach
                 </tr>
             </thead>
@@ -130,8 +130,8 @@
                 @foreach ($results['score'] as $score)
                     <tr>
                         <td class="text-center">{{ $loop->iteration }}</td>
-                        <td>{{ $score['nis'] }}</td>
-                        <td>{{ $score['name'] }}</td>
+                        <td style="font-size: 8px;">{{ $score['nis'] }}</td>
+                        <td style="font-size: 8px;">{{ $score['name'] }}</td>
 
                         @foreach ($score['score'] as $score_student)
                             <td class="text-center score-column score">
