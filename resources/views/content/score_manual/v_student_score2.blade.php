@@ -39,7 +39,7 @@
                                 </a>
                             </div>
                         </div>
-                        <form action="{{ route('manual2s.scores.storeOrUpdate') }}" method="post">
+                        <form action="{{ route('manual2s.scores.storeOrUpdate') }}" id="formUpdate" method="post">
                             @csrf
                             <div class="widget-content widget-content-area br-8">
                                 <div class="table-responsive">
@@ -218,14 +218,14 @@
                     $(this).closest("tr").find("input[name='predicate_skill[]']").val(predikat_skill);
                 });
 
-                $("form").submit(function() {
+                $("#formUpdate").submit(function() {
                     $('#btnLoader').removeClass('d-none');
                     $('#btnSubmit').addClass('d-none');
                 });
             });
 
             function submitForm() {
-                $('form').submit();
+                $('#formUpdate').submit();
             }
         </script>
     @endpush

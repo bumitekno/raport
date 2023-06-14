@@ -15,11 +15,7 @@ use App\Models\TemplateConfiguration;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use PDF;
-<<<<<<< HEAD
-use DB;
-=======
 use Illuminate\Support\Facades\DB;
->>>>>>> 25202d263f6aa8e29dc5b64ffe61d54ed7fbe810
 
 class LegerController extends Controller
 {
