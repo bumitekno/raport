@@ -7,6 +7,7 @@ use App\Http\Requests\SettingScore\KkmRequest;
 use App\Http\Resources\Master\SchoolYearResource;
 use App\Models\Kkm;
 use App\Models\SchoolYear;
+use App\Models\ScoreManual2;
 use App\Models\StudyClass;
 use App\Models\SubjectTeacher;
 use Illuminate\Http\Request;
@@ -78,6 +79,12 @@ class KkmController extends Controller
                     'score' => $data['score'][$index],
                 ]
             );
+
+            ScoreManual2::where('id_school_year', $idSchoolYear)
+                ->where('id_course', $data['id_course'][$index])
+                ->where('id_study_class', $data['id_study_class'][$index])
+                ->update(['score' => $data['score'][$index]]);
+
             Helper::toast('Berhasil menyimpan atau mengupdate data', 'success');
         }
 
