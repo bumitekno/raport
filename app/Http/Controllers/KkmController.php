@@ -83,7 +83,7 @@ class KkmController extends Controller
             ScoreManual2::where('id_school_year', $idSchoolYear)
                 ->where('id_course', $data['id_course'][$index])
                 ->where('id_study_class', $data['id_study_class'][$index])
-                ->update(['score' => $data['score'][$index]]);
+                ->update(['kkm' => $data['score'][$index]]);
 
             Helper::toast('Berhasil menyimpan atau mengupdate data', 'success');
         }
