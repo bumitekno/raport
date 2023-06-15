@@ -98,8 +98,8 @@ class CourseController extends Controller
                         $result .= '<div class="avatar">
                         <img alt="avatar" src="' . $file . '" class="rounded-circle  bs-tooltip" data-original-title="' . $teacher['nama_guru'] . '">
                     </div>';
-                        $result .= '</div>';
                     }
+                    $result .= '</div>';
                     return $result;
                 })
                 ->editColumn('classes', function ($row) {
