@@ -1,6 +1,19 @@
 @extends('layout.admin.v_main')
 @section('content')
     @push('styles')
+        <style>
+            /* Membuat kolom tetap */
+            .fixed-col {
+                position: sticky;
+                left: 0;
+                z-index: 2;
+                background-color: #fff;
+            }
+
+            .table-responsive {
+                overflow-x: auto;
+            }
+        </style>
     @endpush
     <div class="layout-px-spacing">
         <div class="middle-content container-xxl p-0">
@@ -80,12 +93,12 @@
                                     $rankings = array_keys($totalScores);
                                 @endphp
 
-                                <table class="table table-bordered mb-4" id="table-list">
+                                <table class="table table-bordered mb-4 table-hover" id="table-list">
                                     <thead>
                                         <tr>
-                                            <th class="text-center" rowspan="2">No</th>
-                                            <th rowspan="2">NIS</th>
-                                            <th rowspan="2">Nama</th>
+                                            <th class="text-center fixed-col" rowspan="2">No</th>
+                                            <th class="fixed-col" rowspan="2">NIS</th>
+                                            <th class="fixed-col" rowspan="2">Nama</th>
                                             @foreach ($results['course'] as $course)
                                                 <th class="text-center vertical-text" colspan="2">
                                                     <div class="rotate-text">{{ $course['code'] }}</div>
@@ -104,9 +117,9 @@
                                     <tbody>
                                         @foreach ($results['score'] as $index => $score)
                                             <tr>
-                                                <td class="text-center">{{ $index + 1 }}</td>
-                                                <td>{{ $score['nis'] }}</td>
-                                                <td>{{ $score['name'] }}</td>
+                                                <td class="text-center fixed-col">{{ $index + 1 }}</td>
+                                                <td class="fixed-col">{{ $score['nis'] }}</td>
+                                                <td class="fixed-col">{{ $score['name'] }}</td>
 
                                                 @foreach ($score['score'] as $score_student)
                                                     <td class="text-center">
