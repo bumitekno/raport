@@ -67,7 +67,7 @@ class ProfileRequest extends FormRequest
         if (Auth::guard('user')->check()) {
             $rules['nis'] = 'required|string|unique:users,nis,' . Auth::guard('user')->id();
             $rules['nisn'] = 'required|string|unique:users,nisn,' . Auth::guard('user')->id();
-            $rules['entry_year'] = 'required|numeric|min:1900|max:' . (date('Y') - 5);
+            $rules['entry_year'] = 'required|numeric|min:1900|max:' . (date('Y'));
             $rules['religion'] = 'required|string';
             $rules['family_status'] = 'required|in:kandung,tiri';
             $rules['child_off'] = 'required|string';

@@ -20,4 +20,14 @@ class User extends Authenticatable
     {
         $this->attributes['password'] = bcrypt($password);
     }
+
+    public function study_class()
+    {
+        return $this->belongsTo(StudyClass::class, 'accepted_grade');
+    }
+
+    public function families()
+    {
+        return $this->belongsToMany(UserParent::class, 'users', 'id_user', 'id');
+    }
 }

@@ -221,15 +221,13 @@
                         <td>6.</td>
                         <td>Status dalam Keluarga</td>
                         <td>:</td>
-                        {{-- <td>{{ $siswa['status_keluarga'] ?? '-' }}</td> --}}
-                        <td>-</td>
+                        <td>{{ $student_class->student->family_status ?? '-' }}</td>
                     </tr>
                     <tr>
                         <td>7.</td>
                         <td>Anak ke</td>
                         <td>:</td>
-                        {{-- <td>{{ $siswa['anak_ke'] ?? '-' }}</td> --}}
-                        <td>-</td>
+                        <td>{{ $student_class->student->child_off ?? '-' }}</td>
                     </tr>
                     <tr>
                         <td style="vertical-align: top">8.</td>
@@ -247,7 +245,7 @@
                         <td>10.</td>
                         <td>Sekolah Asal</td>
                         <td>:</td>
-                        <td></td>
+                        <td>{{ $student_class->student->school_from ?? '-' }}</td>
                     </tr>
                     <tr>
                         <td>11.</td>
@@ -259,15 +257,13 @@
                         <td></td>
                         <td>Di kelas</td>
                         <td>:</td>
-                        {{-- <td>{{ $siswa['kls_diterima'] ?? '-' }}</td> --}}
-                        <td>-</td>
+                        <td>{{ $student_class->student->accepted_grade ? $student_class->student->study_class->name ? '-' }}</td>
                     </tr>
                     <tr>
                         <td></td>
                         <td>Pada tanggal</td>
                         <td>:</td>
-                        {{-- <td>{{ $siswa['tgl_diterima'] == null ? '-' : (new \App\Helpers\Help())->getTanggal($siswa['tgl_diterima']) }} --}}
-                        <td>-</td>
+                        <td>{{ $student_class->student->accepted_date == null ? '-' : DateHelper::getTanggal($student_class->student->accepted_date) }}
                     </tr>
                     <tr>
                         <td>12.</td>
@@ -279,29 +275,26 @@
                         <td></td>
                         <td>a. Ayah</td>
                         <td>:</td>
-                        {{-- <td>{{ strtoupper($siswa['nama_ayah']) ?? '-' }}</td> --}}
+                        <td>{{ $familly['father'] == null ? strtoupper($familly['father']['name']) ?? '-' }}</td>
                         <td>-</td>
                     </tr>
                     <tr>
                         <td></td>
                         <td>b. Ibu</td>
                         <td>:</td>
-                        <td>-</td>
-                        {{-- <td>{{ strtoupper($siswa['nama_ibu']) ?? '-' }}</td> --}}
+                        <td>{{ $familly['mother'] == null ? strtoupper($familly['mother']['name']) ?? '-' }}</td>
                     </tr>
                     <tr>
                         <td>13.</td>
                         <td>Alamat Orang Tua</td>
                         <td>:</td>
-                        <td>-</td>
-                        {{-- <td>{{ $siswa['alamat_wali'] ?? '-' }}</td> --}}
+                        <td>{{ $familly['father'] == null ? $familly['father']['address'] ?? '-' }}</td>
                     </tr>
                     <tr>
                         <td></td>
                         <td>Nomor Telepon Rumah</td>
                         <td>:</td>
-                        {{-- <td>{{ $siswa['telp_wali'] ?? '-' }}</td> --}}
-                        <td>-</td>
+                        <td>{{ $familly['father'] == null ? $familly['father']['phone'] ?? '-' }}</td>
                     </tr>
                     <tr>
                         <td>14.</td>
@@ -313,22 +306,20 @@
                         <td></td>
                         <td>a. Ayah</td>
                         <td>:</td>
-                        {{-- <td>{{ $siswa['pekerjaan_ayah'] ?? '-' }}</td> --}}
-                        <td>-</td>
+                        <td>{{ $familly['father'] == null ? $familly['father']['job'] ?? '-' }}</td>
                     </tr>
                     <tr>
                         <td></td>
                         <td>b. Ibu</td>
                         <td>:</td>
-                        {{-- <td>{{ $siswa['pekerjaan_ibu'] ?? '-' }}</td> --}}
-                        <td>-</td>
+                        <td>{{ $familly['mother'] == null ? $familly['mother']['job'] ?? '-' }}</td>
                     </tr>
                     <tr>
                         <td>15.</td>
                         <td>Nama Wali Peserta Didik</td>
                         <td>:</td>
                         <td>-</td>
-                        {{-- <td>{{ strtoupper($siswa['nama_wali']) }}</td> --}}
+                        <td>{{ $familly['guardian'] == null ? strtoupper($familly['guardian']['name']) ?? '-' }}</td>
                     </tr>
 
                 </table>

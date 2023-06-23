@@ -216,7 +216,24 @@ class PreviewController extends Controller
         $student_class = StudentClass::where([
             ['slug', $_GET['student']],
             ['status', 1]
-        ])->with('student')->first();
+        ])->with(['student', 'student.study_class', 'student.families' => function ($query) {
+            $query->whereIn('type', ['father', 'mother', 'guardian']);
+        }])->first();
+
+        // Mendapatkan data parents yang bertype 'father' atau 'mother' jika ada, atau mengembalikan null jika tidak ada
+        $families = $student_class->student->families->first(function ($family) {
+            return $family->type === 'father' || $family->type === 'mother' || $family->type === 'guardian';
+        });
+
+        // Jika parents ditemukan, dapatkan data-nya, jika tidak, setel menjadi null
+        $father = $families && $families->type === 'father' ? $families : null;
+        $mother = $families && $families->type === 'mother' ? $families : null;
+        $guardian = $families && $families->type === 'guardian' ? $families : null;
+        $familly = [
+            'father' => $father,
+            'mother' => $mother,
+            'guardian' => $guardian,
+        ];
         // dd($student_class);
         $cover = Cover::where('id_school_year', $school_year->id)->first();
         // dd($cover);
@@ -234,7 +251,7 @@ class PreviewController extends Controller
             'signature' => $config && $config['signature'] != null ? public_path($config->signature) : null,
         ];
         // return view('content.previews.v_print_cover', compact('cover', 'student_class', 'setting', 'result_other'));
-        $pdf = PDF::loadView('content.previews.v_print_cover', compact('cover', 'student_class', 'setting', 'result_other'));
+        $pdf = PDF::loadView('content.previews.v_print_cover', compact('cover', 'student_class', 'setting', 'result_other', 'familly'));
         return $pdf->stream();
     }
 
