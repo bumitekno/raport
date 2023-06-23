@@ -28,6 +28,6 @@ class User extends Authenticatable
 
     public function families()
     {
-        return $this->belongsToMany(UserParent::class, 'users', 'id_user', 'id');
+        return $this->hasMany(UserParent::class, 'id_user');
     }
 }
