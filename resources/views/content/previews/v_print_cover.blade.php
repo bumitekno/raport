@@ -275,26 +275,25 @@
                         <td></td>
                         <td>a. Ayah</td>
                         <td>:</td>
-                        <td>{{ $familly['father'] == null ? strtoupper($familly['father']['name']) : '-' }}</td>
-                        <td>-</td>
+                        <td>{{ $familly['father'] == null ? '-' : strtoupper($familly['father']['name'])  }}</td>
                     </tr>
                     <tr>
                         <td></td>
                         <td>b. Ibu</td>
                         <td>:</td>
-                        <td>{{ $familly['mother'] == null ? strtoupper($familly['mother']['name']) : '-' }}</td>
+                        <td>{{ $familly['mother'] == null ? '-' : strtoupper($familly['mother']['name']) }}</td>
                     </tr>
                     <tr>
                         <td>13.</td>
                         <td>Alamat Orang Tua</td>
                         <td>:</td>
-                        <td>{{ $familly['father'] == null ? $familly['father']['address'] : '-' }}</td>
+                        <td>{{ $familly['father'] == null ? '-' : $familly['father']['address'] }}</td>
                     </tr>
                     <tr>
                         <td></td>
                         <td>Nomor Telepon Rumah</td>
                         <td>:</td>
-                        <td>{{ $familly['father'] == null ? $familly['father']['phone'] : '-' }}</td>
+                        <td>{{ $familly['father'] == null ? '-' : $familly['father']['phone'] }}</td>
                     </tr>
                     <tr>
                         <td>14.</td>
@@ -306,20 +305,20 @@
                         <td></td>
                         <td>a. Ayah</td>
                         <td>:</td>
-                        <td>{{ $familly['father'] == null ? $familly['father']['job'] : '-' }}</td>
+                        <td>{{ $familly['father'] == null ? '-' : $familly['father']['job'] }}</td>
                     </tr>
                     <tr>
                         <td></td>
                         <td>b. Ibu</td>
                         <td>:</td>
-                        <td>{{ $familly['mother'] == null ? $familly['mother']['job'] : '-' }}</td>
+                        <td>{{ $familly['mother'] == null ? '-' : $familly['mother']['job']  }}</td>
                     </tr>
                     <tr>
                         <td>15.</td>
                         <td>Nama Wali Peserta Didik</td>
                         <td>:</td>
                         <td>-</td>
-                        <td>{{ $familly['guardian'] == null ? strtoupper($familly['guardian']['name']) : '-' }}</td>
+                        <td>{{ $familly['guardian'] == null ? '-' : strtoupper($familly['guardian']['name']) }}</td>
                     </tr>
 
                 </table>
