@@ -102,8 +102,14 @@ class StudentClassController extends Controller
 
             $idStudyClass = $request->id_study_class;
             $year = substr($request->year, 0, 4);
-            $siswaData = User::whereIn('id', $selectedSiswa)->get();
+            if ($dataOrigin == 'student') {
+                $siswaData = StudentClass::whereIn('id', $selectedSiswa)->get();
+            } else {
+                $siswaData = User::whereIn('id', $selectedSiswa)->get();
+            }
+            // dd($siswaData);
             $siswaIds = $siswaData->pluck('id')->toArray();
+            // dd($siswaIds);
 
             $existingData = StudentClass::where(function ($query) use ($siswaIds, $dataOrigin) {
                 if ($dataOrigin === 'student') {
@@ -112,9 +118,7 @@ class StudentClassController extends Controller
                     return $query->whereIn('id_student', $siswaIds);
                 }
             })
-                ->where('year', $year)
                 ->get();
-            // dd($existingData);
 
             if ($dataOrigin == 'student') {
                 $existingData->each(function ($data) use ($idStudyClass, $year) {
