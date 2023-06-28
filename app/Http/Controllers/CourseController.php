@@ -211,7 +211,8 @@ class CourseController extends Controller
 
     public function destroy($slug)
     {
-        Course::where('slug', $slug)->delete();
+        $course = Course::where('slug', $slug)->firstOrFail();
+        $course->delete();
         Helper::toast('Berhasil menghapus pelajaran', 'success');
         return redirect()->route('courses.index');
     }
