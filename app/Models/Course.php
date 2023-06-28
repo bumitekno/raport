@@ -24,4 +24,13 @@ class Course extends Model
     {
         return $this->hasMany(SubjectTeacher::class, 'id_course');
     }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function ($course) {
+            $course->subjectTeacher()->delete();
+        });
+    }
 }
