@@ -27,10 +27,9 @@ class Course extends Model
         static::deleting(function ($course) {
             $course->subjectTeacher()->delete();
         });
-    }
 
-    public function subjectTeacher()
-    {
-        return $this->hasMany(SubjectTeacher::class, 'id_course');
+        static::restoring(function ($course) {
+            $course->subjectTeacher()->restore();
+        });
     }
 }
