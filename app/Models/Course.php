@@ -20,11 +20,6 @@ class Course extends Model
 
     protected $dates = ['deleted_at'];
 
-    public function subjectTeacher()
-    {
-        return $this->hasMany(SubjectTeacher::class, 'id_course');
-    }
-
     protected static function boot()
     {
         parent::boot();
@@ -32,5 +27,10 @@ class Course extends Model
         static::deleting(function ($course) {
             $course->subjectTeacher()->delete();
         });
+    }
+
+    public function subjectTeacher()
+    {
+        return $this->hasMany(SubjectTeacher::class, 'id_course');
     }
 }
