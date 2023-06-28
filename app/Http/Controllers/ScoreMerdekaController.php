@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Helpers\Helper;
 use App\Http\Requests\P5\ScoreRequest;
 use App\Models\AssesmentWeighting;
+use App\Models\CompetenceAchievement;
 use App\Models\Config;
 use App\Models\ScoreMerdeka;
 use App\Models\StudentClass;
@@ -91,7 +92,14 @@ class ScoreMerdekaController extends Controller
             ['id_school_year', session('id_school_year')],
         ])->first();
 
-        // dd($weight);
+        $competence_achievement = CompetenceAchievement::where([
+            ['id_study_class', session('teachers.id_study_class')],
+            ['id_teacher', Auth::guard('teacher')->user()->id],
+            ['id_course', session('teachers.id_course')],
+            ['id_type_competence', 2],
+            ['id_school_year', session('id_school_year')],
+        ])->get();
+        // dd($competence_achievement);
 
         $student_class = StudentClass::where('slug', $slug)->first();
         $score = ScoreMerdeka::where([
@@ -129,19 +137,27 @@ class ScoreMerdekaController extends Controller
             'final_score' => $score ? $score->final_score : 0,
             'status_form' => $status_form
         ];
+        if (empty($competence_achievement)) {
+            session()->put('message', 'Terjadi kesalahan: Tujuan pembelajaran pada capaian kompetensi anda tidak tersedia ');
+            return view('pages.v_error');
+        }
         if (empty($weight)) {
             session()->put('message', 'Terjadi kesalahan: Dikarenakan bobot nilai belum di setting ');
             return view('pages.v_error');
         }
+        // dd($result);
         if (session('teachers.type') == 'uas') {
-            return view('content.score_p5.v_create_student_score', compact('weight', 'result'));
+            // dd('tes');
+            return view('content.score_p5.v_create_student_score', compact('weight', 'result', 'competence_achievement'));
         } else {
-            return view('content.score_p5.v_create_student_score_uts', compact('weight', 'result'));
+            // dd('hallo');
+            return view('content.score_p5.v_create_student_score_uts', compact('weight', 'result', 'competence_achievement'));
         }
     }
 
     public function storeOrUpdate(ScoreRequest $request)
     {
+        // dd($request);
         $data = $request->validated();
         ScoreMerdeka::updateOrCreate(
             [

@@ -59,13 +59,33 @@
                                                 <td>1</td>
                                                 <td>Nilai Formatif</td>
                                                 <td>
-                                                    <div class="input-group">
-                                                        <input type="text" class="form-control formative"
-                                                            placeholder="Formative 1" name="formative[]"
-                                                            value="{{ $result['score_formative'] != null ? $result['score_formative'][0] : '0' }}" {{ $result['status_form'] == false ? 'readonly' : '' }}>
-                                                        <div class="input-group-append">
-                                                            <button class="btn btn-outline-secondary add-formative"
-                                                                type="button" {{ $result['status_form'] == false ? 'disabled' : '' }}><i class="fas fa-plus"></i></button>
+                                                    <div class="row">
+                                                        <div class="col-md-6">
+                                                            <select name="id_competency[]" id=""
+                                                                class="form-control">
+                                                                <option value="" selected disabled>Pilih Kompetensi
+                                                                </option>
+                                                                @foreach ($competence_achievement as $competency)
+                                                                    <option value="{{ $competency['id'] }}"
+                                                                        {{ !empty($result['score_formative']) && $result['score_formative'][0]->id_competency == $competency['id'] ? 'selected' : '' }}>
+                                                                        {{ $competency['achievement'] }}
+                                                                    </option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <div class="input-group">
+                                                                <input type="text" class="form-control formative"
+                                                                    placeholder="Formative 1" name="formative[]"
+                                                                    value="{{ !empty($result['score_formative']) && isset($result['score_formative'][0]->score) ? $result['score_formative'][0]->score : '0' }}"
+                                                                    {{ $result['status_form'] == false ? 'readonly' : '' }}>
+                                                                <div class="input-group-append">
+                                                                    <button class="btn btn-outline-secondary add-formative"
+                                                                        type="button"
+                                                                        {{ $result['status_form'] == false ? 'disabled' : '' }}><i
+                                                                            class="fas fa-plus"></i></button>
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                     <div class="formative-inputs mt-2"></div>
@@ -90,7 +110,6 @@
                                                         <thead>
                                                             <tr>
                                                                 <th>UTS</th>
-                                                                <th>UAS</th>
                                                                 <th></th>
                                                             </tr>
                                                         </thead>
@@ -160,12 +179,24 @@
                 if (scoreFormative) {
                     for (var i = 1; i < scoreFormative.length; i++) {
                         var formativeInput = `
-        <div class="input-group mt-2">
-          <input type="text" class="form-control formative" placeholder="Formative" name="formative[]" value="${scoreFormative[i]}">
-          <div class="input-group-append">
-            <button class="btn btn-outline-secondary remove-formative" type="button"><i class="fas fa-trash"></i></button>
-          </div>
-        </div>
+                        <div class="row my-1">
+                <div class="col-md-6">
+                    <select name="id_competency[]" class="form-control">
+                        <option value="" selected disabled>Pilih Kompetensi</option>
+                        @foreach ($competence_achievement as $competency)
+                        <option value="{{ $competency['id'] }}" ${scoreFormative[i].id_competency == {{ $competency['id'] }} ? 'selected' : ''}>{{ $competency['achievement'] }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <div class="input-group">
+                        <input type="text" class="form-control formative" placeholder="Formative" name="formative[]" value="${scoreFormative[i].score}">
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-secondary remove-formative" type="button"><i class="fas fa-trash"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
       `;
                         $('.formative-inputs').append(formativeInput);
                     }
@@ -186,12 +217,24 @@
 
                 $(document).on("click", ".add-formative", function() {
                     const formativeInput = `
-      <div class="input-group mt-2">
-        <input type="text" class="form-control formative" placeholder="Formative" name="formative[]">
-        <div class="input-group-append">
-          <button class="btn btn-outline-secondary remove-formative" type="button"><i class="fas fa-trash"></i></button>
+                    <div class="row">
+            <div class="col-md-6">
+                <select name="id_competency[]" class="form-control">
+                    <option value="" selected disabled>Pilih Kompetensi</option>
+                    @foreach ($competence_achievement as $competency)
+                    <option value="{{ $competency['id'] }}">{{ $competency['achievement'] }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="col-md-6">
+                <div class="input-group">
+                    <input type="text" class="form-control formative" placeholder="Formative" name="formative[]">
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary remove-formative" type="button"><i class="fas fa-trash"></i></button>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
     `;
                     $(this).closest("td").find(".formative-inputs").append(formativeInput);
                 });
@@ -199,6 +242,7 @@
                 $(document).on("click", ".remove-formative", function() {
                     $(this).closest(".input-group").remove();
                     hitungRataRataFormatif();
+                    hitungNilaiAkhir();
                 });
 
                 $(document).on("click", ".add-sumatif", function() {
@@ -227,6 +271,7 @@
 
                 $(document).on("keyup", ".formative", function() {
                     hitungRataRataFormatif();
+                    hitungNilaiAkhir();
                 });
 
                 $(document).on("keyup", ".sumatif, .uts", function() {

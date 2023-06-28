@@ -29,6 +29,8 @@ class ScoreRequest extends FormRequest
             'id_school_year' => 'required|integer',
             'formative' => 'required|array',
             'formative.*' => 'required|numeric',
+            'id_competency' => 'required|array',
+            'id_competency.*' => 'required|numeric',
             'sumatif' => 'required|array',
             'sumatif.*' => 'required|numeric',
             'uts' => 'required|numeric',
@@ -45,8 +47,19 @@ class ScoreRequest extends FormRequest
     {
         $validatedData = parent::validated();
 
-        // Convert formative and sumatif input to JSON
-        $validatedData['formative'] = json_encode($validatedData['formative']);
+        $formative = $validatedData['formative'];
+        $idCompetency = $validatedData['id_competency'];
+
+        $formativeData = [];
+        foreach ($formative as $key => $score) {
+            $id = $idCompetency[$key];
+            $formativeData[] = [
+                'id_competency' => $id,
+                'score' => $score,
+            ];
+        }
+
+        $validatedData['formative'] = json_encode($formativeData);
         $validatedData['sumatif'] = json_encode($validatedData['sumatif']);
 
         return $validatedData;
