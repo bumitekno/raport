@@ -32,4 +32,9 @@ class Course extends Model
             $course->subjectTeacher()->restore();
         });
     }
+
+    public function subjectTeacher()
+    {
+        return $this->hasMany(SubjectTeacher::class, 'id_course');
+    }
 }
