@@ -156,6 +156,7 @@ class SchoolYear extends Model
         return $this->hasMany(Achievement::class, 'id_school_year');
     }
 
+
     public function attendanceScores()
     {
         return $this->hasMany(AttendanceScore::class, 'id_school_year');
