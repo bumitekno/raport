@@ -18,6 +18,24 @@ class P5 extends Model
 
     protected $dates = ['deleted_at'];
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function ($p5) {
+            $p5->scoreP5s()->delete();
+        });
+
+        static::restoring(function ($p5) {
+            $p5->scoreP5s()->restore();
+        });
+    }
+
+    public function scoreP5s()
+    {
+        return $this->hasMany(ScoreP5::class, 'id_p5');
+    }
+
     public function study_class()
     {
         return $this->belongsTo(StudyClass::class, 'id_study_class');

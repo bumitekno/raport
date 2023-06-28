@@ -105,7 +105,8 @@ class StudyClassController extends Controller
      */
     public function destroy($slug)
     {
-        StudyClass::where('slug', $slug)->delete();
+        $study_class = StudyClass::where('slug', $slug)->firstOrFail();
+        $study_class->delete();
         Helper::toast('Berhasil menghapus kelas', 'success');
         return redirect()->route('classes.index');
     }

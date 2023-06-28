@@ -138,7 +138,8 @@ class UserController extends Controller
 
     public function destroy($slug)
     {
-        User::where('slug', $slug)->delete();
+        $user = User::where('slug', $slug)->firstOrFail();
+        $user->delete();
         Helper::toast('Berhasil menghapus siswa', 'success');
         return redirect()->route('users.index');
     }

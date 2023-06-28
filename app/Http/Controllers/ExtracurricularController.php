@@ -68,7 +68,8 @@ class ExtracurricularController extends Controller
 
     public function destroy($slug)
     {
-        Extracurricular::where('slug', $slug)->delete();
+        $extra = Extracurricular::where('slug', $slug)->firstOrFail();
+        $extra->delete();
         Helper::toast('Berhasil menghapus data', 'success');
         return redirect()->route('extracurriculars.index');
     }

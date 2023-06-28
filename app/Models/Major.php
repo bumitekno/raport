@@ -19,4 +19,29 @@ class Major extends Model
     ];
 
     protected $dates = ['deleted_at'];
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function ($major) {
+            $major->studyClass()->delete();
+            $major->templateConfigurations()->delete();
+        });
+
+        static::restoring(function ($major) {
+            $major->studyClass()->restore();
+            $major->templateConfigurations()->restore();
+        });
+    }
+
+    public function studyClass()
+    {
+        return $this->hasMany(StudyClass::class, 'id_major');
+    }
+
+    public function templateConfigurations()
+    {
+        return $this->hasMany(TemplateConfiguration::class, 'id_major');
+    }
 }

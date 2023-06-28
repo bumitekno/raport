@@ -17,4 +17,22 @@ class Extracurricular extends Model
     protected $guarded = [];
 
     protected $dates = ['deleted_at'];
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function ($dimension) {
+            $dimension->scoreExtracuriculars()->delete();
+        });
+
+        static::restoring(function ($dimension) {
+            $dimension->scoreExtracuriculars()->restore();
+        });
+    }
+
+    public function scoreExtracuriculars()
+    {
+        return $this->hasMany(ScoreExtracurricular::class, 'id_extra');
+    }
 }

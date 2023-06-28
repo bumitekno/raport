@@ -76,7 +76,8 @@ class LevelController extends Controller
 
     public function destroy($slug)
     {
-        Level::where('slug', $slug)->delete();
+        $level = Level::where('slug', $slug)->firstOrFail();
+        $level->delete();
         Helper::toast('Berhasil menghapus tingkat', 'success');
         return redirect()->route('levels.index');
     }

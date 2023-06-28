@@ -102,7 +102,8 @@ class SchoolYearController extends Controller
      */
     public function destroy($slug)
     {
-        SchoolYear::where('slug', $slug)->delete();
+        $school_year = SchoolYear::where('slug', $slug)->firstOrFail();
+        $school_year->delete();
         Helper::toast('Berhasil menghapus tahun ajaran', 'success');
         return redirect()->route('school-years.index');
     }

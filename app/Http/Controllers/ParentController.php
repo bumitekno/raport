@@ -121,8 +121,8 @@ class ParentController extends Controller
 
     public function destroy(Request $request)
     {
-        // dd($request);
-        UserParent::find($request['id'])->delete();
+        $user_parent = UserParent::find($request['id']);
+        $user_parent->delete();
         return response()->json(['success' => 'Keluarga berhasil dihapus.']);
     }
 

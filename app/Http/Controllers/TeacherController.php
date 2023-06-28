@@ -117,7 +117,8 @@ class TeacherController extends Controller
 
     public function destroy($slug)
     {
-        Teacher::where('slug', $slug)->delete();
+        $teacher = Teacher::where('slug', $slug)->firstOrFail();
+        $teacher->delete();
         Helper::toast('Berhasil menghapus guru', 'success');
         return redirect()->route('teachers.index');
     }
