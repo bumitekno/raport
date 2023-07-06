@@ -8,6 +8,7 @@ use App\Models\SubjectTeacher;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Schema;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -91,6 +92,8 @@ class AppServiceProvider extends ServiceProvider
             }
             $view->with(['side_extra' => $extra]);
         });
+
+        Schema::defaultStringLength(191);
 
         JsonResource::withoutWrapping();
     }
