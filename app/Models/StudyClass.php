@@ -15,7 +15,7 @@ class StudyClass extends Model
     protected $table = "study_classes";
 
     protected $fillable = [
-        'slug', 'name', 'id_major', 'id_level', 'status'
+        'key', 'slug', 'name', 'id_major', 'id_level', 'status'
     ];
 
     protected $dates = ['deleted_at'];
@@ -137,5 +137,19 @@ class StudyClass extends Model
     public function level()
     {
         return $this->belongsTo(Level::class, 'id_level', 'id');
+    }
+
+    public function data()
+    {
+        return [
+            'uid' => $this->key,
+            'slug' => $this->slug,
+            'major' => empty($this->major) ? null : $this->major->name,
+            'major_uid' => empty($this->major) ? null : $this->major->key,
+            'level' => empty($this->level) ? null : $this->level->name,
+            'level_uid' => empty($this->level) ? null : $this->level->key,
+            'name' => $this->name,
+            'status' => $this->status,
+        ];
     }
 }

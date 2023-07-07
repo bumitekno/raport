@@ -15,10 +15,27 @@ class Course extends Model
     protected $table = "courses";
 
     protected $fillable = [
-        'slug', 'name', 'group', 'code', 'status'
+        'key', 'slug', 'name', 'group', 'code', 'status'
     ];
 
     protected $dates = ['deleted_at'];
+
+    public function scopeActive($query)
+    {
+        return $query->select('key as uid', 'slug', 'code', 'name', 'group', 'status')->where('status', 1);
+    }
+
+    public function data()
+    {
+        return [
+            'uid' => $this->key,
+            'slug' => $this->slug,
+            'code' => $this->code,
+            'name' => $this->name,
+            'group' => $this->group,
+            'status' => $this->status,
+        ];
+    }
 
     protected static function boot()
     {

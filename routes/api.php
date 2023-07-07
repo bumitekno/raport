@@ -1,8 +1,11 @@
 <?php
 
+use App\Http\Controllers\API\CourseController;
 use App\Http\Controllers\API\ExtracurricularController;
+use App\Http\Controllers\API\LevelController;
 use App\Http\Controllers\API\MajorController;
 use App\Http\Controllers\API\SchoolYearController;
+use App\Http\Controllers\API\StudyClassController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -39,5 +42,23 @@ Route::prefix('master')->name('master')->group(function (){
         Route::get('/', [MajorController::class, 'index'])->name('index');
         Route::post('/', [MajorController::class, 'store'])->name('store');
         Route::get('{key}', [MajorController::class, 'show'])->name('show');
+    });
+
+    Route::prefix('levels')->name('levels')->group(function (){
+        Route::get('/', [LevelController::class, 'index'])->name('index');
+        Route::post('/', [LevelController::class, 'store'])->name('store');
+        Route::get('{key}', [LevelController::class, 'show'])->name('show');
+    });
+
+    Route::prefix('study_classes')->name('study_classes')->group(function (){
+        Route::get('/', [StudyClassController::class, 'index'])->name('index');
+        Route::post('/', [StudyClassController::class, 'update'])->name('store');
+        Route::get('{key}', [StudyClassController::class, 'show'])->name('show');
+    });
+
+    Route::prefix('courses')->name('courses')->group(function (){
+        Route::get('/', [CourseController::class, 'index'])->name('index');
+        Route::post('/', [CourseController::class, 'update'])->name('store');
+        Route::get('{key}', [CourseController::class, 'show'])->name('show');
     });
 });
