@@ -44,19 +44,4 @@ class Major extends Model
     {
         return $this->hasMany(TemplateConfiguration::class, 'id_major');
     }
-
-    public function scopeActive($query)
-    {
-        return $query->select('key as uid', 'slug', 'name', 'status')->where('status', 1);
-    }
-
-    public function data()
-    {
-        return [
-            'uid' => $this->key,
-            'slug' => $this->slug,
-            'name' => $this->name,
-            'status' => $this->status,
-        ];
-    }
 }

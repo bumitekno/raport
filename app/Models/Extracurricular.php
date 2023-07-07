@@ -35,20 +35,4 @@ class Extracurricular extends Model
     {
         return $this->hasMany(ScoreExtracurricular::class, 'id_extra');
     }
-
-    public function scopeActive($query)
-    {
-        return $query->select('key as uid', 'name', 'person_responsible', 'student_classes',  'status')->where('status', 1);
-    }
-
-    public function data()
-    {
-        return [
-            'uid' => $this->key,
-            'slug' => $this->slug,
-            'name' => $this->name,
-            'person_responsible' => $this->person_responsible,
-            'status' => $this->status,
-        ];
-    }
 }
