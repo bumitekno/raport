@@ -16,6 +16,11 @@ class User extends Authenticatable
 
     protected $guarded = [];
 
+    public function scopeActive($query)
+    {
+        return $query->where('status', 1)->orderBy('name', 'ASC');
+    }
+
     protected static function boot()
     {
         parent::boot();
