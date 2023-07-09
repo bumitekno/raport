@@ -6,6 +6,7 @@ use App\Http\Controllers\API\LevelController;
 use App\Http\Controllers\API\MajorController;
 use App\Http\Controllers\API\SchoolYearController;
 use App\Http\Controllers\API\StudyClassController;
+use App\Http\Controllers\API\TeacherController;
 use App\Http\Controllers\API\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -72,5 +73,12 @@ Route::prefix('users')->name('users')->group(function (){
         Route::post('/', [UserController::class, 'store'])->name('store');
         Route::post('{key}', [UserController::class, 'update'])->name('update');
         Route::post('update/status', [UserController::class, 'update_status'])->name('update_status');
+    });
+
+    Route::prefix('teachers')->name('teachers')->group(function (){
+        Route::get('/', [TeacherController::class, 'index'])->name('index');
+        Route::get('{key}', [TeacherController::class, 'show'])->name('show');
+        Route::post('/', [TeacherController::class, 'store'])->name('store');
+        Route::post('update/status', [TeacherController::class, 'update_status'])->name('update_status');
     });
 });
