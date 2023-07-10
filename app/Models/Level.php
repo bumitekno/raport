@@ -15,7 +15,12 @@ class Level extends Model
     protected $table = "levels";
 
     protected $fillable = [
-        'key', 'slug', 'name', 'status', 'fase'
+        'key',
+        'slug',
+        'name',
+        'status',
+        'fase',
+        'sync_date'
     ];
 
     protected $dates = ['deleted_at'];
