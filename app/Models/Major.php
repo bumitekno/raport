@@ -15,7 +15,11 @@ class Major extends Model
     protected $table = "majors";
 
     protected $fillable = [
-        'key', 'slug', 'name', 'status'
+        'key',
+        'slug',
+        'name',
+        'status',
+        'sync_date'
     ];
 
     protected $dates = ['deleted_at'];

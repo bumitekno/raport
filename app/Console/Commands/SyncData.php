@@ -8,6 +8,7 @@ use Symfony\Component\Console\Output\ConsoleOutput;
 use DateTime;
 use App\Models\Level;
 use App\Models\SchoolYear;
+use App\Models\Major;
 use Illuminate\Support\Str;
 
 
@@ -99,7 +100,32 @@ class SyncData extends Command
                             'status' => $data_school_years['status'],
                             'slug' => Str::replace('/', '', $data_school_years['name']) . $data_school_years['semester_number'] . '-' . str::random(5)
                         ]);
-                        $output->writeln('info: insert data level ' . $create_school_years);
+                        $output->writeln('info: insert data school years ' . $create_school_years);
+                    }
+                }
+            }
+
+            /** Api Major  */
+
+            $url_api_major = env('API_BUKU_INDUK') . '/api/master/majors';
+            $response_api_major = Http::get($url_api_major);
+            $resposnse_collection_major = $response_api_major->collect();
+            $collection_api_major = collect($resposnse_collection_major);
+            $output->writeln('info:' . $collection_api_major);
+            if (!empty($collection_api_major['data'])) {
+                $check_school_major = Major::whereNull('sync_date')->get()->count();
+                if ($check_school_major == 0) {
+                    foreach ($collection_api_major['data'] as $key => $data_major) {
+                        $create_major = Major::updateOrCreate([
+                            'key' => $data_major['uid'],
+                        ], [
+                            'key' => $data_major['uid'],
+                            'name' => $data_major['name'],
+                            'sync_date' => $timestamp,
+                            'status' => $data_major['status'],
+                            'slug' => $data_major['name'] . '-' . str::random(5)
+                        ]);
+                        $output->writeln('info: insert data Major ' . $create_major);
                     }
                 }
             }
