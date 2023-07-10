@@ -15,7 +15,13 @@ class StudyClass extends Model
     protected $table = "study_classes";
 
     protected $fillable = [
-        'key', 'slug', 'name', 'id_major', 'id_level', 'status'
+        'key',
+        'slug',
+        'name',
+        'id_major',
+        'id_level',
+        'status',
+        'sync_date'
     ];
 
     protected $dates = ['deleted_at'];

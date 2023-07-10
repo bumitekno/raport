@@ -10,6 +10,7 @@ use App\Models\Level;
 use App\Models\SchoolYear;
 use App\Models\Major;
 use App\Models\Course;
+use App\Models\StudyClass;
 use Illuminate\Support\Str;
 
 
@@ -157,8 +158,32 @@ class SyncData extends Command
                 }
             }
 
+            /** Api Rombel */
+            $url_api_rombel = env('API_BUKU_INDUK') . '/api/master/study_classes';
+            $response_api_rombel = Http::get($url_api_rombel);
+            $resposnse_collection_rombel = $response_api_rombel->collect();
+            $collection_api_rombel = collect($resposnse_collection_rombel);
+            $output->writeln('info:' . $collection_api_rombel);
 
-
+            if (!empty($collection_api_rombel['data'])) {
+                $check_school_rombel = StudyClass::whereNull('sync_date')->get()->count();
+                if ($check_school_rombel == 0) {
+                    foreach ($collection_api_rombel['data'] as $key => $data_rombel) {
+                        $create_rombel = StudyClass::updateOrCreate([
+                            'key' => $data_rombel['key'],
+                        ], [
+                            'key' => $data_rombel['key'],
+                            'name' => $data_rombel['name'],
+                            'id_major' => $data_rombel['major_id'],
+                            'id_level' => $data_rombel['level_id'],
+                            'sync_date' => $timestamp,
+                            'status' => $data_rombel['status'],
+                            'slug' => $data_rombel['name'] . '-' . str::random(5)
+                        ]);
+                        $output->writeln('info: insert data rombel ' . $create_rombel);
+                    }
+                }
+            }
 
         } else {
             $output->writeln('error: API URL BUKU INDUK tidak di ketahui ');
