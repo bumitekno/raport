@@ -9,6 +9,7 @@ use DateTime;
 use App\Models\Level;
 use App\Models\SchoolYear;
 use App\Models\Major;
+use App\Models\Course;
 use Illuminate\Support\Str;
 
 
@@ -129,6 +130,34 @@ class SyncData extends Command
                     }
                 }
             }
+
+            /** Api Mapels */
+            $url_api_mapel = env('API_BUKU_INDUK') . '/api/master/mapels';
+            $response_api_mapel = Http::get($url_api_mapel);
+            $resposnse_collection_mapel = $response_api_mapel->collect();
+            $collection_api_mapel = collect($resposnse_collection_mapel);
+            $output->writeln('info:' . $collection_api_mapel);
+            if (!empty($collection_api_mapel['data'])) {
+                $check_school_mapel = Course::whereNull('sync_date')->get()->count();
+                if ($check_school_mapel == 0) {
+                    foreach ($collection_api_mapel['data'] as $key => $data_mapel) {
+                        $create_major = Course::updateOrCreate([
+                            'key' => $data_mapel['uid'],
+                        ], [
+                            'key' => $data_mapel['uid'],
+                            'code' => $data_mapel['kode_mapel'],
+                            'name' => $data_mapel['nama'],
+                            'group' => $data_mapel['kelompok'],
+                            'sync_date' => $timestamp,
+                            'status' => $data_mapel['status'],
+                            'slug' => $data_mapel['nama'] . '-' . str::random(5)
+                        ]);
+                        $output->writeln('info: insert data Mapel ' . $create_major);
+                    }
+                }
+            }
+
+
 
 
         } else {
