@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Http;
 use Symfony\Component\Console\Output\ConsoleOutput;
 use DateTime;
 use App\Models\Level;
+use App\Models\SchoolYear;
 use Illuminate\Support\Str;
 
 
@@ -74,6 +75,31 @@ class SyncData extends Command
 
                         $output->writeln('info: insert data level ' . $create_level);
 
+                    }
+                }
+            }
+
+            /** Api School Year  */
+            $url_api_school_year = env('API_BUKU_INDUK') . '/api/master/school_years';
+            $response_api_school_year = Http::get($url_api_school_year);
+            $resposnse_collection_school_year = $response_api_school_year->collect();
+            $collection_api_school_year = collect($resposnse_collection_school_year);
+            $output->writeln('info:' . $collection_api_school_year);
+
+            if (!empty($collection_api_school_year['data'])) {
+                $check_school_year_sync = SchoolYear::whereNull('sync_date')->get()->count();
+                if ($check_school_year_sync == 0) {
+                    foreach ($collection_api_school_year['data'] as $key => $data_school_years) {
+                        $create_school_years = SchoolYear::updateOrCreate([
+                            'key' => $data_school_years['uid'],
+                        ], [
+                            'key' => $data_school_years['uid'],
+                            'name' => $data_school_years['name'] . $data_school_years['semester_number'],
+                            'sync_date' => $timestamp,
+                            'status' => $data_school_years['status'],
+                            'slug' => Str::replace('/', '', $data_school_years['name']) . $data_school_years['semester_number'] . '-' . str::random(5)
+                        ]);
+                        $output->writeln('info: insert data level ' . $create_school_years);
                     }
                 }
             }

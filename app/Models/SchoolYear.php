@@ -16,7 +16,11 @@ class SchoolYear extends Model
     protected $table = "school_years";
 
     protected $fillable = [
-        'key', 'slug', 'name', 'status'
+        'key',
+        'slug',
+        'name',
+        'status',
+        'school_years'
     ];
 
     protected $dates = ['deleted_at'];
