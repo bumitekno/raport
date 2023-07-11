@@ -11,6 +11,10 @@ use App\Models\SchoolYear;
 use App\Models\Major;
 use App\Models\Course;
 use App\Models\StudyClass;
+use App\Models\User;
+use App\Models\Teacher;
+use App\Models\StudentClass;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
 
@@ -181,6 +185,103 @@ class SyncData extends Command
                             'slug' => $data_rombel['name'] . '-' . str::random(5)
                         ]);
                         $output->writeln('info: insert data rombel ' . $create_rombel);
+                    }
+                }
+            }
+
+            /** Api Student Users  */
+            $url_api_student = env('API_BUKU_INDUK') . '/api/users/students/data/all';
+            $response_api_student = Http::get($url_api_student);
+            $resposnse_collection_student = $response_api_student->collect();
+            $collection_api_student = collect($resposnse_collection_student);
+            $output->writeln('info:' . $collection_api_student);
+            if (!empty($collection_api_student['data'])) {
+                $check_school_usert_student = User::whereNull('sync_date')->get()->count();
+                if ($check_school_usert_student == 0) {
+                    foreach ($collection_api_student['data'] as $key => $data_user) {
+                        $create_user = User::updateOrCreate([
+                            'key' => $data_user['uid'],
+                        ], [
+                            'key' => $data_user['uid'],
+                            'name' => $data_user['name'],
+                            'gender' => $data_user['gender'] == 'L' ? 'male' : 'female',
+                            'email' => $data_user['email'],
+                            'nis' => $data_user['nis'],
+                            'nisn' => $data_user['nisn'],
+                            'religion' => $data_user['religion'] == 'protestan' ? 'lainnya' : $data_user['religion'],
+                            'place_of_birth' => $data_user['birth_place'],
+                            'date_of_birth' => \Carbon\Carbon::parse($data_user['birth_day']),
+                            'address' => $data_user['address'],
+                            'accepted_date' => $data_user['date_accepted'],
+                            'entry_year' => $data_user['school_year'],
+                            'sync_date' => $timestamp,
+                            'status' => $data_user['status'],
+                            'slug' => $data_user['name'] . '-' . str::random(5),
+                            'password' => Hash::make('12345678')
+                        ]);
+                        $output->writeln('info: insert data user student ' . $create_user);
+                    }
+                }
+            }
+
+            /** Api Teacher  */
+            $url_api_teacher = env('API_BUKU_INDUK') . '/api/users/teachers/data/all';
+            $response_api_teacher = Http::get($url_api_teacher);
+            $resposnse_collection_teacher = $response_api_teacher->collect();
+            $collection_api_teacher = collect($resposnse_collection_teacher);
+            $output->writeln('info:' . $collection_api_teacher);
+            if (!empty($collection_api_teacher['data'])) {
+                $check_school_usert_teacher = Teacher::whereNull('sync_date')->get()->count();
+                if ($check_school_usert_teacher == 0) {
+                    foreach ($collection_api_teacher['data'] as $key => $data_user) {
+                        $create_user = Teacher::updateOrCreate([
+                            'key' => $data_user['uid'],
+                        ], [
+                            'key' => $data_user['uid'],
+                            'name' => $data_user['name'],
+                            'gender' => $data_user['gender'] == 'L' ? 'male' : 'female',
+                            'email' => $data_user['email'],
+                            'nip' => $data_user['nip'],
+                            'nik' => $data_user['nik'],
+                            'nuptk' => $data_user['nuptk'],
+                            'place_of_birth' => $data_user['birth_place'],
+                            'date_of_birth' => \Carbon\Carbon::parse($data_user['birth_day']),
+                            'address' => $data_user['address'],
+                            'type' => 'teacher',
+                            'phone' => $data_user['contact'],
+                            'sync_date' => $timestamp,
+                            'status' => $data_user['status'],
+                            'slug' => $data_user['name'] . '-' . str::random(5),
+                            'password' => Hash::make('12345678')
+                        ]);
+                        $output->writeln('info: insert data user student ' . $create_user);
+                    }
+                }
+            }
+
+            /** Api Student Class */
+            $url_api_student_class = env('API_BUKU_INDUK') . '/api/master/student_classes/data/all';
+            $response_api_student_class = Http::get($url_api_student_class);
+            $resposnse_collection_studentclass = $response_api_student_class->collect();
+            $collection_api_studentclass = collect($resposnse_collection_studentclass);
+            $output->writeln('info:' . $collection_api_studentclass);
+            if (!empty($collection_api_studentclass['data'])) {
+                $check_school_usert_studentclass = StudentClass::whereNull('sync_date')->get()->count();
+                if ($check_school_usert_studentclass == 0) {
+                    foreach ($collection_api_studentclass['data'] as $key => $data_studentclass) {
+
+                        $create_user_student_class = StudentClass::updateOrCreate([
+                            'key' => $data_studentclass['uid']
+                        ], [
+                            'key' => $data_studentclass['uid'],
+                            'year' => $data_studentclass['tahun'],
+                            'slug' => $data_studentclass['uid'] . '-' . str::random(5),
+                            'id_study_class' => $data_studentclass['id_rombel'],
+                            'id_student' => $data_studentclass['id_siswa'],
+                            'sync_date' => $timestamp,
+                        ]);
+
+                        $output->writeln('info: insert data user student class ' . $create_user_student_class);
                     }
                 }
             }
