@@ -4,6 +4,7 @@ use App\Http\Controllers\API\CourseController;
 use App\Http\Controllers\API\ExtracurricularController;
 use App\Http\Controllers\API\LevelController;
 use App\Http\Controllers\API\MajorController;
+use App\Http\Controllers\API\SchoolController;
 use App\Http\Controllers\API\SchoolYearController;
 use App\Http\Controllers\API\StudentClassController;
 use App\Http\Controllers\API\StudyClassController;
@@ -77,6 +78,11 @@ Route::prefix('master')->name('master')->group(function (){
         Route::get('/', [SubjectTeacherController::class, 'index'])->name('index');
         Route::get('{key}', [SubjectTeacherController::class, 'show'])->name('show');
         Route::post('/', [SubjectTeacherController::class, 'store'])->name('store');
+    });
+
+    Route::prefix('schools')->name('schools')->group(function (){
+        Route::get('/', [SchoolController::class, 'index'])->name('index');
+        Route::post('/', [SchoolController::class, 'store'])->name('store');
     });
 });
 
