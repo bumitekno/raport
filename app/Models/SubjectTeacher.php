@@ -71,4 +71,14 @@ class SubjectTeacher extends Model
     {
         return $this->belongsTo(StudyClass::class, 'id_class');
     }
+
+    public function school_year()
+    {
+        return $this->belongsTo(SchoolYear::class, 'id_school_year', 'id');
+    }
+
+    public function study_class()
+    {
+        return $this->belongsTo(StudyClass::class, 'id_study_class', 'id');
+    }
 }

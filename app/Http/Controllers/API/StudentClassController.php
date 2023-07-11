@@ -48,6 +48,21 @@ class StudentClassController extends Controller
         return Response::responseApi(200, 'Siswa kelas berhasil ditampilkan.', new StudentClassCollection($stud_classes));
     }
 
+    public function all()
+    {
+        $stud_classes = StudentClass::join('users as st', 'st.id', '=', 'student_classes.id_student')
+                        ->join('study_classes as sc', 'sc.id', '=', 'student_classes.id_study_class')
+                        ->where('student_classes.status', 1)
+                        ->select(
+                            'st.*', 'sc.key as sc_key', 'sc.name as sc_name',
+                            'student_classes.key as student_classes_key',
+                            'student_classes.year as year',
+                        )
+                        ->get();
+
+        return Response::responseApi(200, 'Siswa kelas berhasil ditampilkan.', StudentClassResource::collection($stud_classes));
+    }
+
     public function show($key)
     {
         $data = StudentClass::join('users as st', 'st.id', '=', 'student_classes.id_student')

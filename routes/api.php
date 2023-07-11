@@ -7,6 +7,7 @@ use App\Http\Controllers\API\MajorController;
 use App\Http\Controllers\API\SchoolYearController;
 use App\Http\Controllers\API\StudentClassController;
 use App\Http\Controllers\API\StudyClassController;
+use App\Http\Controllers\API\SubjectTeacherController;
 use App\Http\Controllers\API\TeacherController;
 use App\Http\Controllers\API\UserController;
 use Illuminate\Http\Request;
@@ -67,8 +68,15 @@ Route::prefix('master')->name('master')->group(function (){
 
     Route::prefix('student_classes')->name('student_classes')->group(function (){
         Route::get('/', [StudentClassController::class, 'index'])->name('index');
+        Route::get('data/all', [StudentClassController::class, 'all'])->name('all');
         Route::get('{key}', [StudentClassController::class, 'show'])->name('show');
         Route::post('/', [StudentClassController::class, 'store'])->name('store');
+    });
+
+    Route::prefix('subject_teachers')->name('subject_teachers')->group(function (){
+        Route::get('/', [SubjectTeacherController::class, 'index'])->name('index');
+        Route::get('{key}', [SubjectTeacherController::class, 'show'])->name('show');
+        Route::post('/', [SubjectTeacherController::class, 'store'])->name('store');
     });
 });
 
