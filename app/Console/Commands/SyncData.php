@@ -14,6 +14,7 @@ use App\Models\StudyClass;
 use App\Models\User;
 use App\Models\Teacher;
 use App\Models\StudentClass;
+use App\Models\Extracurricular;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
@@ -86,6 +87,8 @@ class SyncData extends Command
                 }
             }
 
+            sleep(5);
+
             /** Api School Year  */
             $url_api_school_year = env('API_BUKU_INDUK') . '/api/master/school_years';
             $response_api_school_year = Http::get($url_api_school_year);
@@ -111,6 +114,8 @@ class SyncData extends Command
                 }
             }
 
+            sleep(5);
+
             /** Api Major  */
 
             $url_api_major = env('API_BUKU_INDUK') . '/api/master/majors';
@@ -135,6 +140,8 @@ class SyncData extends Command
                     }
                 }
             }
+
+            sleep(5);
 
             /** Api Mapels */
             $url_api_mapel = env('API_BUKU_INDUK') . '/api/master/mapels';
@@ -162,6 +169,8 @@ class SyncData extends Command
                 }
             }
 
+            sleep(5);
+
             /** Api Rombel */
             $url_api_rombel = env('API_BUKU_INDUK') . '/api/master/study_classes';
             $response_api_rombel = Http::get($url_api_rombel);
@@ -188,6 +197,8 @@ class SyncData extends Command
                     }
                 }
             }
+
+            sleep(5);
 
             /** Api Student Users  */
             $url_api_student = env('API_BUKU_INDUK') . '/api/users/students/data/all';
@@ -224,6 +235,8 @@ class SyncData extends Command
                 }
             }
 
+            sleep(5);
+
             /** Api Teacher  */
             $url_api_teacher = env('API_BUKU_INDUK') . '/api/users/teachers/data/all';
             $response_api_teacher = Http::get($url_api_teacher);
@@ -259,6 +272,8 @@ class SyncData extends Command
                 }
             }
 
+            sleep(5);
+
             /** Api Student Class */
             $url_api_student_class = env('API_BUKU_INDUK') . '/api/master/student_classes/data/all';
             $response_api_student_class = Http::get($url_api_student_class);
@@ -286,10 +301,62 @@ class SyncData extends Command
                 }
             }
 
+            sleep(5);
+
+            /** Api Ekstra  */
+            $url_api_ekstra = env('API_BUKU_INDUK') . '/api/master/extracurriculars';
+            $response_api_ekstra = Http::get($url_api_ekstra);
+            $resposnse_collection_ekstra = $response_api_ekstra->collect();
+            $collection_api_ekstra = collect($resposnse_collection_ekstra);
+            $output->writeln('info:' . $collection_api_ekstra);
+
+            if (!empty($collection_api_ekstra['data'])) {
+                $check_school_ekstra = Extracurricular::whereNull('sync_date')->get()->count();
+
+                if ($check_school_ekstra == 0) {
+                    foreach ($collection_api_ekstra['data'] as $key => $data_ekstra) {
+
+                        $create_extra = Extracurricular::updateOrCreate([
+                            'key' => $data_ekstra['uid']
+                        ], [
+                            'key' => $data_ekstra['uid'],
+                            'name' => $data_ekstra['name'],
+                            'status' => $data_ekstra['status'],
+                            'slug' => $data_ekstra['uid'] . '-' . str::random(5),
+                            'sync_date' => $timestamp,
+                        ]);
+
+                        $output->writeln('info: insert data extra ' . $create_extra);
+                    }
+                }
+            }
+
+            /** guru mapel */
+
+            $url_api_gurumapel = env('API_BUKU_INDUK') . '/api/master/subject_teachers/data/all';
+            $response_api_gurumapel = Http::get($url_api_gurumapel);
+            $resposnse_collection_gurumapel = $response_api_gurumapel->collect();
+            $collection_api_gurumapel = collect($resposnse_collection_gurumapel);
+            $output->writeln('info:' . $collection_api_gurumapel);
+
+            if (!empty($collection_api_gurumapel['data'])) {
+
+            }
+
+            sleep(5);
+            $this->syncdatepost($output);
+
         } else {
             $output->writeln('error: API URL BUKU INDUK tidak di ketahui ');
         }
 
         return Command::SUCCESS;
+    }
+
+    /** post if sync date null  */
+    public function syncdatepost($output)
+    {
+        $output->writeln('info: prepared post sync data .... ');
+
     }
 }

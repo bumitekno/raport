@@ -18,6 +18,16 @@ class Extracurricular extends Model
 
     protected $dates = ['deleted_at'];
 
+    protected $fillable = [
+        'key',
+        'slug',
+        'name',
+        'status',
+        'person_responsible',
+        'sync_date',
+        'student_classes'
+    ];
+
     protected static function boot()
     {
         parent::boot();
@@ -38,7 +48,7 @@ class Extracurricular extends Model
 
     public function scopeActive($query)
     {
-        return $query->select('key as uid', 'name', 'person_responsible', 'student_classes',  'status')->where('status', 1);
+        return $query->select('key as uid', 'name', 'person_responsible', 'student_classes', 'status')->where('status', 1);
     }
 
     public function data()
