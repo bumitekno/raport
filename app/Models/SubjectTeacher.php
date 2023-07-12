@@ -15,7 +15,14 @@ class SubjectTeacher extends Model
     protected $table = "subject_teachers";
 
     protected $fillable = [
-        'slug', 'id_teacher', 'id_course', 'id_school_year', 'id_study_class', 'status'
+        'slug',
+        'id_teacher',
+        'id_course',
+        'id_school_year',
+        'id_study_class',
+        'status',
+        'key',
+        'sync_date'
     ];
 
     protected $dates = ['deleted_at'];

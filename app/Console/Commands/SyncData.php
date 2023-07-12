@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Models\SubjectTeacher;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Http;
 use Symfony\Component\Console\Output\ConsoleOutput;
@@ -87,7 +88,7 @@ class SyncData extends Command
                 }
             }
 
-            sleep(5);
+            //sleep(5);
 
             /** Api School Year  */
             $url_api_school_year = env('API_BUKU_INDUK') . '/api/master/school_years';
@@ -114,7 +115,7 @@ class SyncData extends Command
                 }
             }
 
-            sleep(5);
+            //sleep(5);
 
             /** Api Major  */
 
@@ -141,7 +142,7 @@ class SyncData extends Command
                 }
             }
 
-            sleep(5);
+            //sleep(5);
 
             /** Api Mapels */
             $url_api_mapel = env('API_BUKU_INDUK') . '/api/master/mapels';
@@ -169,7 +170,7 @@ class SyncData extends Command
                 }
             }
 
-            sleep(5);
+            //sleep(5);
 
             /** Api Rombel */
             $url_api_rombel = env('API_BUKU_INDUK') . '/api/master/study_classes';
@@ -198,7 +199,7 @@ class SyncData extends Command
                 }
             }
 
-            sleep(5);
+            //sleep(5);
 
             /** Api Student Users  */
             $url_api_student = env('API_BUKU_INDUK') . '/api/users/students/data/all';
@@ -235,7 +236,7 @@ class SyncData extends Command
                 }
             }
 
-            sleep(5);
+            //sleep(5);
 
             /** Api Teacher  */
             $url_api_teacher = env('API_BUKU_INDUK') . '/api/users/teachers/data/all';
@@ -272,7 +273,7 @@ class SyncData extends Command
                 }
             }
 
-            sleep(5);
+            //sleep(5);
 
             /** Api Student Class */
             $url_api_student_class = env('API_BUKU_INDUK') . '/api/master/student_classes/data/all';
@@ -301,7 +302,7 @@ class SyncData extends Command
                 }
             }
 
-            sleep(5);
+            //sleep(5);
 
             /** Api Ekstra  */
             $url_api_ekstra = env('API_BUKU_INDUK') . '/api/master/extracurriculars';
@@ -340,6 +341,25 @@ class SyncData extends Command
             $output->writeln('info:' . $collection_api_gurumapel);
 
             if (!empty($collection_api_gurumapel['data'])) {
+
+                $check_school_gurumapel = SubjectTeacher::whereNull('sync_date')->get()->count();
+                if ($check_school_gurumapel == 0) {
+                    foreach ($collection_api_gurumapel['data'] as $key => $data_gurumapel) {
+                        $create_gurumapel = SubjectTeacher::updateOrCreate([
+                            'key' => $data_gurumapel['uid']
+                        ], [
+                            'key' => $data_gurumapel['uid'],
+                            'id_teacher' => $data_gurumapel['id_guru'],
+                            'id_course' => $data_gurumapel['id_mapel'],
+                            'id_school_year' => $data_gurumapel['id_ta_sm'],
+                            'id_study_class' => collect($data_gurumapel['id_rombel_values']),
+                            'status' => 1,
+                            'sync_date' => $timestamp,
+                            'slug' => $data_gurumapel['uid_mapel'] . '-' . str::random(5),
+                        ]);
+                        $output->writeln('info: insert data guru mapel ' . $create_gurumapel);
+                    }
+                }
 
             }
 
