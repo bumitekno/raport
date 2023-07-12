@@ -111,9 +111,9 @@ class SyncData extends Command
                         ], [
                             'key' => $data_school_years['uid'],
                             'name' => $data_school_years['name'] . $data_school_years['semester_number'],
-                            'sync_date' => $timestamp,
                             'status' => $data_school_years['status'],
-                            'slug' => Str::replace('/', '', $data_school_years['name']) . $data_school_years['semester_number'] . '-' . str::random(5)
+                            'slug' => Str::replace('/', '', $data_school_years['name']) . $data_school_years['semester_number'] . '-' . str::random(5),
+                            'sync_date' => $timestamp,
                         ]);
                         $output->writeln('info: insert data school years ' . $create_school_years);
                         if ($key > 0 && $key % 10 == 0) {
