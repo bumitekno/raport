@@ -51,6 +51,8 @@ class SyncData extends Command
         //handle sync api buku induk 
         if (!empty(env('API_BUKU_INDUK'))) {
 
+            $output->writeln('info: prepared get sync data .... ');
+
             /**
              * Api Levels Buku Induk 
              */
@@ -84,11 +86,14 @@ class SyncData extends Command
 
                         $output->writeln('info: insert data level ' . $create_level);
 
+                        if ($key > 0 && $key % 10 == 0) {
+                            sleep(5);
+                            $output->writeln('info:  jeda 5 detik level ');
+                        }
+
                     }
                 }
             }
-
-            //sleep(5);
 
             /** Api School Year  */
             $url_api_school_year = env('API_BUKU_INDUK') . '/api/master/school_years';
@@ -111,11 +116,13 @@ class SyncData extends Command
                             'slug' => Str::replace('/', '', $data_school_years['name']) . $data_school_years['semester_number'] . '-' . str::random(5)
                         ]);
                         $output->writeln('info: insert data school years ' . $create_school_years);
+                        if ($key > 0 && $key % 10 == 0) {
+                            sleep(5);
+                            $output->writeln('info:  jeda 5 detik school years ');
+                        }
                     }
                 }
             }
-
-            //sleep(5);
 
             /** Api Major  */
 
@@ -138,11 +145,13 @@ class SyncData extends Command
                             'slug' => $data_major['name'] . '-' . str::random(5)
                         ]);
                         $output->writeln('info: insert data Major ' . $create_major);
+                        if ($key > 0 && $key % 10 == 0) {
+                            sleep(5);
+                            $output->writeln('info:  jeda 5 detik major ');
+                        }
                     }
                 }
             }
-
-            //sleep(5);
 
             /** Api Mapels */
             $url_api_mapel = env('API_BUKU_INDUK') . '/api/master/mapels';
@@ -166,11 +175,14 @@ class SyncData extends Command
                             'slug' => $data_mapel['nama'] . '-' . str::random(5)
                         ]);
                         $output->writeln('info: insert data Mapel ' . $create_major);
+                        if ($key > 0 && $key % 10 == 0) {
+                            sleep(5);
+                            $output->writeln('info:  jeda 5 detik mapel ');
+                        }
                     }
                 }
             }
 
-            //sleep(5);
 
             /** Api Rombel */
             $url_api_rombel = env('API_BUKU_INDUK') . '/api/master/study_classes';
@@ -195,11 +207,14 @@ class SyncData extends Command
                             'slug' => $data_rombel['name'] . '-' . str::random(5)
                         ]);
                         $output->writeln('info: insert data rombel ' . $create_rombel);
+                        if ($key > 0 && $key % 10 == 0) {
+                            sleep(5);
+                            $output->writeln('info:  jeda 5 detik rombel ');
+                        }
                     }
                 }
             }
 
-            //sleep(5);
 
             /** Api Student Users  */
             $url_api_student = env('API_BUKU_INDUK') . '/api/users/students/data/all';
@@ -232,11 +247,14 @@ class SyncData extends Command
                             'password' => Hash::make('12345678')
                         ]);
                         $output->writeln('info: insert data user student ' . $create_user);
+                        if ($key > 0 && $key % 10 == 0) {
+                            sleep(5);
+                            $output->writeln('info:  jeda 5 detik student ');
+                        }
                     }
                 }
             }
 
-            //sleep(5);
 
             /** Api Teacher  */
             $url_api_teacher = env('API_BUKU_INDUK') . '/api/users/teachers/data/all';
@@ -268,12 +286,14 @@ class SyncData extends Command
                             'slug' => $data_user['name'] . '-' . str::random(5),
                             'password' => Hash::make('12345678')
                         ]);
-                        $output->writeln('info: insert data user student ' . $create_user);
+                        $output->writeln('info: insert data user teacher ' . $create_user);
+                        if ($key > 0 && $key % 10 == 0) {
+                            sleep(5);
+                            $output->writeln('info:  jeda 5 detik user teacher ');
+                        }
                     }
                 }
             }
-
-            //sleep(5);
 
             /** Api Student Class */
             $url_api_student_class = env('API_BUKU_INDUK') . '/api/master/student_classes/data/all';
@@ -298,11 +318,14 @@ class SyncData extends Command
                         ]);
 
                         $output->writeln('info: insert data user student class ' . $create_user_student_class);
+                        if ($key > 0 && $key % 10 == 0) {
+                            sleep(5);
+                            $output->writeln('info:  jeda 5 detik student class ');
+                        }
                     }
                 }
             }
 
-            //sleep(5);
 
             /** Api Ekstra  */
             $url_api_ekstra = env('API_BUKU_INDUK') . '/api/master/extracurriculars';
@@ -328,6 +351,10 @@ class SyncData extends Command
                         ]);
 
                         $output->writeln('info: insert data extra ' . $create_extra);
+                        if ($key > 0 && $key % 10 == 0) {
+                            sleep(5);
+                            $output->writeln('info:  jeda 5 detik ekstra ');
+                        }
                     }
                 }
             }
@@ -358,12 +385,16 @@ class SyncData extends Command
                             'slug' => $data_gurumapel['uid_mapel'] . '-' . str::random(5),
                         ]);
                         $output->writeln('info: insert data guru mapel ' . $create_gurumapel);
+                        if ($key > 0 && $key % 10 == 0) {
+                            sleep(5);
+                            $output->writeln('info:  jeda 5 detik guru mapel ');
+                        }
                     }
                 }
 
             }
 
-            sleep(5);
+            /** sync post delete */
             $this->syncdatepost($output, $timestamp);
 
         } else {
@@ -473,6 +504,43 @@ class SyncData extends Command
         if (!empty($delete_mapel)) {
 
         }
+
+        /** post studi kelas  */
+        $post_studi_kelas = StudyClass::whereNull('sync_date')->get();
+        $output->writeln('info: prepared post sync data collection studi kelas.... ' . $post_studi_kelas);
+        if (!empty($post_studi_kelas)) {
+            $url_post_studi_kelas = env('API_BUKU_INDUK') . '/api/master/study_classes';
+            foreach ($post_studi_kelas as $key => $studikelas) {
+                $form_studi_kelas = array(
+                    'key' => $studikelas->key,
+                    'name' => $studikelas->name,
+                    'major_id' => $studikelas->id_major,
+                    'level_id' => $studikelas->id_level,
+                    'status' => $studikelas->status,
+                );
+                $response_studi_kelas = Http::post($url_post_studi_kelas, $form_studi_kelas);
+                if ($response_studi_kelas->ok()) {
+                    $post_studikelas = StudyClass::where('id', $studikelas->id)->update(['sync_date' => $timestamp]);
+                    $output->writeln('info: post sync data  studi kelas' . $key . ' status ' . $post_studikelas);
+                }
+
+                if ($key > 0 && $key % 10 == 0) {
+                    sleep(5);
+                }
+            }
+        }
+
+
+        /** delete studi kelas */
+        $delete_studi_kelas = StudyClass::onlyTrashed()->get();
+        $output->writeln('info: prepared delete sync data collection studi kelas.... ' . $delete_studi_kelas);
+        if (!empty($delete_studi_kelas)) {
+
+        }
+
+        /** student class  */
+
+
 
     }
 }
