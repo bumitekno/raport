@@ -7,6 +7,7 @@ use App\Http\Requests\Major\MajorRequest;
 use App\Models\Major;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
+use Illuminate\Support\Str;
 
 class MajorController extends Controller
 {
@@ -54,7 +55,10 @@ class MajorController extends Controller
 
     public function store(MajorRequest $request)
     {
-        Major::create($request->toArray());
+
+        $postdata = array_merge($request->toArray(), array('key' => str::random(5)));
+
+        Major::create($postdata);
         Helper::toast('Berhasil menambah jurusan', 'success');
         return redirect()->route('majors.index');
     }
@@ -69,7 +73,8 @@ class MajorController extends Controller
     public function update(MajorRequest $request, $slug)
     {
         $major = Major::where('slug', $slug)->firstOrFail();
-        $major->fill($request->input())->save();
+        $input_merge = array_merge($request->input(), array('sync_date' => null));
+        $major->fill($input_merge)->save();
         Helper::toast('Berhasil mengupdate jurusan', 'success');
         return redirect()->route('majors.index');
     }

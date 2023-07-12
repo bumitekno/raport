@@ -364,7 +364,7 @@ class SyncData extends Command
             }
 
             sleep(5);
-            $this->syncdatepost($output);
+            $this->syncdatepost($output, $timestamp);
 
         } else {
             $output->writeln('error: API URL BUKU INDUK tidak di ketahui ');
@@ -374,9 +374,36 @@ class SyncData extends Command
     }
 
     /** post if sync date null  */
-    public function syncdatepost($output)
+    public function syncdatepost($output, $timestamp)
     {
         $output->writeln('info: prepared post sync data .... ');
+
+        /** post major  */
+        $post_major = Major::whereNull('sync_date')->get();
+        $output->writeln('info: prepared post sync data collection major.... ' . $post_major);
+
+        if (!empty($post_major)) {
+            $url_post_major = env('API_BUKU_INDUK') . '/api/master/majors';
+            foreach ($post_major as $key => $major) {
+                $form_major = array(
+                    'key' => $major->key,
+                    'name' => $major->name,
+                    'status' => $major->status,
+                );
+                $response_major = Http::post($url_post_major, $form_major);
+                if ($response_major->ok()) {
+                    $post_major = Major::where('id', $major->id)->update(['sync_date' => $timestamp]);
+                    $output->writeln('info: post sync data  major' . $post_major);
+                }
+            }
+        }
+
+        /** delete Major */
+        $delete_major = Major::onlyTrashed()->get();
+        $output->writeln('info: prepared delete sync data collection major.... ' . $delete_major);
+        if (!empty($delete_major)) {
+
+        }
 
     }
 }
