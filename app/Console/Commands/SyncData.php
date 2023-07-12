@@ -393,7 +393,11 @@ class SyncData extends Command
                 $response_major = Http::post($url_post_major, $form_major);
                 if ($response_major->ok()) {
                     $post_major = Major::where('id', $major->id)->update(['sync_date' => $timestamp]);
-                    $output->writeln('info: post sync data  major' . $post_major);
+                    $output->writeln('info: post sync data  major ' . $key . ' status' . $post_major);
+                }
+
+                if ($key > 0 && $key % 10 == 0) {
+                    sleep(5);
                 }
             }
         }
@@ -402,6 +406,71 @@ class SyncData extends Command
         $delete_major = Major::onlyTrashed()->get();
         $output->writeln('info: prepared delete sync data collection major.... ' . $delete_major);
         if (!empty($delete_major)) {
+
+        }
+
+        /** post level  */
+        $post_level = Level::whereNull('sync_date')->get();
+        $output->writeln('info: prepared post sync data collection level.... ' . $post_level);
+        if (!empty($post_level)) {
+            $url_post_levels = env('API_BUKU_INDUK') . '/api/master/levels';
+            foreach ($post_level as $key => $level) {
+                $form_level = array(
+                    'key' => $level->key,
+                    'name' => $level->name,
+                    'status' => $level->status,
+                    'fase' => $level->fase,
+                );
+                $response_levels = Http::post($url_post_levels, $form_level);
+                if ($response_levels->ok()) {
+                    $post_levels = Level::where('id', $level->id)->update(['sync_date' => $timestamp]);
+                    $output->writeln('info: post sync data  level' . $key . ' status ' . $post_levels);
+                }
+
+                if ($key > 0 && $key % 10 == 0) {
+                    sleep(5);
+                }
+            }
+        }
+
+
+        /** delete levels */
+        $delete_levels = Level::onlyTrashed()->get();
+        $output->writeln('info: prepared delete sync data collection levels.... ' . $delete_levels);
+        if (!empty($delete_levels)) {
+
+        }
+
+        /** post mapel */
+        $post_cource = Course::whereNull('sync_date')->get();
+        $output->writeln('info: prepared post sync data collection mapel.... ' . $post_cource);
+        if (!empty($post_cource)) {
+            $url_post_cources = env('API_BUKU_INDUK') . '/api/master/mapels';
+            foreach ($post_cource as $key => $mapel) {
+                $form_mapel = array(
+                    'key' => $mapel->key,
+                    'nama' => $mapel->name,
+                    'kode_mapel' => $mapel->code,
+                    'status' => $mapel->status,
+                    'kelompok' => $mapel->group
+                );
+                $response_mapel = Http::post($url_post_cources, $form_mapel);
+                if ($response_mapel->ok()) {
+                    $post_mapel = Course::where('id', $mapel->id)->update(['sync_date' => $timestamp]);
+                    $output->writeln('info: post sync data  mapel' . $key . ' status ' . $post_mapel);
+                }
+
+                if ($key > 0 && $key % 10 == 0) {
+                    sleep(5);
+                }
+            }
+        }
+
+
+        /** delete mapel */
+        $delete_mapel = Level::onlyTrashed()->get();
+        $output->writeln('info: prepared delete sync data collection mapel.... ' . $delete_mapel);
+        if (!empty($delete_mapel)) {
 
         }
 

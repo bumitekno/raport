@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\DataTables;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Str;
 
 class CourseController extends Controller
 {
@@ -139,7 +140,8 @@ class CourseController extends Controller
     public function store(CourseRequest $request)
     {
         // dd($request);
-        Course::create($request->toArray());
+        $postdata = array_merge($request->toArray(), array('key' => str::random(5)));
+        Course::create($postdata);
         Helper::toast('Berhasil menambah pelajaran', 'success');
         return redirect()->route('courses.index');
     }
@@ -204,7 +206,8 @@ class CourseController extends Controller
     public function update(CourseRequest $request, $slug)
     {
         $course = Course::where('slug', $slug)->firstOrFail();
-        $course->fill($request->input())->save();
+        $input_merge = array_merge($request->input(), array('sync_date' => null));
+        $course->fill($input_merge)->save();
         Helper::toast('Berhasil mengupdate pelajaran', 'success');
         return redirect()->route('courses.index');
     }
