@@ -437,7 +437,18 @@ class SyncData extends Command
         $delete_major = Major::onlyTrashed()->get();
         $output->writeln('info: prepared delete sync data collection major.... ' . $delete_major);
         if (!empty($delete_major)) {
+            $url_delete_major = env('API_BUKU_INDUK') . '/api/master/majors';
+            foreach ($delete_major as $key => $major) {
 
+                $response_major_delete = Http::delete($url_delete_major . '/' . $major->key);
+                if ($response_major_delete->ok()) {
+                    $output->writeln('info: post sync data   delete major ' . $key . ' status' . $response_major_delete);
+                }
+
+                if ($key > 0 && $key % 10 == 0) {
+                    sleep(5);
+                }
+            }
         }
 
         /** post level  */
@@ -469,6 +480,19 @@ class SyncData extends Command
         $delete_levels = Level::onlyTrashed()->get();
         $output->writeln('info: prepared delete sync data collection levels.... ' . $delete_levels);
         if (!empty($delete_levels)) {
+
+            $url_delete_levels = env('API_BUKU_INDUK') . '/api/master/level';
+            foreach ($delete_levels as $key => $level) {
+
+                $response_level_delete = Http::delete($url_delete_levels . '/' . $level->key);
+                if ($$response_level_delete->ok()) {
+                    $output->writeln('info: post sync data   delete major ' . $key . ' status' . $response_level_delete);
+                }
+
+                if ($key > 0 && $key % 10 == 0) {
+                    sleep(5);
+                }
+            }
 
         }
 
