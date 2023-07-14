@@ -116,6 +116,7 @@ Route::middleware('auth:user,admin,parent,teacher')->group(function () {
         'majors' => 'majors:slug',
     ])->except(['show', 'destroy']);
     Route::get('majors/destroy/{slug}', [MajorController::class, 'destroy'])->name('majors.destroy');
+    Route::post('majors/update_status', [MajorController::class, 'update_status'])->name('majors.update_status');
 
     Route::resource('levels', LevelController::class)->parameters([
         'levels' => 'levels:slug',
