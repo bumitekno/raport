@@ -527,6 +527,19 @@ class SyncData extends Command
         $output->writeln('info: prepared delete sync data collection mapel.... ' . $delete_mapel);
         if (!empty($delete_mapel)) {
 
+            $url_delete_mapel = env('API_BUKU_INDUK') . '/api/master/mapels';
+            foreach ($delete_mapel as $key => $mapel) {
+
+                $response_mapel_delete = Http::delete($url_delete_mapel . '/' . $mapel->key);
+                if ($response_mapel_delete->ok()) {
+                    $output->writeln('info: post sync data   delete mapel ' . $key . ' status' . $response_mapel_delete);
+                }
+
+                if ($key > 0 && $key % 10 == 0) {
+                    sleep(5);
+                }
+            }
+
         }
 
         /** post studi kelas  */
@@ -559,6 +572,19 @@ class SyncData extends Command
         $delete_studi_kelas = StudyClass::onlyTrashed()->get();
         $output->writeln('info: prepared delete sync data collection studi kelas.... ' . $delete_studi_kelas);
         if (!empty($delete_studi_kelas)) {
+
+            $url_delete_studi = env('API_BUKU_INDUK') . '/api/master/study_classes';
+            foreach ($delete_studi_kelas as $key => $studi) {
+
+                $response_studi_delete = Http::delete($url_delete_studi . '/' . $studi->key);
+                if ($response_studi_delete->ok()) {
+                    $output->writeln('info: post sync data   delete studi kelas ' . $key . ' status' . $response_studi_delete);
+                }
+
+                if ($key > 0 && $key % 10 == 0) {
+                    sleep(5);
+                }
+            }
 
         }
 
