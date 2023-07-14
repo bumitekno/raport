@@ -23,6 +23,7 @@ class StudentClass extends Model
         parent::boot();
 
         static::deleting(function ($student_class) {
+            
             $student_class->score_p5s()->delete();
             $student_class->scoreMerdekas()->delete();
             $student_class->scoreKds()->delete();
@@ -32,18 +33,6 @@ class StudentClass extends Model
             $student_class->achievements()->delete();
             $student_class->attendanceScores()->delete();
             $student_class->attitudeGrades()->delete();
-        });
-
-        static::restoring(function ($student_class) {
-            $student_class->score_p5s()->restore();
-            $student_class->scoreMerdekas()->restore();
-            $student_class->scoreKds()->restore();
-            $student_class->scoreCompetencies()->restore();
-            $student_class->scoreManuals()->restore();
-            $student_class->teacherNotes()->restore();
-            $student_class->achievements()->restore();
-            $student_class->attendanceScores()->restore();
-            $student_class->attitudeGrades()->restore();
         });
     }
 

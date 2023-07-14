@@ -25,10 +25,60 @@ class StudyClass extends Model
         parent::boot();
 
         static::deleting(function ($study_class) {
-            $study_class->users()->delete();
-            $study_class->teachers()->delete();
-            $study_class->p5s()->delete();
-            $study_class->studentClass()->delete();
+            $study_class->users->each(function ($user) {
+                $user->studentClass->each(function ($studentClass) {                 
+                    $studentClass->score_p5s()->delete();
+                    $studentClass->scoreMerdekas()->delete();
+                    $studentClass->scoreKds()->delete();
+                    $studentClass->scoreCompetencies()->delete();
+                    $studentClass->scoreManuals()->delete();
+                    $studentClass->teacherNotes()->delete();
+                    $studentClass->achievements()->delete();
+                    $studentClass->attendanceScores()->delete();
+                    $studentClass->attitudeGrades()->delete();
+                    $studentClass->delete();
+                });
+                $user->userParent()->delete();
+                $user->delete();
+            });
+            $study_class->teachers->each(function ($teacher) {
+                $teacher->subjectTeacher->each(function ($subjectTeacher) {     
+                    $subjectTeacher->p5s->each(function ($p5s) {  
+                        $p5s->scoreP5s()->delete();
+                        $p5s->delete();
+                    });
+                    $subjectTeacher->score_p5s()->delete();
+                    $subjectTeacher->scoreKds()->delete();
+                    $subjectTeacher->delete();
+                });
+                $teacher->competenceAchievement()->delete();
+                $teacher->assementWeights()->delete();
+                $teacher->scoreMerdekas()->delete();
+                $teacher->generalWeights()->delete();
+                $teacher->scoreCompetencies()->delete();
+                $teacher->scoreManuals()->delete();
+                $teacher->teacherNotes()->delete();
+                $teacher->achievements()->delete();
+                $teacher->attitudeGrades()->delete();
+                $teacher->scoreExtracuriculars()->delete();
+                $teacher->delete();
+            });
+            $study_class->studentClass->each(function ($studentClass) {                 
+                $studentClass->score_p5s()->delete();
+                $studentClass->scoreMerdekas()->delete();
+                $studentClass->scoreKds()->delete();
+                $studentClass->scoreCompetencies()->delete();
+                $studentClass->scoreManuals()->delete();
+                $studentClass->teacherNotes()->delete();
+                $studentClass->achievements()->delete();
+                $studentClass->attendanceScores()->delete();
+                $studentClass->attitudeGrades()->delete();
+                $studentClass->delete();
+            });
+            $study_class->p5s->each(function ($p5s) {  
+                $p5s->scoreP5s()->delete();
+                $p5s->delete();
+            });
             $study_class->competenceAchievement()->delete();
             $study_class->assementWeights()->delete();
             $study_class->kkms()->delete();
@@ -39,23 +89,6 @@ class StudyClass extends Model
             $study_class->scoreManuals()->delete();
             $study_class->achievements()->delete();
             $study_class->scoreExtracuriculars()->delete();
-        });
-
-        static::restoring(function ($study_class) {
-            $study_class->users()->restore();
-            $study_class->teachers()->restore();
-            $study_class->p5s()->restore();
-            $study_class->studentClass()->restore();
-            $study_class->competenceAchievement()->restore();
-            $study_class->assementWeights()->restore();
-            $study_class->kkms()->restore();
-            $study_class->scoreMerdekas()->restore();
-            $study_class->scoreKds()->restore();
-            $study_class->generalWeights()->restore();
-            $study_class->scoreCompetencies()->restore();
-            $study_class->scoreManuals()->restore();
-            $study_class->achievements()->restore();
-            $study_class->scoreExtracuriculars()->restore();
         });
     }
 

@@ -25,7 +25,15 @@ class Course extends Model
         parent::boot();
 
         static::deleting(function ($course) {
-            $course->subjectTeacher()->delete();
+            $course->subjectTeacher->each(function ($subjectTeacher) {
+                $subjectTeacher->p5s->each(function ($p5) {
+                    $p5->scoreP5s()->delete();
+                    $p5->delete();
+                });
+                $subjectTeacher->scoreP5s()->delete();
+                $subjectTeacher->scoreKds()->delete();
+                $subjectTeacher->delete();
+            });
             $course->competenceAchievement()->delete();
             $course->assementWeights()->delete();
             $course->kkms()->delete();
@@ -34,18 +42,6 @@ class Course extends Model
             $course->generalWeights()->delete();
             $course->scoreCompetencies()->delete();
             $course->scoreManuals()->delete();
-        });
-
-        static::restoring(function ($course) {
-            $course->subjectTeacher()->restore();
-            $course->competenceAchievement()->restore();
-            $course->assementWeights()->restore();
-            $course->kkms()->restore();
-            $course->scoreMerdekas()->restore();
-            $course->basicCompetencies()->restore();
-            $course->generalWeights()->restore();
-            $course->scoreCompetencies()->restore();
-            $course->scoreManuals()->restore();
         });
     }
 

@@ -25,15 +25,12 @@ class SubjectTeacher extends Model
         parent::boot();
 
         static::deleting(function ($subject_teacher) {
-            $subject_teacher->p5s()->delete();
+            $subject_teacher->p5s->each(function ($p5s) {  
+                $p5s->scoreP5s()->delete();
+                $p5s->delete();
+            });
             $subject_teacher->scoreP5s()->delete();
             $subject_teacher->scoreKds()->delete();
-        });
-
-        static::restoring(function ($subject_teacher) {
-            $subject_teacher->p5s()->restore();
-            $subject_teacher->scoreP5s()->restore();
-            $subject_teacher->scoreKds()->restore();
         });
     }
 

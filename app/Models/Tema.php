@@ -23,7 +23,10 @@ class Tema extends Model
         parent::boot();
 
         static::deleting(function ($tema) {
-            $tema->p5s()->delete();
+            $tema->p5s->each(function ($p5s) {  
+                $p5s->scoreP5s()->delete();
+                $p5s->delete();
+            });
         });
 
         static::restoring(function ($tema) {

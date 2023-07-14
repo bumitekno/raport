@@ -21,13 +21,19 @@ class User extends Authenticatable
         parent::boot();
 
         static::deleting(function ($user) {
+            $user->studentClass->each(function ($studentClass) {                 
+                $studentClass->score_p5s()->delete();
+                $studentClass->scoreMerdekas()->delete();
+                $studentClass->scoreKds()->delete();
+                $studentClass->scoreCompetencies()->delete();
+                $studentClass->scoreManuals()->delete();
+                $studentClass->teacherNotes()->delete();
+                $studentClass->achievements()->delete();
+                $studentClass->attendanceScores()->delete();
+                $studentClass->attitudeGrades()->delete();
+                $studentClass->delete();
+            });
             $user->userParent()->delete();
-            $user->studentClass()->delete();
-        });
-
-        static::restoring(function ($user) {
-            $user->userParent()->restore();
-            $user->studentClass()->restore();
         });
     }
 
