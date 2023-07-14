@@ -244,7 +244,7 @@ class SyncData extends Command
                             'sync_date' => $timestamp,
                             'status' => $data_user['status'],
                             'slug' => $data_user['name'] . '-' . str::random(5),
-                            'password' => Hash::make('12345678')
+                            'password' => '12345678'
                         ]);
                         $output->writeln('info: insert data user student ' . $create_user);
                         if ($key > 0 && $key % 10 == 0) {
@@ -284,7 +284,7 @@ class SyncData extends Command
                             'sync_date' => $timestamp,
                             'status' => $data_user['status'],
                             'slug' => $data_user['name'] . '-' . str::random(5),
-                            'password' => Hash::make('12345678')
+                            'password' => '12345678'
                         ]);
                         $output->writeln('info: insert data user teacher ' . $create_user);
                         if ($key > 0 && $key % 10 == 0) {
@@ -585,12 +585,103 @@ class SyncData extends Command
                     sleep(5);
                 }
             }
+        }
 
+        /** student user  */
+        $post_user_siswa = User::whereNull('sync_date')->get();
+        $output->writeln('info: prepared post sync data collection user siswa .... ' . $post_user_siswa);
+        if (!empty($post_user_siswa)) {
+            $url_post_user_siswa = env('API_BUKU_INDUK') . '/api/users/students';
+            foreach ($post_user_siswa as $key => $user_siswa) {
+                $form_user_siswa = array(
+                    'key' => $user_siswa->key,
+                    'name' => $user_siswa->name,
+                    'status' => $user_siswa->status,
+                    'nis' => $user_siswa->nis,
+                    'nisn' => $user_siswa->nisn,
+                    'gender' => $user_siswa->gender == 'male' ? 'L' : 'P',
+                    'religion' => $user_siswa->religion == 'lainnya' ? 'protestan' : $user_siswa->religion,
+                    'email' => $user_siswa->email,
+                    'birth_day' => $user_siswa->date_of_birth,
+                    'birth_place' => $user_siswa->place_of_birth,
+                );
+
+                /*  $response_user_siswa = Http::post($url_post_user_siswa, $form_user_siswa);
+                 if ($response_user_siswa->ok()) {
+                     $post_usersiswa = User::where('id', $user_siswa->id)->update(['sync_date' => $timestamp]);
+                     $output->writeln('info: post sync data  user siswa ' . $key . ' status' . $post_usersiswa);
+                 }*/
+
+                if ($key > 0 && $key % 10 == 0) {
+                    sleep(5);
+                }
+            }
+        }
+
+
+        /** delete user  */
+        $delete_user_student = User::onlyTrashed()->get();
+        $output->writeln('info: prepared delete sync data collection user student.... ' . $delete_user_student);
+        if (!empty($delete_user_student)) {
+
+            $url_delete_user_student = env('API_BUKU_INDUK') . '/api/users/students';
+            foreach ($delete_user_student as $key => $user) {
+
+                $response_user_delete = Http::delete($url_delete_user_student . '/' . $user->key);
+                if ($response_studi_delete->ok()) {
+                    $output->writeln('info: post sync data   delete user student ' . $key . ' status' . $response_user_delete);
+                }
+
+                if ($key > 0 && $key % 10 == 0) {
+                    sleep(5);
+                }
+            }
         }
 
         /** student class  */
 
+        $post_student_class = StudentClass::whereNull('sync_date')->get();
+        $output->writeln('info: prepared post sync data collection student kelas.... ' . $post_student_class);
+        if (!empty($post_student_class)) {
+            $url_post_student_kelas = env('API_BUKU_INDUK') . '/api/master/student_classes';
+            foreach ($post_student_class as $key => $studentkelas) {
+                $form_student_kelas = array(
+                    'key' => $studentkelas->key,
+                    'student_uid' => User::where('id', $studentkelas->id_student)->first()?->key,
+                    'study_class_uid' => StudyClass::where('id', $studentkelas->id_study_class)->first()?->key,
+                    'year' => $studentkelas->year,
+                    'status' => $studentkelas->status
+                );
+                $response_student_kelas = Http::post($url_post_student_kelas, $form_student_kelas);
+                if ($response_student_kelas->ok()) {
+                    $post_studkelas = StudentClass::where('id', $studentkelas->id)->update(['sync_date' => $timestamp]);
+                    $output->writeln('info: post sync data  student kelas' . $key . ' status ' . $post_studkelas);
+                }
 
+                if ($key > 0 && $key % 10 == 0) {
+                    sleep(5);
+                }
+            }
+        }
+
+        /** delete student class  */
+        $delete_user_student_class = StudentClass::onlyTrashed()->get();
+        $output->writeln('info: prepared delete sync data collection user student class.... ' . $delete_user_student_class);
+        if (!empty($delete_user_student_class)) {
+
+            $url_delete_user_student_class = env('API_BUKU_INDUK') . '/api/master/student_classes';
+            foreach ($delete_user_student_class as $key => $user) {
+
+                $response_user_delete = Http::delete($url_delete_user_student_class . '/' . $user->key);
+                if ($response_studi_delete->ok()) {
+                    $output->writeln('info: post sync data   delete user student class' . $key . ' status' . $response_user_delete);
+                }
+
+                if ($key > 0 && $key % 10 == 0) {
+                    sleep(5);
+                }
+            }
+        }
 
     }
 }

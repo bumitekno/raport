@@ -34,7 +34,7 @@ class StudentClassController extends Controller
             } else {
                 $get_class = StudyClass::where('slug', $_GET['class'])->first();
                 $data = StudentClass::join('users', 'student_classes.id_student', '=', 'users.id')
-                    ->select('student_classes.id', 'student_classes.id_student',  'student_classes.year', 'users.name', 'users.gender', 'users.file', 'users.email', 'users.place_of_birth', 'users.date_of_birth',  DB::raw("IF(student_classes.status = 1, 'siswa', 'alumni') as type"))
+                    ->select('student_classes.id', 'student_classes.id_student', 'student_classes.year', 'users.name', 'users.gender', 'users.file', 'users.email', 'users.place_of_birth', 'users.date_of_birth', DB::raw("IF(student_classes.status = 1, 'siswa', 'alumni') as type"))
                     ->where([
                         ['id_study_class', $get_class->id],
                         ['year', $_GET['year']],
@@ -87,7 +87,7 @@ class StudentClassController extends Controller
     {
         // dd($request);
         $action = $request->action;
-        $selectedSiswa = explode(',', $request->selected_siswa);;
+        $selectedSiswa = explode(',', $request->selected_siswa);
         $dataOrigin = $request->data_origin;
 
         if ($action == 'delete') {
@@ -97,7 +97,7 @@ class StudentClassController extends Controller
                 User::whereIn('id', $selectedSiswa)->delete();
             }
         } else if ($action == 'alumni') {
-            StudentClass::whereIn('id', $selectedSiswa)->update(['status' => 0]);
+            StudentClass::whereIn('id', $selectedSiswa)->update(['status' => 0, 'sync_date' => null]);
         } else if ($action == 'move') {
 
             $idStudyClass = $request->id_study_class;
@@ -125,9 +125,11 @@ class StudentClassController extends Controller
                     $newData = $data->replicate();
                     $newData->id_study_class = $idStudyClass;
                     $newData->year = $year;
+                    $newData->sync_date = null;
                     $newData->save();
 
                     $data->status = 2;
+                    $data->sync_date = null;
                     $data->save();
                 });
             } else if ($dataOrigin == 'user') {
@@ -143,7 +145,8 @@ class StudentClassController extends Controller
                         'id_student' => $siswa->id,
                         'id_study_class' => $idStudyClass,
                         'year' => $year,
-                        'slug' => $siswa->id . $idStudyClass . $year . '-' . Helper::str_random(5)
+                        'slug' => $siswa->id . $idStudyClass . $year . '-' . Helper::str_random(5),
+                        'key' => Helper::str_random(5)
                     ]);
                 });
             }
