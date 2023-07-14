@@ -226,26 +226,56 @@ class SyncData extends Command
                 $check_school_usert_student = User::whereNull('sync_date')->get()->count();
                 if ($check_school_usert_student == 0) {
                     foreach ($collection_api_student['data'] as $key => $data_user) {
-                        $create_user = User::updateOrCreate([
-                            'key' => $data_user['uid'],
-                        ], [
-                            'key' => $data_user['uid'],
-                            'name' => $data_user['name'],
-                            'gender' => $data_user['gender'] == 'L' ? 'male' : 'female',
-                            'email' => $data_user['email'],
-                            'nis' => $data_user['nis'],
-                            'nisn' => $data_user['nisn'],
-                            'religion' => $data_user['religion'] == 'protestan' ? 'lainnya' : $data_user['religion'],
-                            'place_of_birth' => $data_user['birth_place'],
-                            'date_of_birth' => \Carbon\Carbon::parse($data_user['birth_day']),
-                            'address' => $data_user['address'],
-                            'accepted_date' => $data_user['date_accepted'],
-                            'entry_year' => $data_user['school_year'],
-                            'sync_date' => $timestamp,
-                            'status' => $data_user['status'],
-                            'slug' => $data_user['name'] . '-' . str::random(5),
-                            'password' => '12345678'
-                        ]);
+
+                        $check_password = User::where('key', $data_user['uid'])->first()?->password;
+
+                        if (empty($check_password)) {
+
+                            $create_user = User::updateOrCreate([
+                                'key' => $data_user['uid'],
+                            ], [
+                                'key' => $data_user['uid'],
+                                'name' => $data_user['name'],
+                                'gender' => $data_user['gender'] == 'L' ? 'male' : 'female',
+                                'email' => $data_user['email'],
+                                'nis' => $data_user['nis'],
+                                'nisn' => $data_user['nisn'],
+                                'religion' => $data_user['religion'] == 'protestan' ? 'lainnya' : $data_user['religion'],
+                                'place_of_birth' => $data_user['birth_place'],
+                                'date_of_birth' => \Carbon\Carbon::parse($data_user['birth_day']),
+                                'address' => $data_user['address'],
+                                'accepted_date' => $data_user['date_accepted'],
+                                'entry_year' => $data_user['school_year'],
+                                'sync_date' => $timestamp,
+                                'status' => $data_user['status'],
+                                'slug' => $data_user['name'] . '-' . str::random(5),
+                                'password' => '12345678',
+                                'phone' => $data_user['phone']
+                            ]);
+
+                        } else {
+                            $create_user = User::updateOrCreate([
+                                'key' => $data_user['uid'],
+                            ], [
+                                'key' => $data_user['uid'],
+                                'name' => $data_user['name'],
+                                'gender' => $data_user['gender'] == 'L' ? 'male' : 'female',
+                                'email' => $data_user['email'],
+                                'nis' => $data_user['nis'],
+                                'nisn' => $data_user['nisn'],
+                                'religion' => $data_user['religion'] == 'protestan' ? 'lainnya' : $data_user['religion'],
+                                'place_of_birth' => $data_user['birth_place'],
+                                'date_of_birth' => \Carbon\Carbon::parse($data_user['birth_day']),
+                                'address' => $data_user['address'],
+                                'accepted_date' => $data_user['date_accepted'],
+                                'entry_year' => $data_user['school_year'],
+                                'sync_date' => $timestamp,
+                                'status' => $data_user['status'],
+                                'slug' => $data_user['name'] . '-' . str::random(5),
+                                'phone' => $data_user['phone']
+                            ]);
+                        }
+
                         $output->writeln('info: insert data user student ' . $create_user);
                         if ($key > 0 && $key % 10 == 0) {
                             sleep(5);
@@ -266,26 +296,55 @@ class SyncData extends Command
                 $check_school_usert_teacher = Teacher::whereNull('sync_date')->get()->count();
                 if ($check_school_usert_teacher == 0) {
                     foreach ($collection_api_teacher['data'] as $key => $data_user) {
-                        $create_user = Teacher::updateOrCreate([
-                            'key' => $data_user['uid'],
-                        ], [
-                            'key' => $data_user['uid'],
-                            'name' => $data_user['name'],
-                            'gender' => $data_user['gender'] == 'L' ? 'male' : 'female',
-                            'email' => $data_user['email'],
-                            'nip' => $data_user['nip'],
-                            'nik' => $data_user['nik'],
-                            'nuptk' => $data_user['nuptk'],
-                            'place_of_birth' => $data_user['birth_place'],
-                            'date_of_birth' => \Carbon\Carbon::parse($data_user['birth_day']),
-                            'address' => $data_user['address'],
-                            'type' => 'teacher',
-                            'phone' => $data_user['contact'],
-                            'sync_date' => $timestamp,
-                            'status' => $data_user['status'],
-                            'slug' => $data_user['name'] . '-' . str::random(5),
-                            'password' => '12345678'
-                        ]);
+
+                        $check_password = Teacher::where('key', $data_user['uid'])->first()?->password;
+
+                        if (!empty($check_password)) {
+
+                            $create_user = Teacher::updateOrCreate([
+                                'key' => $data_user['uid'],
+                            ], [
+                                'key' => $data_user['uid'],
+                                'name' => $data_user['name'],
+                                'gender' => $data_user['gender'] == 'L' ? 'male' : 'female',
+                                'email' => $data_user['email'],
+                                'nip' => $data_user['nip'],
+                                'nik' => $data_user['nik'],
+                                'nuptk' => $data_user['nuptk'],
+                                'place_of_birth' => $data_user['birth_place'],
+                                'date_of_birth' => \Carbon\Carbon::parse($data_user['birth_day']),
+                                'address' => $data_user['address'],
+                                'type' => 'teacher',
+                                'phone' => $data_user['contact'],
+                                'sync_date' => $timestamp,
+                                'status' => $data_user['status'],
+                                'slug' => $data_user['name'] . '-' . str::random(5),
+                            ]);
+
+                        } else {
+                            $create_user = Teacher::updateOrCreate([
+                                'key' => $data_user['uid'],
+                            ], [
+                                'key' => $data_user['uid'],
+                                'name' => $data_user['name'],
+                                'gender' => $data_user['gender'] == 'L' ? 'male' : 'female',
+                                'email' => $data_user['email'],
+                                'nip' => $data_user['nip'],
+                                'nik' => $data_user['nik'],
+                                'nuptk' => $data_user['nuptk'],
+                                'place_of_birth' => $data_user['birth_place'],
+                                'date_of_birth' => \Carbon\Carbon::parse($data_user['birth_day']),
+                                'address' => $data_user['address'],
+                                'type' => 'teacher',
+                                'phone' => $data_user['contact'],
+                                'sync_date' => $timestamp,
+                                'status' => $data_user['status'],
+                                'slug' => $data_user['name'] . '-' . str::random(5),
+                                'password' => '12345678'
+                            ]);
+                        }
+
+
                         $output->writeln('info: insert data user teacher ' . $create_user);
                         if ($key > 0 && $key % 10 == 0) {
                             sleep(5);
@@ -604,6 +663,7 @@ class SyncData extends Command
                     'email' => $user_siswa->email,
                     'birth_day' => $user_siswa->date_of_birth,
                     'birth_place' => $user_siswa->place_of_birth,
+                    'phone' => $user_siswa->phone
                 );
 
                 /*  $response_user_siswa = Http::post($url_post_user_siswa, $form_user_siswa);
