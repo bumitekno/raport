@@ -382,7 +382,7 @@ class SyncData extends Command
                             'id_study_class' => collect($data_gurumapel['id_rombel_values']),
                             'status' => 1,
                             'sync_date' => $timestamp,
-                            'slug' => $data_gurumapel['uid_mapel'] . '-' . str::random(5),
+                            'slug' => $data_gurumapel['uid'] . '-' . str::random(5),
                         ]);
                         $output->writeln('info: insert data guru mapel ' . $create_gurumapel);
                         if ($key > 0 && $key % 10 == 0) {
@@ -646,7 +646,7 @@ class SyncData extends Command
             $url_post_student_kelas = env('API_BUKU_INDUK') . '/api/master/student_classes';
             foreach ($post_student_class as $key => $studentkelas) {
                 $form_student_kelas = array(
-                    'key' => $studentkelas->key,
+                    'uid' => $studentkelas->key,
                     'student_uid' => User::where('id', $studentkelas->id_student)->first()?->key,
                     'study_class_uid' => StudyClass::where('id', $studentkelas->id_study_class)->first()?->key,
                     'year' => $studentkelas->year,
@@ -657,6 +657,8 @@ class SyncData extends Command
                     $post_studkelas = StudentClass::where('id', $studentkelas->id)->update(['sync_date' => $timestamp]);
                     $output->writeln('info: post sync data  student kelas' . $key . ' status ' . $post_studkelas);
                 }
+
+                $output->writeln('info: post student class ' . $response_student_kelas);
 
                 if ($key > 0 && $key % 10 == 0) {
                     sleep(5);
