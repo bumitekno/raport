@@ -35,6 +35,13 @@
         @include('package.datatable.datatable_js')
         <script>
             $(function() {
+
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+
                 var table = $('#table-list').DataTable({
                     processing: true,
                     serverSide: true,
@@ -72,6 +79,28 @@
                         data: 'action',
                         name: 'action',
                     }, ]
+                });
+
+                $(document).on('click', '.active-status', function() {
+                    let id = $(this).data('id');
+                    let value = $(this).is(':checked') ? 1 : 0;
+                    if (id) {
+                        $.ajax({
+                            url: "{{ route('levels.update_status') }}",
+                            method: "POST",
+                            data: {
+                                id,
+                                value
+                            },
+                            success: function(data) {
+                                table.ajax.reload();
+                            },
+                            error: function(data) {
+                                console.log('Error:', data);
+                            }
+                        });
+
+                    }
                 });
 
             });

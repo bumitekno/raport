@@ -86,8 +86,7 @@ class MajorController extends Controller
         $major->status = $request->value;
         $major->sync_date = null;
         $major->save();
-        Helper::toast('Berhasil mengupdate jurusan', 'success');
-        return redirect()->route('majors.index');
+        return response()->json('Data berhasil disimpan');
     }
 
     public function destroy($slug)
