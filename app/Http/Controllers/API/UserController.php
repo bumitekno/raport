@@ -182,4 +182,17 @@ class UserController extends Controller
             return Response::responseApi(400, 'Siswa tidak ditemukan.');
         }
     }
+
+    public function destroy($key)
+    {
+        $data = User::where('key', $key)->first();
+
+        if ($data) {
+            $data->delete();
+            
+            return Response::responseApi(200, 'Siswa berhasil dihapus.');
+        } else {
+            return Response::responseApi(400, 'Siswa tidak ditampilkan.');
+        }
+    }
 }

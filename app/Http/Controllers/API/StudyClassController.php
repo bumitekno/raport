@@ -68,4 +68,17 @@ class StudyClassController extends Controller
             return Response::responseApi(400, 'Rombongan belajar tidak ditampilkan.');
         }
     }
+
+    public function destroy($key)
+    {
+        $data = StudyClass::where('key', $key)->first();
+
+        if ($data) {
+            $data->delete();
+            
+            return Response::responseApi(200, 'Rombongan belajar berhasil dihapus.');
+        } else {
+            return Response::responseApi(400, 'Rombongan belajar tidak ditampilkan.');
+        }
+    }
 }

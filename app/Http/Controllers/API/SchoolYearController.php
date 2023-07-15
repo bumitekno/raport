@@ -89,4 +89,17 @@ class SchoolYearController extends Controller
             return Response::responseApi(400, 'Tahun ajaran tidak ditemukan.');
         }
     }
+
+    public function destroy($key)
+    {
+        $data = SchoolYear::where('key', $key)->first();
+
+        if ($data) {
+            $data->delete();
+            
+            return Response::responseApi(200, 'Tahun ajaran berhasil dihapus.');
+        } else {
+            return Response::responseApi(400, 'Tahun ajaran tidak ditampilkan.');
+        }
+    }
 }

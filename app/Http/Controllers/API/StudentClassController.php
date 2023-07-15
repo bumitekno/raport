@@ -121,4 +121,17 @@ class StudentClassController extends Controller
 
         return Response::responseApi(200, 'Siswa kelas berhasil diperbarui.', new StudentClassResource($data));
     }
+
+    public function destroy($key)
+    {
+        $data = StudentClass::where('key', $key)->first();
+
+        if ($data) {
+            $data->delete();
+            
+            return Response::responseApi(200, 'Siswa kelas berhasil dihapus.');
+        } else {
+            return Response::responseApi(400, 'Siswa kelas tidak ditampilkan.');
+        }
+    }
 }

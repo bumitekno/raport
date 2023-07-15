@@ -76,4 +76,17 @@ class ExtracurricularController extends Controller
 
         return Response::responseApi(200, 'Ekstrakurikuler berhasil diperbarui.', $data->data());
     }
+
+    public function destroy($key)
+    {
+        $data = Extracurricular::where('key', $key)->first();
+
+        if ($data) {
+            $data->delete();
+
+            return Response::responseApi(200, 'Ekstrakurikuler berhasil dihapus.');
+        } else {
+            return Response::responseApi(400, 'Ekstrakurikuler tidak ditampilkan.');
+        }
+    }
 }

@@ -46,4 +46,17 @@ class LevelController extends Controller
 
         return Response::responseApi(200, 'Tingkat berhasil diperbarui.', $data->data());
     }
+
+    public function destroy($key)
+    {
+        $data = Level::where('key', $key)->first();
+
+        if ($data) {
+            $data->delete();
+
+            return Response::responseApi(200, 'Tingkat berhasil dihapus.');
+        } else {
+            return Response::responseApi(400, 'Tingkat tidak ditampilkan.');
+        }
+    }
 }

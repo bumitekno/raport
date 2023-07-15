@@ -171,4 +171,17 @@ class TeacherController extends Controller
             return Response::responseApi(400, 'Guru tidak ditemukan.');
         }
     }
+
+    public function destroy($key)
+    {
+        $data = Teacher::where('key', $key)->first();
+
+        if ($data) {
+            $data->delete();
+            
+            return Response::responseApi(200, 'Guru berhasil dihapus.');
+        } else {
+            return Response::responseApi(400, 'Guru tidak ditampilkan.');
+        }
+    }
 }

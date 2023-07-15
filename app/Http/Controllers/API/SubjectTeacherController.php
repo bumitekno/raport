@@ -125,4 +125,17 @@ class SubjectTeacherController extends Controller
 
         return Response::responseApi(200, 'Guru mapel berhasil diperbarui.', new SubjectTeacherResource($data));
     }
+
+    public function destroy($key)
+    {
+        $data = SubjectTeacher::where('key', $key)->first();
+
+        if ($data) {
+            $data->delete();
+            
+            return Response::responseApi(200, 'Guru mapel berhasil dihapus.');
+        } else {
+            return Response::responseApi(400, 'Guru mapel tidak ditampilkan.');
+        }
+    }
 }

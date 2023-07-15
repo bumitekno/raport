@@ -64,4 +64,17 @@ class CourseController extends Controller
 
         return Response::responseApi(200, 'Mata pelajaran berhasil diperbarui.', $data->data());
     }
+
+    public function destroy($key)
+    {
+        $data = Course::where('key', $key)->first();
+
+        if ($data) {
+            $data->delete();
+            
+            return Response::responseApi(200, 'Mata pelajaran berhasil dihapus.');
+        } else {
+            return Response::responseApi(400, 'Mata pelajaran tidak ditampilkan.');
+        }
+    }
 }

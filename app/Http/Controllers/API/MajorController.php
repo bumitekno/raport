@@ -46,4 +46,17 @@ class MajorController extends Controller
 
         return Response::responseApi(200, 'Jurusan berhasil diperbarui.', $data->data());
     }
+
+    public function destroy($key)
+    {
+        $data = Major::where('key', $key)->first();
+
+        if ($data) {
+            $data->delete();
+            
+            return Response::responseApi(200, 'Jurusan berhasil dihapus.');
+        } else {
+            return Response::responseApi(400, 'Jurusan tidak ditampilkan.');
+        }
+    }
 }
