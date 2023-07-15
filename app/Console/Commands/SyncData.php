@@ -229,7 +229,7 @@ class SyncData extends Command
 
                         $check_password = User::where('key', $data_user['uid'])->first();
 
-                        if (empty($check_password) && !empty($check_password->password)) {
+                        if (empty($check_password) && empty($check_password->password)) {
 
                             $create_user = User::updateOrCreate([
                                 'key' => $data_user['uid'],
