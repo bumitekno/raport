@@ -15,9 +15,9 @@ return new class extends Migration {
         Schema::create('subject_teachers', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('slug')->nullable();
-            $table->unsignedInteger('id_teacher');
-            $table->unsignedInteger('id_course');
-            $table->unsignedInteger('id_school_year');
+            $table->unsignedBigInteger('id_teacher');
+            $table->unsignedBigInteger('id_course');
+            $table->unsignedBigInteger('id_school_year');
             $table->json('id_study_class');
             $table->tinyInteger('status')->default(1);
             $table->timestamps();
