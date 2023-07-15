@@ -16,11 +16,13 @@ return new class extends Migration {
             $table->increments('id');
             $table->string('slug')->nullable();
             $table->string('name');
-            $table->unsignedBigInteger('id_major');
-            $table->unsignedBigInteger('id_level');
+            //$table->unsignedBigInteger('id_major');
+            //$table->unsignedBigInteger('id_level');
             $table->tinyInteger('status')->default(1);
             $table->timestamps();
             $table->softDeletes();
+            $table->foreignId('id_major')->nullable();
+            $table->foreignId('id_level')->nullable();
         });
 
         /*Schema::table('study_classes', function (Blueprint $table) {
