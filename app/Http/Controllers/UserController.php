@@ -68,7 +68,7 @@ class UserController extends Controller
         if ($request->hasFile('file')) {
             $data = ImageHelper::upload_asset($request, 'file', 'profile', $data);
         }
-        $postdata = array_merge($data, array('key' => Helper::str_random(5)));
+        $postdata = array_merge($data, array('key' => Helper::str_random(5), 'accepted_date' => Carbon::now()));
         User::create($postdata);
         Helper::toast('Berhasil menambah siswa', 'success');
         return redirect()->route('users.index');
