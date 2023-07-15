@@ -53,3 +53,7 @@ tambahan cronjob serve hosting buku induk
 
 # Asign url api buku induk
 #API_BUKU_INDUK = http://localhost:8081
+
+revisi seeder admin 
+email: superadmin@admin.com
+pass:12345678
