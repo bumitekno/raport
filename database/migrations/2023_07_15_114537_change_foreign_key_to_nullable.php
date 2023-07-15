@@ -14,7 +14,7 @@ return new class extends Migration {
     public function up()
     {
         DB::statement('ALTER TABLE `study_classes` MODIFY `id_level` bigint NULL, MODIFY `id_major` bigint NULL;');
-        DB::statement('ALTER TABLE `subject_teachers` MODIFY `id_teacher` bigint NULL, MODIFY `id_course` bigint NULL, MODIFY `id_school_year` bigint NULL, MODIFY `id_study_class` bigint NULL;');
+        DB::statement('ALTER TABLE `subject_teachers` MODIFY `id_teacher` bigint NULL, MODIFY `id_course` bigint NULL, MODIFY `id_school_year` bigint NULL;');
     }
 
     /**
