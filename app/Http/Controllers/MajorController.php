@@ -7,6 +7,7 @@ use App\Http\Requests\Major\MajorRequest;
 use App\Models\Major;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
+use Illuminate\Support\Str;
 
 class MajorController extends Controller
 {
@@ -36,7 +37,7 @@ class MajorController extends Controller
                         $check = 'checked';
                     }
                     return '<label class="switch s-icons s-outline  s-outline-primary mb-0">
-                    <input type="checkbox" name="status" value="1" ' . $check . '>
+                    <input type="checkbox" name="status" value="1" ' . $check . '  class="active-status" data-id="' . $row['id'] . '" >
                     <span class="slider round my-auto"></span>
                 </label>';
                 })
@@ -54,7 +55,10 @@ class MajorController extends Controller
 
     public function store(MajorRequest $request)
     {
-        Major::create($request->toArray());
+
+        $postdata = array_merge($request->toArray(), array('key' => str::random(5)));
+
+        Major::create($postdata);
         Helper::toast('Berhasil menambah jurusan', 'success');
         return redirect()->route('majors.index');
     }
@@ -69,9 +73,20 @@ class MajorController extends Controller
     public function update(MajorRequest $request, $slug)
     {
         $major = Major::where('slug', $slug)->firstOrFail();
-        $major->fill($request->input())->save();
+        $input_merge = array_merge($request->input(), array('sync_date' => null));
+        $major->fill($input_merge)->save();
         Helper::toast('Berhasil mengupdate jurusan', 'success');
         return redirect()->route('majors.index');
+    }
+
+    public function update_status(Request $request)
+    {
+
+        $major = Major::find($request->id);
+        $major->status = $request->value;
+        $major->sync_date = null;
+        $major->save();
+        return response()->json('Data berhasil disimpan');
     }
 
     public function destroy($slug)

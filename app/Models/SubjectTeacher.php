@@ -15,7 +15,14 @@ class SubjectTeacher extends Model
     protected $table = "subject_teachers";
 
     protected $fillable = [
-        'slug', 'id_teacher', 'id_course', 'id_school_year', 'id_study_class', 'status'
+        'slug',
+        'id_teacher',
+        'id_course',
+        'id_school_year',
+        'id_study_class',
+        'status',
+        'key',
+        'sync_date'
     ];
 
     protected $dates = ['deleted_at'];
@@ -67,5 +74,15 @@ class SubjectTeacher extends Model
     public function oneClass()
     {
         return $this->belongsTo(StudyClass::class, 'id_class');
+    }
+
+    public function school_year()
+    {
+        return $this->belongsTo(SchoolYear::class, 'id_school_year', 'id');
+    }
+
+    public function study_class()
+    {
+        return $this->belongsTo(StudyClass::class, 'id_study_class', 'id');
     }
 }

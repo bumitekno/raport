@@ -116,11 +116,13 @@ Route::middleware('auth:user,admin,parent,teacher')->group(function () {
         'majors' => 'majors:slug',
     ])->except(['show', 'destroy']);
     Route::get('majors/destroy/{slug}', [MajorController::class, 'destroy'])->name('majors.destroy');
+    Route::post('majors/update_status', [MajorController::class, 'update_status'])->name('majors.update_status');
 
     Route::resource('levels', LevelController::class)->parameters([
         'levels' => 'levels:slug',
     ])->except(['show', 'destroy']);
     Route::get('levels/destroy/{slug}', [LevelController::class, 'destroy'])->name('levels.destroy');
+    Route::post('levels/update_status', [LevelController::class, 'update_status'])->name('levels.update_status');
 
     Route::resource('classes', StudyClassController::class)->parameters([
         'classes' => 'classes:slug',
@@ -133,6 +135,7 @@ Route::middleware('auth:user,admin,parent,teacher')->group(function () {
     Route::get('courses/destroy/{slug}', [CourseController::class, 'destroy'])->name('courses.destroy');
     Route::get('course/download/export', [CourseController::class, 'export'])->name('courses.export');
     Route::post('course/upload/import', [CourseController::class, 'import'])->name('courses.import');
+    Route::post('course/update_status', [CourseController::class, 'update_status'])->name('courses.update_status');
 
 
     Route::resource('school-years', SchoolYearController::class)->parameters([

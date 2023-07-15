@@ -7,6 +7,7 @@ use App\Http\Requests\Level\LevelRequest;
 use App\Models\Level;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
+use Illuminate\Support\Str;
 
 class LevelController extends Controller
 {
@@ -36,7 +37,7 @@ class LevelController extends Controller
                         $check = 'checked';
                     }
                     return '<label class="switch s-icons s-outline  s-outline-primary mb-0">
-                    <input type="checkbox" name="status" value="1" ' . $check . '>
+                    <input type="checkbox" name="status" value="1" ' . $check . ' class="active-status" data-id="' . $row['id'] . '">
                     <span class="slider round my-auto"></span>
                 </label>';
                 })
@@ -54,7 +55,8 @@ class LevelController extends Controller
 
     public function store(LevelRequest $request)
     {
-        Level::create($request->toArray());
+        $postdata = array_merge($request->toArray(), array('key' => str::random(5)));
+        Level::create($postdata);
         Helper::toast('Berhasil menambah tingkat', 'success');
         return redirect()->route('levels.index');
     }
@@ -69,9 +71,20 @@ class LevelController extends Controller
     public function update(LevelRequest $request, $slug)
     {
         $level = Level::where('slug', $slug)->firstOrFail();
-        $level->fill($request->input())->save();
+        $input_merge = array_merge($request->input(), array('sync_date' => null));
+        $level->fill($input_merge)->save();
         Helper::toast('Berhasil mengupdate tingkat', 'success');
         return redirect()->route('levels.index');
+    }
+
+    public function update_status(Request $request)
+    {
+
+        $major = Level::find($request->id);
+        $major->status = $request->value;
+        $major->sync_date = null;
+        $major->save();
+        return response()->json('Data berhasil disimpan');
     }
 
     public function destroy($slug)

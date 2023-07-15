@@ -15,10 +15,31 @@ class Level extends Model
     protected $table = "levels";
 
     protected $fillable = [
-        'slug', 'name', 'status', 'fase'
+        'key',
+        'slug',
+        'name',
+        'status',
+        'fase',
+        'sync_date'
     ];
 
     protected $dates = ['deleted_at'];
+
+    public function scopeActive($query)
+    {
+        return $query->select('key as uid', 'slug', 'name', 'fase', 'status')->where('status', 1);
+    }
+
+    public function data()
+    {
+        return [
+            'uid' => $this->key,
+            'slug' => $this->slug,
+            'name' => $this->name,
+            'fase' => $this->fase,
+            'status' => $this->status,
+        ];
+    }
 
     protected static function boot()
     {

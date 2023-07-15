@@ -53,7 +53,7 @@ class AuthController extends Controller
 
     protected function check_credentials(Request $request)
     {
-        // dd($request);
+        //dd($request->all());
         if (filter_var($request->get('username'), FILTER_VALIDATE_EMAIL)) {
             return ['email' => $request->get('username'), 'password' => $request->get('password'), 'status' => 1];
         }

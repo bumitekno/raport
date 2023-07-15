@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\DataTables;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Str;
 
 class CourseController extends Controller
 {
@@ -115,7 +116,7 @@ class CourseController extends Controller
                         $check = 'checked';
                     }
                     return '<label class="switch s-icons s-outline  s-outline-primary mb-0">
-                    <input type="checkbox" name="status" value="1" ' . $check . '>
+                    <input type="checkbox" name="status" value="1" ' . $check . ' class="active-status" data-id="' . $row['id'] . '">
                     <span class="slider round my-auto"></span>
                 </label>';
                 })
@@ -139,7 +140,8 @@ class CourseController extends Controller
     public function store(CourseRequest $request)
     {
         // dd($request);
-        Course::create($request->toArray());
+        $postdata = array_merge($request->toArray(), array('key' => str::random(5)));
+        Course::create($postdata);
         Helper::toast('Berhasil menambah pelajaran', 'success');
         return redirect()->route('courses.index');
     }
@@ -204,9 +206,20 @@ class CourseController extends Controller
     public function update(CourseRequest $request, $slug)
     {
         $course = Course::where('slug', $slug)->firstOrFail();
-        $course->fill($request->input())->save();
+        $input_merge = array_merge($request->input(), array('sync_date' => null));
+        $course->fill($input_merge)->save();
         Helper::toast('Berhasil mengupdate pelajaran', 'success');
         return redirect()->route('courses.index');
+    }
+
+    public function update_status(Request $request)
+    {
+
+        $major = Course::find($request->id);
+        $major->status = $request->value;
+        $major->sync_date = null;
+        $major->save();
+        return response()->json('Data berhasil disimpan');
     }
 
     public function destroy($slug)

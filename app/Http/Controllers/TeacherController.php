@@ -71,7 +71,8 @@ class TeacherController extends Controller
             $image = ImageHelper::upload_asset($request, 'file', 'profile', $data);
             $data['file'] = $image['file'];
         }
-        Teacher::create($data);
+        $postdata = array_merge($data, array('key' => Helper::str_random(5)));
+        Teacher::create($postdata);
         Helper::toast('Berhasil menambah guru', 'success');
         return redirect()->route('teachers.index');
     }
@@ -110,6 +111,7 @@ class TeacherController extends Controller
             $teacher->id_class = $data['id_class'];
         }
         // dd($teacher);
+        $teacher->sync_date = null;
         $teacher->save();
         Helper::toast('Berhasil mengupdate guru', 'success');
         return redirect()->route('teachers.index');

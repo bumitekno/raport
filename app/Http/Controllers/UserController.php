@@ -68,7 +68,8 @@ class UserController extends Controller
         if ($request->hasFile('file')) {
             $data = ImageHelper::upload_asset($request, 'file', 'profile', $data);
         }
-        User::create($data);
+        $postdata = array_merge($data, array('key' => Helper::str_random(5), 'accepted_date' => Carbon::now()));
+        User::create($postdata);
         Helper::toast('Berhasil menambah siswa', 'success');
         return redirect()->route('users.index');
     }
@@ -130,6 +131,8 @@ class UserController extends Controller
             $user->file = $file;
         }
         // Tambahkan atribut lainnya sesuai kebutuhan
+
+        $user->sync_date = null;
 
         $user->save();
         Helper::toast('Berhasil mengupdate siswa', 'success');

@@ -45,3 +45,18 @@ protected function failedValidation(Validator $validator)
 <td>{{ $loop->iteration }}</td>
 
 hapus turunan, di competence achievement Migration
+
+
+
+tambahan cronjob serve hosting buku induk 
+* * * * * php /path-to-your-project/artisan schedule:run >> /dev/null 2>&1
+
+alternatif 
+* * * * * php /path-to-your-project/artisan schedule:work >> /dev/null 2>&1
+
+# Asign url api buku induk
+#API_BUKU_INDUK = http://localhost:8081
+
+revisi seeder admin 
+email: superadmin@admin.com
+pass:12345678

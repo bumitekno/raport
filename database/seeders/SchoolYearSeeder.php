@@ -21,11 +21,13 @@ class SchoolYearSeeder extends Seeder
         DB::table('school_years')->insert([
             [
                 'name' => $currentYear . '/' . $nextYear . '1',
+                'key' => str_random(7),
                 'status' => 1,
                 'slug' => str_slug($currentYear . '/' . $nextYear . '1') . '-' . str_random(5)
             ],
             [
                 'name' => $currentYear . '/' . $nextYear . '2',
+                'key' => str_random(7),
                 'status' => 2,
                 'slug' => str_slug($currentYear . '/' . $nextYear . '2') . '-' . str_random(5)
             ],

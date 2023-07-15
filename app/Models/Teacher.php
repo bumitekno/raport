@@ -18,6 +18,11 @@ class Teacher extends Authenticatable
 
     protected $dates = ['deleted_at'];
 
+    public function scopeActive($query)
+    {
+        return $query->where('status', 1)->orderBy('name', 'ASC');
+    }
+
     protected static function boot()
     {
         parent::boot();

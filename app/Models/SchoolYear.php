@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Helpers\StatusHelper;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -15,10 +16,26 @@ class SchoolYear extends Model
     protected $table = "school_years";
 
     protected $fillable = [
-        'slug', 'name', 'status'
+        'key',
+        'slug',
+        'name',
+        'status',
+        'school_years',
+        'sync_date'
     ];
 
     protected $dates = ['deleted_at'];
+
+    public function data()
+    {
+        return [
+            'uid' => $this->key,
+            'name' => substr($this->name, 0, 9),
+            'semester_number' => substr($this->name, -1),
+            'semester' => StatusHelper::semester(substr($this->name, -1)),
+            'status' => $this->status
+        ];
+    }
 
     protected static function boot()
     {

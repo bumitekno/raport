@@ -21,7 +21,7 @@ class DashboardController extends Controller
         // dd(session()->all());
         session()->put('title', 'Dashboard Admin');
         $settings = json_decode(Storage::get('settings.json'), true);
-        session()->put('logo', isset($setting['logo']) ? asset($setting['logo']) : asset('asset/img/90x90.jpg'));
+        session()->put('logo', isset($settings['logo']) ? asset($settings['logo']) : asset('asset/img/90x90.jpg'));
         $statistic = self::get_statistic();
         $school_year = SchoolYear::where('status', 1)->first();
         if ($school_year) {
@@ -64,10 +64,12 @@ class DashboardController extends Controller
             ['id_major', $study_class->id_major],
             ['id_school_year', session('id_school_year')]
         ])->first();
+
         $array_session = [
-            'template' => $template->template,
-            'type' => $template->type,
+            'template' => $template->template ?? '',
+            'type' => $template->type ?? '',
         ];
+
         session(['templates' => $array_session]);
         return view('content.dashboard.v_user');
     }
@@ -77,7 +79,7 @@ class DashboardController extends Controller
         // dd(session()->all());
         session()->put('title', 'Dashboard Guru');
         $settings = json_decode(Storage::get('settings.json'), true);
-        session()->put('logo', isset($setting['logo']) ? asset($setting['logo']) : asset('asset/img/90x90.jpg'));
+        session()->put('logo', isset($settings['logo']) ? asset($settings['logo']) : asset('asset/img/90x90.jpg'));
         $statistic = self::get_statistic();
         $school_year = SchoolYear::where('status', 1)->first();
         // dd($school_year);

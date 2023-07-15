@@ -6,6 +6,7 @@ use App\Helpers\Helper;
 use App\Helpers\ImageHelper;
 use App\Http\Requests\Setting\SettingRequest;
 use Illuminate\Support\Facades\Storage;
+use App\Models\School;
 
 class SettingController extends Controller
 {
@@ -37,9 +38,22 @@ class SettingController extends Controller
         $settings['format_image'] = $data['format_image'];
         $settings['footer'] = $data['footer'];
 
+        // save setting database 
+        School::updateOrCreate([
+            'id' => 1
+        ], [
+            'id' => 1,
+            'name' => $data['name_school'],
+            'slug' => '1 -' . Helper::str_random(5),
+            'address' => $data['address'],
+            'image' => $data['logo'] ?? asset('asset/img/90x90.jpg'),
+            'phone_number' => $data['phone'],
+            'email' => $data['email'],
+            'key' => Helper::str_random(5)
+        ]);
 
         Storage::put('settings.json', json_encode($settings, JSON_PRETTY_PRINT));
-        session()->put('logo', isset($setting['logo']) ? asset($setting['logo']) : asset('asset/img/90x90.jpg'));
+        session()->put('logo', isset($settings['logo']) ? asset($settings['logo']) : asset('asset/img/90x90.jpg'));
 
         Helper::toast('Berhasil memperbarui pegaturan', 'success');
         return redirect()->back();

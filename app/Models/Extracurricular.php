@@ -18,6 +18,16 @@ class Extracurricular extends Model
 
     protected $dates = ['deleted_at'];
 
+    protected $fillable = [
+        'key',
+        'slug',
+        'name',
+        'status',
+        'person_responsible',
+        'sync_date',
+        'student_classes'
+    ];
+
     protected static function boot()
     {
         parent::boot();
@@ -31,5 +41,21 @@ class Extracurricular extends Model
     public function scoreExtracuriculars()
     {
         return $this->hasMany(ScoreExtracurricular::class, 'id_extra');
+    }
+
+    public function scopeActive($query)
+    {
+        return $query->select('key as uid', 'name', 'person_responsible', 'student_classes', 'status')->where('status', 1);
+    }
+
+    public function data()
+    {
+        return [
+            'uid' => $this->key,
+            'slug' => $this->slug,
+            'name' => $this->name,
+            'person_responsible' => $this->person_responsible,
+            'status' => $this->status,
+        ];
     }
 }

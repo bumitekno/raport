@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\Helper;
-use App\Http\Requests\Class\ClassRequest;
+use App\Http\Requests\Classx\ClassRequest;
 use App\Models\Level;
 use App\Models\Major;
 use App\Models\StudyClass;
@@ -71,6 +71,7 @@ class StudyClassController extends Controller
             $classes->id_major = $request->id_major;
             $classes->id_level = $request->id_level;
             $classes->slug = str_slug($name) . '-' . Helper::str_random(5);
+            $classes->key = Helper::str_random(5);
             $classes->save();
         }
         Helper::toast('Berhasil menambah kelas', 'success');
@@ -92,6 +93,7 @@ class StudyClassController extends Controller
         $class = StudyClass::where('slug', $slug)->firstOrFail();
         $data = $request->input();
         $data['name'] = $request->name[0];
+        $data['sync_date'] = null;
         $class->fill($data)->save();
         Helper::toast('Berhasil mengupdate kelas', 'success');
         return redirect()->route('classes.index');
