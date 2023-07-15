@@ -24,12 +24,12 @@ return new class extends Migration {
             $table->softDeletes();
         });
 
-        Schema::table('subject_teachers', function (Blueprint $table) {
+        /*Schema::table('subject_teachers', function (Blueprint $table) {
             $table->foreign('id_teacher')->references('id')->on('teachers')->onDelete('cascade');
             $table->foreign('id_course')->references('id')->on('courses')->onDelete('cascade');
-            // $table->foreign('id_study_class')->references('id')->on('study_classes')->onDelete('cascade');
+             $table->foreign('id_study_class')->references('id')->on('study_classes')->onDelete('cascade');
             $table->foreign('id_school_year')->references('id')->on('school_years')->onDelete('cascade');
-        });
+        });*/
     }
 
     /**
@@ -39,12 +39,12 @@ return new class extends Migration {
      */
     public function down()
     {
-        Schema::table('subject_teachers', function (Blueprint $table) {
+        /*Schema::table('subject_teachers', function (Blueprint $table) {
             $table->dropForeign('subject_teachers_id_teacher_foreign');
             $table->dropForeign('subject_teachers_id_course_foreign');
-            // $table->dropForeign('subject_teachers_id_study_class_foreign');
+             $table->dropForeign('subject_teachers_id_study_class_foreign');
             $table->dropForeign('subject_teachers_id_school_year_foreign');
-        });
+        });*/
 
         Schema::dropIfExists('subject_teachers');
     }

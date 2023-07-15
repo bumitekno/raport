@@ -5,8 +5,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      *
@@ -14,8 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        DB::statement('ALTER TABLE `study_classes` MODIFY `id_level` INTEGER NULL, MODIFY `id_major` INTEGER NULL;');
-        DB::statement('ALTER TABLE `subject_teachers` MODIFY `id_teacher` INTEGER NULL, MODIFY `id_course` INTEGER NULL, MODIFY `id_school_year` INTEGER NULL, MODIFY `id_study_class` INTEGER NULL;');
+        DB::statement('ALTER TABLE `study_classes` MODIFY `id_level` bigint NULL, MODIFY `id_major` bigint NULL;');
+        DB::statement('ALTER TABLE `subject_teachers` MODIFY `id_teacher` bigint NULL, MODIFY `id_course` bigint NULL, MODIFY `id_school_year` bigint NULL, MODIFY `id_study_class` bigint NULL;');
     }
 
     /**
