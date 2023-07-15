@@ -15,13 +15,16 @@ return new class extends Migration {
         Schema::create('subject_teachers', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('slug')->nullable();
-            $table->unsignedBigInteger('id_teacher');
-            $table->unsignedBigInteger('id_course');
-            $table->unsignedBigInteger('id_school_year');
+            //$table->unsignedBigInteger('id_teacher');
+            //$table->unsignedBigInteger('id_course');
+            //$table->unsignedBigInteger('id_school_year');
             $table->json('id_study_class');
             $table->tinyInteger('status')->default(1);
             $table->timestamps();
             $table->softDeletes();
+            $table->foreignId('id_teacher')->nullable();
+            $table->foreignId('id_course')->nullable();
+            $table->foreignId('id_school_year')->nullable();
         });
 
         /*Schema::table('subject_teachers', function (Blueprint $table) {
