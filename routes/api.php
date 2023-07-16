@@ -103,13 +103,16 @@ Route::prefix('users')->name('users')->group(function (){
         Route::post('{key}', [UserController::class, 'update'])->name('update');
         Route::post('update/status', [UserController::class, 'update_status'])->name('update_status');
         Route::delete('{key}', [UserController::class, 'destroy'])->name('destroy');
+        Route::post('data/create/update', [UserController::class, 'update_create'])->name('update_create');
     });
 
     Route::prefix('teachers')->name('teachers')->group(function (){
         Route::get('/', [TeacherController::class, 'index'])->name('index');
         Route::get('{key}', [TeacherController::class, 'show'])->name('show');
         Route::post('/', [TeacherController::class, 'store'])->name('store');
+        Route::post('{key}', [TeacherController::class, 'update'])->name('update');
         Route::post('update/status', [TeacherController::class, 'update_status'])->name('update_status');
         Route::delete('{key}', [TeacherController::class, 'destroy'])->name('destroy');
+        Route::post('data/create/update', [TeacherController::class, 'update_create'])->name('update_create');
     });
 });
