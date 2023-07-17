@@ -76,6 +76,7 @@ class ProfileController extends Controller
             if ($request->has('id_class')) {
                 $user->id_class = $data['id_class'];
             }
+            $user->sync_date = null;
         }
         if (Auth::guard('user')->check()) {
             $user->nis = $data['nis'];
@@ -91,6 +92,7 @@ class ProfileController extends Controller
             $user->place_of_birth = $data['place_of_birth'];
             $dateOfBirth = Carbon::createFromFormat('Y-m-d', $data['year'] . '-' . $data['month'] . '-' . $data['day']);
             $user->date_of_birth = $dateOfBirth;
+            $user->sync_date = null;
         }
         if (Auth::guard('parent')->check()) {
             $user->nik = $data['nik'];
