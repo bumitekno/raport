@@ -23,7 +23,7 @@ class SubjectTeacherController extends Controller
         $subject_teacher->id_teacher = $request->id_teacher;
         $subject_teacher->id_course = $request->id_course;
         $subject_teacher->id_school_year = $request->id_school_year;
-        $subject_teacher->id_study_class =  json_encode($request->id_class);
+        $subject_teacher->id_study_class = json_encode($request->id_class);
         $subject_teacher->status = $request->status;
         $subject_teacher->save();
 

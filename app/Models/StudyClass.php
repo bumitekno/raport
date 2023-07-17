@@ -21,7 +21,8 @@ class StudyClass extends Model
         'id_major',
         'id_level',
         'status',
-        'sync_date'
+        'sync_date',
+        'deleted_at'
     ];
 
     protected $dates = ['deleted_at'];

@@ -22,7 +22,8 @@ class Course extends Model
         'code',
         'status',
         'courses',
-        'sync_date'
+        'sync_date',
+        'deleted_at'
     ];
 
     protected $dates = ['deleted_at'];

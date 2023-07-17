@@ -21,7 +21,8 @@ class SchoolYear extends Model
         'name',
         'status',
         'school_years',
-        'sync_date'
+        'sync_date',
+        'deleted_at'
     ];
 
     protected $dates = ['deleted_at'];

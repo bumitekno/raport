@@ -25,7 +25,8 @@ class Extracurricular extends Model
         'status',
         'person_responsible',
         'sync_date',
-        'student_classes'
+        'student_classes',
+        'deleted_at'
     ];
 
     protected static function boot()
