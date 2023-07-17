@@ -17,7 +17,7 @@ class StudyClassController extends Controller
     {
         session()->put('title', 'Daftar Kelas');
         if ($request->ajax()) {
-            $data = StudyClass::select('*')->with('major', 'level')->where('id_level', '<>', 0)->where('id_level', '<>', 0);
+            $data = StudyClass::select('*')->with('major', 'level')->where('id_level', '<>', 0)->where('id_major', '<>', 0);
             // dd($data);
             return DataTables::of($data)
                 ->addIndexColumn()
