@@ -22,7 +22,8 @@ class SubjectTeacher extends Model
         'id_study_class',
         'status',
         'key',
-        'sync_date'
+        'sync_date',
+        'deleted_at'
     ];
 
     protected $dates = ['deleted_at'];

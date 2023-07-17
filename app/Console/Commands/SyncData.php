@@ -73,15 +73,17 @@ class SyncData extends Command
 
                     foreach ($collection_api_level['data'] as $key => $data_levels) {
 
-                        $create_level = Level::updateOrCreate([
+                        $create_level = Level::withoutGlobalScopes()->updateOrCreate([
                             'key' => $data_levels['uid'],
+                            'slug' => $data_levels['name'] . '-' . $data_levels['uid'],
                         ], [
                             'key' => $data_levels['uid'],
                             'name' => $data_levels['name'],
                             'fase' => $data_levels['fase'] ?? '-',
                             'sync_date' => $timestamp,
                             'status' => $data_levels['status'],
-                            'slug' => $data_levels['name'] . '-' . str::random(5)
+                            'slug' => $data_levels['name'] . '-' . $data_levels['uid'],
+                            'deleted_at' => isset($data_levels['deleted_at']) ? $data_levels['deleted_at'] == null ? null : \Carbon\Carbon::parse($data_levels['deleted_at']) : null
                         ]);
 
                         $output->writeln('info: insert data level ' . $create_level);
@@ -106,14 +108,16 @@ class SyncData extends Command
                 $check_school_year_sync = SchoolYear::whereNull('sync_date')->get()->count();
                 if ($check_school_year_sync == 0) {
                     foreach ($collection_api_school_year['data'] as $key => $data_school_years) {
-                        $create_school_years = SchoolYear::updateOrCreate([
+                        $create_school_years = SchoolYear::withoutGlobalScopes()->updateOrCreate([
                             'key' => $data_school_years['uid'],
+                            'slug' => Str::replace('/', '', $data_school_years['name']) . $data_school_years['semester_number'] . '-' . $data_school_years['uid'],
                         ], [
                             'key' => $data_school_years['uid'],
                             'name' => $data_school_years['name'] . $data_school_years['semester_number'],
                             'status' => $data_school_years['status'],
-                            'slug' => Str::replace('/', '', $data_school_years['name']) . $data_school_years['semester_number'] . '-' . str::random(5),
+                            'slug' => Str::replace('/', '', $data_school_years['name']) . $data_school_years['semester_number'] . '-' . $data_school_years['uid'],
                             'sync_date' => $timestamp,
+                            'deleted_at' => isset($data_school_years['deleted_at']) ? $data_school_years['deleted_at'] == null ? null : \Carbon\Carbon::parse($data_school_years['deleted_at']) : null
                         ]);
                         $output->writeln('info: insert data school years ' . $create_school_years);
                         if ($key > 0 && $key % 10 == 0) {
@@ -135,14 +139,16 @@ class SyncData extends Command
                 $check_school_major = Major::whereNull('sync_date')->get()->count();
                 if ($check_school_major == 0) {
                     foreach ($collection_api_major['data'] as $key => $data_major) {
-                        $create_major = Major::updateOrCreate([
+                        $create_major = Major::withoutGlobalScopes()->updateOrCreate([
                             'key' => $data_major['uid'],
+                            'slug' => $data_major['name'] . '-' . $data_major['uid'],
                         ], [
                             'key' => $data_major['uid'],
                             'name' => $data_major['name'],
                             'sync_date' => $timestamp,
                             'status' => $data_major['status'],
-                            'slug' => $data_major['name'] . '-' . str::random(5)
+                            'slug' => $data_major['name'] . '-' . $data_major['uid'],
+                            'deleted_at' => isset($data_major['deleted_at']) ? $data_major['deleted_at'] == null ? null : \Carbon\Carbon::parse($data_major['deleted_at']) : null
                         ]);
                         $output->writeln('info: insert data Major ' . $create_major);
                         if ($key > 0 && $key % 10 == 0) {
@@ -163,8 +169,9 @@ class SyncData extends Command
                 $check_school_mapel = Course::whereNull('sync_date')->get()->count();
                 if ($check_school_mapel == 0) {
                     foreach ($collection_api_mapel['data'] as $key => $data_mapel) {
-                        $create_major = Course::updateOrCreate([
+                        $create_major = Course::withoutGlobalScopes()->updateOrCreate([
                             'key' => $data_mapel['uid'],
+                            'slug' => $data_mapel['nama'] . '-' . $data_mapel['uid'],
                         ], [
                             'key' => $data_mapel['uid'],
                             'code' => $data_mapel['kode_mapel'],
@@ -172,7 +179,8 @@ class SyncData extends Command
                             'group' => $data_mapel['kelompok'],
                             'sync_date' => $timestamp,
                             'status' => $data_mapel['status'],
-                            'slug' => $data_mapel['nama'] . '-' . str::random(5)
+                            'slug' => $data_mapel['nama'] . '-' . $data_mapel['uid'],
+                            'deleted_at' => isset($data_rombel['deleted_at']) ? $data_mapel['deleted_at'] == null ? null : \Carbon\Carbon::parse($data_mapel['deleted_at']) : null
                         ]);
                         $output->writeln('info: insert data Mapel ' . $create_major);
                         if ($key > 0 && $key % 10 == 0) {
@@ -195,16 +203,18 @@ class SyncData extends Command
                 $check_school_rombel = StudyClass::whereNull('sync_date')->get()->count();
                 if ($check_school_rombel == 0) {
                     foreach ($collection_api_rombel['data'] as $key => $data_rombel) {
-                        $create_rombel = StudyClass::updateOrCreate([
+                        $create_rombel = StudyClass::withoutGlobalScopes()->updateOrCreate([
                             'key' => $data_rombel['key'],
+                            'slug' => $data_rombel['name'] . '-' . $data_rombel['key'],
                         ], [
                             'key' => $data_rombel['key'],
                             'name' => $data_rombel['name'],
-                            'id_major' => $data_rombel['major_id'],
-                            'id_level' => $data_rombel['level_id'],
+                            'id_major' => $data_rombel['major_id'] == null ? 0 : $data_rombel['major_id'],
+                            'id_level' => $data_rombel['level_id'] == null ? 0 : $data_rombel['level_id'],
                             'sync_date' => $timestamp,
                             'status' => $data_rombel['status'],
-                            'slug' => $data_rombel['name'] . '-' . str::random(5)
+                            'slug' => $data_rombel['name'] . '-' . $data_rombel['key'],
+                            'deleted_at' => isset($data_rombel['deleted_at']) ? $data_rombel['deleted_at'] == null ? null : \Carbon\Carbon::parse($data_rombel['deleted_at']) : null
                         ]);
                         $output->writeln('info: insert data rombel ' . $create_rombel);
                         if ($key > 0 && $key % 10 == 0) {
@@ -231,8 +241,9 @@ class SyncData extends Command
 
                         if (empty($check_password) && empty($check_password->password)) {
 
-                            $create_user = User::updateOrCreate([
+                            $create_user = User::withoutGlobalScopes()->updateOrCreate([
                                 'key' => $data_user['uid'],
+                                'slug' => $data_user['name'] . '-' . $data_user['uid'],
                             ], [
                                 'key' => $data_user['uid'],
                                 'name' => $data_user['name'],
@@ -248,14 +259,16 @@ class SyncData extends Command
                                 'entry_year' => $data_user['school_year'],
                                 'sync_date' => $timestamp,
                                 'status' => $data_user['status'],
-                                'slug' => $data_user['name'] . '-' . str::random(5),
+                                'slug' => $data_user['name'] . '-' . $data_user['uid'],
                                 'password' => '12345678',
                                 'phone' => $data_user['phone'],
+                                'deleted_at' => isset($data_user['deleted_at']) ? $data_user['deleted_at'] == null ? null : \Carbon\Carbon::parse($data_user['deleted_at']) : null
                             ]);
 
                         } else {
-                            $create_user = User::updateOrCreate([
+                            $create_user = User::withoutGlobalScopes()->updateOrCreate([
                                 'key' => $data_user['uid'],
+                                'slug' => $data_user['name'] . '-' . $data_user['uid'],
                             ], [
                                 'key' => $data_user['uid'],
                                 'name' => $data_user['name'],
@@ -271,8 +284,9 @@ class SyncData extends Command
                                 'entry_year' => $data_user['school_year'],
                                 'sync_date' => $timestamp,
                                 'status' => $data_user['status'],
-                                'slug' => $data_user['name'] . '-' . str::random(5),
-                                'phone' => $data_user['phone']
+                                'slug' => $data_user['name'] . '-' . $data_user['uid'],
+                                'phone' => $data_user['phone'],
+                                'deleted_at' => isset($data_user['deleted_at']) ? $data_user['deleted_at'] == null ? null : \Carbon\Carbon::parse($data_user['deleted_at']) : null
                             ]);
                         }
 
@@ -301,8 +315,9 @@ class SyncData extends Command
 
                         if (!empty($check_password) && !empty($check_password->password)) {
 
-                            $create_user = Teacher::updateOrCreate([
+                            $create_user = Teacher::withoutGlobalScopes()->updateOrCreate([
                                 'key' => $data_user['uid'],
+                                'slug' => $data_user['name'] . '-' . $data_user['uid'],
                             ], [
                                 'key' => $data_user['uid'],
                                 'name' => $data_user['name'],
@@ -318,12 +333,14 @@ class SyncData extends Command
                                 'phone' => $data_user['contact'],
                                 'sync_date' => $timestamp,
                                 'status' => $data_user['status'],
-                                'slug' => $data_user['name'] . '-' . str::random(5),
+                                'slug' => $data_user['name'] . '-' . $data_user['uid'],
+                                'deleted_at' => isset($data_user['deleted_at']) ? $data_user['deleted_at'] == null ? null : \Carbon\Carbon::parse($data_user['deleted_at']) : null
                             ]);
 
                         } else {
-                            $create_user = Teacher::updateOrCreate([
+                            $create_user = Teacher::withoutGlobalScopes()->updateOrCreate([
                                 'key' => $data_user['uid'],
+                                'slug' => $data_user['name'] . '-' . $data_user['uid'],
                             ], [
                                 'key' => $data_user['uid'],
                                 'name' => $data_user['name'],
@@ -339,8 +356,9 @@ class SyncData extends Command
                                 'phone' => $data_user['contact'],
                                 'sync_date' => $timestamp,
                                 'status' => $data_user['status'],
-                                'slug' => $data_user['name'] . '-' . str::random(5),
-                                'password' => '12345678'
+                                'slug' => $data_user['name'] . '-' . $data_user['uid'],
+                                'password' => '12345678',
+                                'deleted_at' => isset($data_user['deleted_at']) ? $data_user['deleted_at'] == null ? null : \Carbon\Carbon::parse($data_user['deleted_at']) : null
                             ]);
                         }
 
@@ -365,15 +383,17 @@ class SyncData extends Command
                 if ($check_school_usert_studentclass == 0) {
                     foreach ($collection_api_studentclass['data'] as $key => $data_studentclass) {
 
-                        $create_user_student_class = StudentClass::updateOrCreate([
-                            'key' => $data_studentclass['uid']
+                        $create_user_student_class = StudentClass::withoutGlobalScopes()->updateOrCreate([
+                            'key' => $data_studentclass['uid'],
+                            'slug' => $data_studentclass['uid'] . '-' . $data_studentclass['uid'],
                         ], [
                             'key' => $data_studentclass['uid'],
                             'year' => $data_studentclass['tahun'],
-                            'slug' => $data_studentclass['uid'] . '-' . str::random(5),
+                            'slug' => $data_studentclass['uid'] . '-' . $data_studentclass['uid'],
                             'id_study_class' => $data_studentclass['id_rombel'],
                             'id_student' => $data_studentclass['id_siswa'],
                             'sync_date' => $timestamp,
+                            'deleted_at' => isset($data_studentclass['deleted_at']) ? $data_studentclass['deleted_at'] == null ? null : \Carbon\Carbon::parse($data_studentclass['deleted_at']) : null
                         ]);
 
                         $output->writeln('info: insert data user student class ' . $create_user_student_class);
@@ -399,14 +419,16 @@ class SyncData extends Command
                 if ($check_school_ekstra == 0) {
                     foreach ($collection_api_ekstra['data'] as $key => $data_ekstra) {
 
-                        $create_extra = Extracurricular::updateOrCreate([
-                            'key' => $data_ekstra['uid']
+                        $create_extra = Extracurricular::withoutGlobalScopes()->updateOrCreate([
+                            'key' => $data_ekstra['uid'],
+                            'slug' => $data_ekstra['uid'] . '-' . $data_ekstra['uid'],
                         ], [
                             'key' => $data_ekstra['uid'],
                             'name' => $data_ekstra['name'],
                             'status' => $data_ekstra['status'],
-                            'slug' => $data_ekstra['uid'] . '-' . str::random(5),
+                            'slug' => $data_ekstra['uid'] . '-' . $data_ekstra['uid'],
                             'sync_date' => $timestamp,
+                            'deleted_at' => isset($data_ekstra['deleted_at']) ? $data_ekstra['deleted_at'] == null ? null : \Carbon\Carbon::parse($data_ekstra['deleted_at']) : null
                         ]);
 
                         $output->writeln('info: insert data extra ' . $create_extra);
@@ -431,17 +453,19 @@ class SyncData extends Command
                 $check_school_gurumapel = SubjectTeacher::whereNull('sync_date')->get()->count();
                 if ($check_school_gurumapel == 0) {
                     foreach ($collection_api_gurumapel['data'] as $key => $data_gurumapel) {
-                        $create_gurumapel = SubjectTeacher::updateOrCreate([
-                            'key' => $data_gurumapel['uid']
+                        $create_gurumapel = SubjectTeacher::withoutGlobalScopes()->updateOrCreate([
+                            'key' => $data_gurumapel['uid'],
+                            'slug' => $data_gurumapel['uid'] . '-' . $data_gurumapel['id_guru'],
                         ], [
                             'key' => $data_gurumapel['uid'],
-                            'id_teacher' => $data_gurumapel['id_guru'],
-                            'id_course' => $data_gurumapel['id_mapel'],
-                            'id_school_year' => $data_gurumapel['id_ta_sm'],
+                            'id_teacher' => $data_gurumapel['id_guru'] == null ? 0 : $data_gurumapel['id_guru'],
+                            'id_course' => $data_gurumapel['id_mapel'] == null ? 0 : $data_gurumapel['id_mapel'],
+                            'id_school_year' => $data_gurumapel['id_ta_sm'] == null ? 0 : $data_gurumapel['id_ta_sm'],
                             'id_study_class' => collect($data_gurumapel['id_rombel_values']),
                             'status' => 1,
                             'sync_date' => $timestamp,
-                            'slug' => $data_gurumapel['uid'] . '-' . str::random(5),
+                            'slug' => $data_gurumapel['uid'] . '-' . $data_gurumapel['id_guru'],
+                            'deleted_at' => isset($data_gurumapel['deleted_at']) ? $data_gurumapel['deleted_at'] == null ? null : \Carbon\Carbon::parse($data_gurumapel['deleted_at']) : null
                         ]);
                         $output->writeln('info: insert data guru mapel ' . $create_gurumapel);
                         if ($key > 0 && $key % 10 == 0) {
@@ -450,7 +474,6 @@ class SyncData extends Command
                         }
                     }
                 }
-
             }
 
             /** sync post delete */
@@ -544,7 +567,7 @@ class SyncData extends Command
             foreach ($delete_levels as $key => $level) {
 
                 $response_level_delete = Http::delete($url_delete_levels . '/' . $level->key);
-                if ($$response_level_delete->ok()) {
+                if ($response_level_delete->ok()) {
                     $output->writeln('info: post sync data   delete major ' . $key . ' status' . $response_level_delete);
                 }
 

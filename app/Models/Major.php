@@ -19,7 +19,8 @@ class Major extends Model
         'slug',
         'name',
         'status',
-        'sync_date'
+        'sync_date',
+        'deleted_at'
     ];
 
     protected $dates = ['deleted_at'];
