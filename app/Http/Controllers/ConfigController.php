@@ -21,10 +21,15 @@ class ConfigController extends Controller
         $data_array = [
             'years' => $years
         ];
+
         $detail_school_year = SchoolYear::where('slug', $_GET['year'])->first();
-        $config = Config::where('id_school_year', $detail_school_year->id)->first();
-        if ($config) {
-            $data_array['config'] = $config;
+
+        if (!empty($detail_school_year)) {
+            $config = Config::where('id_school_year', $detail_school_year->id)->first();
+
+            if (!empty($config)) {
+                $data_array['config'] = $config;
+            }
         }
         // dd($config);
         return view('content.setting.v_form_config', $data_array);
