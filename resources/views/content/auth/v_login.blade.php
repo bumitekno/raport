@@ -71,7 +71,7 @@
 
                                 </div>
 
-                                <div class="field-wrapper text-center keep-logged-in">
+                                {{--  <div class="field-wrapper text-center keep-logged-in">
                                     <div class="n-chk new-checkbox checkbox-outline-primary">
                                         <label class="new-control new-checkbox checkbox-outline-primary">
                                             <input type="checkbox" class="new-control-input">
@@ -82,12 +82,16 @@
 
                                 <div class="field-wrapper">
                                     <a href="auth_pass_recovery.html" class="forgot-pass-link">Forgot Password?</a>
-                                </div>
+                                </div> --}}
 
                             </div>
                         </form>
-                        <p class="terms-conditions">{{ isset($setting['footer']) ? $setting['footer'] : '© 2020 All Rights Reserved. <a href="index.html">CORK</a> is a
-                            product of Designreset.' }}</p>
+                        <p class="terms-conditions">
+                            {{ isset($setting['footer'])
+                                ? $setting['footer']
+                                : '© 2020 All Rights Reserved. <a href="index.html">CORK</a> is a
+                                                                                    product of Designreset.' }}
+                        </p>
 
                     </div>
                 </div>
