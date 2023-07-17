@@ -40,13 +40,14 @@ class CourseController extends Controller
             foreach ($guruPelajaransGroup as $id_guru => $group) {
                 $guru = $group->first()->teacher;
 
-                $gurus[] = [
-                    'id_guru' => $guru->id,
-                    'nama_guru' => $guru->name,
-                    'file_guru' => $guru->file
-                ];
+                if (!empty($guru)) {
+                    $gurus[] = [
+                        'id_guru' => $guru->id,
+                        'nama_guru' => $guru->name,
+                        'file_guru' => $guru->file
+                    ];
+                }
             }
-
 
             $kelass = StudyClass::whereIn('id', $kelasIds)->get()->map(function ($kelas) {
                 return [
