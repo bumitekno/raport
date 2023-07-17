@@ -172,12 +172,12 @@ class UserController extends Controller
 
     public function update_status(Request $request)
     {
-        $teacher = User::where('key', $request->key)->first();
+        $student = User::where('key', $request->key)->first();
 
-        if ($teacher) {
-            $teacher->update(['status' => $request->status]);
+        if ($student) {
+            $student->update(['status' => $request->status]);
 
-            return Response::responseApi(200, 'Siswa berhasil diperbarui.', new UserResource($teacher));
+            return Response::responseApi(200, 'Siswa berhasil diperbarui.', new UserResource($student));
         } else {
             return Response::responseApi(400, 'Siswa tidak ditemukan.');
         }
@@ -194,5 +194,79 @@ class UserController extends Controller
         } else {
             return Response::responseApi(400, 'Siswa tidak ditampilkan.');
         }
+    }
+
+    public function update_create(Request $request)
+    {
+        $customAttributes = [
+            'key' => 'Key',
+            'name' => 'Nama Siswa',
+            'email' => 'Email',
+            'nis' => 'NIS',
+            'nisn' => 'NISN',
+            'gender' => 'Jenis Kelamin',
+            'religion' => 'Agama',
+            'file' => 'Foto',
+            'family_status' => 'Status Keluarga'
+        ];
+
+        $rules = [
+            'key' => 'required',
+            'name' => 'required',
+            'email' => 'required|email|unique:users,email,'. $request->key .',key',
+            'file' => 'nullable|mimes:jpeg,jpg,png',
+            'family_status' => 'required'
+        ];
+
+        $messages = [
+            'required' => ':attribute harus diisi.',
+            'mimes' => 'Format :attribute jpg, jpeg atau png.',
+            'unique' => ':attribute sudah terdaftar.',
+            'email' => 'Format penulisan :attribute belum benar.',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages, $customAttributes);
+
+        if ($validator->fails()) {
+            return Response::responseApi(302, $validator->messages()->first());
+        }
+
+        $student = User::where('key', $request->key)->first();
+
+        if ($student) {
+            $file = empty($request->file('file')) ? $student->file : $request->file('file')->store('images');
+        } else {
+            $file = empty($request->file('file')) ? null : $request->file('file')->store('images');
+        }
+
+        $data = User::updateOrCreate(
+            [
+                'key' => $request->key
+            ],
+            [
+                'name' => $request->name,
+                'slug' => str_slug($request->name.'-'. str_random(10) .''),
+                'email' => $request->email,
+                'nis' => $request->nis,
+                'nisn' => $request->nisn,
+                'gender' => $request->gender,
+                'religion' => $request->religion,
+                'file' => $file,
+                'phone' => $request->phone,
+                'place_of_birth' => $request->place_of_birth,
+                'date_of_birth' => $request->date_of_birth,
+                'address' => $request->address,
+                'family_status' => $request->family_status,
+                'child_off' => $request->child_off,
+                'school_from' => $request->school_from,
+                'accepted_grade' => $request->accepted_grade,
+                'accepted_date' => $request->accepted_date,
+                'password' => empty($student) ? bcrypt($request->nis) : $student->password,
+                'entry_year' => $request->entry_year,
+                'status' => 1,
+            ]
+        );
+
+        return Response::responseApi(200, 'Siswa berhasil diperbarui.', new UserResource($data));
     }
 }

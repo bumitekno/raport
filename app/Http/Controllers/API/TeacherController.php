@@ -184,4 +184,72 @@ class TeacherController extends Controller
             return Response::responseApi(400, 'Guru tidak ditampilkan.');
         }
     }
+
+    public function update_create(Request $request)
+    {
+        $customAttributes = [
+            'key' => 'Key',
+            'name' => 'Nama Guru',
+            'gender' => 'Jenis Kelamin',
+            'email' => 'Email',
+            'file' => 'Foto',
+            'type' => 'Tipe',
+        ];
+
+        $rules = [
+            'key' => 'required',
+            'name' => 'required',
+            'gender' => 'required',
+            'type' => 'required',
+            'email' => 'required|email|unique:teachers,email,'.$request->key.',key',
+            'file' => 'nullable|mimes:jpeg,jpg,png',
+        ];
+
+        $messages = [
+            'required' => ':attribute harus diisi.',
+            'mimes' => 'Format :attribute jpg, jpeg atau png.',
+            'unique' => ':attribute sudah terdaftar.',
+            'email' => 'Format penulisan :attribute belum benar.',
+        ];
+
+        $validator = Validator::make($request->all(), $rules, $messages, $customAttributes);
+
+        if ($validator->fails()) {
+            return Response::responseApi(302, $validator->messages()->first());
+        }
+
+        $teacher = Teacher::where('key', $request->key)->first();
+
+        if ($teacher) {
+            $file = empty($request->file('file')) ? $teacher->file : $request->file('file')->store('images');
+        } else {
+            $file = empty($request->file('file')) ? null : $request->file('file')->store('images');
+        }
+
+        $data = Teacher::updateOrCreate(
+            [
+                'key' => $request->key
+            ],
+            [
+                'slug' => str_slug($request->name.'-'.str_random(10).''),
+                'nip' => $request->nip,
+                'nik' => $request->nik,
+                'nuptk' => $request->nuptk,
+                'name' => $request->name,
+                'gender' => $request->gender,
+                'religion' => $request->religion,
+                'file' => $file,
+                'phone' => $request->phone,
+                'email' => $request->email,
+                'place_of_birth' => $request->place_of_birth,
+                'date_of_birth' => $request->date_of_birth,
+                'address' => $request->address,
+                'type' => $request->type,
+                'id_class' => $request->id_class,
+                'password' => empty($teacher) ? bcrypt(12345) : $teacher->password,
+            ]
+        );
+
+        return Response::responseApi(200, 'Guru berhasil diperbarui.', new TeacherResource($data));
+    }
 }
