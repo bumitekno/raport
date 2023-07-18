@@ -827,5 +827,48 @@ class SyncData extends Command
             }
         }
 
+        /** post extrakulikuler  */
+
+        $post_extra_class = Extracurricular::whereNull('sync_date')->get();
+        $output->writeln('info: prepared post sync data collection extrakulikuler.... ' . $post_extra_class);
+        if (!empty($$post_extra_class)) {
+            $url_post_extra = env('API_BUKU_INDUK') . '/api/master/extracurriculars';
+            foreach ($post_extra_class as $key => $extra) {
+                $form_extra = array(
+                    'key' => $extra->key,
+                    'name' => $extra->name
+                );
+                $response_ekstra = Http::post($$url_post_extra, $form_extra);
+                if ($response_ekstra->ok()) {
+                    $post_extrasx = Extracurricular::where('id', $extra->id)->update(['sync_date' => $timestamp]);
+                    $output->writeln('info: post sync data extra' . $key . ' status ' . $post_extrasx);
+                }
+
+                if ($key > 0 && $key % 10 == 0) {
+                    sleep(5);
+                }
+            }
+        }
+
+
+        /** delete extra  */
+        $delete_extra = Extracurricular::onlyTrashed()->get();
+        $output->writeln('info: prepared delete sync data collection extra .... ' . $delete_extra);
+        if (!empty($delete_extra)) {
+
+            $url_delete_extra = env('API_BUKU_INDUK') . '/api/master/extracurriculars';
+            foreach ($delete_user_student_class as $key => $extra) {
+
+                $response_extra_delete = Http::delete($url_delete_extra . '/' . $extra->key);
+                if ($response_extra_delete->ok()) {
+                    $output->writeln('info: post sync data   delete extra class' . $key . ' status' . $response_extra_delete);
+                }
+
+                if ($key > 0 && $key % 10 == 0) {
+                    sleep(5);
+                }
+            }
+        }
+
     }
 }

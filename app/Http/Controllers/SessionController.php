@@ -57,10 +57,15 @@ class SessionController extends Controller
                 ['id_major', $study_class->id_major],
                 ['id_school_year', session('id_school_year')]
             ])->first();
-            $array_session = [
-                'template' => $template->template,
-                'type' => $template->type,
-            ];
+
+            $array_session = [];
+
+            if (!empty($template)) {
+                $array_session = [
+                    'template' => $template->template,
+                    'type' => $template->type,
+                ];
+            }
             session(['templates' => $array_session]);
         }
         return redirect()->route('teacher.dashboard');

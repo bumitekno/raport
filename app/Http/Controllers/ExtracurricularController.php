@@ -59,7 +59,8 @@ class ExtracurricularController extends Controller
             [
                 'name' => $data['name'],
                 'person_responsible' => $data['person_responsible'],
-                'slug' => str_slug($data['name']) . '-' . Helper::str_random(5)
+                'slug' => str_slug($data['name']) . '-' . Helper::str_random(5),
+                'sync_date' => null
             ]
         );
         Helper::toast('Berhasil menyimpan atau mengupdate data', 'success');
