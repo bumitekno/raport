@@ -691,7 +691,9 @@ class SyncData extends Command
                     'birth_place' => $user_siswa->place_of_birth,
                     'phone' => $user_siswa->phone,
                     'address' => $user_siswa->address,
-                    'date_accepted' => $user_siswa->accepted_date
+                    'date_accepted' => $user_siswa->accepted_date,
+                    'note' => $user_siswa->note,
+                    'class_accepted' => $user_siswa->class_accepted
                 );
 
                 $response_user_siswa = Http::post($url_post_user_siswa, $form_user_siswa);
