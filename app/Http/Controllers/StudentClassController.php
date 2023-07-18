@@ -142,7 +142,7 @@ class StudentClassController extends Controller
 
                     $check_student_class = StudyClass::where('id', $idStudyClass)->first();
                     if (!empty($check_student_class)) {
-                        User::where('id', $data->id_student)->update(['class_accepted' => $check_student_class->name, 'sync_date' => null, 'date_accepted' => \Carbon\Carbon::now()]);
+                        User::where('id', $data->id_student)->update(['class_accepted' => $check_student_class->name, 'sync_date' => null, 'accepted_date' => \Carbon\Carbon::now()]);
                     }
 
                 });
@@ -165,7 +165,7 @@ class StudentClassController extends Controller
 
                     $check_student_class = StudyClass::where('id', $idStudyClass)->first();
                     if (!empty($check_student_class)) {
-                        User::where('id', $siswa->id)->update(['class_accepted' => $check_student_class->name, 'sync_date' => null, 'date_accepted' => \Carbon\Carbon::now()]);
+                        User::where('id', $siswa->id)->update(['class_accepted' => $check_student_class->name, 'sync_date' => null, 'accepted_date' => \Carbon\Carbon::now()]);
                     }
                 });
             }
