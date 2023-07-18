@@ -154,6 +154,7 @@ class CourseController extends Controller
         $classes = StudyClass::where('status', 1)->get();
         $years = SchoolYear::all();
         $years = SchoolYearResource::collection($years)->toArray(request());
+
         $teachers = Teacher::where('status', 1)->get();
         $subjectTeachers = DB::table('subject_teachers')
             ->select('subject_teachers.*', 'teachers.name as teacher_name', 'teachers.email as teacher_email', 'teachers.file as teacher_file', 'teachers.status as teacher_status')
