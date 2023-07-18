@@ -46,7 +46,7 @@ class StudyClassController extends Controller
                         $check = 'checked';
                     }
                     return '<label class="switch s-icons s-outline  s-outline-primary mb-0">
-                    <input type="checkbox" name="status" value="1" ' . $check . '>
+                    <input type="checkbox" name="status" value="1" ' . $check . ' class="active-status" data-id="' . $row['id'] . '">
                     <span class="slider round my-auto"></span>
                 </label>';
                 })
@@ -103,6 +103,16 @@ class StudyClassController extends Controller
         $class->fill($data)->save();
         Helper::toast('Berhasil mengupdate kelas', 'success');
         return redirect()->route('classes.index');
+    }
+
+    public function update_status(Request $request)
+    {
+
+        $major = StudyClass::find($request->id);
+        $major->status = $request->value;
+        $major->sync_date = null;
+        $major->save();
+        return response()->json('Data berhasil disimpan');
     }
 
     /**
