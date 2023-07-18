@@ -838,7 +838,7 @@ class SyncData extends Command
                     'key' => $extra->key,
                     'name' => $extra->name
                 );
-                $response_ekstra = Http::post($$url_post_extra, $form_extra);
+                $response_ekstra = Http::post($url_post_extra, $form_extra);
                 if ($response_ekstra->ok()) {
                     $post_extrasx = Extracurricular::where('id', $extra->id)->update(['sync_date' => $timestamp]);
                     $output->writeln('info: post sync data extra' . $key . ' status ' . $post_extrasx);
