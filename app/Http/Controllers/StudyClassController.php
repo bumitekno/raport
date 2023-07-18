@@ -34,6 +34,12 @@ class StudyClassController extends Controller
                     </div>
                 </div> ';
                 })
+                ->addColumn('level.name', function ($row) {
+                    return empty($row->level->name) ? '-' : $row->level->name;
+                })
+                ->addColumn('major.name', function ($row) {
+                    return empty($row->major->name) ? '-' : $row->major->name;
+                })
                 ->editColumn('status', function ($row) {
                     $check = '';
                     if ($row['status'] == 1) {
