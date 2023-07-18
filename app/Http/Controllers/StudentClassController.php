@@ -93,11 +93,19 @@ class StudentClassController extends Controller
         if ($action == 'delete') {
             if ($dataOrigin == 'student') {
                 StudentClass::whereIn('id', $selectedSiswa)->delete();
+                User::whereIn('id', $selectedSiswa)->update(['note' => 'do', 'sync_date' => null]);
             } else {
                 User::whereIn('id', $selectedSiswa)->delete();
             }
         } else if ($action == 'alumni') {
-            StudentClass::whereIn('id', $selectedSiswa)->update(['status' => 0, 'sync_date' => null]);
+
+            $siswa_id = StudentClass::whereIn('id', $selectedSiswa)->get()->pluck('id_student');
+
+            if (!empty($siswa_id)) {
+                User::whereIn('id', collect($siswa_id))->update(['note' => 'lulus', 'sync_date' => null]);
+                StudentClass::whereIn('id', $selectedSiswa)->update(['status' => 0, 'sync_date' => null]);
+            }
+
         } else if ($action == 'move') {
 
             $idStudyClass = $request->id_study_class;
@@ -131,6 +139,12 @@ class StudentClassController extends Controller
                     $data->status = 2;
                     $data->sync_date = null;
                     $data->save();
+
+                    $check_student_class = StudyClass::where('id', $idStudyClass)->first();
+                    if (!empty($check_student_class)) {
+                        User::where('id', $data->id_student)->update(['class_accepted' => $check_student_class->name, 'sync_date' => null, 'date_accepted' => \Carbon\Carbon::now()]);
+                    }
+
                 });
             } else if ($dataOrigin == 'user') {
                 // Check if user is not already in student class
@@ -148,6 +162,11 @@ class StudentClassController extends Controller
                         'slug' => $siswa->id . $idStudyClass . $year . '-' . Helper::str_random(5),
                         'key' => Helper::str_random(5)
                     ]);
+
+                    $check_student_class = StudyClass::where('id', $idStudyClass)->first();
+                    if (!empty($check_student_class)) {
+                        User::where('id', $siswa->id)->update(['class_accepted' => $check_student_class->name, 'sync_date' => null, 'date_accepted' => \Carbon\Carbon::now()]);
+                    }
                 });
             }
         }
