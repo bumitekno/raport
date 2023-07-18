@@ -262,7 +262,9 @@ class SyncData extends Command
                                 'slug' => $data_user['name'] . '-' . $data_user['uid'],
                                 'password' => '12345678',
                                 'phone' => $data_user['phone'],
-                                'deleted_at' => isset($data_user['deleted_at']) ? $data_user['deleted_at'] == null ? null : \Carbon\Carbon::parse($data_user['deleted_at']) : null
+                                'deleted_at' => isset($data_user['deleted_at']) ? $data_user['deleted_at'] == null ? null : \Carbon\Carbon::parse($data_user['deleted_at']) : null,
+                                'note' => $data_user['note'],
+                                'class_accepted' => $data_user['class_accepted']
                             ]);
 
                         } else {
@@ -286,7 +288,9 @@ class SyncData extends Command
                                 'status' => $data_user['status'],
                                 'slug' => $data_user['name'] . '-' . $data_user['uid'],
                                 'phone' => $data_user['phone'],
-                                'deleted_at' => isset($data_user['deleted_at']) ? $data_user['deleted_at'] == null ? null : \Carbon\Carbon::parse($data_user['deleted_at']) : null
+                                'deleted_at' => isset($data_user['deleted_at']) ? $data_user['deleted_at'] == null ? null : \Carbon\Carbon::parse($data_user['deleted_at']) : null,
+                                'note' => $data_user['note'],
+                                'class_accepted' => $data_user['class_accepted']
                             ]);
                         }
 
