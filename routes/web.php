@@ -128,6 +128,7 @@ Route::middleware('auth:user,admin,parent,teacher')->group(function () {
         'classes' => 'classes:slug',
     ])->except(['show', 'destroy']);
     Route::get('classes/destroy/{slug}', [StudyClassController::class, 'destroy'])->name('classes.destroy');
+    Route::post('classes/update_status', [StudyClassController::class, 'update_status'])->name('classes.update_status');
 
     Route::resource('courses', CourseController::class)->parameters([
         'courses' => 'courses:slug',
