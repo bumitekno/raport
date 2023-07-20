@@ -58,18 +58,17 @@ class LegerController extends Controller
 
         $id_subject_teacher = collect($subject_teachers)->pluck('id');
 
-        $template = TemplateConfiguration::where([
-            ['id_major', $study_class->id_major],
-            ['id_school_year', session('id_school_year')],
-        ])->first();
-        // dd($template);
-
         $scores = [];
 
         $template = TemplateConfiguration::where([
             ['id_major', $study_class->id_major],
             ['id_school_year', session('id_school_year')],
         ])->first();
+
+        if (empty($template)) {
+            session()->put('message', 'Admin belum mengaktifkan template config');
+            return view('pages.v_error');
+        }
 
         if ($template['template'] == 'merdeka') {
             // dd($subject_teachers->pluck('id_course')->unique()->toArray());
