@@ -239,20 +239,23 @@ class PreviewController extends Controller
                     }
                 ])->first();
 
-        // Mendapatkan data parents yang bertype 'father' atau 'mother' jika ada, atau mengembalikan null jika tidak ada
-        $families = $student_class->student->families->first(function ($family) {
-            return $family->type === 'father' || $family->type === 'mother' || $family->type === 'guardian';
-        });
+        if (!empty($student_class->student->families)) {
 
-        // Jika parents ditemukan, dapatkan data-nya, jika tidak, setel menjadi null
-        $father = $families && $families->type === 'father' ? $families : null;
-        $mother = $families && $families->type === 'mother' ? $families : null;
-        $guardian = $families && $families->type === 'guardian' ? $families : null;
-        $familly = [
-            'father' => $father,
-            'mother' => $mother,
-            'guardian' => $guardian,
-        ];
+            $families = $student_class->student->families->first(function ($family) {
+                return $family->type === 'father' || $family->type === 'mother' || $family->type === 'guardian';
+            });
+
+            // Jika parents ditemukan, dapatkan data-nya, jika tidak, setel menjadi null
+            $father = $families && $families->type === 'father' ? $families : null;
+            $mother = $families && $families->type === 'mother' ? $families : null;
+            $guardian = $families && $families->type === 'guardian' ? $families : null;
+            $familly = [
+                'father' => $father,
+                'mother' => $mother,
+                'guardian' => $guardian,
+            ];
+        }
+
         // dd($student_class);
         $cover = Cover::where('id_school_year', $school_year->id)->first();
         // dd($cover);
