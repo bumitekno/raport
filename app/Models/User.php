@@ -25,6 +25,10 @@ class User extends Authenticatable
     {
         parent::boot();
 
+        self::creating(function ($model) {
+            $model->created_at = now();
+        });
+
         static::deleting(function ($user) {
             $user->studentClass->each(function ($studentClass) {                 
                 $studentClass->score_p5s()->delete();
