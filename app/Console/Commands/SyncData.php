@@ -403,6 +403,7 @@ class SyncData extends Command
                             'slug' => $data_studentclass['uid'] . '-' . $data_studentclass['uid'],
                             'id_study_class' => $data_studentclass['id_rombel'],
                             'id_student' => $data_studentclass['id_siswa'],
+                            'status' => $data_studentclass['status'],
                             'sync_date' => $timestamp,
                             'deleted_at' => isset($data_studentclass['deleted_at']) ? $data_studentclass['deleted_at'] == null ? null : \Carbon\Carbon::parse($data_studentclass['deleted_at']) : null
                         ]);
