@@ -15,6 +15,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\DataTables;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Http;
+use DateTime;
 
 class UserController extends Controller
 {
@@ -70,6 +72,7 @@ class UserController extends Controller
         }
         $postdata = array_merge($data, array('key' => Helper::str_random(5), 'accepted_date' => Carbon::now()));
         User::create($postdata);
+        $this->sync_post_user();
         Helper::toast('Berhasil menambah siswa', 'success');
         return redirect()->route('users.index');
     }
@@ -135,7 +138,11 @@ class UserController extends Controller
         $user->sync_date = null;
 
         $user->save();
+
+        $this->sync_post_user();
+
         Helper::toast('Berhasil mengupdate siswa', 'success');
+
         return redirect()->route('users.index');
     }
 
@@ -143,6 +150,7 @@ class UserController extends Controller
     {
         $user = User::where('slug', $slug)->firstOrFail();
         $user->delete();
+        $this->sync_delete_user();
         Helper::toast('Berhasil menghapus siswa', 'success');
         return redirect()->route('users.index');
     }
@@ -165,10 +173,71 @@ class UserController extends Controller
             Excel::import(new StudentMultipleImport(), storage_path('app/public/excel/' . $nama_file));
             Storage::delete($path);
             Helper::toast('Data Berhasil Diimport', 'success');
+            $this->sync_post_user();
             return redirect()->route('users.index');
         } catch (\Throwable $e) {
             Helper::toast($e->getMessage(), 'errror');
             return redirect()->route('users.index');
         }
+    }
+
+    /** post or update sync */
+    public function sync_post_user()
+    {
+        if (!empty(env('API_BUKU_INDUK'))) {
+            $datetime = new DateTime();
+            $timestamp = $datetime->format('Y-m-d H:i:s');
+            $post_user_siswa = User::whereNull('sync_date')->get();
+            if (!empty($post_user_siswa)) {
+                $url_post_user_siswa = env('API_BUKU_INDUK') . '/api/users/students/updateorcreate';
+                foreach ($post_user_siswa as $key => $user_siswa) {
+                    $form_user_siswa = array(
+                        'key' => $user_siswa->key,
+                        'name' => $user_siswa->name,
+                        'status' => $user_siswa->status,
+                        'nis' => $user_siswa->nis,
+                        'nisn' => $user_siswa->nisn,
+                        'gender' => $user_siswa->gender == 'male' ? 'L' : 'P',
+                        'religion' => $user_siswa->religion == 'lainnya' ? 'protestan' : $user_siswa->religion,
+                        'email' => $user_siswa->email,
+                        'birth_day' => $user_siswa->date_of_birth,
+                        'birth_place' => $user_siswa->place_of_birth,
+                        'phone' => $user_siswa->phone,
+                        'address' => $user_siswa->address,
+                        'date_accepted' => $user_siswa->accepted_date,
+                        'note' => $user_siswa->note,
+                        'class_accepted' => $user_siswa->class_accepted
+                    );
+
+                    $response_user_siswa = Http::post($url_post_user_siswa, $form_user_siswa);
+                    if ($response_user_siswa->ok()) {
+                        $post_usersiswa = User::where('id', $user_siswa->id)->update(['sync_date' => $timestamp]);
+                    }
+
+                    if ($key > 0 && $key % 10 == 0) {
+                        sleep(5);
+                    }
+                }
+            }
+        }
+        return;
+    }
+
+    /** delete sync */
+    public function sync_delete_user()
+    {
+        if (!empty(env('API_BUKU_INDUK'))) {
+            $delete_user_student = User::onlyTrashed()->get();
+            if (!empty($delete_user_student)) {
+                $url_delete_user_student = env('API_BUKU_INDUK') . '/api/users/students';
+                foreach ($delete_user_student as $key => $user) {
+                    $response_user_delete = Http::delete($url_delete_user_student . '/' . $user->key);
+                    if ($key > 0 && $key % 10 == 0) {
+                        sleep(5);
+                    }
+                }
+            }
+        }
+        return;
     }
 }
