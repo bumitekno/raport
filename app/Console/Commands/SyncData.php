@@ -242,9 +242,11 @@ class SyncData extends Command
                         if (empty($check_password) && empty($check_password->password)) {
 
                             $create_user = User::withoutGlobalScopes()->updateOrCreate([
+                                'id' => $data_user['id'],
                                 'key' => $data_user['uid'],
                                 'slug' => $data_user['name'] . '-' . $data_user['uid'],
                             ], [
+                                'id' => $data_user['id'],
                                 'key' => $data_user['uid'],
                                 'name' => $data_user['name'],
                                 'gender' => $data_user['gender'] == 'L' ? 'male' : 'female',
@@ -269,6 +271,7 @@ class SyncData extends Command
 
                         } else {
                             $create_user = User::withoutGlobalScopes()->updateOrCreate([
+                                'id' => $data_user['id'],
                                 'key' => $data_user['uid'],
                                 'slug' => $data_user['name'] . '-' . $data_user['uid'],
                             ], [
@@ -320,9 +323,11 @@ class SyncData extends Command
                         if (!empty($check_password) && !empty($check_password->password)) {
 
                             $create_user = Teacher::withoutGlobalScopes()->updateOrCreate([
+                                'id' => $data_user['id'],
                                 'key' => $data_user['uid'],
                                 'slug' => $data_user['name'] . '-' . $data_user['uid'],
                             ], [
+                                'id' => $data_user['id'],
                                 'key' => $data_user['uid'],
                                 'name' => $data_user['name'],
                                 'gender' => $data_user['gender'] == 'L' ? 'male' : 'female',
@@ -343,9 +348,11 @@ class SyncData extends Command
 
                         } else {
                             $create_user = Teacher::withoutGlobalScopes()->updateOrCreate([
+                                'id' => $data_user['id'],
                                 'key' => $data_user['uid'],
                                 'slug' => $data_user['name'] . '-' . $data_user['uid'],
                             ], [
+                                'id' => $data_user['id'],
                                 'key' => $data_user['uid'],
                                 'name' => $data_user['name'],
                                 'gender' => $data_user['gender'] == 'L' ? 'male' : 'female',
