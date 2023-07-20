@@ -85,7 +85,7 @@ class PreviewController extends Controller
         } else {
             // dd(session()->all());
             $students = StudentClass::join('users', 'student_classes.id_student', '=', 'users.id')
-                ->select('student_classes.id', 'student_classes.slug', 'student_classes.id_student', 'student_classes.status',  'student_classes.year', 'users.name', 'users.file', 'users.nis')
+                ->select('student_classes.id', 'student_classes.slug', 'student_classes.id_student', 'student_classes.status', 'student_classes.year', 'users.name', 'users.file', 'users.nis')
                 ->where([
                     ['id_study_class', session('id_study_class')],
                     ['student_classes.status', 1],
@@ -161,19 +161,25 @@ class PreviewController extends Controller
             ])->get();
 
         $setting = json_decode(Storage::get('settings.json'), true);
-        switch ($template->template) {
-            case 'k13':
-                return $this->preview_k13($student_class, $setting, $school_year, $subjects, $template->type);
-                break;
-            case 'merdeka':
-                return $this->preview_merdeka($student_class, $setting, $school_year, $subjects, $template->type);
-                break;
-            case 'manual2':
-                return $this->preview_manual2($student_class, $setting, $school_year, $subjects);
-                break;
-            default:
-                return $this->preview_manual($student_class, $setting, $school_year, $subjects, $template->type);
-                break;
+
+        if (!empty($template)) {
+            switch ($template->template) {
+                case 'k13':
+                    return $this->preview_k13($student_class, $setting, $school_year, $subjects, $template->type);
+                    break;
+                case 'merdeka':
+                    return $this->preview_merdeka($student_class, $setting, $school_year, $subjects, $template->type);
+                    break;
+                case 'manual2':
+                    return $this->preview_manual2($student_class, $setting, $school_year, $subjects);
+                    break;
+                default:
+                    return $this->preview_manual($student_class, $setting, $school_year, $subjects, $template->type);
+                    break;
+            }
+        } else {
+            session()->put('message', 'Admin belum mengaktifkan template raport');
+            return view('pages.v_error');
         }
     }
 
@@ -196,16 +202,25 @@ class PreviewController extends Controller
 
         $setting = json_decode(Storage::get('settings.json'), true);
         // dd($template->template);
-        switch ($template->template) {
-            case 'k13':
-                return $this->preview_k13($student_class, $setting, $school_year, $subjects, $template->type);
-            case 'merdeka':
-                $type = (session('role') == 'admin') ? $template->type : $_GET['type'];
-                return $this->preview_merdeka($student_class, $setting, $school_year, $subjects, $type);
-            case 'manual2':
-                return $this->preview_manual2($student_class, $setting, $school_year, $subjects);
-            default:
-                return $this->preview_manual($student_class, $setting, $school_year, $subjects, $template->type);
+        if (!empty($template)) {
+            switch ($template->template) {
+                case 'k13':
+                    return $this->preview_k13($student_class, $setting, $school_year, $subjects, $template->type);
+                    break;
+                case 'merdeka':
+                    $type = (session('role') == 'admin') ? $template->type : $_GET['type'];
+                    return $this->preview_merdeka($student_class, $setting, $school_year, $subjects, $type);
+                    break;
+                case 'manual2':
+                    return $this->preview_manual2($student_class, $setting, $school_year, $subjects);
+                    break;
+                default:
+                    return $this->preview_manual($student_class, $setting, $school_year, $subjects, $template->type);
+                    break;
+            }
+        } else {
+            session()->put('message', 'Admin belum mengaktifkan template raport');
+            return view('pages.v_error');
         }
     }
 
@@ -216,9 +231,13 @@ class PreviewController extends Controller
         $student_class = StudentClass::where([
             ['slug', $_GET['student']],
             ['status', 1]
-        ])->with(['student', 'student.study_class', 'student.families' => function ($query) {
-            $query->whereIn('type', ['father', 'mother', 'guardian']);
-        }])->first();
+        ])->with([
+                    'student',
+                    'student.study_class',
+                    'student.families' => function ($query) {
+                        $query->whereIn('type', ['father', 'mother', 'guardian']);
+                    }
+                ])->first();
 
         // Mendapatkan data parents yang bertype 'father' atau 'mother' jika ada, atau mengembalikan null jika tidak ada
         $families = $student_class->student->families->first(function ($family) {
