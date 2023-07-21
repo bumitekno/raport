@@ -2,21 +2,6 @@
 @section('content')
     @push('styles')
         @include('package.datatable.datatable_css')
-        <style>
-            .progress {
-                display: block;
-                text-align: center;
-                width: 0;
-                height: 3px;
-                background: red;
-                transition: width .3s;
-            }
-
-            .progress.hide {
-                opacity: 0;
-                transition: opacity 1.3s;
-            }
-        </style>
     @endpush
     <div class="layout-px-spacing">
         <div class="middle-content container-xxl p-0">
@@ -31,8 +16,6 @@
                 </nav>
             </div>
 
-            <div class="progress"></div>
-
             <div class="row" id="cancel-row">
 
                 <div class="col-xl-12 col-lg-12 col-sm-12 layout-top-spacing layout-spacing">
@@ -45,6 +28,10 @@
                             </div>
                         </div>
                         <div class="widget-content widget-content-area br-8">
+                            <div id="progressbar" style="border:2px solid #cbc; border-radius: 6px; "></div>
+                            <p id="loadarea_show" style="display:none;" class="cst-md"></p>
+                            <div id="loading" style="display:none;">Loading ....</div>
+
                             <table id="table-list" class="table dt-table-hover w-100">
                                 <thead>
                                     <tr>
@@ -110,6 +97,9 @@
                     }
                 });
 
+                var counter = 0;
+                var handle;
+
                 var table = $('#table-list').DataTable({
                     processing: true,
                     serverSide: true,
@@ -135,7 +125,9 @@
                             text: 'Sync',
                             className: 'btn btn-warning',
                             action: function(e, dt, node, config) {
-                                //syncData();
+
+                                syncData();
+
                             }
                         },
                     ],
@@ -163,32 +155,61 @@
                     }, ]
                 });
 
-            });
+                function syncData() {
+                    $.ajax({
+                        url: "{{ route('users.sync_get_user') }}",
+                        method: 'GET',
+                        beforeSend: function() {
+                            $("#loading").show();
+                            counter = 0;
+                            $('#loadarea_show').html(counter + '%');
+                            $('#progressbar').attr('style',
+                                'background:linear-gradient(to bottom, rgba(126,126,126,1) 0%,rgba(15,15,15,1) 100%);height:10px;width:' +
+                                counter + '%');
+                        },
+                        complete: function() {
+                            $("#loading").hide();
+                            counter = 100;
+                            $('#loadarea_show').html(counter + '%');
+                            $('#progressbar').attr('style',
+                                'background:linear-gradient(to bottom, rgba(126,126,126,1) 0%,rgba(15,15,15,1) 100%);height:10px;width:' +
+                                counter + '%');
+                        },
+                    });
 
-            function syncData() {
-                $.ajax({
-                    xhr: function() {
-                        var xhr = new window.XMLHttpRequest();
-                        xhr.addEventListener("progress", function(evt) {
-                            if (evt.lengthComputable) {
-                                var percentComplete = evt.loaded / evt.total;
-                                console.log(percentComplete);
-                                $('.progress').css({
-                                    width: percentComplete * 100 + '%'
-                                });
-                            }
-                        }, false);
-                        return xhr;
-                    },
-                    type: 'GET',
-                    url: "{{ route('users.sync_get_user') }}",
-                    success: function(data) {
-                        //Do something on success
-                        table.ajax.reload();
-                    }
-                });
-                return false;
-            }
+                    handle = setInterval(() => {
+
+                        $("#loading").show();
+                        $('#loadarea_show').html(counter + '%');
+                        $('#progressbar').attr('style',
+                            'background:linear-gradient(to bottom, rgba(126,126,126,1) 0%,rgba(15,15,15,1) 100%);height:10px;width:' +
+                            counter + '%');
+
+                        $.getJSON('{{ route('users.getProgess') }}',
+                            function(
+                                data) {
+
+                                counter = data[0];
+
+                                $('#progressbar').attr('style',
+                                    'background:linear-gradient(to bottom, rgba(126,126,126,1) 0%,rgba(15,15,15,1) 100%);height:10px;width:' +
+                                    counter + '%');
+
+                                $('#loadarea_show').show();
+                                $('#loadarea_show').html(counter + '%');
+
+                                if (counter == 100) {
+                                    clearInterval(handle);
+                                    table.ajax.reload();
+                                    counter = 0;
+                                    $("#loading").hide();
+                                }
+
+                            });
+                    }, 1000);
+                }
+
+            });
         </script>
     @endpush
 @endsection

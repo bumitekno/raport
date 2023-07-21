@@ -241,10 +241,19 @@ class UserController extends Controller
         return;
     }
 
+    public function getProgess()
+    {
+        return response()->json(array(session()->get('progress')), 200);
+    }
+
+
     /** sync get data user */
     public function sync_get_user()
     {
-        $progress = 0;
+        session()->put('progress', 0);
+
+        $ind = 0;
+
         if (!empty(env('API_BUKU_INDUK'))) {
             $url_api_student = env('API_BUKU_INDUK') . '/api/users/students/data/all';
             $response_api_student = Http::get($url_api_student);
@@ -256,6 +265,9 @@ class UserController extends Controller
                 $check_school_usert_student = User::whereNull('sync_date')->get()->count();
                 if ($check_school_usert_student == 0) {
                     foreach ($collection_api_student['data'] as $key => $data_user) {
+
+                        $ind = intval($key) + 1;
+
                         $check_password = User::where('key', $data_user['uid'])->first();
                         if (empty($check_password) && empty($check_password->password)) {
                             $drop_user = User::where('id', $data_user['id'])->forceDelete();
@@ -314,12 +326,14 @@ class UserController extends Controller
                             ]);
                         }
 
-                        $progress++;
+                        session()->put('progress', intval($ind / count($collection_api_student['data']) * 100));
                     }
                 }
             }
         }
 
-        return response()->json(['message' => 'check', 'progress' => $progress]);
+        $response = response()->make();
+        $response->header('Content-Type', 'application/json');
+        return $response;
     }
 }
