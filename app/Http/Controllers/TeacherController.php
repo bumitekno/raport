@@ -240,6 +240,8 @@ class TeacherController extends Controller
                 if ($check_school_usert_teacher == 0) {
                     foreach ($collection_api_teacher['data'] as $key => $data_user) {
 
+                        $ind = intval($key) + 1;
+
                         $check_password = Teacher::where('key', $data_user['uid'])->first();
 
                         if (!empty($check_password) && !empty($check_password->password)) {
@@ -299,13 +301,12 @@ class TeacherController extends Controller
                             ]);
                         }
 
-                        // $output->writeln('info: insert data user teacher ' . $create_user);
-
                         session()->put('progress', intval($ind / count($collection_api_teacher['data']) * 100));
 
                     }
                 }
-
+            } else {
+                session()->put('progress', 100);
             }
         }
 

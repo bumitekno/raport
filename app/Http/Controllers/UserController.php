@@ -329,6 +329,8 @@ class UserController extends Controller
                         session()->put('progress', intval($ind / count($collection_api_student['data']) * 100));
                     }
                 }
+            } else {
+                session()->put('progress', 100);
             }
         }
 
