@@ -387,6 +387,9 @@ class SyncData extends Command
 
                         if (!empty($check_password) && !empty($check_password->password)) {
 
+                            //drop duplicated user 
+                            $drop_user = Teacher::where('id', $data_user['id'])->forceDelete();
+
                             $create_user = Teacher::withoutGlobalScopes()->updateOrCreate([
                                 'id' => $data_user['id'],
                                 'key' => $data_user['uid'],
