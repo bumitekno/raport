@@ -2,6 +2,21 @@
 @section('content')
     @push('styles')
         @include('package.datatable.datatable_css')
+        <style>
+            .progress {
+                display: block;
+                text-align: center;
+                width: 0;
+                height: 3px;
+                background: red;
+                transition: width .3s;
+            }
+
+            .progress.hide {
+                opacity: 0;
+                transition: opacity 1.3s;
+            }
+        </style>
     @endpush
     <div class="layout-px-spacing">
         <div class="middle-content container-xxl p-0">
@@ -15,6 +30,8 @@
                     </ol>
                 </nav>
             </div>
+
+            <div class="progress"></div>
 
             <div class="row" id="cancel-row">
 
@@ -86,6 +103,13 @@
         @include('package.datatable.datatable_js')
         <script>
             $(function() {
+
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+
                 var table = $('#table-list').DataTable({
                     processing: true,
                     serverSide: true,
@@ -107,7 +131,13 @@
                             action: function(e, dt, node, config) {
                                 $('#importModal').modal('show');
                             }
-                        }
+                        }, {
+                            text: 'Sync',
+                            className: 'btn btn-warning',
+                            action: function(e, dt, node, config) {
+                                //syncData();
+                            }
+                        },
                     ],
                     columns: [{
                         data: 'DT_RowIndex',
@@ -134,6 +164,31 @@
                 });
 
             });
+
+            function syncData() {
+                $.ajax({
+                    xhr: function() {
+                        var xhr = new window.XMLHttpRequest();
+                        xhr.addEventListener("progress", function(evt) {
+                            if (evt.lengthComputable) {
+                                var percentComplete = evt.loaded / evt.total;
+                                console.log(percentComplete);
+                                $('.progress').css({
+                                    width: percentComplete * 100 + '%'
+                                });
+                            }
+                        }, false);
+                        return xhr;
+                    },
+                    type: 'GET',
+                    url: "{{ route('users.sync_get_user') }}",
+                    success: function(data) {
+                        //Do something on success
+                        table.ajax.reload();
+                    }
+                });
+                return false;
+            }
         </script>
     @endpush
 @endsection

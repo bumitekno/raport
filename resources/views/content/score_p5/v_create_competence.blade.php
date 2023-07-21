@@ -131,7 +131,7 @@
                                 <div class="t-dot">
                                 </div>
                                 <div class="t-text">
-                                    <p>{{ $course->code }}</p>
+                                    <p>{{ $course->code ?? '-' }}</p>
                                 </div>
                             </div>
                             <div class="item-timeline">
@@ -141,7 +141,7 @@
                                 <div class="t-dot">
                                 </div>
                                 <div class="t-text">
-                                    <p>{{ $course->name }}</p>
+                                    <p>{{ $course->name ?? '-' }}</p>
                                 </div>
                             </div>
                             <div class="item-timeline">
@@ -151,7 +151,7 @@
                                 <div class="t-dot">
                                 </div>
                                 <div class="t-text">
-                                    <p>{{ $course->group }}</p>
+                                    <p>{{ $course->group ?? '-' }}</p>
                                 </div>
                             </div>
                         </div>
@@ -173,7 +173,7 @@
                                 <div class="t-dot">
                                 </div>
                                 <div class="t-text">
-                                    <p>{{ $study_class->name }}</p>
+                                    <p>{{ $study_class->name ?? '-' }}</p>
                                 </div>
                             </div>
 
@@ -184,7 +184,7 @@
                                 <div class="t-dot">
                                 </div>
                                 <div class="t-text">
-                                    <p>{{ $study_class->level->name }}</p>
+                                    <p>{{ $study_class->level->name ?? '-' }}</p>
                                 </div>
                             </div>
 
@@ -195,7 +195,7 @@
                                 <div class="t-dot">
                                 </div>
                                 <div class="t-text">
-                                    <p>{{ $study_class->major->name }}</p>
+                                    <p>{{ $study_class->major->name ?? '-' }}</p>
                                 </div>
                             </div>
 
