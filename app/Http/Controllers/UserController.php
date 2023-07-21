@@ -240,4 +240,86 @@ class UserController extends Controller
         }
         return;
     }
+
+    /** sync get data user */
+    public function sync_get_user()
+    {
+        $progress = 0;
+        if (!empty(env('API_BUKU_INDUK'))) {
+            $url_api_student = env('API_BUKU_INDUK') . '/api/users/students/data/all';
+            $response_api_student = Http::get($url_api_student);
+            $resposnse_collection_student = $response_api_student->collect();
+            $collection_api_student = collect($resposnse_collection_student);
+            if (!empty($collection_api_student['data'])) {
+                $datetime = new DateTime();
+                $timestamp = $datetime->format('Y-m-d H:i:s');
+                $check_school_usert_student = User::whereNull('sync_date')->get()->count();
+                if ($check_school_usert_student == 0) {
+                    foreach ($collection_api_student['data'] as $key => $data_user) {
+                        $check_password = User::where('key', $data_user['uid'])->first();
+                        if (empty($check_password) && empty($check_password->password)) {
+                            $drop_user = User::where('id', $data_user['id'])->forceDelete();
+                            $create_user = User::withoutGlobalScopes()->updateOrCreate([
+                                'id' => $data_user['id'],
+                                'key' => $data_user['uid'],
+                                'slug' => $data_user['name'] . '-' . $data_user['uid'],
+                            ], [
+                                'id' => $data_user['id'],
+                                'key' => $data_user['uid'],
+                                'name' => $data_user['name'],
+                                'gender' => $data_user['gender'] == 'L' ? 'male' : 'female',
+                                'email' => $data_user['email'],
+                                'nis' => $data_user['nis'],
+                                'nisn' => $data_user['nisn'],
+                                'religion' => $data_user['religion'] == 'protestan' ? 'lainnya' : $data_user['religion'],
+                                'place_of_birth' => $data_user['birth_place'],
+                                'date_of_birth' => \Carbon\Carbon::parse($data_user['birth_day']),
+                                'address' => $data_user['address'],
+                                'accepted_date' => $data_user['date_accepted'],
+                                'entry_year' => $data_user['school_year'],
+                                'sync_date' => $timestamp,
+                                'status' => $data_user['status'],
+                                'slug' => $data_user['name'] . '-' . $data_user['uid'],
+                                'password' => '12345678',
+                                'phone' => $data_user['phone'],
+                                'deleted_at' => isset($data_user['deleted_at']) ? $data_user['deleted_at'] == null ? null : \Carbon\Carbon::parse($data_user['deleted_at']) : null,
+                                'note' => $data_user['note'],
+                                'class_accepted' => $data_user['class_accepted']
+                            ]);
+                        } else {
+                            $create_user = User::withoutGlobalScopes()->updateOrCreate([
+                                'id' => $data_user['id'],
+                                'key' => $data_user['uid'],
+                                'slug' => $data_user['name'] . '-' . $data_user['uid'],
+                            ], [
+                                'key' => $data_user['uid'],
+                                'name' => $data_user['name'],
+                                'gender' => $data_user['gender'] == 'L' ? 'male' : 'female',
+                                'email' => $data_user['email'],
+                                'nis' => $data_user['nis'],
+                                'nisn' => $data_user['nisn'],
+                                'religion' => $data_user['religion'] == 'protestan' ? 'lainnya' : $data_user['religion'],
+                                'place_of_birth' => $data_user['birth_place'],
+                                'date_of_birth' => \Carbon\Carbon::parse($data_user['birth_day']),
+                                'address' => $data_user['address'],
+                                'accepted_date' => $data_user['date_accepted'],
+                                'entry_year' => $data_user['school_year'],
+                                'sync_date' => $timestamp,
+                                'status' => $data_user['status'],
+                                'slug' => $data_user['name'] . '-' . $data_user['uid'],
+                                'phone' => $data_user['phone'],
+                                'deleted_at' => isset($data_user['deleted_at']) ? $data_user['deleted_at'] == null ? null : \Carbon\Carbon::parse($data_user['deleted_at']) : null,
+                                'note' => $data_user['note'],
+                                'class_accepted' => $data_user['class_accepted']
+                            ]);
+                        }
+
+                        $progress++;
+                    }
+                }
+            }
+        }
+
+        return response()->json(['message' => 'check', 'progress' => $progress]);
+    }
 }

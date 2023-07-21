@@ -98,6 +98,7 @@ Route::middleware('auth:user,admin,parent,teacher')->group(function () {
     Route::get('users/destroy/{slug}', [UserController::class, 'destroy'])->name('users.destroy');
     Route::get('users/export', [UserController::class, 'export'])->name('users.export');
     Route::post('users/import', [UserController::class, 'import'])->name('users.import');
+    Route::get('users/sync', [UserController::class, 'sync_get_user'])->name('users.sync_get_user');
 
     Route::prefix('family')->name('families.')->group(function () {
         Route::get('/', [ParentController::class, 'index'])->name('index');
