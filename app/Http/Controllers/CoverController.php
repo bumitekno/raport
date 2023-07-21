@@ -20,17 +20,33 @@ class CoverController extends Controller
         $data_array = [
             'years' => $years
         ];
+
         $detail_year = SchoolYear::where('slug', $_GET['year'])->first();
-        $result_cover = Cover::where('id_school_year', $detail_year->id)->first();
+
+        if (!empty($result_cover)) {
+
+            $result_cover = Cover::where('id_school_year', $detail_year->id)->first();
+
+            $cover = [
+                'title' => $result_cover ? $result_cover->title : null,
+                'sub_title' => $result_cover ? $result_cover->sub_title : null,
+                'footer' => $result_cover ? $result_cover->footer : null,
+                'instruction' => $result_cover ? $result_cover->instruction : null,
+                'top_logo' => $result_cover ? $result_cover->top_logo : null,
+                'middle_logo' => $result_cover ? $result_cover->middle_logo : null,
+            ];
+        } else {
+            $cover = [
+                'title' => null,
+                'sub_title' => null,
+                'footer' => null,
+                'instruction' => null,
+                'top_logo' => null,
+                'middle_logo' => null,
+            ];
+        }
         // dd($cover);
-        $cover = [
-            'title' => $result_cover ? $result_cover->title : null,
-            'sub_title' => $result_cover ? $result_cover->sub_title : null,
-            'footer' => $result_cover ? $result_cover->footer : null,
-            'instruction' => $result_cover ? $result_cover->instruction : null,
-            'top_logo' => $result_cover ? $result_cover->top_logo : null,
-            'middle_logo' => $result_cover ? $result_cover->middle_logo : null,
-        ];
+
         $data_array['cover'] = $cover;
         // dd($data_array);
         return view('content.setting.v_form_cover', $data_array);
