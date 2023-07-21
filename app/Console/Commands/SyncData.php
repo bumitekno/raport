@@ -957,7 +957,7 @@ class SyncData extends Command
 
                 $response_user_teacher = Http::post($url_post_user_teacher, $form_user_teacher);
                 if ($response_user_teacher->ok()) {
-                    $post_userteacher = Teacher::where('id', $user_siswa->id)->update(['sync_date' => $timestamp]);
+                    $post_userteacher = Teacher::where('id', $user_teacher->id)->update(['sync_date' => $timestamp]);
                     $output->writeln('info: post sync data  user guru ' . $key . ' status' . $post_userteacher);
                 }
 

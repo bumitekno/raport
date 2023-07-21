@@ -15,6 +15,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\DataTables;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Facades\Http;
+use DateTime;
 
 class TeacherController extends Controller
 {
@@ -73,6 +75,7 @@ class TeacherController extends Controller
         }
         $postdata = array_merge($data, array('key' => Helper::str_random(5)));
         Teacher::create($postdata);
+        $this->sync_post_user();
         Helper::toast('Berhasil menambah guru', 'success');
         return redirect()->route('teachers.index');
     }
@@ -114,6 +117,9 @@ class TeacherController extends Controller
         // dd($teacher);
         $teacher->sync_date = null;
         $teacher->save();
+
+        $this->sync_post_user();
+
         Helper::toast('Berhasil mengupdate guru', 'success');
         return redirect()->route('teachers.index');
     }
@@ -122,6 +128,7 @@ class TeacherController extends Controller
     {
         $teacher = Teacher::where('slug', $slug)->firstOrFail();
         $teacher->delete();
+        $this->sync_delete_user();
         Helper::toast('Berhasil menghapus guru', 'success');
         return redirect()->route('teachers.index');
     }
@@ -143,6 +150,7 @@ class TeacherController extends Controller
             $path = $file->storeAs('public/excel/', $nama_file);
             Excel::import(new TeacherMultipleImport(), storage_path('app/public/excel/' . $nama_file));
             Storage::delete($path);
+            $this->sync_post_user();
             Helper::toast('Data Berhasil Diimport', 'success');
             return redirect()->route('teachers.index');
         } catch (\Throwable $e) {
@@ -150,5 +158,161 @@ class TeacherController extends Controller
             return redirect()->route('teachers.index');
         }
     }
-    
+
+    /** post or update sync */
+    public function sync_post_user()
+    {
+        if (!empty(env('API_BUKU_INDUK'))) {
+            $datetime = new DateTime();
+            $timestamp = $datetime->format('Y-m-d H:i:s');
+            $post_user_teacher = Teacher::whereNull('sync_date')->get();
+            if (!empty($post_user_teacher)) {
+
+                $url_post_user_teacher = env('API_BUKU_INDUK') . '/api/users/teachers/updateorcreate';
+                foreach ($post_user_teacher as $key => $user_teacher) {
+                    $form_user_teacher = array(
+                        'key' => $user_teacher->key,
+                        'name' => $user_teacher->name,
+                        'status' => $user_teacher->status,
+                        'nik' => $user_teacher->nik,
+                        'nip' => $user_teacher->nip,
+                        'nuptk' => $user_teacher->nuptk,
+                        'gender' => $user_teacher->gender == 'male' ? 'L' : 'P',
+                        'religion' => $user_teacher->religion == 'lainnya' ? 'protestan' : $user_teacher->religion,
+                        'email' => $user_teacher->email,
+                        'birth_day' => $user_teacher->date_of_birth,
+                        'birth_place' => $user_teacher->place_of_birth,
+                        'contact' => $user_teacher->phone,
+                        'address' => $user_teacher->address,
+                    );
+
+                    $response_user_teacher = Http::post($url_post_user_teacher, $form_user_teacher);
+                    if ($response_user_teacher->ok()) {
+                        $post_userteacher = Teacher::where('id', $user_teacher->id)->update(['sync_date' => $timestamp]);
+                    }
+                }
+            }
+        }
+        return;
+    }
+
+
+    /** delete sync */
+    public function sync_delete_user()
+    {
+        if (!empty(env('API_BUKU_INDUK'))) {
+            $delete_user_teacher = Teacher::onlyTrashed()->get();
+            if (!empty($delete_user_teacher)) {
+                $url_delete_user_teacher = env('API_BUKU_INDUK') . '/api/users/teachers';
+                foreach ($delete_user_teacher as $key => $user) {
+                    $response_user_delete = Http::delete($url_delete_user_teacher . '/' . $user->key);
+                    if ($key > 0 && $key % 10 == 0) {
+                        sleep(5);
+                    }
+                }
+            }
+        }
+        return;
+    }
+
+    /** session progress */
+    public function getProgess()
+    {
+        return response()->json(array(session()->get('progress')), 200);
+    }
+
+    /** sync get data user */
+    public function sync_get_user()
+    {
+        session()->put('progress', 0);
+
+        $ind = 0;
+
+        if (!empty(env('API_BUKU_INDUK'))) {
+            $url_api_teacher = env('API_BUKU_INDUK') . '/api/users/teachers/data/all';
+            $response_api_teacher = Http::get($url_api_teacher);
+            $resposnse_collection_student = $response_api_teacher->collect();
+            $collection_api_teacher = collect($resposnse_collection_student);
+            if (!empty($collection_api_teacher['data'])) {
+                $datetime = new DateTime();
+                $timestamp = $datetime->format('Y-m-d H:i:s');
+                $check_school_usert_teacher = Teacher::whereNull('sync_date')->get()->count();
+                if ($check_school_usert_teacher == 0) {
+                    foreach ($collection_api_teacher['data'] as $key => $data_user) {
+
+                        $ind = intval($key) + 1;
+
+                        $check_password = Teacher::where('key', $data_user['uid'])->first();
+
+                        if (!empty($check_password) && !empty($check_password->password)) {
+
+                            $create_user = Teacher::withoutGlobalScopes()->updateOrCreate([
+                                'id' => $data_user['id'],
+                                'key' => $data_user['uid'],
+                                'slug' => $data_user['name'] . '-' . $data_user['uid'],
+                            ], [
+                                'id' => $data_user['id'],
+                                'key' => $data_user['uid'],
+                                'name' => $data_user['name'],
+                                'gender' => $data_user['gender'] == 'L' ? 'male' : 'female',
+                                'email' => $data_user['email'],
+                                'nip' => $data_user['nip'],
+                                'nik' => $data_user['nik'],
+                                'nuptk' => $data_user['nuptk'],
+                                'place_of_birth' => $data_user['birth_place'],
+                                'date_of_birth' => \Carbon\Carbon::parse($data_user['birth_day']),
+                                'address' => $data_user['address'],
+                                'type' => 'teacher',
+                                'phone' => $data_user['contact'],
+                                'sync_date' => $timestamp,
+                                'status' => $data_user['status'],
+                                'slug' => $data_user['name'] . '-' . $data_user['uid'],
+                                'deleted_at' => isset($data_user['deleted_at']) ? $data_user['deleted_at'] == null ? null : \Carbon\Carbon::parse($data_user['deleted_at']) : null
+                            ]);
+
+                        } else {
+
+                            //drop duplicated user 
+                            $drop_user = Teacher::where('id', $data_user['id'])->forceDelete();
+
+                            $create_user = Teacher::withoutGlobalScopes()->updateOrCreate([
+                                'id' => $data_user['id'],
+                                'key' => $data_user['uid'],
+                                'slug' => $data_user['name'] . '-' . $data_user['uid'],
+                            ], [
+                                'id' => $data_user['id'],
+                                'key' => $data_user['uid'],
+                                'name' => $data_user['name'],
+                                'gender' => $data_user['gender'] == 'L' ? 'male' : 'female',
+                                'email' => $data_user['email'],
+                                'nip' => $data_user['nip'],
+                                'nik' => $data_user['nik'],
+                                'nuptk' => $data_user['nuptk'],
+                                'place_of_birth' => $data_user['birth_place'],
+                                'date_of_birth' => \Carbon\Carbon::parse($data_user['birth_day']),
+                                'address' => $data_user['address'],
+                                'type' => 'teacher',
+                                'phone' => $data_user['contact'],
+                                'sync_date' => $timestamp,
+                                'status' => $data_user['status'],
+                                'slug' => $data_user['name'] . '-' . $data_user['uid'],
+                                'password' => '12345678',
+                                'deleted_at' => isset($data_user['deleted_at']) ? $data_user['deleted_at'] == null ? null : \Carbon\Carbon::parse($data_user['deleted_at']) : null
+                            ]);
+                        }
+
+                        session()->put('progress', intval($ind / count($collection_api_teacher['data']) * 100));
+
+                    }
+                }
+            } else {
+                session()->put('progress', 100);
+            }
+        }
+
+        $response = response()->make();
+        $response->header('Content-Type', 'application/json');
+        return $response;
+    }
+
 }

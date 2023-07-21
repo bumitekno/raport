@@ -91,6 +91,8 @@ Route::middleware('auth:user,admin,parent,teacher')->group(function () {
     Route::get('teachers/destroy/{slug}', [TeacherController::class, 'destroy'])->name('teachers.destroy');
     Route::get('teachers/export', [TeacherController::class, 'export'])->name('teachers.export');
     Route::post('teachers/import', [TeacherController::class, 'import'])->name('teachers.import');
+    Route::get('teachers/sync', [TeacherController::class, 'sync_get_user'])->name('teachers.sync_get_user');
+    Route::get('teachers/progres_sync', [TeacherController::class, 'getProgess'])->name('teachers.getProgess');
 
     Route::resource('users', UserController::class)->parameters([
         'users' => 'users:slug',

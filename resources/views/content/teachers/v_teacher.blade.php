@@ -29,6 +29,10 @@
                         </div>
                         <div class="widget-content widget-content-area br-8">
 
+                            <div id="progressbar" style="border:2px solid #cbc; border-radius: 6px; "></div>
+                            <p id="loadarea_show" style="display:none;" class="cst-md"></p>
+                            <div id="loading" style="display:none;">Loading ....</div>
+
                             <table id="table-list" class="table dt-table-hover w-100">
                                 <thead>
                                     <tr>
@@ -87,6 +91,16 @@
         @include('package.datatable.datatable_js')
         <script>
             $(function() {
+
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+
+                var counter = 0;
+                var handle;
+
                 var table = $('#table-list').DataTable({
                     processing: true,
                     serverSide: true,
@@ -108,7 +122,14 @@
                             action: function(e, dt, node, config) {
                                 $('#importModal').modal('show');
                             }
-                        }
+                        },
+                        {
+                            text: 'Sync',
+                            className: 'btn btn-warning',
+                            action: function(e, dt, node, config) {
+                                syncData();
+                            }
+                        },
                     ],
                     columns: [{
                         data: 'DT_RowIndex',
@@ -133,6 +154,61 @@
                         name: 'action',
                     }, ]
                 });
+
+
+                function syncData() {
+                    $.ajax({
+                        url: "{{ route('teachers.sync_get_user') }}",
+                        method: 'GET',
+                        beforeSend: function() {
+                            $("#loading").show();
+                            counter = 0;
+                            $('#loadarea_show').html(counter + '%');
+                            $('#progressbar').attr('style',
+                                'background:linear-gradient(to bottom, rgba(126,126,126,1) 0%,rgba(15,15,15,1) 100%);height:10px;width:' +
+                                counter + '%');
+                        },
+                        complete: function() {
+                            $("#loading").hide();
+                            counter = 100;
+                            $('#loadarea_show').html(counter + '%');
+                            $('#progressbar').attr('style',
+                                'background:linear-gradient(to bottom, rgba(126,126,126,1) 0%,rgba(15,15,15,1) 100%);height:10px;width:' +
+                                counter + '%');
+                        },
+                    });
+
+                    handle = setInterval(() => {
+
+                        $("#loading").show();
+                        $('#loadarea_show').html(counter + '%');
+                        $('#progressbar').attr('style',
+                            'background:linear-gradient(to bottom, rgba(126,126,126,1) 0%,rgba(15,15,15,1) 100%);height:10px;width:' +
+                            counter + '%');
+
+                        $.getJSON('{{ route('teachers.getProgess') }}',
+                            function(
+                                data) {
+
+                                counter = data[0];
+
+                                $('#progressbar').attr('style',
+                                    'background:linear-gradient(to bottom, rgba(126,126,126,1) 0%,rgba(15,15,15,1) 100%);height:10px;width:' +
+                                    counter + '%');
+
+                                $('#loadarea_show').show();
+                                $('#loadarea_show').html(counter + '%');
+
+                                if (counter == 100) {
+                                    clearInterval(handle);
+                                    table.ajax.reload();
+                                    counter = 0;
+                                    $("#loading").hide();
+                                }
+
+                            });
+                    }, 1000);
+                }
 
             });
         </script>
