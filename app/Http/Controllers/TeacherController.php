@@ -150,4 +150,5 @@ class TeacherController extends Controller
             return redirect()->route('teachers.index');
         }
     }
+    
 }

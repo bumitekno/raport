@@ -99,6 +99,7 @@ Route::middleware('auth:user,admin,parent,teacher')->group(function () {
     Route::get('users/export', [UserController::class, 'export'])->name('users.export');
     Route::post('users/import', [UserController::class, 'import'])->name('users.import');
     Route::get('users/sync', [UserController::class, 'sync_get_user'])->name('users.sync_get_user');
+    Route::get('users/progres_sync', [UserController::class, 'getProgess'])->name('users.getProgess');
 
     Route::prefix('family')->name('families.')->group(function () {
         Route::get('/', [ParentController::class, 'index'])->name('index');
