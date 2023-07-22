@@ -1064,5 +1064,9 @@ class SyncData extends Command
             }
             $bar_level->finish();
         }
+
+
+        
+
     }
 }

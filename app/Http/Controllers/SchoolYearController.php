@@ -31,7 +31,7 @@ class SchoolYearController extends Controller
                     </div>
                 </div> ';
                 })
-                ->editColumn('status', function ($row) {
+                ->addColumn('status', function ($row) {
                     $check = '';
                     if ($row['status'] == 1) {
                         $check = 'checked';
@@ -41,10 +41,10 @@ class SchoolYearController extends Controller
                     <span class="slider round my-auto"></span>
                 </label>';
                 })
-                ->editColumn('school_year', function ($row) {
+                ->addColumn('school_year', function ($row) {
                     return substr($row['name'], 0, 9);
                 })
-                ->editColumn('semester', function ($row) {
+                ->addColumn('semester', function ($row) {
                     return StatusHelper::semester(substr($row['name'], -1));
                 })
                 ->rawColumns(['action', 'status', 'school_year', 'semester'])
@@ -67,7 +67,8 @@ class SchoolYearController extends Controller
      */
     public function store(SchoolYearRequest $request)
     {
-        SchoolYear::create($request->toArray());
+        $merge_data = array_merge($request->toArray(), array('key' => Helper::str_random(5)));
+        SchoolYear::create($merge_data);
         Helper::toast('Berhasil menambah tahun ajar', 'success');
         return redirect()->route('school-years.index');
     }
@@ -89,7 +90,7 @@ class SchoolYearController extends Controller
     public function update(SchoolYearRequest $request, $slug)
     {
         $school_year = SchoolYear::where('slug', $slug)->firstOrFail();
-        $school_year->fill($request->input())->save();
+        $school_year->fill(array_merge($request->input(), array('sync_date' => null)))->save();
         Helper::toast('Berhasil mengupdate tahun ajar', 'success');
         return redirect()->route('school-years.index');
     }
@@ -112,7 +113,7 @@ class SchoolYearController extends Controller
     {
         SchoolYear::where('status', 1)->update(['status' => 0]);
         $school_year = SchoolYear::find($request->id);
-        $school_year->update(['status' => $request->value]);
+        $school_year->update(['status' => $request->value, 'sync_date' => null]);
         if ($request->value == 1) {
             session()->put('id_school_year', $school_year->id);
             session()->put('slug_year', $school_year->slug);
