@@ -29,7 +29,7 @@ class SubjectTeacherController extends Controller
         $subject_teacher->status = $request->status;
         $subject_teacher->sync_date = null;
         $subject_teacher->key = $subject_teacher->key == null ? Helper::str_random(5) : $subject_teacher->key;
-        $subject_teacher->slug = $subject_teacher->slug == null ? $request->id_teacher . '-' . Helper::str_random(5) : $subject_teacher->slug;
+        $subject_teacher->slug = $subject_teacher->slug == null ? Helper::str_random(5) . '-' . $request->id_teacher : $subject_teacher->slug;
         $subject_teacher->save();
 
         $this->sync_subjectTeacher();
