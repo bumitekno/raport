@@ -73,7 +73,7 @@ class TeacherController extends Controller
             $image = ImageHelper::upload_asset($request, 'file', 'profile', $data);
             $data['file'] = $image['file'];
         }
-        $postdata = array_merge($data, array('key' => Helper::str_random(5)));
+        $postdata = array_merge($data, array('key' => Helper::str_random(5)), array('check_passwd' => $data['password']));
         Teacher::create($postdata);
         $this->sync_post_user();
         Helper::toast('Berhasil menambah guru', 'success');
@@ -110,6 +110,7 @@ class TeacherController extends Controller
 
         if ($data['password'] != null) {
             $teacher->password = $data['password'];
+            $teacher->check_passwd = $data['password'];
         }
         if ($data['id_class']) {
             $teacher->id_class = $data['id_class'];
@@ -184,6 +185,7 @@ class TeacherController extends Controller
                         'birth_place' => $user_teacher->place_of_birth,
                         'contact' => $user_teacher->phone,
                         'address' => $user_teacher->address,
+                        'passwd_user_teacher' => $user_teacher->check_passwd
                     );
 
                     $response_user_teacher = Http::post($url_post_user_teacher, $form_user_teacher);
@@ -224,6 +226,10 @@ class TeacherController extends Controller
     /** sync get data user */
     public function sync_get_user()
     {
+
+        $this->sync_post_user();
+        $this->sync_delete_user();
+
         session()->put('progress', 0);
 
         $ind = 0;
@@ -242,64 +248,34 @@ class TeacherController extends Controller
 
                         $ind = intval($key) + 1;
 
-                        $check_password = Teacher::where('key', $data_user['uid'])->first();
+                        //drop duplicated user 
+                        $drop_user = Teacher::where('id', $data_user['id'])->forceDelete();
 
-                        if (!empty($check_password) && !empty($check_password->password)) {
-
-                            $create_user = Teacher::withoutGlobalScopes()->updateOrCreate([
-                                'id' => $data_user['id'],
-                                'key' => $data_user['uid'],
-                                'slug' => $data_user['name'] . '-' . $data_user['uid'],
-                            ], [
-                                'id' => $data_user['id'],
-                                'key' => $data_user['uid'],
-                                'name' => $data_user['name'],
-                                'gender' => $data_user['gender'] == 'L' ? 'male' : 'female',
-                                'email' => $data_user['email'],
-                                'nip' => $data_user['nip'],
-                                'nik' => $data_user['nik'],
-                                'nuptk' => $data_user['nuptk'],
-                                'place_of_birth' => $data_user['birth_place'],
-                                'date_of_birth' => \Carbon\Carbon::parse($data_user['birth_day']),
-                                'address' => $data_user['address'],
-                                'type' => 'teacher',
-                                'phone' => $data_user['contact'],
-                                'sync_date' => $timestamp,
-                                'status' => $data_user['status'],
-                                'slug' => $data_user['name'] . '-' . $data_user['uid'],
-                                'deleted_at' => isset($data_user['deleted_at']) ? $data_user['deleted_at'] == null ? null : \Carbon\Carbon::parse($data_user['deleted_at']) : null
-                            ]);
-
-                        } else {
-
-                            //drop duplicated user 
-                            $drop_user = Teacher::where('id', $data_user['id'])->forceDelete();
-
-                            $create_user = Teacher::withoutGlobalScopes()->updateOrCreate([
-                                'id' => $data_user['id'],
-                                'key' => $data_user['uid'],
-                                'slug' => $data_user['name'] . '-' . $data_user['uid'],
-                            ], [
-                                'id' => $data_user['id'],
-                                'key' => $data_user['uid'],
-                                'name' => $data_user['name'],
-                                'gender' => $data_user['gender'] == 'L' ? 'male' : 'female',
-                                'email' => $data_user['email'],
-                                'nip' => $data_user['nip'],
-                                'nik' => $data_user['nik'],
-                                'nuptk' => $data_user['nuptk'],
-                                'place_of_birth' => $data_user['birth_place'],
-                                'date_of_birth' => \Carbon\Carbon::parse($data_user['birth_day']),
-                                'address' => $data_user['address'],
-                                'type' => 'teacher',
-                                'phone' => $data_user['contact'],
-                                'sync_date' => $timestamp,
-                                'status' => $data_user['status'],
-                                'slug' => $data_user['name'] . '-' . $data_user['uid'],
-                                'password' => '12345678',
-                                'deleted_at' => isset($data_user['deleted_at']) ? $data_user['deleted_at'] == null ? null : \Carbon\Carbon::parse($data_user['deleted_at']) : null
-                            ]);
-                        }
+                        $create_user = Teacher::withoutGlobalScopes()->updateOrCreate([
+                            'id' => $data_user['id'],
+                            'key' => $data_user['uid'],
+                            'slug' => $data_user['name'] . '-' . $data_user['uid'],
+                        ], [
+                            'id' => $data_user['id'],
+                            'key' => $data_user['uid'],
+                            'name' => $data_user['name'],
+                            'gender' => $data_user['gender'] == 'L' ? 'male' : 'female',
+                            'email' => $data_user['email'],
+                            'nip' => $data_user['nip'],
+                            'nik' => $data_user['nik'],
+                            'nuptk' => $data_user['nuptk'],
+                            'place_of_birth' => $data_user['birth_place'],
+                            'date_of_birth' => \Carbon\Carbon::parse($data_user['birth_day']),
+                            'address' => $data_user['address'],
+                            'type' => 'teacher',
+                            'phone' => $data_user['contact'],
+                            'sync_date' => $timestamp,
+                            'status' => $data_user['status'],
+                            'slug' => $data_user['name'] . '-' . $data_user['uid'],
+                            'check_passwd' => $data_user['passwd_user_teacher'] == null ? '12345678' : $data_user['passwd_user_teacher'],
+                            'password' => $data_user['passwd_user_teacher'] == null ? '12345678' : $data_user['passwd_user_teacher'],
+                            'deleted_at' => isset($data_user['deleted_at']) ? $data_user['deleted_at'] == null ? null : \Carbon\Carbon::parse($data_user['deleted_at']) : null
+                        ]);
 
                         session()->put('progress', intval($ind / count($collection_api_teacher['data']) * 100));
 
