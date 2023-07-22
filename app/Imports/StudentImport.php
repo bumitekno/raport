@@ -38,7 +38,8 @@ class StudentImport implements ToModel, WithHeadingRow, WithValidation, WithStar
             'place_of_birth' => $row['place_of_birth'],
             'date_of_birth' => $row['date_of_birth'],
             'address' => $row['address'],
-            'password' => 123456,
+            'password' => 12345678,
+            'check_passwd' => 12345678,
             'slug' => str_slug($row['name']) . '-' . Helper::str_random(5)
         ]);
 

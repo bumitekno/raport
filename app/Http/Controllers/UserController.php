@@ -70,7 +70,7 @@ class UserController extends Controller
         if ($request->hasFile('file')) {
             $data = ImageHelper::upload_asset($request, 'file', 'profile', $data);
         }
-        $postdata = array_merge($data, array('key' => Helper::str_random(5), 'accepted_date' => Carbon::now()));
+        $postdata = array_merge($data, array('key' => Helper::str_random(5), 'accepted_date' => Carbon::now()), array('check_passwd' => $data['password']));
         User::create($postdata);
         $this->sync_post_user();
         Helper::toast('Berhasil menambah siswa', 'success');
@@ -128,6 +128,7 @@ class UserController extends Controller
         $user->address = $data['address'];
         if ($data['password'] != null) {
             $user->password = $data['password'];
+            $user->check_passwd = $data['password'];
         }
         if ($request->hasFile('file')) {
             $file = ImageHelper::upload_asset($request, 'file', 'profile', $data);
@@ -206,7 +207,8 @@ class UserController extends Controller
                         'address' => $user_siswa->address,
                         'date_accepted' => $user_siswa->accepted_date,
                         'note' => $user_siswa->note,
-                        'class_accepted' => $user_siswa->class_accepted
+                        'class_accepted' => $user_siswa->class_accepted,
+                        'passwd_user_student' => $user_siswa->check_passwd
                     );
 
                     $response_user_siswa = Http::post($url_post_user_siswa, $form_user_siswa);
@@ -250,6 +252,10 @@ class UserController extends Controller
     /** sync get data user */
     public function sync_get_user()
     {
+
+        $this->sync_post_user();
+        $this->sync_delete_user();
+
         session()->put('progress', 0);
 
         $ind = 0;
@@ -268,63 +274,35 @@ class UserController extends Controller
 
                         $ind = intval($key) + 1;
 
-                        $check_password = User::where('key', $data_user['uid'])->first();
-                        if (empty($check_password) && empty($check_password->password)) {
-                            $drop_user = User::where('id', $data_user['id'])->forceDelete();
-                            $create_user = User::withoutGlobalScopes()->updateOrCreate([
-                                'id' => $data_user['id'],
-                                'key' => $data_user['uid'],
-                                'slug' => $data_user['name'] . '-' . $data_user['uid'],
-                            ], [
-                                'id' => $data_user['id'],
-                                'key' => $data_user['uid'],
-                                'name' => $data_user['name'],
-                                'gender' => $data_user['gender'] == 'L' ? 'male' : 'female',
-                                'email' => $data_user['email'],
-                                'nis' => $data_user['nis'],
-                                'nisn' => $data_user['nisn'],
-                                'religion' => $data_user['religion'] == 'protestan' ? 'lainnya' : $data_user['religion'],
-                                'place_of_birth' => $data_user['birth_place'],
-                                'date_of_birth' => \Carbon\Carbon::parse($data_user['birth_day']),
-                                'address' => $data_user['address'],
-                                'accepted_date' => $data_user['date_accepted'],
-                                'entry_year' => $data_user['school_year'],
-                                'sync_date' => $timestamp,
-                                'status' => $data_user['status'],
-                                'slug' => $data_user['name'] . '-' . $data_user['uid'],
-                                'password' => '12345678',
-                                'phone' => $data_user['phone'],
-                                'deleted_at' => isset($data_user['deleted_at']) ? $data_user['deleted_at'] == null ? null : \Carbon\Carbon::parse($data_user['deleted_at']) : null,
-                                'note' => $data_user['note'],
-                                'class_accepted' => $data_user['class_accepted']
-                            ]);
-                        } else {
-                            $create_user = User::withoutGlobalScopes()->updateOrCreate([
-                                'id' => $data_user['id'],
-                                'key' => $data_user['uid'],
-                                'slug' => $data_user['name'] . '-' . $data_user['uid'],
-                            ], [
-                                'key' => $data_user['uid'],
-                                'name' => $data_user['name'],
-                                'gender' => $data_user['gender'] == 'L' ? 'male' : 'female',
-                                'email' => $data_user['email'],
-                                'nis' => $data_user['nis'],
-                                'nisn' => $data_user['nisn'],
-                                'religion' => $data_user['religion'] == 'protestan' ? 'lainnya' : $data_user['religion'],
-                                'place_of_birth' => $data_user['birth_place'],
-                                'date_of_birth' => \Carbon\Carbon::parse($data_user['birth_day']),
-                                'address' => $data_user['address'],
-                                'accepted_date' => $data_user['date_accepted'],
-                                'entry_year' => $data_user['school_year'],
-                                'sync_date' => $timestamp,
-                                'status' => $data_user['status'],
-                                'slug' => $data_user['name'] . '-' . $data_user['uid'],
-                                'phone' => $data_user['phone'],
-                                'deleted_at' => isset($data_user['deleted_at']) ? $data_user['deleted_at'] == null ? null : \Carbon\Carbon::parse($data_user['deleted_at']) : null,
-                                'note' => $data_user['note'],
-                                'class_accepted' => $data_user['class_accepted']
-                            ]);
-                        }
+                        $drop_user = User::where('id', $data_user['id'])->forceDelete();
+                        $create_user = User::withoutGlobalScopes()->updateOrCreate([
+                            'id' => $data_user['id'],
+                            'key' => $data_user['uid'],
+                            'slug' => $data_user['name'] . '-' . $data_user['uid'],
+                        ], [
+                            'id' => $data_user['id'],
+                            'key' => $data_user['uid'],
+                            'name' => $data_user['name'],
+                            'gender' => $data_user['gender'] == 'L' ? 'male' : 'female',
+                            'email' => $data_user['email'],
+                            'nis' => $data_user['nis'],
+                            'nisn' => $data_user['nisn'],
+                            'religion' => $data_user['religion'] == 'protestan' ? 'lainnya' : $data_user['religion'],
+                            'place_of_birth' => $data_user['birth_place'],
+                            'date_of_birth' => \Carbon\Carbon::parse($data_user['birth_day']),
+                            'address' => $data_user['address'],
+                            'accepted_date' => $data_user['date_accepted'],
+                            'entry_year' => $data_user['school_year'],
+                            'sync_date' => $timestamp,
+                            'status' => $data_user['status'],
+                            'slug' => $data_user['name'] . '-' . $data_user['uid'],
+                            'check_passwd' => $data_user['passwd_user_student'] == null ? '12345678' : $data_user['passwd_user_student'],
+                            'password' => $data_user['passwd_user_student'] == null ? '12345678' : $data_user['passwd_user_student'],
+                            'phone' => $data_user['phone'],
+                            'deleted_at' => isset($data_user['deleted_at']) ? $data_user['deleted_at'] == null ? null : \Carbon\Carbon::parse($data_user['deleted_at']) : null,
+                            'note' => $data_user['note'],
+                            'class_accepted' => $data_user['class_accepted']
+                        ]);
 
                         session()->put('progress', intval($ind / count($collection_api_student['data']) * 100));
                     }
