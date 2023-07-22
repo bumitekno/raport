@@ -1066,7 +1066,93 @@ class SyncData extends Command
         }
 
 
-        
+        /** post subject teacher */
+        $post_subject_teacher = SubjectTeacher::whereNull('sync_date')->get();
+        if (!empty($post_subject_teacher)) {
+            $url_post_subject_teacher = env('API_BUKU_INDUK') . '/api/master/subject_teachers';
+            $bar_level = new ProgressBar($output, count($post_subject_teacher));
+            $bar_level->start();
+
+            foreach ($post_subject_teacher as $keyx => $subjectteacher) {
+
+                $replace = Str::replaceFirst('[', '', $post_subject_teacher[$keyx]->id_study_class);
+                $replace = Str::replaceFirst(']', '', $replace);
+                $replace = Str::replace('"', '', $replace);
+
+                $replace = array_map('intval', explode(',', $replace));
+
+                $form_multi = [];
+
+                foreach ($replace as $key => $listid) {
+                    $studikelas = StudyClass::where('id', $listid)->first();
+
+                    if (!empty($studikelas)) {
+
+                        $studikelas_key[] = $studikelas->key;
+                        $level_key = Level::where('id', $studikelas->id_level)->first()?->key;
+                        $mapel_key = Course::where('id', $subjectteacher->id_course)->first()?->key;
+                        $school_year_key = SchoolYear::where('id', $subjectteacher->id_school_year)->first()?->key;
+                        $teacher_key = Teacher::where('id', $subjectteacher->id_teacher)->first()?->key;
+
+                        $form_multi = array(
+                            'key' => $post_subject_teacher[$keyx]->key,
+                            'level_key' => $level_key,
+                            'mapel_key' => $mapel_key,
+                            'school_year_key' => $school_year_key,
+                            'teacher_key' => $teacher_key,
+                            'status' => $post_subject_teacher[$keyx]->status,
+                            'id' => $post_subject_teacher[$keyx]->id,
+                            'study_class_key' => implode(',', $studikelas_key)
+                        );
+                    }
+                }
+
+                $output->writeln("\033[1A");
+
+                if (!empty($form_multi)) {
+
+                    $response_subject_teacher = Http::post($url_post_subject_teacher, $form_multi);
+                    if ($response_subject_teacher->ok()) {
+                        $post_studkelas = SubjectTeacher::where('id', $post_subject_teacher[$keyx]->id)->update(['sync_date' => $timestamp]);
+                    }
+                }
+
+                if ($keyx > 0 && $keyx % 10 == 0) {
+                    sleep(5);
+                    $output->writeln('info:  jeda 5 detik post subject teacher ');
+                    $bar_level->advance();
+                }
+            }
+
+            $bar_level->finish();
+        }
+
+        /** delete subject teacher  */
+        $delete_subject_teacher = SubjectTeacher::onlyTrashed()->get();
+
+        if (!empty($delete_subject_teacher)) {
+
+            $bar_level = new ProgressBar($output, count($delete_subject_teacher));
+            $bar_level->start();
+
+            $url_delete_subject_teacher = env('API_BUKU_INDUK') . '/api/master/subject_teachers';
+            foreach ($delete_user_student_class as $key => $subjectteacher) {
+
+                $response_subjectteacher_delete = Http::delete($url_delete_subject_teacher . '/' . $subjectteacher->key);
+                if ($response_studi_delete->ok()) {
+                    $output->writeln('info: post sync data  delete subject teacher' . $key . ' status' . $response_subjectteacher_delete);
+                }
+
+                $output->writeln("\033[1A");
+
+                if ($key > 0 && $key % 10 == 0) {
+                    sleep(5);
+                    $output->writeln('info:  jeda 5 detik delete subject teacher ');
+                    $bar_level->advance();
+                }
+            }
+            $bar_level->finish();
+        }
 
     }
 }
