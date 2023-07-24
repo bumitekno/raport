@@ -457,7 +457,7 @@ class SyncData extends Command
 
                         $create_extra = Extracurricular::withoutGlobalScopes()->updateOrCreate([
                             'key' => $data_ekstra['uid'],
-                            'slug' => $data_ekstra['uid'] . '-' . $data_ekstra['uid'],
+                            'slug' => $data_ekstra['name'] . '-' . $data_ekstra['uid']
                         ], [
                             'key' => $data_ekstra['uid'],
                             'name' => $data_ekstra['name'],
@@ -700,7 +700,7 @@ class SyncData extends Command
         }
 
         /** delete mapel */
-        $delete_mapel = Level::onlyTrashed()->get();
+        $delete_mapel = Course::onlyTrashed()->get();
         // $output->writeln('info: prepared delete sync data collection mapel.... ' . $delete_mapel);
         if (!empty($delete_mapel)) {
 
@@ -1009,7 +1009,7 @@ class SyncData extends Command
         $post_extra_class = Extracurricular::whereNull('sync_date')->get();
         //$output->writeln('info: prepared post sync data collection extrakulikuler.... ' . $post_extra_class);
 
-        if (!empty($$post_extra_class)) {
+        if (!empty($post_extra_class)) {
 
             $bar_level = new ProgressBar($output, count($post_extra_class));
             $bar_level->start();
@@ -1018,7 +1018,8 @@ class SyncData extends Command
             foreach ($post_extra_class as $key => $extra) {
                 $form_extra = array(
                     'key' => $extra->key,
-                    'name' => $extra->name
+                    'name' => $extra->name,
+                    'status' => $extra->status
                 );
                 $response_ekstra = Http::post($url_post_extra, $form_extra);
                 if ($response_ekstra->ok()) {
@@ -1047,7 +1048,7 @@ class SyncData extends Command
             $bar_level->start();
 
             $url_delete_extra = env('API_BUKU_INDUK') . '/api/master/extracurriculars';
-            foreach ($delete_user_student_class as $key => $extra) {
+            foreach ($$delete_extra as $key => $extra) {
 
                 $response_extra_delete = Http::delete($url_delete_extra . '/' . $extra->key);
                 if ($response_extra_delete->ok()) {
@@ -1148,6 +1149,56 @@ class SyncData extends Command
                 if ($key > 0 && $key % 10 == 0) {
                     sleep(5);
                     $output->writeln('info:  jeda 5 detik delete subject teacher ');
+                    $bar_level->advance();
+                }
+            }
+            $bar_level->finish();
+        }
+
+        /** post school years */
+        $post_schoolYear = SchoolYear::whereNull('sync_date')->get();
+        if (!empty($post_schoolYear)) {
+            $url_post_schoolYear = env('API_BUKU_INDUK') . '/api/master/school_years';
+
+            $bar_level = new ProgressBar($output, count($post_schoolYear));
+            $bar_level->start();
+
+            foreach ($post_schoolYear as $keyx => $post) {
+                $formpost = array(
+                    'key' => $post->key,
+                    'name' => $post->name,
+                    'status' => $post->status
+                );
+
+                $response_post_schoolyear = Http::post($url_post_schoolYear, $formpost);
+                if ($response_post_schoolyear->ok()) {
+                    $post_studkelas = SchoolYear::where('id', $post->id)->update(['sync_date' => $timestamp]);
+                }
+
+                $output->writeln("\033[1A");
+
+                if ($keyx > 0 && $keyx % 10 == 0) {
+                    sleep(5);
+                    $bar_level->advance();
+                }
+
+            }
+
+            $bar_level->finish();
+        }
+
+        /**  delete school years */
+        $delete_schoolyear = SchoolYear::onlyTrashed()->get();
+        if (!empty($delete_schoolyear)) {
+            $bar_level = new ProgressBar($output, count($post_schoolYear));
+            $bar_level->start();
+
+            $url_delete_schoolyear = env('API_BUKU_INDUK') . '/api/master/school_years';
+            foreach ($delete_schoolyear as $key => $tx) {
+                $output->writeln("\033[1A");
+                $response_schoolyear_delete = Http::delete($url_delete_schoolyear . '/' . $tx->key);
+                if ($key > 0 && $key % 10 == 0) {
+                    sleep(5);
                     $bar_level->advance();
                 }
             }

@@ -8,6 +8,7 @@ use App\Models\Major;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Http;
 
 class MajorController extends Controller
 {
@@ -57,8 +58,8 @@ class MajorController extends Controller
     {
 
         $postdata = array_merge($request->toArray(), array('key' => str::random(5)));
-
         Major::create($postdata);
+        $this->sync_post_major();
         Helper::toast('Berhasil menambah jurusan', 'success');
         return redirect()->route('majors.index');
     }
@@ -75,6 +76,7 @@ class MajorController extends Controller
         $major = Major::where('slug', $slug)->firstOrFail();
         $input_merge = array_merge($request->input(), array('sync_date' => null));
         $major->fill($input_merge)->save();
+        $this->sync_post_major();
         Helper::toast('Berhasil mengupdate jurusan', 'success');
         return redirect()->route('majors.index');
     }
@@ -86,6 +88,9 @@ class MajorController extends Controller
         $major->status = $request->value;
         $major->sync_date = null;
         $major->save();
+
+        $this->sync_post_major();
+
         return response()->json('Data berhasil disimpan');
     }
 
@@ -93,7 +98,126 @@ class MajorController extends Controller
     {
         $major = Major::where('slug', $slug)->firstOrFail();
         $major->delete();
+        $this->sync_delete_major();
         Helper::toast('Berhasil menghapus jurusan', 'success');
         return redirect()->route('majors.index');
+    }
+
+    /** 
+     * sync post major 
+     */
+
+    public function sync_post_major()
+    {
+        if (!empty(env('API_BUKU_INDUK'))) {
+            $post_major = Major::whereNull('sync_date')->get();
+            if (!empty($post_major)) {
+
+                $url_post_major = env('API_BUKU_INDUK') . '/api/master/majors';
+                foreach ($post_major as $key => $major) {
+                    $form_major = array(
+                        'key' => $major->key,
+                        'name' => $major->name,
+                        'status' => $major->status,
+                    );
+
+                    $response_major = Http::post($url_post_major, $form_major);
+                    if ($response_major->ok()) {
+                        $post_major = Major::where('id', $major->id)->update(['sync_date' => \Carbon\Carbon::now()]);
+
+                    }
+
+                    if ($key > 0 && $key % 10 == 0) {
+                        sleep(5);
+
+                    }
+                }
+
+            }
+        }
+
+        return;
+    }
+
+    /** sync delete major */
+
+    public function sync_delete_major()
+    {
+        if (!empty(env('API_BUKU_INDUK'))) {
+            $delete_major = Major::onlyTrashed()->get();
+            if (!empty($delete_major)) {
+
+                $url_delete_major = env('API_BUKU_INDUK') . '/api/master/majors';
+                foreach ($delete_major as $key => $major) {
+
+                    $response_major_delete = Http::delete($url_delete_major . '/' . $major->key);
+
+                    if ($key > 0 && $key % 10 == 0) {
+                        sleep(5);
+
+                    }
+                }
+
+            }
+        }
+        return;
+    }
+
+    public function getProgess()
+    {
+        return response()->json(array(session()->get('progress')), 200);
+    }
+
+    public function sync_getdata()
+    {
+
+        $this->sync_post_major();
+        $this->sync_delete_major();
+
+        session()->put('progress', 0);
+        $ind = 0;
+        if (!empty(env('API_BUKU_INDUK'))) {
+
+            $url_api_major = env('API_BUKU_INDUK') . '/api/master/majors';
+            $response_api_major = Http::get($url_api_major);
+            $resposnse_collection_major = $response_api_major->collect();
+            $collection_api_major = collect($resposnse_collection_major);
+
+            if (!empty($collection_api_major['data'])) {
+                $check_school_major = Major::whereNull('sync_date')->get()->count();
+                if ($check_school_major == 0) {
+
+                    foreach ($collection_api_major['data'] as $key => $data_major) {
+
+                        $ind = intval($key) + 1;
+
+                        $create_major = Major::withoutGlobalScopes()->updateOrCreate([
+                            'key' => $data_major['uid'],
+                            'slug' => $data_major['name'] . '-' . $data_major['uid'],
+                        ], [
+                            'key' => $data_major['uid'],
+                            'name' => $data_major['name'],
+                            'sync_date' => \Carbon\Carbon::now(),
+                            'status' => $data_major['status'],
+                            'slug' => $data_major['name'] . '-' . $data_major['uid'],
+                            'deleted_at' => isset($data_major['deleted_at']) ? $data_major['deleted_at'] == null ? null : \Carbon\Carbon::parse($data_major['deleted_at']) : null
+                        ]);
+
+                        session()->put('progress', intval($ind / count($collection_api_major['data']) * 100));
+
+                    }
+
+                }
+            } else {
+                session()->put('progress', 100);
+            }
+
+        } else {
+            session()->put('progress', 100);
+        }
+
+        $response = response()->make();
+        $response->header('Content-Type', 'application/json');
+        return $response;
     }
 }

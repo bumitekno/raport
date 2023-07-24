@@ -81,6 +81,7 @@ class SubjectTeacherController extends Controller
             $path = $file->storeAs('public/excel/', $nama_file);
             Excel::import(new SubjectTeacherMultipleImport($slug), storage_path('app/public/excel/' . $nama_file));
             Storage::delete($path);
+            $this->sync_subjectTeacher();
             Helper::toast('Data Berhasil Diimport', 'success');
             return redirect()->route('courses.show', $slug);
         } catch (\Throwable $e) {
@@ -166,5 +167,4 @@ class SubjectTeacherController extends Controller
         }
         return;
     }
-
 }

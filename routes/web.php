@@ -121,18 +121,24 @@ Route::middleware('auth:user,admin,parent,teacher')->group(function () {
     ])->except(['show', 'destroy']);
     Route::get('majors/destroy/{slug}', [MajorController::class, 'destroy'])->name('majors.destroy');
     Route::post('majors/update_status', [MajorController::class, 'update_status'])->name('majors.update_status');
+    Route::get('majors/sync', [MajorController::class, 'sync_getdata'])->name('majors.sync_getdata');
+    Route::get('majors/progresync', [MajorController::class, 'getProgess'])->name('majors.getProgess');
 
     Route::resource('levels', LevelController::class)->parameters([
         'levels' => 'levels:slug',
     ])->except(['show', 'destroy']);
     Route::get('levels/destroy/{slug}', [LevelController::class, 'destroy'])->name('levels.destroy');
     Route::post('levels/update_status', [LevelController::class, 'update_status'])->name('levels.update_status');
+    Route::get('level/sync', [LevelController::class, 'sync_getdata'])->name('levels.sync_getdata');
+    Route::get('level/progresync', [LevelController::class, 'getProgess'])->name('levels.getProgess');
 
     Route::resource('classes', StudyClassController::class)->parameters([
         'classes' => 'classes:slug',
     ])->except(['show', 'destroy']);
     Route::get('classes/destroy/{slug}', [StudyClassController::class, 'destroy'])->name('classes.destroy');
     Route::post('classes/update_status', [StudyClassController::class, 'update_status'])->name('classes.update_status');
+    Route::get('classes/sync', [StudyClassController::class, 'sync_getdata'])->name('classes.sync_getdata');
+    Route::get('classes/progresync', [StudyClassController::class, 'getProgess'])->name('classes.getProgess');
 
     Route::resource('courses', CourseController::class)->parameters([
         'courses' => 'courses:slug',
@@ -141,6 +147,8 @@ Route::middleware('auth:user,admin,parent,teacher')->group(function () {
     Route::get('course/download/export', [CourseController::class, 'export'])->name('courses.export');
     Route::post('course/upload/import', [CourseController::class, 'import'])->name('courses.import');
     Route::post('course/update_status', [CourseController::class, 'update_status'])->name('courses.update_status');
+    Route::get('course/sync', [CourseController::class, 'sync_getdata'])->name('courses.sync_getdata');
+    Route::get('course/progresync', [CourseController::class, 'getProgess'])->name('courses.getProgess');
 
 
     Route::resource('school-years', SchoolYearController::class)->parameters([
@@ -148,6 +156,8 @@ Route::middleware('auth:user,admin,parent,teacher')->group(function () {
     ])->except(['show', 'destroy']);
     Route::get('school_years/destroy/{slug}', [SchoolYearController::class, 'destroy'])->name('school-years.destroy');
     Route::get('school_years/activated', [SchoolYearController::class, 'activated'])->name('school-years.activated');
+    Route::get('school_years/syncx', [SchoolYearController::class, 'sync_data_schoolYear'])->name('school-years.sync_schoolYear');
+    Route::get('school_years/progres_sync', [SchoolYearController::class, 'getProgess'])->name('school-years.getProgess');
 
     Route::prefix('subject-teacher')->name('subject_teachers.')->group(function () {
         Route::post('updateOrCreate', [SubjectTeacherController::class, 'storeOrUpdateItem'])->name('updateOrCreate');
@@ -192,6 +202,8 @@ Route::middleware('auth:user,admin,parent,teacher')->group(function () {
         Route::get('edit/{slug}', [ExtracurricularController::class, 'edit'])->name('edit');
         Route::post('updateOrCreate/{id?}', [ExtracurricularController::class, 'updateOrCreate'])->name('updateOrCreate');
         Route::get('delete/{slug}', [ExtracurricularController::class, 'destroy'])->name('destroy');
+        Route::get('extra/sync', [ExtracurricularController::class, 'sync_getdata'])->name('sync_getdata');
+        Route::get('extra/progresync', [ExtracurricularController::class, 'getProgess'])->name('getProgess');
     });
 
     // Route::get('error', [CoverController::class, 'error'])->name('error');
