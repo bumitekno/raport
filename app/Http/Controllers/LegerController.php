@@ -76,20 +76,20 @@ class LegerController extends Controller
                 ->whereIn('id_course', $subject_teachers->pluck('id_course')->unique()->toArray())
                 ->whereIn('id_teacher', $subject_teachers->pluck('id_teacher')->unique()->toArray())
                 ->where('id_school_year', session('id_school_year'))
-                ->where('type', $template['template'])
+                ->where('type', $template['type'])
                 ->get();
         } else if ($template['template'] == 'k13') {
             $scores = ScoreKd::whereIn('id_study_class', [$study_class->id])
                 ->whereIn('id_subject_teacher', $subject_teachers->pluck('id')->unique()->toArray())
                 ->where('id_school_year', session('id_school_year'))
-                ->where('type', $template['template'])
+                ->where('type', $template['type'])
                 ->get();
         } else if ($template['template'] == 'manual') {
             $scores = ScoreManual::whereIn('id_study_class', [$study_class->id])
                 ->whereIn('id_course', $subject_teachers->pluck('id_course')->unique()->toArray())
                 ->whereIn('id_teacher', $subject_teachers->pluck('id_teacher')->unique()->toArray())
                 ->where('id_school_year', session('id_school_year'))
-                ->where('type', $template['template'])
+                ->where('type', $template['type'])
                 ->get();
         } elseif ($template['template'] == 'manual2') {
             $scores = ScoreManual2::whereIn('id_study_class', [$study_class->id])
