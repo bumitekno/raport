@@ -11,6 +11,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\DataTables;
+use Illuminate\Support\Facades\Http;
 
 class StudentClassController extends Controller
 {
@@ -171,6 +172,64 @@ class StudentClassController extends Controller
             }
         }
 
+        $this->sync_post_studentclass();
+        $this->sync_delete_studentclass();
+
         return redirect()->back();
+    }
+
+    /** sync student class post */
+    public function sync_post_studentclass()
+    {
+        if (!empty(env('API_BUKU_INDUK'))) {
+            $post_student_class = StudentClass::whereNull('sync_date')->get();
+            if (!empty($post_student_class)) {
+
+                $url_post_student_kelas = env('API_BUKU_INDUK') . '/api/master/student_classes';
+                foreach ($post_student_class as $key => $studentkelas) {
+                    $form_student_kelas = array(
+                        'uid' => $studentkelas->key,
+                        'student_uid' => User::where('id', $studentkelas->id_student)->first()?->key,
+                        'study_class_uid' => StudyClass::where('id', $studentkelas->id_study_class)->first()?->key,
+                        'year' => $studentkelas->year,
+                        'status' => $studentkelas->status
+                    );
+                    $response_student_kelas = Http::post($url_post_student_kelas, $form_student_kelas);
+                    if ($response_student_kelas->ok()) {
+                        $post_studkelas = StudentClass::where('id', $studentkelas->id)->update(['sync_date' => \Carbon\Carbon::now()]);
+                    }
+
+                    if ($key > 0 && $key % 10 == 0) {
+                        sleep(5);
+                    }
+                }
+
+            }
+        }
+        return;
+    }
+
+    /** sync delete student class  */
+    public function sync_delete_studentclass()
+    {
+
+        if (!empty(env('API_BUKU_INDUK'))) {
+            $delete_user_student_class = StudentClass::onlyTrashed()->get();
+            if (!empty($delete_user_student_class)) {
+
+                $url_delete_user_student_class = env('API_BUKU_INDUK') . '/api/master/student_classes';
+                foreach ($delete_user_student_class as $key => $user) {
+
+                    $response_user_delete = Http::delete($url_delete_user_student_class . '/' . $user->key);
+
+                    if ($key > 0 && $key % 10 == 0) {
+                        sleep(5);
+                    }
+                }
+            }
+        }
+
+        return;
+
     }
 }

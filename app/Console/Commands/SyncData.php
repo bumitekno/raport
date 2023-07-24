@@ -1048,7 +1048,7 @@ class SyncData extends Command
             $bar_level->start();
 
             $url_delete_extra = env('API_BUKU_INDUK') . '/api/master/extracurriculars';
-            foreach ($$delete_extra as $key => $extra) {
+            foreach ($delete_extra as $key => $extra) {
 
                 $response_extra_delete = Http::delete($url_delete_extra . '/' . $extra->key);
                 if ($response_extra_delete->ok()) {
