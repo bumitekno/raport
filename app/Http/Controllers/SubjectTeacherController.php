@@ -48,6 +48,7 @@ class SubjectTeacherController extends Controller
     {
         $subjectTeacher = SubjectTeacher::findOrFail($id);
         $subjectTeacher->delete();
+        $this->sync_delete_subject_teacher();
         Helper::toast('Berhasil menghapus guru pengampu', 'success');
         return redirect()->back();
     }
@@ -89,7 +90,7 @@ class SubjectTeacherController extends Controller
         }
     }
 
-    /** sync post subject  */
+    /** sync post subject teacher  */
     public function sync_subjectTeacher()
     {
         if (!empty(env('API_BUKU_INDUK'))) {
@@ -142,6 +143,27 @@ class SubjectTeacherController extends Controller
             }
         }
 
+        return;
+    }
+
+    /** 
+     * sync delete subject teacher
+     */
+
+    public function sync_delete_subject_teacher()
+    {
+        if (!empty(env('API_BUKU_INDUK'))) {
+            $delete_subject_teacher = SubjectTeacher::onlyTrashed()->get();
+            if (!empty($delete_subject_teacher)) {
+                $url_delete_subject_teacher = env('API_BUKU_INDUK') . '/api/master/subject_teachers';
+                foreach ($delete_subject_teacher as $key => $subjectteacher) {
+                    $response_subjectteacher_delete = Http::delete($url_delete_subject_teacher . '/' . $subjectteacher->key);
+                    if ($key > 0 && $key % 10 == 0) {
+                        sleep(5);
+                    }
+                }
+            }
+        }
         return;
     }
 

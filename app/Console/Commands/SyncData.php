@@ -1136,10 +1136,10 @@ class SyncData extends Command
             $bar_level->start();
 
             $url_delete_subject_teacher = env('API_BUKU_INDUK') . '/api/master/subject_teachers';
-            foreach ($delete_user_student_class as $key => $subjectteacher) {
+            foreach ($delete_subject_teacher as $key => $subjectteacher) {
 
                 $response_subjectteacher_delete = Http::delete($url_delete_subject_teacher . '/' . $subjectteacher->key);
-                if ($response_studi_delete->ok()) {
+                if ($response_subjectteacher_delete->ok()) {
                     $output->writeln('info: post sync data  delete subject teacher' . $key . ' status' . $response_subjectteacher_delete);
                 }
 
@@ -1153,6 +1153,5 @@ class SyncData extends Command
             }
             $bar_level->finish();
         }
-
     }
 }
