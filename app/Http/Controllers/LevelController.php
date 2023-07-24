@@ -8,6 +8,7 @@ use App\Models\Level;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Http;
 
 class LevelController extends Controller
 {
@@ -57,6 +58,7 @@ class LevelController extends Controller
     {
         $postdata = array_merge($request->toArray(), array('key' => str::random(5)));
         Level::create($postdata);
+        $this->sync_post_level();
         Helper::toast('Berhasil menambah tingkat', 'success');
         return redirect()->route('levels.index');
     }
@@ -73,6 +75,7 @@ class LevelController extends Controller
         $level = Level::where('slug', $slug)->firstOrFail();
         $input_merge = array_merge($request->input(), array('sync_date' => null));
         $level->fill($input_merge)->save();
+        $this->sync_post_level();
         Helper::toast('Berhasil mengupdate tingkat', 'success');
         return redirect()->route('levels.index');
     }
@@ -84,6 +87,9 @@ class LevelController extends Controller
         $major->status = $request->value;
         $major->sync_date = null;
         $major->save();
+
+        $this->sync_post_level();
+
         return response()->json('Data berhasil disimpan');
     }
 
@@ -91,7 +97,122 @@ class LevelController extends Controller
     {
         $level = Level::where('slug', $slug)->firstOrFail();
         $level->delete();
+        $this->sync_delete_level();
         Helper::toast('Berhasil menghapus tingkat', 'success');
         return redirect()->route('levels.index');
+    }
+
+    /**
+     * sync post  level
+     */
+
+    public function sync_post_level()
+    {
+        if (!empty(env('API_BUKU_INDUK'))) {
+            $post_level = Level::whereNull('sync_date')->get();
+            if (!empty($post_level)) {
+
+                $url_post_levels = env('API_BUKU_INDUK') . '/api/master/levels';
+                foreach ($post_level as $key => $level) {
+                    $form_level = array(
+                        'key' => $level->key,
+                        'name' => $level->name,
+                        'status' => $level->status,
+                        'fase' => $level->fase,
+                    );
+
+                    $response_levels = Http::post($url_post_levels, $form_level);
+                    if ($response_levels->ok()) {
+                        $post_levels = Level::where('id', $level->id)->update(['sync_date' => \Carbon\Carbon::now()]);
+                    }
+
+                    if ($key > 0 && $key % 10 == 0) {
+                        sleep(5);
+
+                    }
+                }
+
+            }
+
+        }
+        return;
+    }
+
+    /** sync delete level */
+    public function sync_delete_level()
+    {
+        if (!empty(env('API_BUKU_INDUK'))) {
+            $delete_levels = Level::onlyTrashed()->get();
+            if (!empty($delete_levels)) {
+
+                $url_delete_levels = env('API_BUKU_INDUK') . '/api/master/level';
+                foreach ($delete_levels as $key => $level) {
+                    $response_level_delete = Http::delete($url_delete_levels . '/' . $level->key);
+                    if ($key > 0 && $key % 10 == 0) {
+                        sleep(5);
+                    }
+                }
+
+            }
+        }
+        return;
+    }
+
+    public function getProgess()
+    {
+        return response()->json(array(session()->get('progress')), 200);
+    }
+
+    /** sync get data */
+    public function sync_getdata()
+    {
+        $this->sync_post_level();
+        $this->sync_delete_level();
+        session()->put('progress', 0);
+        $ind = 0;
+        if (!empty(env('API_BUKU_INDUK'))) {
+
+            $url_api_levels = env('API_BUKU_INDUK') . '/api/master/levels';
+            $response_api_level = Http::get($url_api_levels);
+            $resposnse_collection_levels = $response_api_level->collect();
+            $collection_api_level = collect($resposnse_collection_levels);
+
+            if (!empty($collection_api_level['data'])) {
+
+                $check_level_sync = Level::whereNull('sync_date')->get()->count();
+
+                if ($check_level_sync == 0) {
+
+                    foreach ($collection_api_level['data'] as $key => $data_levels) {
+
+                        $ind = intval($key) + 1;
+
+                        $create_level = Level::withoutGlobalScopes()->updateOrCreate([
+                            'key' => $data_levels['uid'],
+                            'slug' => $data_levels['name'] . '-' . $data_levels['uid'],
+                        ], [
+                            'key' => $data_levels['uid'],
+                            'name' => $data_levels['name'],
+                            'fase' => $data_levels['fase'] ?? '-',
+                            'sync_date' => \Carbon\Carbon::now(),
+                            'status' => $data_levels['status'],
+                            'slug' => $data_levels['name'] . '-' . $data_levels['uid'],
+                            'deleted_at' => isset($data_levels['deleted_at']) ? $data_levels['deleted_at'] == null ? null : \Carbon\Carbon::parse($data_levels['deleted_at']) : null
+                        ]);
+
+                        session()->put('progress', intval($ind / count($collection_api_level['data']) * 100));
+                    }
+
+                }
+            } else {
+                session()->put('progress', 100);
+            }
+
+        } else {
+            session()->put('progress', 100);
+        }
+        $response = response()->make();
+        $response->header('Content-Type', 'application/json');
+        return $response;
     }
 }

@@ -9,6 +9,7 @@ use App\Models\Major;
 use App\Models\StudyClass;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
+use Illuminate\Support\Facades\Http;
 
 class StudyClassController extends Controller
 {
@@ -80,6 +81,8 @@ class StudyClassController extends Controller
             $classes->key = Helper::str_random(5);
             $classes->save();
         }
+
+        $this->sync_post_rombel();
         Helper::toast('Berhasil menambah kelas', 'success');
         return redirect()->route('classes.index');
     }
@@ -101,6 +104,7 @@ class StudyClassController extends Controller
         $data['name'] = $request->name[0];
         $data['sync_date'] = null;
         $class->fill($data)->save();
+        $this->sync_post_rombel();
         Helper::toast('Berhasil mengupdate kelas', 'success');
         return redirect()->route('classes.index');
     }
@@ -112,6 +116,7 @@ class StudyClassController extends Controller
         $major->status = $request->value;
         $major->sync_date = null;
         $major->save();
+        $this->sync_post_rombel();
         return response()->json('Data berhasil disimpan');
     }
 
@@ -125,7 +130,132 @@ class StudyClassController extends Controller
     {
         $study_class = StudyClass::where('slug', $slug)->firstOrFail();
         $study_class->delete();
+        $this->sync_delete();
         Helper::toast('Berhasil menghapus kelas', 'success');
         return redirect()->route('classes.index');
+    }
+
+    /** sync post rombel */
+
+    public function sync_post_rombel()
+    {
+        if (!empty(env('API_BUKU_INDUK'))) {
+
+            $post_studi_kelas = StudyClass::whereNull('sync_date')->get();
+            if (!empty($post_studi_kelas)) {
+
+                $url_post_studi_kelas = env('API_BUKU_INDUK') . '/api/master/study_classes';
+                foreach ($post_studi_kelas as $key => $studikelas) {
+                    $form_studi_kelas = array(
+                        'key' => $studikelas->key,
+                        'name' => $studikelas->name,
+                        'major_id' => $studikelas->id_major,
+                        'level_id' => $studikelas->id_level,
+                        'status' => $studikelas->status,
+                    );
+                    $response_studi_kelas = Http::post($url_post_studi_kelas, $form_studi_kelas);
+                    if ($response_studi_kelas->ok()) {
+                        $post_studikelas = StudyClass::where('id', $studikelas->id)->update(['sync_date' => \Carbon\Carbon::now()]);
+
+                    }
+
+                    if ($key > 0 && $key % 10 == 0) {
+                        sleep(5);
+
+                    }
+                }
+
+            }
+
+        }
+        return;
+    }
+
+    /** sync delete  */
+    public function sync_delete()
+    {
+        if (!empty(env('API_BUKU_INDUK'))) {
+            $delete_studi_kelas = StudyClass::onlyTrashed()->get();
+            if (!empty($delete_studi_kelas)) {
+
+                $url_delete_studi = env('API_BUKU_INDUK') . '/api/master/study_classes';
+                foreach ($delete_studi_kelas as $key => $studi) {
+
+                    $response_studi_delete = Http::delete($url_delete_studi . '/' . $studi->key);
+
+                    if ($key > 0 && $key % 10 == 0) {
+                        sleep(5);
+
+                    }
+                }
+
+            }
+        }
+
+        return;
+    }
+
+
+    public function getProgess()
+    {
+        return response()->json(array(session()->get('progress')), 200);
+    }
+
+
+    /** get data sync */
+
+    public function sync_getdata()
+    {
+
+        $this->sync_post_rombel();
+        $this->sync_delete();
+
+        session()->put('progress', 0);
+        $ind = 0;
+
+        if (!empty(env('API_BUKU_INDUK'))) {
+
+            $url_api_rombel = env('API_BUKU_INDUK') . '/api/master/study_classes';
+            $response_api_rombel = Http::get($url_api_rombel);
+            $resposnse_collection_rombel = $response_api_rombel->collect();
+            $collection_api_rombel = collect($resposnse_collection_rombel);
+
+            if (!empty($collection_api_rombel['data'])) {
+                $check_school_rombel = StudyClass::whereNull('sync_date')->get()->count();
+                if ($check_school_rombel == 0) {
+
+                    foreach ($collection_api_rombel['data'] as $key => $data_rombel) {
+
+                        $ind = intval($key) + 1;
+
+                        $create_rombel = StudyClass::withoutGlobalScopes()->updateOrCreate([
+                            'key' => $data_rombel['key'],
+                            'slug' => $data_rombel['name'] . '-' . $data_rombel['key'],
+                        ], [
+                            'key' => $data_rombel['key'],
+                            'name' => $data_rombel['name'],
+                            'id_major' => $data_rombel['major_id'] == null ? 0 : $data_rombel['major_id'],
+                            'id_level' => $data_rombel['level_id'] == null ? 0 : $data_rombel['level_id'],
+                            'sync_date' => \Carbon\Carbon::now(),
+                            'status' => $data_rombel['status'],
+                            'slug' => $data_rombel['name'] . '-' . $data_rombel['key'],
+                            'deleted_at' => isset($data_rombel['deleted_at']) ? $data_rombel['deleted_at'] == null ? null : \Carbon\Carbon::parse($data_rombel['deleted_at']) : null
+                        ]);
+
+                        session()->put('progress', intval($ind / count($collection_api_rombel['data']) * 100));
+                    }
+                }
+            } else {
+                session()->put('progress', 100);
+            }
+
+        } else {
+            session()->put('progress', 100);
+        }
+
+        $response = response()->make();
+        $response->header('Content-Type', 'application/json');
+        return $response;
+
     }
 }

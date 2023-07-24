@@ -3788,6 +3788,7 @@
         },
         {
             "name": "psy/psysh",
+<<<<<<< HEAD
             "version": "v0.11.18",
             "source": {
                 "type": "git",
@@ -3798,6 +3799,18 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/bobthecow/psysh/zipball/4f00ee9e236fa6a48f4560d1300b9c961a70a7ec",
                 "reference": "4f00ee9e236fa6a48f4560d1300b9c961a70a7ec",
+=======
+            "version": "v0.11.19",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/bobthecow/psysh.git",
+                "reference": "1724ceff278daeeac5a006744633bacbb2dc4706"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/bobthecow/psysh/zipball/1724ceff278daeeac5a006744633bacbb2dc4706",
+                "reference": "1724ceff278daeeac5a006744633bacbb2dc4706",
+>>>>>>> 837342a1fbd13e98ec736dec9377cd261627f874
                 "shasum": ""
             },
             "require": {
@@ -3858,9 +3871,15 @@
             ],
             "support": {
                 "issues": "https://github.com/bobthecow/psysh/issues",
+<<<<<<< HEAD
                 "source": "https://github.com/bobthecow/psysh/tree/v0.11.18"
             },
             "time": "2023-05-23T02:31:11+00:00"
+=======
+                "source": "https://github.com/bobthecow/psysh/tree/v0.11.19"
+            },
+            "time": "2023-07-15T19:42:19+00:00"
+>>>>>>> 837342a1fbd13e98ec736dec9377cd261627f874
         },
         {
             "name": "ralouphie/getallheaders",
@@ -7099,6 +7118,7 @@
         },
         {
             "name": "yajra/laravel-datatables-oracle",
+<<<<<<< HEAD
             "version": "v10.6.1",
             "source": {
                 "type": "git",
@@ -7109,6 +7129,18 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/yajra/laravel-datatables/zipball/cd684c1827c6540a911226e77779477cbb86fc25",
                 "reference": "cd684c1827c6540a911226e77779477cbb86fc25",
+=======
+            "version": "v10.6.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/yajra/laravel-datatables.git",
+                "reference": "6662926a7ac52cdf3d52508b0d4f6c41cc8618bf"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/yajra/laravel-datatables/zipball/6662926a7ac52cdf3d52508b0d4f6c41cc8618bf",
+                "reference": "6662926a7ac52cdf3d52508b0d4f6c41cc8618bf",
+>>>>>>> 837342a1fbd13e98ec736dec9377cd261627f874
                 "shasum": ""
             },
             "require": {
@@ -7171,7 +7203,11 @@
             ],
             "support": {
                 "issues": "https://github.com/yajra/laravel-datatables/issues",
+<<<<<<< HEAD
                 "source": "https://github.com/yajra/laravel-datatables/tree/v10.6.1"
+=======
+                "source": "https://github.com/yajra/laravel-datatables/tree/v10.6.2"
+>>>>>>> 837342a1fbd13e98ec736dec9377cd261627f874
             },
             "funding": [
                 {
@@ -7179,7 +7215,11 @@
                     "type": "github"
                 }
             ],
+<<<<<<< HEAD
             "time": "2023-07-05T01:30:07+00:00"
+=======
+            "time": "2023-07-15T04:00:38+00:00"
+>>>>>>> 837342a1fbd13e98ec736dec9377cd261627f874
         }
     ],
     "packages-dev": [
@@ -7576,6 +7616,7 @@
         },
         {
             "name": "mockery/mockery",
+<<<<<<< HEAD
             "version": "1.6.2",
             "source": {
                 "type": "git",
@@ -7586,18 +7627,35 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/mockery/mockery/zipball/13a7fa2642c76c58fa2806ef7f565344c817a191",
                 "reference": "13a7fa2642c76c58fa2806ef7f565344c817a191",
+=======
+            "version": "1.6.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mockery/mockery.git",
+                "reference": "d1413755e26fe56a63455f7753221c86cbb88f66"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mockery/mockery/zipball/d1413755e26fe56a63455f7753221c86cbb88f66",
+                "reference": "d1413755e26fe56a63455f7753221c86cbb88f66",
+>>>>>>> 837342a1fbd13e98ec736dec9377cd261627f874
                 "shasum": ""
             },
             "require": {
                 "hamcrest/hamcrest-php": "^2.0.1",
                 "lib-pcre": ">=7.0",
+<<<<<<< HEAD
                 "php": "^7.4 || ^8.0"
+=======
+                "php": ">=7.4,<8.3"
+>>>>>>> 837342a1fbd13e98ec736dec9377cd261627f874
             },
             "conflict": {
                 "phpunit/phpunit": "<8.0"
             },
             "require-dev": {
                 "phpunit/phpunit": "^8.5 || ^9.3",
+<<<<<<< HEAD
                 "psalm/plugin-phpunit": "^0.18",
                 "vimeo/psalm": "^5.9"
             },
@@ -7607,6 +7665,13 @@
                     "dev-main": "1.6.x-dev"
                 }
             },
+=======
+                "psalm/plugin-phpunit": "^0.18.4",
+                "symplify/easy-coding-standard": "^11.5.0",
+                "vimeo/psalm": "^5.13.1"
+            },
+            "type": "library",
+>>>>>>> 837342a1fbd13e98ec736dec9377cd261627f874
             "autoload": {
                 "files": [
                     "library/helpers.php",
@@ -7624,12 +7689,20 @@
                 {
                     "name": "Pádraic Brady",
                     "email": "padraic.brady@gmail.com",
-                    "homepage": "http://blog.astrumfutura.com"
+                    "homepage": "https://github.com/padraic",
+                    "role": "Author"
                 },
                 {
                     "name": "Dave Marshall",
                     "email": "dave.marshall@atstsolutions.co.uk",
-                    "homepage": "http://davedevelopment.co.uk"
+                    "homepage": "https://davedevelopment.co.uk",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Nathanael Esayeas",
+                    "email": "nathanael.esayeas@protonmail.com",
+                    "homepage": "https://github.com/ghostwriter",
+                    "role": "Lead Developer"
                 }
             ],
             "description": "Mockery is a simple yet flexible PHP mock object framework",
@@ -7647,10 +7720,19 @@
                 "testing"
             ],
             "support": {
+                "docs": "https://docs.mockery.io/",
                 "issues": "https://github.com/mockery/mockery/issues",
+<<<<<<< HEAD
                 "source": "https://github.com/mockery/mockery/tree/1.6.2"
             },
             "time": "2023-06-07T09:07:52+00:00"
+=======
+                "rss": "https://github.com/mockery/mockery/releases.atom",
+                "security": "https://github.com/mockery/mockery/security/advisories",
+                "source": "https://github.com/mockery/mockery"
+            },
+            "time": "2023-07-19T15:51:02+00:00"
+>>>>>>> 837342a1fbd13e98ec736dec9377cd261627f874
         },
         {
             "name": "myclabs/deep-copy",

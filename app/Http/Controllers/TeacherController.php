@@ -284,6 +284,8 @@ class TeacherController extends Controller
             } else {
                 session()->put('progress', 100);
             }
+        } else {
+            session()->put('progress', 100);
         }
 
         $response = response()->make();

@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\DataTables;
 use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Http;
 
 class CourseController extends Controller
 {
@@ -143,6 +144,7 @@ class CourseController extends Controller
         // dd($request);
         $postdata = array_merge($request->toArray(), array('key' => str::random(5)));
         Course::create($postdata);
+        $this->sync_post_mapel();
         Helper::toast('Berhasil menambah pelajaran', 'success');
         return redirect()->route('courses.index');
     }
@@ -210,6 +212,7 @@ class CourseController extends Controller
         $course = Course::where('slug', $slug)->firstOrFail();
         $input_merge = array_merge($request->input(), array('sync_date' => null));
         $course->fill($input_merge)->save();
+        $this->sync_post_mapel();
         Helper::toast('Berhasil mengupdate pelajaran', 'success');
         return redirect()->route('courses.index');
     }
@@ -221,6 +224,7 @@ class CourseController extends Controller
         $major->status = $request->value;
         $major->sync_date = null;
         $major->save();
+        $this->sync_post_mapel();
         return response()->json('Data berhasil disimpan');
     }
 
@@ -228,6 +232,7 @@ class CourseController extends Controller
     {
         $course = Course::where('slug', $slug)->firstOrFail();
         $course->delete();
+        $this->sync_delete_mapel();
         Helper::toast('Berhasil menghapus pelajaran', 'success');
         return redirect()->route('courses.index');
     }
@@ -257,6 +262,7 @@ class CourseController extends Controller
             $path = $file->storeAs('public/excel/', $nama_file);
             Excel::import(new CourseImport(), storage_path('app/public/excel/' . $nama_file));
             Storage::delete($path);
+            $this->sync_post_mapel();
             Helper::toast('Data Berhasil Diimport', 'success');
             return redirect()->route('courses.index');
         } catch (\Throwable $e) {
@@ -264,5 +270,126 @@ class CourseController extends Controller
             Helper::toast($e->getMessage(), 'errror');
             return redirect()->route('courses.index');
         }
+    }
+
+    /** sync post mapel */
+
+    public function sync_post_mapel()
+    {
+        if (!empty(env('API_BUKU_INDUK'))) {
+
+            $post_cource = Course::whereNull('sync_date')->get();
+            if (!empty($post_cource)) {
+
+                $url_post_cources = env('API_BUKU_INDUK') . '/api/master/mapels';
+                foreach ($post_cource as $key => $mapel) {
+                    $form_mapel = array(
+                        'key' => $mapel->key,
+                        'nama' => $mapel->name,
+                        'kode_mapel' => $mapel->code,
+                        'status' => $mapel->status,
+                        'kelompok' => $mapel->group
+                    );
+                    $response_mapel = Http::post($url_post_cources, $form_mapel);
+                    if ($response_mapel->ok()) {
+                        $post_mapel = Course::where('id', $mapel->id)->update(['sync_date' => \Carbon\Carbon::now()]);
+
+                    }
+
+                    if ($key > 0 && $key % 10 == 0) {
+                        sleep(5);
+
+                    }
+                }
+
+            }
+
+        }
+        return;
+    }
+
+    /** sync delete mapel */
+
+    public function sync_delete_mapel()
+    {
+        if (!empty(env('API_BUKU_INDUK'))) {
+
+            $delete_mapel = Course::onlyTrashed()->get();
+            if (!empty($delete_mapel)) {
+
+                $url_delete_mapel = env('API_BUKU_INDUK') . '/api/master/mapels';
+                foreach ($delete_mapel as $key => $mapel) {
+
+                    $response_mapel_delete = Http::delete($url_delete_mapel . '/' . $mapel->key);
+
+
+                    if ($key > 0 && $key % 10 == 0) {
+                        sleep(5);
+
+                    }
+                }
+
+            }
+
+        }
+        return;
+    }
+
+    public function getProgess()
+    {
+        return response()->json(array(session()->get('progress')), 200);
+    }
+
+    /** sync get data */
+
+    public function sync_getdata()
+    {
+        $this->sync_post_mapel();
+        $this->sync_delete_mapel();
+
+        session()->put('progress', 0);
+        $ind = 0;
+
+        if (!empty(env('API_BUKU_INDUK'))) {
+
+            $url_api_mapel = env('API_BUKU_INDUK') . '/api/master/mapels';
+            $response_api_mapel = Http::get($url_api_mapel);
+            $resposnse_collection_mapel = $response_api_mapel->collect();
+            $collection_api_mapel = collect($resposnse_collection_mapel);
+
+            if (!empty($collection_api_mapel['data'])) {
+                $check_school_mapel = Course::whereNull('sync_date')->get()->count();
+                if ($check_school_mapel == 0) {
+
+                    foreach ($collection_api_mapel['data'] as $key => $data_mapel) {
+
+                        $ind = intval($key) + 1;
+
+                        $create_major = Course::withoutGlobalScopes()->updateOrCreate([
+                            'key' => $data_mapel['uid'],
+                            'slug' => $data_mapel['nama'] . '-' . $data_mapel['uid'],
+                        ], [
+                            'key' => $data_mapel['uid'],
+                            'code' => $data_mapel['kode_mapel'],
+                            'name' => $data_mapel['nama'],
+                            'group' => $data_mapel['kelompok'],
+                            'sync_date' => \Carbon\Carbon::now(),
+                            'status' => $data_mapel['status'],
+                            'slug' => $data_mapel['nama'] . '-' . $data_mapel['uid'],
+                            'deleted_at' => isset($data_rombel['deleted_at']) ? $data_mapel['deleted_at'] == null ? null : \Carbon\Carbon::parse($data_mapel['deleted_at']) : null
+                        ]);
+
+                        session()->put('progress', intval($ind / count($collection_api_mapel['data']) * 100));
+                    }
+                }
+            }
+
+        } else {
+            session()->put('progress', 100);
+        }
+
+        $response = response()->make();
+        $response->header('Content-Type', 'application/json');
+        return $response;
     }
 }
