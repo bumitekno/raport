@@ -412,7 +412,7 @@ class CourseController extends Controller
                             'id_teacher' => $data_gurumapel['id_guru'] == null ? 0 : $data_gurumapel['id_guru'],
                             'id_course' => $data_gurumapel['id_mapel'] == null ? 0 : $data_gurumapel['id_mapel'],
                             'id_school_year' => $data_gurumapel['id_ta_sm'] == null ? 0 : $data_gurumapel['id_ta_sm'],
-                            'id_study_class' => array_map('intval', explode(',', $data_gurumapel['id_rombel_values'])),
+                            'id_study_class' => $data_gurumapel['id_rombel_values'] == null ? [] : json_encode($data_gurumapel['id_rombel_values']),
                             'status' => 1,
                             'sync_date' => \Carbon\Carbon::now(),
                             'slug' => $data_gurumapel['uid'] . '-' . $data_gurumapel['id_guru'],
