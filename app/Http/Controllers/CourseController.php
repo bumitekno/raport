@@ -316,21 +316,14 @@ class CourseController extends Controller
 
             $delete_mapel = Course::onlyTrashed()->get();
             if (!empty($delete_mapel)) {
-
                 $url_delete_mapel = env('API_BUKU_INDUK') . '/api/master/mapels';
                 foreach ($delete_mapel as $key => $mapel) {
-
                     $response_mapel_delete = Http::delete($url_delete_mapel . '/' . $mapel->key);
-
-
                     if ($key > 0 && $key % 10 == 0) {
                         sleep(5);
-
                     }
                 }
-
             }
-
         }
         return;
     }
@@ -409,7 +402,6 @@ class CourseController extends Controller
                 $check_school_gurumapel = \App\Models\SubjectTeacher::whereNull('sync_date')->get()->count();
                 if ($check_school_gurumapel == 0) {
 
-
                     foreach ($collection_api_gurumapel['data'] as $key => $data_gurumapel) {
                         $create_gurumapel = \App\Models\SubjectTeacher::withoutGlobalScopes()->updateOrCreate([
                             'key' => $data_gurumapel['uid'],
@@ -419,16 +411,12 @@ class CourseController extends Controller
                             'id_teacher' => $data_gurumapel['id_guru'] == null ? 0 : $data_gurumapel['id_guru'],
                             'id_course' => $data_gurumapel['id_mapel'] == null ? 0 : $data_gurumapel['id_mapel'],
                             'id_school_year' => $data_gurumapel['id_ta_sm'] == null ? 0 : $data_gurumapel['id_ta_sm'],
-                            'id_study_class' => collect($data_gurumapel['id_rombel_values']),
+                            'id_study_class' => array_map('intval', explode(',', $data_gurumapel['id_rombel_values'])),
                             'status' => 1,
                             'sync_date' => \Carbon\Carbon::now(),
                             'slug' => $data_gurumapel['uid'] . '-' . $data_gurumapel['id_guru'],
                             'deleted_at' => isset($data_gurumapel['deleted_at']) ? $data_gurumapel['deleted_at'] == null ? null : \Carbon\Carbon::parse($data_gurumapel['deleted_at']) : null
                         ]);
-
-                        if ($key > 0 && $key % 10 == 0) {
-                            sleep(5);
-                        }
                     }
 
                 }
