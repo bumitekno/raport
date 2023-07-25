@@ -17,7 +17,7 @@ class SchoolYearController extends Controller
 
         $school_years = SchoolYear::orderBy('name', 'ASC')->get();
 
-        foreach ($school_years as $school_year){
+        foreach ($school_years as $school_year) {
             $data[] = [
                 'uid' => $school_year->key,
                 'name' => substr($school_year->name, 0, 9),
@@ -48,7 +48,7 @@ class SchoolYearController extends Controller
             'name' => 'Nama Tahun Ajaran',
         ];
 
-        $rules = ['key' => 'required','name' => 'required|unique:school_years,name,'.$request->key.',key'];
+        $rules = ['key' => 'required', 'name' => 'required|unique:school_years,name,' . $request->key . ',key'];
 
         $messages = ['required' => ':attribute harus diisi.', 'unique' => ':attribute sudah terdaftar.'];
 
@@ -96,7 +96,7 @@ class SchoolYearController extends Controller
 
         if ($data) {
             $data->delete();
-            
+
             return Response::responseApi(200, 'Tahun ajaran berhasil dihapus.');
         } else {
             return Response::responseApi(400, 'Tahun ajaran tidak ditampilkan.');

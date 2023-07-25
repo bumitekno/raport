@@ -339,6 +339,7 @@ class CourseController extends Controller
     {
         $this->sync_post_mapel();
         $this->sync_delete_mapel();
+        $this->sync_post_subjectTeacher();
         $this->sync_subjectTeacher();
 
         session()->put('progress', 0);
@@ -422,6 +423,65 @@ class CourseController extends Controller
                 }
             }
         }
+        return;
+    }
+
+    public function sync_post_subjectTeacher()
+    {
+        if (!empty(env('API_BUKU_INDUK'))) {
+            /** post subject teacher */
+            $post_subject_teacher = \App\Models\SubjectTeacher::whereNull('sync_date')->get();
+            if (!empty($post_subject_teacher)) {
+                $url_post_subject_teacher = env('API_BUKU_INDUK') . '/api/master/subject_teachers';
+
+
+                foreach ($post_subject_teacher as $keyx => $subjectteacher) {
+
+                    $replace = Str::replaceFirst('[', '', $post_subject_teacher[$keyx]->id_study_class);
+                    $replace = Str::replaceFirst(']', '', $replace);
+                    $replace = Str::replace('"', '', $replace);
+
+                    $replace = array_map('intval', explode(',', $replace));
+
+                    $form_multi = [];
+
+                    foreach ($replace as $key => $listid) {
+                        $studikelas = StudyClass::where('id', $listid)->first();
+
+                        if (!empty($studikelas)) {
+
+                            $studikelas_key[] = $studikelas->key;
+                            $level_key = \App\Models\Level::where('id', $studikelas->id_level)->first()?->key;
+                            $mapel_key = Course::where('id', $subjectteacher->id_course)->first()?->key;
+                            $school_year_key = SchoolYear::where('id', $subjectteacher->id_school_year)->first()?->key;
+                            $teacher_key = Teacher::where('id', $subjectteacher->id_teacher)->first()?->key;
+
+                            $form_multi = array(
+                                'key' => $post_subject_teacher[$keyx]->key,
+                                'level_key' => $level_key,
+                                'mapel_key' => $mapel_key,
+                                'school_year_key' => $school_year_key,
+                                'teacher_key' => $teacher_key,
+                                'status' => $post_subject_teacher[$keyx]->status,
+                                'id' => $post_subject_teacher[$keyx]->id,
+                                'study_class_key' => implode(',', $studikelas_key)
+                            );
+                        }
+                    }
+
+
+                    if (!empty($form_multi)) {
+
+                        $response_subject_teacher = Http::post($url_post_subject_teacher, $form_multi);
+                        if ($response_subject_teacher->ok()) {
+                            $post_studkelas = \App\Models\SubjectTeacher::where('id', $post_subject_teacher[$keyx]->id)->update(['sync_date' => \Carbon\Carbon::now()]);
+                        }
+                    }
+
+                }
+            }
+        }
+
         return;
     }
 
