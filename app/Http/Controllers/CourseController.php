@@ -346,6 +346,7 @@ class CourseController extends Controller
     {
         $this->sync_post_mapel();
         $this->sync_delete_mapel();
+        $this->sync_subjectTeacher();
 
         session()->put('progress', 0);
         $ind = 0;
@@ -382,9 +383,9 @@ class CourseController extends Controller
                         session()->put('progress', intval($ind / count($collection_api_mapel['data']) * 100));
                     }
                 }
+            } else {
+                session()->put('progress', 100);
             }
-
-            $this->sync_subjectTeacher();
 
         } else {
             session()->put('progress', 100);
@@ -398,41 +399,41 @@ class CourseController extends Controller
 
     public function sync_subjectTeacher()
     {
-        $url_api_gurumapel = env('API_BUKU_INDUK') . '/api/master/subject_teachers/data/all';
-        $response_api_gurumapel = Http::get($url_api_gurumapel);
-        $resposnse_collection_gurumapel = $response_api_gurumapel->collect();
-        $collection_api_gurumapel = collect($resposnse_collection_gurumapel);
-        if (!empty($collection_api_gurumapel['data'])) {
+        if (!empty(env('API_BUKU_INDUK'))) {
+            $url_api_gurumapel = env('API_BUKU_INDUK') . '/api/master/subject_teachers/data/all';
+            $response_api_gurumapel = Http::get($url_api_gurumapel);
+            $resposnse_collection_gurumapel = $response_api_gurumapel->collect();
+            $collection_api_gurumapel = collect($resposnse_collection_gurumapel);
+            if (!empty($collection_api_gurumapel['data'])) {
 
-            $check_school_gurumapel = \App\Models\SubjectTeacher::whereNull('sync_date')->get()->count();
-            if ($check_school_gurumapel == 0) {
-
-
-                foreach ($collection_api_gurumapel['data'] as $key => $data_gurumapel) {
-                    $create_gurumapel = \App\Models\SubjectTeacher::withoutGlobalScopes()->updateOrCreate([
-                        'key' => $data_gurumapel['uid'],
-                        'slug' => $data_gurumapel['uid'] . '-' . $data_gurumapel['id_guru'],
-                    ], [
-                        'key' => $data_gurumapel['uid'],
-                        'id_teacher' => $data_gurumapel['id_guru'] == null ? 0 : $data_gurumapel['id_guru'],
-                        'id_course' => $data_gurumapel['id_mapel'] == null ? 0 : $data_gurumapel['id_mapel'],
-                        'id_school_year' => $data_gurumapel['id_ta_sm'] == null ? 0 : $data_gurumapel['id_ta_sm'],
-                        'id_study_class' => collect($data_gurumapel['id_rombel_values']),
-                        'status' => 1,
-                        'sync_date' => \Carbon\Carbon::now(),
-                        'slug' => $data_gurumapel['uid'] . '-' . $data_gurumapel['id_guru'],
-                        'deleted_at' => isset($data_gurumapel['deleted_at']) ? $data_gurumapel['deleted_at'] == null ? null : \Carbon\Carbon::parse($data_gurumapel['deleted_at']) : null
-                    ]);
+                $check_school_gurumapel = \App\Models\SubjectTeacher::whereNull('sync_date')->get()->count();
+                if ($check_school_gurumapel == 0) {
 
 
-                    if ($key > 0 && $key % 10 == 0) {
-                        sleep(5);
+                    foreach ($collection_api_gurumapel['data'] as $key => $data_gurumapel) {
+                        $create_gurumapel = \App\Models\SubjectTeacher::withoutGlobalScopes()->updateOrCreate([
+                            'key' => $data_gurumapel['uid'],
+                            'slug' => $data_gurumapel['uid'] . '-' . $data_gurumapel['id_guru'],
+                        ], [
+                            'key' => $data_gurumapel['uid'],
+                            'id_teacher' => $data_gurumapel['id_guru'] == null ? 0 : $data_gurumapel['id_guru'],
+                            'id_course' => $data_gurumapel['id_mapel'] == null ? 0 : $data_gurumapel['id_mapel'],
+                            'id_school_year' => $data_gurumapel['id_ta_sm'] == null ? 0 : $data_gurumapel['id_ta_sm'],
+                            'id_study_class' => collect($data_gurumapel['id_rombel_values']),
+                            'status' => 1,
+                            'sync_date' => \Carbon\Carbon::now(),
+                            'slug' => $data_gurumapel['uid'] . '-' . $data_gurumapel['id_guru'],
+                            'deleted_at' => isset($data_gurumapel['deleted_at']) ? $data_gurumapel['deleted_at'] == null ? null : \Carbon\Carbon::parse($data_gurumapel['deleted_at']) : null
+                        ]);
+
+                        if ($key > 0 && $key % 10 == 0) {
+                            sleep(5);
+                        }
                     }
-                }
 
+                }
             }
         }
-
         return;
     }
 
