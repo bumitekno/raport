@@ -211,11 +211,13 @@ class SchoolYearController extends Controller
                     foreach ($collection_api_school_year['data'] as $key => $data_school_years) {
 
                         $ind = intval($key) + 1;
-
+                        $drop_schoolyear = SchoolYear::where('id', $data_school_years['id'])->forceDelete();
                         $create_school_years = SchoolYear::withoutGlobalScopes()->updateOrCreate([
+                            'id' => $data_school_years['id'],
                             'key' => $data_school_years['uid'],
                             'slug' => \Illuminate\Support\Str::replace('/', '', $data_school_years['name']) . $data_school_years['semester_number'] . '-' . $data_school_years['uid'],
                         ], [
+                            'id' => $data_school_years['id'],
                             'key' => $data_school_years['uid'],
                             'name' => $data_school_years['name'] . $data_school_years['semester_number'],
                             'status' => $data_school_years['status'],
