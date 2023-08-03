@@ -26,9 +26,6 @@ class Extracurricular extends Model
             $dimension->scoreExtracuriculars()->delete();
         });
 
-        static::restoring(function ($dimension) {
-            $dimension->scoreExtracuriculars()->restore();
-        });
     }
 
     public function scoreExtracuriculars()

@@ -23,13 +23,11 @@ class Dimension extends Model
         parent::boot();
 
         static::deleting(function ($dimension) {
-            $dimension->elements()->delete();
+            $dimension->elements->each(function ($element) {
+                $element->subElements()->delete();
+                $element->delete();
+            });
             $dimension->subElements()->delete();
-        });
-
-        static::restoring(function ($dimension) {
-            $dimension->elements()->restore();
-            $dimension->subElements()->restore();
         });
     }
 

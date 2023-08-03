@@ -25,10 +25,6 @@ class Element extends Model
         static::deleting(function ($element) {
             $element->subElements()->delete();
         });
-
-        static::restoring(function ($element) {
-            $element->subElements()->restore();
-        });
     }
 
     public function subElements()

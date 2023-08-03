@@ -29,7 +29,7 @@
 <title>{{ isset($setting['name_application']) ? $setting['name_application'] : 'E-Raport' }} - {{ session('title') }}
 </title>
 <meta name="csrf-token" content="{{ csrf_token() }}" />
-<link rel="icon" type="image/x-icon" href="assets/img/favicon.ico" />
+<link rel="icon" type="image/x-icon" href="{{ asset($setting['logo']) }}" />
 <!-- BEGIN GLOBAL MANDATORY STYLES -->
 <link href="https://fonts.googleapis.com/css?family=Quicksand:400,500,600,700&display=swap" rel="stylesheet">
 <link href="{{ asset('asset/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
