@@ -12,70 +12,55 @@
             font-size: 16px;
         }
 
-        .sampul-awal {
-            margin: auto;
-            padding: 30px;
-            /* border: 1px solid #ccc; */
-            max-width: 600px;
-            text-align: center;
+        .card-body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
-        .sampul-awal img {
-            margin-bottom: 20px;
+        .card {
+            height: 17cm;
+            padding: 1cm;
         }
 
-        .sampul-awal h1,
-        .sampul-awal h2,
-        .sampul-awal h3 {
-            margin: 0;
-            font-weight: normal;
-        }
-
-        .sampul-awal h1 {
-            font-size: 30px;
-        }
-
-        .sampul-awal h2 {
-            font-size: 24px;
-        }
-
-        .sampul-awal h3 {
-            font-size: 18px;
-        }
-
-        .sampul-awal b {
-            font-weight: bold;
-        }
-
-        .sampul-awal .logo {
-            margin-bottom: 20px;
-        }
-
-        .sampul-awal .logo img {
-            max-height: 150px;
+        .logo img {
+            max-height: 59px;
             display: block;
             margin: auto;
         }
 
-        .sampul-awal .nama-siswa {
-            margin-bottom: 20px;
+        h5, h6 {
+            margin: 0;
+            font-weight: normal;
         }
 
-        .sampul-awal .nama-siswa h2 {
-            font-size: 28px;
-        }
-
-        .sampul-awal .nama-siswa .nisn-nis {
-            margin-top: 10px;
+        h5 {
             font-size: 20px;
         }
 
-        .sampul-awal .nama-siswa .nisn-nis span {
+        h6 {
+            font-size: 16px;
+        }
+
+        .nama-peserta-didik {
+            margin-bottom: 20px;
+        }
+
+        .nama-peserta-didik h6 {
+            font-size: 24px;
+        }
+
+        .nisn-nis {
+            margin-top: 10px;
+            font-size: 16px;
+        }
+
+        .nisn-nis span {
             display: inline-block;
             margin: 0 5px;
         }
 
-        .sampul-awal .footer {
+        .footer {
             position: fixed;
             bottom: 0;
             left: 0;
@@ -83,31 +68,41 @@
             margin: auto;
             width: 100%;
             border-top: 1px solid #ccc;
-            font-size: 18px;
+            font-size: 16px;
             padding: 10px;
         }
     </style>
 </head>
 
 <body>
-    <div class="sampul-awal">
-        <div class="logo">
-            <img src="{{ $cover->top_logo }}" alt="Logo" />
+    <div class="card-body">
+        <div class="card">
+            <br>
+            <center>
+                <div class="logo">
+                    <img src="{{ !empty($cover) ? $cover['top_logo'] : asset('asset/img/sma.png') }}" alt="Logo">
+                </div>
+                <br><br>
+                <h5 class="my-0"><b>{!! !empty($cover) ? $cover['title'] : '' !!}</b></h5>
+                <h5 class="my-0"><b>{!! !empty($cover) ? $cover['sub_title'] : '' !!}</b></h5>
+                <br>
+                <div class="logo">
+                    <img src="{{ !empty($cover) ? $cover['middle_logo'] : asset('asset/img/sma.png') }}" alt="Logo">
+                </div>
+                <br><br>
+                <h6><b>Nama Peserta Didik</b></h6>
+                <div style="border: 1px solid black; padding: 12px">
+                    <h6 class="m-0"><b>{{ $student_class->student->name }}</b></h6>
+                </div>
+                <br>
+                <h6><b>NISN/NIS</b></h6>
+                <div style="border: 1px solid black; padding: 12px">
+                    <h6 class="m-0"><b>{{ $student_class->student->nisn ?? '-' }}/{{ $student_class->student->nis ?? '-' }}</b></h6>
+                </div>
+                <br><br><br>
+                <h6 class="my-0"><b>{!! !empty($cover) ? $cover['footer'] : '' !!}</b></h6>
+            </center>
         </div>
-        <h1>{!! $cover->title !!}</h1>
-        <h2>{!! $cover->sub_title !!}</h2>
-        <div class="logo">
-            <img src="{{ $cover->middle_logo }}" alt="Logo" />
-        </div>
-        <div class="nama-siswa">
-            <h2>{{ strtoupper($student_class->student->name) }}</h2>
-            <div class="nisn-nis">
-                <span>NISN: {{ $student_class->student->nisn ?? '-' }}</span>
-                <span>|</span>
-                <span>NIS: {{ $student_class->student->nis ?? '-' }}</span>
-            </div>
-        </div>
-        <div class="footer">{!! $cover->footer !!}</div>
     </div>
     <div style="page-break-before: always;"></div>
     @if ($cover['instruction'])
@@ -209,7 +204,10 @@
                         <td>4.</td>
                         <td>Jenis Kelamin</td>
                         <td>:</td>
-                        <td>{{ $student_class->student->gender ?? '-' }}</td>
+                        <td>{{
+            $student_class->student->gender === 'male' ? 'Laki-laki' :
+            ($student_class->student->gender === 'female' ? 'Perempuan' : '-')
+        }}</td>
                     </tr>
                     <tr>
                         <td>5.</td>
@@ -221,15 +219,13 @@
                         <td>6.</td>
                         <td>Status dalam Keluarga</td>
                         <td>:</td>
-                        {{-- <td>{{ $siswa['status_keluarga'] ?? '-' }}</td> --}}
-                        <td>-</td>
+                        <td>{{ $student_class->student->family_status ?? '-' }}</td>
                     </tr>
                     <tr>
                         <td>7.</td>
                         <td>Anak ke</td>
                         <td>:</td>
-                        {{-- <td>{{ $siswa['anak_ke'] ?? '-' }}</td> --}}
-                        <td>-</td>
+                        <td>{{ $student_class->student->child_off ?? '-' }}</td>
                     </tr>
                     <tr>
                         <td style="vertical-align: top">8.</td>
@@ -247,7 +243,7 @@
                         <td>10.</td>
                         <td>Sekolah Asal</td>
                         <td>:</td>
-                        <td></td>
+                        <td>{{ $student_class->student->school_from ?? '-' }}</td>
                     </tr>
                     <tr>
                         <td>11.</td>
@@ -259,15 +255,13 @@
                         <td></td>
                         <td>Di kelas</td>
                         <td>:</td>
-                        {{-- <td>{{ $siswa['kls_diterima'] ?? '-' }}</td> --}}
-                        <td>-</td>
+                        <td>{{ $student_class->student->accepted_grade ? $student_class->student->study_class->name : '-' }}</td>
                     </tr>
                     <tr>
                         <td></td>
                         <td>Pada tanggal</td>
                         <td>:</td>
-                        {{-- <td>{{ $siswa['tgl_diterima'] == null ? '-' : (new \App\Helpers\Help())->getTanggal($siswa['tgl_diterima']) }} --}}
-                        <td>-</td>
+                        <td>{{ $student_class->student->accepted_date == null ? '-' : DateHelper::getTanggal($student_class->student->accepted_date) }}
                     </tr>
                     <tr>
                         <td>12.</td>
@@ -279,29 +273,25 @@
                         <td></td>
                         <td>a. Ayah</td>
                         <td>:</td>
-                        {{-- <td>{{ strtoupper($siswa['nama_ayah']) ?? '-' }}</td> --}}
-                        <td>-</td>
+                        <td>{{ $familly['father'] == null ? '-' : strtoupper($familly['father']['name'])  }}</td>
                     </tr>
                     <tr>
                         <td></td>
                         <td>b. Ibu</td>
                         <td>:</td>
-                        <td>-</td>
-                        {{-- <td>{{ strtoupper($siswa['nama_ibu']) ?? '-' }}</td> --}}
+                        <td>{{ $familly['mother'] == null ? '-' : strtoupper($familly['mother']['name']) }}</td>
                     </tr>
                     <tr>
                         <td>13.</td>
                         <td>Alamat Orang Tua</td>
                         <td>:</td>
-                        <td>-</td>
-                        {{-- <td>{{ $siswa['alamat_wali'] ?? '-' }}</td> --}}
+                        <td>{{ $familly['father'] == null ? '-' : $familly['father']['address'] }}</td>
                     </tr>
                     <tr>
                         <td></td>
                         <td>Nomor Telepon Rumah</td>
                         <td>:</td>
-                        {{-- <td>{{ $siswa['telp_wali'] ?? '-' }}</td> --}}
-                        <td>-</td>
+                        <td>{{ $familly['father'] == null ? '-' : $familly['father']['phone'] }}</td>
                     </tr>
                     <tr>
                         <td>14.</td>
@@ -313,22 +303,20 @@
                         <td></td>
                         <td>a. Ayah</td>
                         <td>:</td>
-                        {{-- <td>{{ $siswa['pekerjaan_ayah'] ?? '-' }}</td> --}}
-                        <td>-</td>
+                        <td>{{ $familly['father'] == null ? '-' : $familly['father']['job'] }}</td>
                     </tr>
                     <tr>
                         <td></td>
                         <td>b. Ibu</td>
                         <td>:</td>
-                        {{-- <td>{{ $siswa['pekerjaan_ibu'] ?? '-' }}</td> --}}
-                        <td>-</td>
+                        <td>{{ $familly['mother'] == null ? '-' : $familly['mother']['job']  }}</td>
                     </tr>
                     <tr>
                         <td>15.</td>
                         <td>Nama Wali Peserta Didik</td>
                         <td>:</td>
                         <td>-</td>
-                        {{-- <td>{{ strtoupper($siswa['nama_wali']) }}</td> --}}
+                        <td>{{ $familly['guardian'] == null ? '-' : strtoupper($familly['guardian']['name']) }}</td>
                     </tr>
 
                 </table>
@@ -344,7 +332,7 @@
                                 @if ($result_other['signature'] != null) style="background: url('{{ $result_other['signature'] }}') no-repeat left; background-size: 100px" @endif>
                                 <p> Kepala Sekolah</p>
 
-                                <br><br><br><br>
+                                <br><br><br><br><br>
                                 <b>{{ $result_other['headmaster'] }}</b> <br>
                                 NIP. {{ $result_other['nip_headmaster'] }}
                             </div>
@@ -456,8 +444,6 @@
             </tbody>
         </table>
     </div>
-
-    {{-- </div> --}}
 </body>
 
 </html>

@@ -20,6 +20,38 @@ class SubjectTeacher extends Model
 
     protected $dates = ['deleted_at'];
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function ($subject_teacher) {
+            $subject_teacher->p5s()->delete();
+            $subject_teacher->scoreP5s()->delete();
+            $subject_teacher->scoreKds()->delete();
+        });
+
+        static::restoring(function ($subject_teacher) {
+            $subject_teacher->p5s()->restore();
+            $subject_teacher->scoreP5s()->restore();
+            $subject_teacher->scoreKds()->restore();
+        });
+    }
+
+    public function p5s()
+    {
+        return $this->hasMany(P5::class, 'id_subject_teacher');
+    }
+
+    public function scoreP5s()
+    {
+        return $this->hasMany(ScoreP5::class, 'id_subject_teacher');
+    }
+
+    public function scoreKds()
+    {
+        return $this->hasMany(ScoreKd::class, 'id_subject_teacher');
+    }
+
     public function classes()
     {
         return $this->belongsToMany(StudyClass::class, 'subject_teachers', 'id_study_class', 'id');

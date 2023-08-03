@@ -20,8 +20,77 @@ class Course extends Model
 
     protected $dates = ['deleted_at'];
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function ($course) {
+            $course->subjectTeacher()->delete();
+            $course->competenceAchievement()->delete();
+            $course->assementWeights()->delete();
+            $course->kkms()->delete();
+            $course->scoreMerdekas()->delete();
+            $course->basicCompetencies()->delete();
+            $course->generalWeights()->delete();
+            $course->scoreCompetencies()->delete();
+            $course->scoreManuals()->delete();
+        });
+
+        static::restoring(function ($course) {
+            $course->subjectTeacher()->restore();
+            $course->competenceAchievement()->restore();
+            $course->assementWeights()->restore();
+            $course->kkms()->restore();
+            $course->scoreMerdekas()->restore();
+            $course->basicCompetencies()->restore();
+            $course->generalWeights()->restore();
+            $course->scoreCompetencies()->restore();
+            $course->scoreManuals()->restore();
+        });
+    }
+
     public function subjectTeacher()
     {
         return $this->hasMany(SubjectTeacher::class, 'id_course');
+    }
+
+    public function competenceAchievement()
+    {
+        return $this->hasMany(CompetenceAchievement::class, 'id_course');
+    }
+
+    public function assementWeights()
+    {
+        return $this->hasMany(AssesmentWeighting::class, 'id_course');
+    }
+
+    public function kkms()
+    {
+        return $this->hasMany(Kkm::class, 'id_course');
+    }
+
+    public function scoreMerdekas()
+    {
+        return $this->hasMany(ScoreMerdeka::class, 'id_course');
+    }
+
+    public function basicCompetencies()
+    {
+        return $this->hasMany(BasicCompetency::class, 'id_course');
+    }
+
+    public function generalWeights()
+    {
+        return $this->hasMany(GeneralWeighting::class, 'id_course');
+    }
+
+    public function scoreCompetencies()
+    {
+        return $this->hasMany(ScoreCompetency::class, 'id_course');
+    }
+
+    public function scoreManuals()
+    {
+        return $this->hasMany(ScoreManual::class, 'id_course');
     }
 }

@@ -17,4 +17,22 @@ class Element extends Model
     protected $guarded = [];
 
     protected $dates = ['deleted_at'];
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function ($element) {
+            $element->subElements()->delete();
+        });
+
+        static::restoring(function ($element) {
+            $element->subElements()->restore();
+        });
+    }
+
+    public function subElements()
+    {
+        return $this->hasMany(Element::class, 'id_element');
+    }
 }

@@ -76,7 +76,8 @@ class MajorController extends Controller
 
     public function destroy($slug)
     {
-        Major::where('slug', $slug)->delete();
+        $major = Major::where('slug', $slug)->firstOrFail();
+        $major->delete();
         Helper::toast('Berhasil menghapus jurusan', 'success');
         return redirect()->route('majors.index');
     }

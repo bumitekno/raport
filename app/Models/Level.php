@@ -19,4 +19,29 @@ class Level extends Model
     ];
 
     protected $dates = ['deleted_at'];
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function ($level) {
+            $level->studyClass()->delete();
+            $level->basicCompetencies()->delete();
+        });
+
+        static::restoring(function ($level) {
+            $level->studyClass()->restore();
+            $level->basicCompetencies()->restore();
+        });
+    }
+
+    public function studyClass()
+    {
+        return $this->hasMany(StudyClass::class, 'id_level');
+    }
+
+    public function basicCompetencies()
+    {
+        return $this->hasMany(BasicCompetency::class, 'id_level');
+    }
 }

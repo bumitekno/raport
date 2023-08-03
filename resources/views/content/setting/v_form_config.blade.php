@@ -141,10 +141,17 @@
                                             <div class="col-md-6">
                                                 <div class="form-group">
                                                     <label for="profession">Tanggal Kunci Raport</label>
-                                                    <input
-                                                        value="{{ isset($config) ? old('closing_date', $config->closing_date) : old('closing_date', now()) }}"
-                                                        class="form-control basicPicker active" type="text"
-                                                        name="closing_date" placeholder="Select Date..">
+                                                    <div class="input-group mb-4">
+                                                        <input
+                                                            value="{{ isset($config) ? old('closing_date', $config->closing_date) : old('closing_date', now()) }}"
+                                                            class="form-control basicPicker" type="text"
+                                                            name="closing_date" placeholder="Select Date.."
+                                                            id="closing_date">
+                                                        <div class="input-group-append">
+                                                            <button class="btn btn-outline-primary" id="nullButton"
+                                                                type="button">Clear</button>
+                                                        </div>
+                                                    </div>
                                                     @error('closing_date')
                                                         <div class="invalid-feedback d-block">{{ $message }}</div>
                                                     @enderror
@@ -202,6 +209,12 @@
 
                 $('#id_school_year').change(function() {
                     window.location.href = "home?year=" + $(this).val();
+                });
+
+                const nullButton = document.getElementById("nullButton");
+                nullButton.addEventListener("click", function() {
+                    const flatpickrInput = document.getElementById("closing_date")._flatpickr;
+                    flatpickrInput.clear();
                 });
             });
 

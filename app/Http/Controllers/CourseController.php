@@ -98,8 +98,8 @@ class CourseController extends Controller
                         $result .= '<div class="avatar">
                         <img alt="avatar" src="' . $file . '" class="rounded-circle  bs-tooltip" data-original-title="' . $teacher['nama_guru'] . '">
                     </div>';
-                        $result .= '</div>';
                     }
+                    $result .= '</div>';
                     return $result;
                 })
                 ->editColumn('classes', function ($row) {
@@ -211,7 +211,8 @@ class CourseController extends Controller
 
     public function destroy($slug)
     {
-        Course::where('slug', $slug)->delete();
+        $course = Course::where('slug', $slug)->firstOrFail();
+        $course->delete();
         Helper::toast('Berhasil menghapus pelajaran', 'success');
         return redirect()->route('courses.index');
     }

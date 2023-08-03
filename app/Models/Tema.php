@@ -17,4 +17,22 @@ class Tema extends Model
     protected $guarded = [];
 
     protected $dates = ['deleted_at'];
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::deleting(function ($tema) {
+            $tema->p5s()->delete();
+        });
+
+        static::restoring(function ($tema) {
+            $tema->p5s()->restore();
+        });
+    }
+
+    public function p5s()
+    {
+        return $this->hasMany(P5::class, 'id_temas');
+    }
 }

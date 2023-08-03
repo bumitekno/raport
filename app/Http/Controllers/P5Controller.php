@@ -222,7 +222,8 @@ class P5Controller extends Controller
 
     public function destroy($slug)
     {
-        P5::where('slug', $slug)->delete();
+        $p5 = P5::where('slug', $slug)->firstOrFail();
+        $p5->delete();
         Helper::toast('Berhasil menghapus proyek P5', 'success');
         return redirect()->route('manages.index');
     }

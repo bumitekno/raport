@@ -100,6 +100,7 @@ class LegerController extends Controller
                 ->get();
         }
         // dd($scores);
+        $arr_student_class = [];
         foreach ($student_class as $student) {
             $arr_student_class[] = [
                 'id' => $student->id,

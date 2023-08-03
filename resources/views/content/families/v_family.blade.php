@@ -1,5 +1,5 @@
-@extends('layout.admin.v_master')
-@section('master')
+@extends('layout.admin.v_main')
+@section('content')
     @push('styles')
         @include('package.datatable.datatable_css')
     @endpush
