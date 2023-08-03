@@ -45,34 +45,29 @@ class PreviewController extends Controller
         if (Auth::guard('user')->check() || Auth::guard('parent')->check()) {
             if (session()->has('templates')) {
                 $templatesTemplate = session('templates.template');
+                $student_classes = StudentClass::where('id_student', session('id_student'))->get();
                 foreach ($school_years as &$year) {
                     $score = null;
                     switch ($templatesTemplate) {
                         case 'manual':
                             $score = ScoreManual::where([
-                                ['id_study_class', session('id_study_class')],
-                                ['id_student_class', session('id_student_class')],
                                 ['id_school_year', $year->id],
-                            ])->exists();
+                            ])->whereIn('id_student_class', $student_classes->pluck('id'))->exists();
                             break;
                         case 'manual2':
                             $score = ScoreManual2::where([
-                                ['id_student_class', session('id_student_class')],
                                 ['id_school_year', $year->id],
-                            ])->exists();
+                            ])->whereIn('id_student_class', $student_classes->pluck('id'))->exists();
                             break;
                         case 'k16':
                             $score = ScoreKd::where([
-                                ['id_student_class', session('id_student_class')],
                                 ['id_school_year', $year->id],
-                            ])->exists();
+                            ])->whereIn('id_student_class', $student_classes->pluck('id'))->exists();
                             break;
                         default:
                             $score = ScoreMerdeka::where([
-                                ['id_study_class', session('id_study_class')],
-                                ['id_student_class', session('id_student_class')],
                                 ['id_school_year', $year->id],
-                            ])->exists();
+                            ])->whereIn('id_student_class', $student_classes->pluck('id'))->exists();
                     }
                     $year['score'] = $score;
                 }
