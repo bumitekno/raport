@@ -50,7 +50,7 @@ class RaportController extends Controller
         $school_year = SchoolYear::where('slug', $_GET['year'])->first();
         $student_class = StudentClass::join('users as us', 'us.id', '=', 'student_classes.id_student')
             ->where('student_classes.year', substr($school_year->name, 0, 4))
-            ->where('student_classes.status', 1)
+            // ->where('student_classes.status', 1)
             ->where('student_classes.id_study_class', $study_class->id)
             ->orderBy('us.nis', 'ASC')
             ->select('student_classes.id', 'us.nis', 'us.name', 'student_classes.slug')
