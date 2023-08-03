@@ -25,7 +25,15 @@ class SchoolYear extends Model
         parent::boot();
 
         static::deleting(function ($school_year) {
-            $school_year->subjectTeacher()->delete();
+            $school_year->subjectTeacher->each(function ($subjectTeacher) {
+                $subjectTeacher->p5s->each(function ($p5) {
+                    $p5->scoreP5s()->delete();
+                    $p5->delete();
+                });
+                $subjectTeacher->scoreP5s()->delete();
+                $subjectTeacher->scoreKds()->delete();
+                $subjectTeacher->delete();
+            });
             $school_year->configs()->delete();
             $school_year->covers()->delete();
             $school_year->scoreP5s()->delete();
@@ -45,29 +53,6 @@ class SchoolYear extends Model
             $school_year->attendanceScores()->delete();
             $school_year->attitudeGrades()->delete();
             $school_year->scoreExtracuriculars()->delete();
-        });
-
-        static::restoring(function ($school_year) {
-            $school_year->subjectTeacher()->restore();
-            $school_year->configs()->restore();
-            $school_year->covers()->restore();
-            $school_year->scoreP5s()->restore();
-            $school_year->competence_achievement()->restore();
-            $school_year->assementWeights()->restore();
-            $school_year->ptsConfigurations()->restore();
-            $school_year->pasConfigurations()->restore();
-            $school_year->kkms()->restore();
-            $school_year->templateConfigurations()->restore();
-            $school_year->scoreMerdekas()->restore();
-            $school_year->scoreKds()->restore();
-            $school_year->generalWeights()->restore();
-            $school_year->scoreCompetencies()->restore();
-            $school_year->scoreManuals()->restore();
-            $school_year->teacherNotes()->restore();
-            $school_year->achievements()->restore();
-            $school_year->attendanceScores()->restore();
-            $school_year->attitudeGrades()->restore();
-            $school_year->scoreExtracuriculars()->restore();
         });
     }
 

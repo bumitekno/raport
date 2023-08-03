@@ -14,13 +14,7 @@ class Teacher extends Authenticatable
 
     protected $table = "teachers";
 
-    // protected $guarded = ['password_confirmation'];
-
     protected $guarded = [];
-
-    // protected $fillable = [
-    //     'slug', 'name', 'nik', 'nuptk', 'nip', 'email', 'phone', 'address', 'place_of_birth', 'date_of_birth', 'gender', 'religion', 'password', 'status', 'type', 'id_class'
-    // ];
 
     protected $dates = ['deleted_at'];
 
@@ -29,7 +23,15 @@ class Teacher extends Authenticatable
         parent::boot();
 
         static::deleting(function ($teacher) {
-            $teacher->subjectTeacher()->delete();
+            $teacher->subjectTeacher->each(function ($subjectTeacher) {
+                $subjectTeacher->p5s->each(function ($p5) {
+                    $p5->scoreP5s()->delete();
+                    $p5->delete();
+                });
+                $subjectTeacher->scoreP5s()->delete();
+                $subjectTeacher->scoreKds()->delete();
+                $subjectTeacher->delete();
+            });
             $teacher->competenceAchievement()->delete();
             $teacher->assementWeights()->delete();
             $teacher->scoreMerdekas()->delete();
@@ -40,20 +42,6 @@ class Teacher extends Authenticatable
             $teacher->achievements()->delete();
             $teacher->attitudeGrades()->delete();
             $teacher->scoreExtracuriculars()->delete();
-        });
-
-        static::restoring(function ($teacher) {
-            $teacher->subjectTeacher()->restore();
-            $teacher->competenceAchievement()->restore();
-            $teacher->assementWeights()->restore();
-            $teacher->scoreMerdekas()->restore();
-            $teacher->generalWeights()->restore();
-            $teacher->scoreCompetencies()->restore();
-            $teacher->scoreManuals()->restore();
-            $teacher->teacherNotes()->restore();
-            $teacher->achievements()->restore();
-            $teacher->attitudeGrades()->restore();
-            $teacher->scoreExtracuriculars()->restore();
         });
     }
 
