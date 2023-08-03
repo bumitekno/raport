@@ -45,6 +45,7 @@ class PreviewController extends Controller
         if (Auth::guard('user')->check() || Auth::guard('parent')->check()) {
             if (session()->has('templates')) {
                 $templatesTemplate = session('templates.template');
+                // dd($templatesTemplate);
                 $student_classes = StudentClass::where('id_student', session('id_student'))->get();
                 foreach ($school_years as &$year) {
                     $score = null;
@@ -164,7 +165,7 @@ class PreviewController extends Controller
                 return $this->preview_merdeka($student_class, $setting, $school_year, $subjects, $template->type);
                 break;
             case 'manual2':
-                return $this->preview_manual2($student_class, $setting, $school_year, $subjects);
+                return $this->preview_manual2($student_class, $setting, $school_year, $subjects, $template->type);
                 break;
             default:
                 return $this->preview_manual($student_class, $setting, $school_year, $subjects, $template->type);
@@ -659,9 +660,9 @@ class PreviewController extends Controller
         return $pdf->stream();
     }
 
-    function preview_manual2($student_class, $setting, $school_year, $subjects)
+    function preview_manual2($student_class, $setting, $school_year, $subjects, $type_template)
     {
-        // dd($subjects);
+        // dd($type_template);
         $letter_head = Letterhead::first();
         $result_kop = [
             'text1' => $letter_head ? $letter_head->text1 : null,
@@ -847,7 +848,7 @@ class PreviewController extends Controller
             });
         }
         // dd($result_score);
-        $pdf = PDF::loadView('content.previews.manual2.v_print_pas', compact('result_profile', 'result_kop', 'result_attitude', 'result_score', 'result_extra', 'result_other', 'result_achievement', 'result_attendance'));
+        $pdf = PDF::loadView('content.previews.manual2.v_print_pas', compact('result_profile', 'result_kop', 'result_attitude', 'result_score', 'result_extra', 'result_other', 'result_achievement', 'result_attendance', 'type_template'));
         return $pdf->stream();
     }
 
