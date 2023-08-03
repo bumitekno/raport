@@ -199,7 +199,7 @@ class PreviewController extends Controller
                 $type = (session('role') == 'admin') ? $template->type : $_GET['type'];
                 return $this->preview_merdeka($student_class, $setting, $school_year, $subjects, $type);
             case 'manual2':
-                return $this->preview_manual2($student_class, $setting, $school_year, $subjects);
+                return $this->preview_manual2($student_class, $setting, $school_year, $subjects, $template->type);
             default:
                 return $this->preview_manual($student_class, $setting, $school_year, $subjects, $template->type);
         }
