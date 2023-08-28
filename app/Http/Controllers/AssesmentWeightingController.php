@@ -18,6 +18,7 @@ class AssesmentWeightingController extends Controller
     public function index($type)
     {
         // dd($type);
+
         session()->put('title', 'Bobot Penilaian');
         if (session('role') == 'admin') {
             $template = TemplateConfiguration::where([

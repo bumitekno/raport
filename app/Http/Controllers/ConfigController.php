@@ -22,17 +22,26 @@ class ConfigController extends Controller
             'years' => $years
         ];
 
-        $detail_school_year = SchoolYear::where('slug', $_GET['year'])->first();
+        if (!empty($_GET['year'])) {
 
-        if (!empty($detail_school_year)) {
-            $config = Config::where('id_school_year', $detail_school_year->id)->first();
+            $detail_school_year = SchoolYear::where('slug', $_GET['year'])->first();
 
-            if (!empty($config)) {
-                $data_array['config'] = $config;
+            if (!empty($detail_school_year)) {
+                $config = Config::where('id_school_year', $detail_school_year->id)->first();
+
+                if (!empty($config)) {
+                    $data_array['config'] = $config;
+                }
             }
+            // dd($config);
+            return view('content.setting.v_form_config', $data_array);
+
+        } else {
+
+            Helper::toast('Tahun Ajaran Belum disetting ', 'error');
+            return redirect()->route('school-years.index');
+
         }
-        // dd($config);
-        return view('content.setting.v_form_config', $data_array);
     }
 
     public function updateOrCreate(ConfigRequest $request)

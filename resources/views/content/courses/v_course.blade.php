@@ -4,6 +4,23 @@
         <link rel="stylesheet" type="text/css" href="{{ asset('asset/custom/avatar.css') }}">
         @include('package.switches.switches_css')
         @include('package.datatable.datatable_css')
+        <style>
+            .custom-dropdown .dropdown-menu,
+            .custom-dropdown-icon .dropdown-menu {
+                min-width: 11rem;
+                border-radius: 4px;
+                border: none;
+                border: 1px solid #e0e6ed;
+                z-index: 899;
+                box-shadow: rgba(113, 106, 202, 0.2) 0px 0px 15px 1px;
+                top: 30px !important;
+                padding: 9px;
+                border-width: initial;
+                border-style: none;
+                border-color: initial;
+                border-image: initial;
+            }
+        </style>
     @endpush
     <div id="tableSimple" class="col-lg-12 col-12 layout-spacing">
         <div class="statbox widget box box-shadow">

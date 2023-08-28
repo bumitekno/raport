@@ -23,7 +23,8 @@ class CoverController extends Controller
 
         $detail_year = SchoolYear::where('slug', $_GET['year'])->first();
 
-        if (!empty($result_cover)) {
+
+        if (!empty($detail_year)) {
 
             $result_cover = Cover::where('id_school_year', $detail_year->id)->first();
 
@@ -48,7 +49,7 @@ class CoverController extends Controller
         // dd($cover);
 
         $data_array['cover'] = $cover;
-        // dd($data_array);
+        //dd($data_array);
         return view('content.setting.v_form_cover', $data_array);
     }
 

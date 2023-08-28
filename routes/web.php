@@ -189,6 +189,7 @@ Route::middleware('auth:user,admin,parent,teacher')->group(function () {
     Route::prefix('template')->name('templates.')->group(function () {
         Route::get('/', [TemplateConfigurationController::class, 'index'])->name('index');
         Route::post('updateOrCreate', [TemplateConfigurationController::class, 'updateOrCreate'])->name('updateOrCreate');
+        Route::post('/defaultsave', [TemplateConfigurationController::class, 'defaultsave'])->name('defaultsave');
     });
 
     Route::prefix('covers')->name('covers.')->group(function () {
