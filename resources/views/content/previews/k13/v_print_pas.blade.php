@@ -142,11 +142,20 @@
                             </td>
                             <td class="b-0" style="padding: 0px; vertical-align: top">Kelas</td>
                             <td class="b-0" style="padding: 0px; vertical-align: top">:</td>
-                            <td class="b-0" style="padding: 0px; vertical-align: top">
-                                {{ $result_profile['study_class'] }}
-                            </td>
+
+                            @if (!empty($defaultTemplate) && $defaultTemplate->type == 'jurusan')
+                                <td class="b-0" style="padding: 0px; vertical-align: top">
+
+                                    {{ $result_profile['study_class'] }}
+                                </td>
+                            @elseif(!empty($defaultTemplate) && $defaultTemplate->type == 'tingkatan')
+                                <td class="b-0" style="padding: 0px; vertical-align: top">
+                                    {{ $result_profile['level'] }}
+                                </td>
+                            @endif
                         </tr>
                         <tr>
+
                             <td class="b-0" style="padding: 0px">NISN</td>
                             <td class="b-0" style="padding: 0px">:</td>
                             <td class="b-0" style="padding: 0px">
@@ -169,13 +178,27 @@
                             <td class="b-0" style="padding: 0px; vertical-align: top">2022/2023</td>
                         </tr>
                         <tr>
-                            <td class="b-0" style="padding: 0px; vertical-align: top">Alamat</td>
-                            <td class="b-0" style="padding: 0px; vertical-align: top">:</td>
-                            <td class="b-0" style="padding: 0px;" colspan="4">
-                                {{ $result_profile['address_school'] }}
-                            </td>
-                        </tr>
 
+                            @if (!empty($defaultTemplate) && $defaultTemplate->type == 'tingkatan')
+                                <td class="b-0" style="padding: 0px; vertical-align: top">Alamat</td>
+                                <td class="b-0" style="padding: 0px">:</td>
+                                <td class="b-0" style="padding: 0px;">
+                                    {{ $result_profile['address_school'] }}
+                                </td>
+
+                                <td class="b-0" style="padding: 0px">Rombel</td>
+                                <td class="b-0" style="padding: 0px">:</td>
+                                <td class="b-0" style="padding: 0px;">
+                                    {{ $result_profile['major'] }}
+                                </td>
+                            @else
+                                <td class="b-0" style="padding: 0px; vertical-align: top">Alamat</td>
+                                <td class="b-0" style="padding: 0px; vertical-align: top">:</td>
+                                <td class="b-0" style="padding: 0px;" colspan="4">
+                                    {{ $result_profile['address_school'] }}
+                                </td>
+                            @endif
+                        </tr>
                         <tr>
                             <td style="height: 10px" class="b-0"></td>
                         </tr>

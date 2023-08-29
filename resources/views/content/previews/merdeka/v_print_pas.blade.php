@@ -142,9 +142,16 @@
                             </td>
                             <td class="b-0" style="padding: 0px; vertical-align: top"><b>Kelas</b></td>
                             <td class="b-0" style="padding: 0px; vertical-align: top">:</td>
-                            <td class="b-0" style="padding: 0px; vertical-align: top">
-                                {{ $result_profile['study_class'] }}
-                            </td>
+                            @if (!empty($defaultTemplate) && $defaultTemplate->type == 'jurusan')
+                                <td class="b-0" style="padding: 0px; vertical-align: top">
+
+                                    {{ $result_profile['study_class'] }}
+                                </td>
+                            @elseif(!empty($defaultTemplate) && $defaultTemplate->type == 'tingkatan')
+                                <td class="b-0" style="padding: 0px; vertical-align: top">
+                                    {{ $result_profile['level'] }}
+                                </td>
+                            @endif
                         </tr>
                         <tr>
                             <td class="b-0" style="padding: 0px"><b>NISN</b></td>
@@ -179,6 +186,17 @@
                             <td class="b-0" style="padding: 0px; vertical-align: top">
                                 {{ $result_profile['school_year'] }}</td>
                         </tr>
+
+                        @if (!empty($defaultTemplate) && $defaultTemplate->type == 'tingkatan')
+                            <tr>
+                                <td class="b-0" style="padding: 0px; vertical-align: top" colspan="3"></td>
+                                <td class="b-0" style="padding: 0px">Rombel</td>
+                                <td class="b-0" style="padding: 0px">:</td>
+                                <td class="b-0" style="padding: 0px;">
+                                    {{ $result_profile['major'] }}
+                                </td>
+                            </tr>
+                        @endif
 
                         <tr>
                             <td style="height: 10px" class="b-0"></td>
@@ -220,7 +238,8 @@
                                 </p>
                             @endif
                             @if ($score['competency_improved'])
-                                <p>belum tercapai, menunjukkan penguasaan {{ implode(', ', $score['competency_improved']) }}</p>
+                                <p>belum tercapai, menunjukkan penguasaan
+                                    {{ implode(', ', $score['competency_improved']) }}</p>
                             @endif
                         </td>
                     </tr>

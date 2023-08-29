@@ -142,7 +142,8 @@
                             </td>
                             <td class="b-0" style="padding: 0px; vertical-align: top">Tahun Pelajaran</td>
                             <td class="b-0" style="padding: 0px; vertical-align: top">:</td>
-                            <td class="b-0" style="padding: 0px; vertical-align: top">2022/2023</td>
+                            <td class="b-0" style="padding: 0px; vertical-align: top">
+                                {{ $result_profile['school_year'] }}</td>
                         </tr>
                         <tr>
                             <td class="b-0" style="padding: 0px">NISN</td>
@@ -281,12 +282,6 @@
                     </td>
                     <td colspan="2" class="text-center">{{ $rata_assegment }}</td>
                     <td colspan="2" class="text-center">{{ $rata_skill }}</td>
-                </tr>
-                <tr>
-                    <td colspan="5" class="b-0"></td>
-                    <td colspan="2" class="text-center">
-                        <b>PERINGKAT KE:</b><br><br><br>Dari .... Siswa
-                    </td>
                 </tr>
             @else
                 <tr>
@@ -472,53 +467,48 @@
                     </table>
                     <div style="height: 10px"></div> --}}
                     <table class="table">
-                        @if ($type_template == 'uas')
-                            <table class="table">
-                                <tr>
-                                    <td class="b-0">Diberikan di</td>
-                                    <td class="b-0">: {{ $result_other['place'] ?? 'Tidak diketahui' }}</td>
-                                    <td class="b-0" style="width: 50px"></td>
-                                    <td class="b-0" colspan="2">KEPUTUSAN</td>
-                                </tr>
-                                <tr>
-                                    <td class="b-0">tanggal</td>
-                                    <td class="b-0">:
-                                        {{ isset($result_other['date']) ? DateHelper::getTanggal($result_other['date']) : '' }}
-                                    </td>
-                                    <td class="b-0"></td>
-                                    <td class="b-0" colspan="2">Dengan memperhatikan hasil yang dicapai</td>
-                                </tr>
-                                <tr>
-                                    <td colspan="3" class="b-0"></td>
-                                    <td class="b-0" colspan="2">semester 1 dan 2, maka peserta didik ini
-                                        ditetapkan
-                                    </td>
-                                </tr>
-                                @if ($result_other['promotion'] == 'Y')
-                                    <tr>
-                                        <td colspan="3" class="b-0"></td>
-                                        <td class="b-0" style="width: 80px">Naik kelas</td>
-                                        <td class="b-0">: {{ $result_profile['level'] + 1 }}</td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="3" class="b-0"></td>
-                                        <td class="b-0" colspan="2"><s>Tinggal di Kelas</s></td>
-                                    </tr>
-                                @else
-                                    <tr>
-                                        <td colspan="3" class="b-0"></td>
-                                        <td class="b-0" style="width: 80px"><s>Naik kelas</s></td>
-                                        <td class="b-0">: </td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="3" class="b-0"></td>
-                                        <td class="b-0">Tinggal di Kelas</td>
-                                        <td class="b-0">: {{ $result_profile['level'] }}</td>
-                                    </tr>
-                                @endif
-                            </table>
+                        <tr>
+                            <td class="b-0">Diberikan di</td>
+                            <td class="b-0">: {{ $result_other['place'] ?? 'Tidak diketahui' }}</td>
+                            <td class="b-0" style="width: 50px"></td>
+                            <td class="b-0" colspan="2">KEPUTUSAN</td>
+                        </tr>
+                        <tr>
+                            <td class="b-0">tanggal</td>
+                            <td class="b-0">:
+                                {{ isset($result_other['date']) ? DateHelper::getTanggal($result_other['date']) : '' }}
+                            </td>
+                            <td class="b-0"></td>
+                            <td class="b-0" colspan="2">Dengan memperhatikan hasil yang dicapai</td>
+                        </tr>
+                        <tr>
+                            <td colspan="3" class="b-0"></td>
+                            <td class="b-0" colspan="2">semester 1 dan 2, maka peserta didik ini
+                                ditetapkan
+                            </td>
+                        </tr>
+                        @if ($result_other['promotion'] == 'Y')
+                            <tr>
+                                <td colspan="3" class="b-0"></td>
+                                <td class="b-0" style="width: 80px">Naik kelas</td>
+                                <td class="b-0">: {{ $result_profile['level'] + 1 }}</td>
+                            </tr>
+                            <tr>
+                                <td colspan="3" class="b-0"></td>
+                                <td class="b-0" colspan="2"><s>Tinggal di Kelas</s></td>
+                            </tr>
+                        @else
+                            <tr>
+                                <td colspan="3" class="b-0"></td>
+                                <td class="b-0" style="width: 80px"><s>Naik kelas</s></td>
+                                <td class="b-0">:</td>
+                            </tr>
+                            <tr>
+                                <td colspan="3" class="b-0"></td>
+                                <td class="b-0">Tinggal di Kelas</td>
+                                <td class="b-0">: {{ $result_profile['level'] }}</td>
+                            </tr>
                         @endif
-
                     </table>
                     <table class="table">
                         <tr>

@@ -30,6 +30,7 @@ use App\Models\SubjectTeacher;
 use App\Models\Teacher;
 use App\Models\TeacherNote;
 use App\Models\TemplateConfiguration;
+use App\Models\DefaultTemplate;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -188,11 +189,36 @@ class PreviewController extends Controller
         // dd('print other');
         $school_year = SchoolYear::where('slug', $_GET['year'])->first();
 
+        $defaultTemplate = DefaultTemplate::where('id_school_year', $school_year->slug)->first();
+
+        if (empty($school_year)) {
+            session()->put('message', 'Tahun Ajaran belum di ketahui , silahkan setting terlebih dahulu!');
+            return view('pages.v_error');
+        }
+
+        if (empty($defaultTemplate)) {
+            session()->put('message', 'Admin belum mengaktifkan template raport');
+            return view('pages.v_error');
+        }
+
+
         $student_class = StudentClass::with('student', 'study_class', 'study_class.level', 'study_class.major')->where('slug', $_GET['student'])->latest()->first();
-        $template = TemplateConfiguration::where([
-            ['id_major', $student_class->study_class->major->id],
-            ['id_school_year', $school_year->id],
-        ])->first();
+
+        if ($defaultTemplate->type == 'tingkatan' && !empty($defaultTemplate)) {
+
+            $template = TemplateConfiguration::where([
+                ['id_level', $student_class->study_class->level->id],
+                ['id_school_year', $school_year->id],
+            ])->first();
+
+        } else if ($defaultTemplate->type == 'jurusan' && !empty($defaultTemplate)) {
+
+            $template = TemplateConfiguration::where([
+                ['id_major', $student_class->study_class->major->id],
+                ['id_school_year', $school_year->id],
+            ])->first();
+
+        }
 
         $subjects = SubjectTeacher::whereRaw('JSON_CONTAINS(id_study_class, \'["' . $student_class->id_study_class . '"]\')')
             ->where([
@@ -205,17 +231,17 @@ class PreviewController extends Controller
         if (!empty($template)) {
             switch ($template->template) {
                 case 'k13':
-                    return $this->preview_k13($student_class, $setting, $school_year, $subjects, $template->type);
+                    return $this->preview_k13($student_class, $setting, $school_year, $subjects, $template->type, $defaultTemplate);
                     break;
                 case 'merdeka':
                     $type = (session('role') == 'admin') ? $template->type : $_GET['type'];
-                    return $this->preview_merdeka($student_class, $setting, $school_year, $subjects, $type);
+                    return $this->preview_merdeka($student_class, $setting, $school_year, $subjects, $type, $defaultTemplate);
                     break;
                 case 'manual2':
-                    return $this->preview_manual2($student_class, $setting, $school_year, $subjects);
+                    return $this->preview_manual2($student_class, $setting, $school_year, $subjects, $defaultTemplate);
                     break;
                 default:
-                    return $this->preview_manual($student_class, $setting, $school_year, $subjects, $template->type);
+                    return $this->preview_manual($student_class, $setting, $school_year, $subjects, $template->type, $defaultTemplate);
                     break;
             }
         } else {
@@ -377,8 +403,14 @@ class PreviewController extends Controller
         return $pdf->stream();
     }
 
-    function preview_merdeka($student_class, $setting, $school_year, $subjects, $type_template)
+    function preview_merdeka($student_class, $setting, $school_year, $subjects, $type_template, $defaultTemplate)
     {
+
+        if (empty($defaultTemplate)) {
+            session()->put('message', 'Admin belum mengaktifkan template raport');
+            return view('pages.v_error');
+        }
+
         // dd($student_class);
         $result_profile = [
             'name' => strtoupper($student_class->student->name),
@@ -388,6 +420,7 @@ class PreviewController extends Controller
             'study_class' => $student_class->study_class->name,
             'level' => $student_class->study_class->level->name,
             'fase' => $student_class->study_class->level->fase,
+            'major' => $student_class->study_class->major->name,
             'semester_number' => substr($school_year->name, -1),
             'semester' => substr($school_year->name, -1) == 1 ? 'Ganjil' : 'Genap',
             'school_year' => substr($school_year->name, 0, 9),
@@ -526,12 +559,18 @@ class PreviewController extends Controller
             'nip_teacher' => $teacher ? $teacher->nip : '',
             'signature' => $config && $config['signature'] != null ? public_path($config->signature) : null,
         ];
-        $pdf = PDF::loadView('content.previews.merdeka.v_print_pas', compact('result_score', 'result_extra', 'result_attendance', 'result_kop', 'result_profile', 'result_other', 'type_template'));
+        $pdf = PDF::loadView('content.previews.merdeka.v_print_pas', compact('result_score', 'result_extra', 'result_attendance', 'result_kop', 'result_profile', 'result_other', 'type_template', 'defaultTemplate'));
         return $pdf->stream();
     }
 
-    function preview_manual($student_class, $setting, $school_year, $subjects, $type_template)
+    function preview_manual($student_class, $setting, $school_year, $subjects, $type_template, $defaultTemplate)
     {
+
+        if (empty($defaultTemplate)) {
+            session()->put('message', 'Admin belum mengaktifkan template raport');
+            return view('pages.v_error');
+        }
+
         $letter_head = Letterhead::first();
         $result_kop = [
             'text1' => $letter_head ? $letter_head->text1 : null,
@@ -550,6 +589,7 @@ class PreviewController extends Controller
             'study_class' => $student_class->study_class->name,
             'fase' => $student_class->study_class->level->fase,
             'level' => $student_class->study_class->level->name,
+            'major' => $student_class->study_class->major->name,
             'semester_number' => substr($school_year->name, -1),
             'semester' => substr($school_year->name, -1) == 1 ? 'Ganjil' : 'Genap',
             'school_year' => substr($school_year->name, 0, 9),
@@ -682,12 +722,18 @@ class PreviewController extends Controller
             ];
         }
         // $pdf = PDF::loadView('content.previews.manual.v_print_pas', compact('result_profile', 'result_kop', 'result_attitude', 'result_extra', 'result_other', 'result_achievement', 'result_attendance'));
-        $pdf = PDF::loadView('content.previews.manual.v_print_pas', compact('result_profile', 'result_kop', 'result_attitude', 'result_score', 'result_extra', 'result_other', 'result_achievement', 'result_attendance', 'type_template'));
+        $pdf = PDF::loadView('content.previews.manual.v_print_pas', compact('result_profile', 'result_kop', 'result_attitude', 'result_score', 'result_extra', 'result_other', 'result_achievement', 'result_attendance', 'type_template', 'defaultTemplate'));
         return $pdf->stream();
     }
 
-    function preview_manual2($student_class, $setting, $school_year, $subjects)
+    function preview_manual2($student_class, $setting, $school_year, $subjects, $defaultTemplate)
     {
+
+        if (empty($defaultTemplate)) {
+            session()->put('message', 'Admin belum mengaktifkan template raport');
+            return view('pages.v_error');
+        }
+
         // dd($subjects);
         $letter_head = Letterhead::first();
         $result_kop = [
@@ -874,12 +920,19 @@ class PreviewController extends Controller
             });
         }
         // dd($result_score);
-        $pdf = PDF::loadView('content.previews.manual2.v_print_pas', compact('result_profile', 'result_kop', 'result_attitude', 'result_score', 'result_extra', 'result_other', 'result_achievement', 'result_attendance'));
+
+        $pdf = PDF::loadView('content.previews.manual2.v_print_pas', compact('result_profile', 'result_kop', 'result_attitude', 'result_score', 'result_extra', 'result_other', 'result_achievement', 'result_attendance', 'defaultTemplate'));
         return $pdf->stream();
     }
 
-    function preview_k13($student_class, $setting, $school_year, $subjects, $type_template)
+    function preview_k13($student_class, $setting, $school_year, $subjects, $type_template, $defaultTemplate)
     {
+
+        if (empty($defaultTemplate)) {
+            session()->put('message', 'Admin belum mengaktifkan template raport');
+            return view('pages.v_error');
+        }
+
         $letter_head = Letterhead::first();
         $result_kop = [
             'text1' => $letter_head ? $letter_head->text1 : null,
@@ -898,6 +951,7 @@ class PreviewController extends Controller
             'study_class' => $student_class->study_class->name,
             'fase' => $student_class->study_class->level->fase,
             'level' => $student_class->study_class->level->name,
+            'major' => $student_class->study_class->major->name,
             'semester_number' => substr($school_year->name, -1),
             'semester' => substr($school_year->name, -1) == 1 ? 'Ganjil' : 'Genap',
             'school_year' => substr($school_year->name, 0, 9),
@@ -1089,7 +1143,7 @@ class PreviewController extends Controller
         ];
         // dd($result_achievement);
 
-        $pdf = PDF::loadView('content.previews.k13.v_print_pas', compact('result_profile', 'result_kop', 'result_attitude', 'result_score', 'result_extra', 'result_other', 'result_achievement', 'result_attendance', 'type_template'));
+        $pdf = PDF::loadView('content.previews.k13.v_print_pas', compact('result_profile', 'result_kop', 'result_attitude', 'result_score', 'result_extra', 'result_other', 'result_achievement', 'result_attendance', 'type_template', 'defaultTemplate'));
         return $pdf->stream();
     }
 }
