@@ -6,6 +6,9 @@
 /public/storage
 # /public/storage/fonts
 /public/logo
+/public/asset/letter_head
+/public/asset/signature
+/public/asset/cover
 /storage/*.key
 /storage/setting.json
 /vendor
@@ -21,6 +24,3 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
-resources/views/content/previews/manual2/v_print_pas.blade.php
-/resources/views/layout/admin/v_sidebar_admin.blade.php
-app/Http/Controllers/PreviewController.php
