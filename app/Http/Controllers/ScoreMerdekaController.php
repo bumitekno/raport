@@ -21,12 +21,13 @@ class ScoreMerdekaController extends Controller
     {
         // dd(session()->all());
         $data = StudentClass::join('users', 'student_classes.id_student', '=', 'users.id')
-            ->select('student_classes.id', 'student_classes.slug', 'student_classes.id_student', 'student_classes.status',  'student_classes.year', 'users.name', 'users.gender', 'users.file', 'users.email', 'users.place_of_birth', 'users.date_of_birth')
+            ->select('student_classes.id', 'student_classes.slug', 'student_classes.id_student', 'student_classes.status', 'student_classes.year', 'users.name', 'users.gender', 'users.file', 'users.email', 'users.place_of_birth', 'users.date_of_birth')
             ->where([
                 ['id_study_class', session('teachers.id_study_class')],
                 ['year', session('year')],
                 ['student_classes.status', 1],
             ])->get();
+
         $result = [];
         foreach ($data as $student) {
             $score = ScoreMerdeka::where([
@@ -37,6 +38,7 @@ class ScoreMerdekaController extends Controller
                 ['type', session('teachers.type')],
                 ['id_school_year', session('id_school_year')]
             ])->first();
+
             $result[] = [
                 'slug' => $student->slug,
                 'name' => $student->name,
@@ -47,7 +49,7 @@ class ScoreMerdekaController extends Controller
                 'score' => $score ? $score->final_score : 0
             ];
         }
-        // dd($data)
+
         if ($request->ajax()) {
             return DataTables::of($result)
                 ->addIndexColumn()
@@ -99,9 +101,11 @@ class ScoreMerdekaController extends Controller
             ['id_type_competence', 2],
             ['id_school_year', session('id_school_year')],
         ])->get();
-        // dd($competence_achievement);
 
-        $student_class = StudentClass::where('slug', $slug)->first();
+        //dd($competence_achievement);
+
+        $student_class = StudentClass::where('slug', $slug)->latest()->first();
+
         $score = ScoreMerdeka::where([
             ['id_student_class', $student_class->id],
             ['id_study_class', session('teachers.id_study_class')],
@@ -110,6 +114,9 @@ class ScoreMerdekaController extends Controller
             ['type', session('teachers.type')],
             ['id_school_year', session('id_school_year')]
         ])->first();
+
+
+
         $config = Config::where([
             ['id_school_year', session('id_school_year')],
             ['status', 1]
@@ -157,7 +164,7 @@ class ScoreMerdekaController extends Controller
 
     public function storeOrUpdate(ScoreRequest $request)
     {
-        // dd($request);
+        //dd($request);
         $data = $request->validated();
         ScoreMerdeka::updateOrCreate(
             [
@@ -169,13 +176,13 @@ class ScoreMerdekaController extends Controller
                 'id_school_year' => $data['id_school_year'],
             ],
             [
-                'score_formative' =>  $data['formative'],
-                'average_formative' =>  $data['average_formative'],
-                'score_summative' =>  $data['sumatif'],
-                'average_summative' =>  $data['average_summative'],
-                'score_uts' =>  $data['uts'],
-                'score_uas' =>  $request['type'] == 'uas' ? $data['uas'] : null,
-                'final_score' =>  $data['final_score'],
+                'score_formative' => $data['formative'],
+                'average_formative' => $data['average_formative'],
+                'score_summative' => $data['sumatif'],
+                'average_summative' => $data['average_summative'],
+                'score_uts' => $data['uts'],
+                'score_uas' => $request['type'] == 'uas' ? $data['uas'] : null,
+                'final_score' => $data['final_score'],
             ]
         );
         Helper::toast('Berhasil menyimpan data', 'success');

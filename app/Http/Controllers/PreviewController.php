@@ -81,7 +81,7 @@ class PreviewController extends Controller
         } else {
             // dd(session()->all());
             $students = StudentClass::join('users', 'student_classes.id_student', '=', 'users.id')
-                ->select('student_classes.id', 'student_classes.slug', 'student_classes.id_student', 'student_classes.status',  'student_classes.year', 'users.name', 'users.file', 'users.nis')
+                ->select('student_classes.id', 'student_classes.slug', 'student_classes.id_student', 'student_classes.status', 'student_classes.year', 'users.name', 'users.file', 'users.nis')
                 ->where([
                     ['id_study_class', session('id_study_class')],
                     ['student_classes.status', 1],
@@ -182,6 +182,8 @@ class PreviewController extends Controller
             ['slug', $_GET['student']],
             ['year', substr($school_year->name, 0, 4)]
         ])->latest()->first();
+
+
         $template = TemplateConfiguration::where([
             ['id_major', $student_class->study_class->major->id],
             ['id_school_year', $school_year->id],
@@ -215,9 +217,13 @@ class PreviewController extends Controller
         $student_class = StudentClass::where([
             ['slug', $_GET['student']],
             ['status', 1]
-        ])->with(['student', 'student.study_class', 'student.families' => function ($query) {
-            $query->whereIn('type', ['father', 'mother', 'guardian']);
-        }])->first();
+        ])->with([
+                    'student',
+                    'student.study_class',
+                    'student.families' => function ($query) {
+                        $query->whereIn('type', ['father', 'mother', 'guardian']);
+                    }
+                ])->first();
 
         // Mendapatkan data parents yang bertype 'father' atau 'mother' jika ada, atau mengembalikan null jika tidak ada
         $families = $student_class->student->families->first(function ($family) {
@@ -375,9 +381,12 @@ class PreviewController extends Controller
         ])->latest()->first();
 
         $competencies = CompetenceAchievement::where('status', 1)->get();
+
         $result_score = [];
-        // dd($student_class);
+        //dd($student_class);
+
         foreach ($subjects as $subject) {
+
             $score = ScoreMerdeka::where([
                 ['id_student_class', $student_class->id],
                 ['id_school_year', $school_year->id],
@@ -387,7 +396,7 @@ class PreviewController extends Controller
                 $item->id_study_class = json_decode($item->id_study_class);
                 return $item;
             });
-            // dd($score);
+
             $score_competencies = ScoreCompetency::where([
                 ['id_student_class', $student_class->id],
                 ['id_teacher', $subject->id_teacher],
@@ -396,10 +405,13 @@ class PreviewController extends Controller
                 ['id_school_year', $school_year->id],
             ])->get();
 
+            //dd($score_competencies);
+
             $nilai = null;
-            if (!$score->isEmpty()) {
+
+            if (!empty($score)) {
                 $nilai = collect($score)
-                    ->firstWhere('id_teacher', $subject->id_teacher)
+                    ->Where('id_teacher', $subject->id_teacher)
                     ->where('id_study_class', $student_class->id_study_class)
                     ->where('id_course', $subject->id_course)
                     ->where('type', $type_template)
@@ -411,6 +423,7 @@ class PreviewController extends Controller
 
             foreach ($score_competencies as $score_competency) {
                 $archieved_ids = json_decode($score_competency->competency_archieved);
+
                 $improved_ids = json_decode($score_competency->competency_improved);
 
                 $archieved_names = $competencies->whereIn('id', $archieved_ids)->pluck('achievement');
@@ -419,18 +432,21 @@ class PreviewController extends Controller
                 $competency_archieved = collect($competency_archieved)->merge($archieved_names);
                 $competency_improved = collect($competency_improved)->merge($improved_names);
             }
-            // dd($nilai);
+
+            //dd($nilai);
 
             $result_score[] = [
                 'id_course' => $subject->id_course,
                 'course' => $subject->course->name,
-                'score' => empty($nilai) ? null : $nilai->final_score,
+                'score' => empty($nilai) ? 0 : $nilai->final_score,
                 'competence_archieved' => $competency_archieved ? $competency_archieved->toArray() : [],
                 'competency_improved' => $competency_improved ? $competency_improved->toArray() : [],
 
             ];
         }
-        // dd($result_score);
+
+        //dd($result_score);
+
         $result_extra = [];
 
         $extras = Extracurricular::where('status', 1)->get();
@@ -438,7 +454,6 @@ class PreviewController extends Controller
         foreach ($extras as $extra) {
             $score_extra = ScoreExtracurricular::where([
                 ['id_study_class', $student_class->id_study_class],
-                // ['id_teacher', Auth::guard('teacher')->user()->id],
                 ['id_school_year', $school_year->id],
                 ['id_extra', $extra->id],
             ])->first();
