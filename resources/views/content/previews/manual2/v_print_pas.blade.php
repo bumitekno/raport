@@ -282,12 +282,12 @@
                     <td colspan="2" class="text-center">{{ $rata_assegment }}</td>
                     <td colspan="2" class="text-center">{{ $rata_skill }}</td>
                 </tr>
-                <tr>
-                    <td colspan="5" class="b-0"></td>
-                    <td colspan="2" class="text-center">
-                        <b>PERINGKAT KE:</b><br><br><br>Dari .... Siswa
-                    </td>
-                </tr>
+                <!--<tr>-->
+                <!--    <td colspan="5" class="b-0"></td>-->
+                <!--    <td colspan="2" class="text-center">-->
+                <!--        <b>PERINGKAT KE:</b><br><br><br>Dari .... Siswa-->
+                <!--    </td>-->
+                <!--</tr>-->
             @else
                 <tr>
                     <td colspan="7" class="text-center">Belum ada mapel yang dinilai</td>
@@ -530,7 +530,8 @@
                         <tr>
                             <td colspan="2" class="text-center b-0" style="vertical-align: top">
                                 <p class="text-uppercase text-center">Orang Tua / Wali</p>
-                                <br><br><br><br>
+                                <br><br><br><br><br>
+                                <p style="text-align: center; margin-top : -15px">___________________</p>
                                 <p>&nbsp;</p>
                             </td>
                             <td colspan="3" class="b-0 text-center" style="vertical-align: top; width: 50%">

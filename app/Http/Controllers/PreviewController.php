@@ -137,6 +137,7 @@ class PreviewController extends Controller
 
     public function print($year)
     {
+        // dd(session()->all());
         $school_year = SchoolYear::where('slug', $year)->first();
 
         $student_class = StudentClass::with('student', 'study_class', 'study_class.level', 'study_class.major')->where([
@@ -175,10 +176,12 @@ class PreviewController extends Controller
 
     public function print_other()
     {
-        // dd('print other');
         $school_year = SchoolYear::where('slug', $_GET['year'])->first();
 
-        $student_class = StudentClass::with('student', 'study_class', 'study_class.level', 'study_class.major')->where('slug', $_GET['student'])->latest()->first();
+        $student_class = StudentClass::with('student', 'study_class', 'study_class.level', 'study_class.major')->where([
+            ['slug', $_GET['student']],
+            ['year', substr($school_year->name, 0, 4)]
+        ])->latest()->first();
         $template = TemplateConfiguration::where([
             ['id_major', $student_class->study_class->major->id],
             ['id_school_year', $school_year->id],
@@ -662,7 +665,7 @@ class PreviewController extends Controller
 
     function preview_manual2($student_class, $setting, $school_year, $subjects, $type_template)
     {
-        // dd($type_template);
+        // dd($student_class);
         $letter_head = Letterhead::first();
         $result_kop = [
             'text1' => $letter_head ? $letter_head->text1 : null,

@@ -309,12 +309,12 @@
                 <td colspan="2" class="text-center">155</td>
                 <td colspan="2" class="text-center">165</td>
             </tr>
-            <tr>
-                <td colspan="5" class="b-0"></td>
-                <td colspan="2" class="text-center">
-                    <b>PERINGKAT KE:</b><br><br><br>Dari .... Siswa
-                </td>
-            </tr>
+            <!--<tr>-->
+            <!--    <td colspan="5" class="b-0"></td>-->
+            <!--    <td colspan="2" class="text-center">-->
+            <!--        <b>PERINGKAT KE:</b><br><br><br>Dari .... Siswa-->
+            <!--    </td>-->
+            <!--</tr>-->
             <tr>
                 <td style="height: 10px" colspan="7" class="b-0"></td>
             </tr>
@@ -536,7 +536,8 @@
                         <tr>
                             <td colspan="2" class="text-center b-0" style="vertical-align: top">
                                 Orang Tua / Wali <br> Peserta Didik
-                                <br><br><br><br>
+                                <br><br><br><br><br>
+                                <p style="text-align: center; margin-top : -15px">___________________</p>
                                 <p>&nbsp;</p>
                             </td>
                             <td colspan="3" class="b-0 text-center" style="vertical-align: top">

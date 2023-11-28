@@ -38,7 +38,9 @@ class StudentClassController extends Controller
                     ->where([
                         ['id_study_class', $get_class->id],
                         ['year', $_GET['year']],
-                    ])->get();
+                    ])
+                    ->orderBy('users.name', 'ASC')
+                    ->get();
             }
             return DataTables::of($data)
                 ->addIndexColumn()

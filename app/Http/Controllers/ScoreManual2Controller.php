@@ -30,7 +30,9 @@ class ScoreManual2Controller extends Controller
                 ['id_study_class', session('teachers.id_study_class')],
                 ['year', session('year')],
                 ['student_classes.status', 1],
-            ])->get();
+            ])
+            ->orderBy('users.name', 'ASC')
+            ->get();
         $config = Config::where([
             ['id_school_year', session('id_school_year')],
             ['status', 1]
