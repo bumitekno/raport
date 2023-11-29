@@ -64,7 +64,7 @@
                                                     <div class="d-flex">
                                                         <div class="usr-img-frame mr-2 rounded-circle">
                                                             <img alt="avatar" class="img-fluid rounded-circle"
-                                                                src="{{ $student['file'] != null ? asset($row['file']) : asset('asset/img/90x90.jpg') }}">
+                                                                src="{{ $student['file'] != null ? asset($student['file']) : asset('asset/img/90x90.jpg') }}">
                                                         </div>
                                                         <p class="align-self-center mb-0 admin-name">{{ $student['name'] }}</p>
                                                     </div>
