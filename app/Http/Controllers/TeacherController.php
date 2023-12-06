@@ -15,6 +15,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\DataTables;
 use Maatwebsite\Excel\Facades\Excel;
+use Illuminate\Support\Arr;
 
 class TeacherController extends Controller
 {
@@ -106,7 +107,7 @@ class TeacherController extends Controller
         if ($data['password']) {
             $teacher->password = $data['password'];
         }
-        if ($data['id_class']) {
+        if (Arr::has($data, 'id_class')) {
             $teacher->id_class = $data['id_class'];
         }
         // dd($teacher);
