@@ -33,7 +33,8 @@ class LegerController extends Controller
             ->where('student_classes.year', session('year'))
             ->where('student_classes.status', 1)
             ->where('student_classes.id_study_class', $study_class->id)
-            ->orderBy('us.nis', 'ASC')
+            ->orderBy('us.name', 'ASC')
+            // ->orderBy('us.nis', 'ASC')
             ->select('student_classes.id', 'us.nis', 'us.name')
             ->get();
 

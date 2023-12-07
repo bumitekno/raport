@@ -85,7 +85,8 @@ class PreviewController extends Controller
                 ->where([
                     ['id_study_class', session('id_study_class')],
                     ['student_classes.status', 1],
-                ])->get();
+                ])->orderBy('users.name', 'ASC')
+                ->get();
             $years = SchoolYear::all();
             $years = SchoolYearResource::collection($years)->toArray(request());
             if ($_GET['template'] == 'merdeka') {

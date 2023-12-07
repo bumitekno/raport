@@ -142,7 +142,7 @@
                             </td>
                             <td class="b-0" style="padding: 0px; vertical-align: top">Tahun Pelajaran</td>
                             <td class="b-0" style="padding: 0px; vertical-align: top">:</td>
-                            <td class="b-0" style="padding: 0px; vertical-align: top">2022/2023</td>
+                            <td class="b-0" style="padding: 0px; vertical-align: top">2023/2024</td>
                         </tr>
                         <tr>
                             <td class="b-0" style="padding: 0px">NISN</td>

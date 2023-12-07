@@ -23,7 +23,8 @@ class AttitudeGradeController extends Controller
                 ['id_study_class', session('id_study_class')],
                 ['year', session('year')],
                 ['student_classes.status', 1],
-            ])->get();
+            ])->orderBy('users.name', 'ASC')
+            ->get();
 
         $result = [];
         $attitudes = Attitude::where('type', $type)->get();
