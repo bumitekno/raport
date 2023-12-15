@@ -10,6 +10,8 @@ use App\Models\GeneralWeighting;
 use App\Models\ScoreKd;
 use App\Models\StudentClass;
 use App\Models\SubjectTeacher;
+use App\Models\User;
+use App\Models\StudyClass;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -112,6 +114,22 @@ class ScoreKdController extends Controller
         }
         // dd($weight);
         $student_class = StudentClass::where('slug', $slug)->first();
+
+        $student_x = User::where('id', $student_class->id_student)->first();
+
+        $biodate_siswa = [];
+
+        if (!empty($student_x) && !empty($student_class)) {
+            if (!empty($student_class->id_study_class)) {
+                $biodate_siswa = [
+                    'name' => $student_x->name,
+                    'nis' => $student_x->nis,
+                    'nisn' => $student_x->nisn,
+                    'kelas' => StudyClass::where('id', $student_class->id_study_class)->first()?->name
+                ];
+            }
+        }
+
         $subject_teacher = SubjectTeacher::whereRaw('JSON_CONTAINS(id_study_class, \'["' . session('teachers.id_study_class') . '"]\')')
             ->where([
                 ['id_teacher', Auth::guard('teacher')->user()->id],
@@ -125,6 +143,7 @@ class ScoreKdController extends Controller
             ['id_school_year', session('id_school_year')],
             ['type', session('teachers.type')]
         ])->first();
+
         $result = [
             'id_study_class' => session('teachers.id_study_class'),
             'id_subject_teacher' => $subject_teacher->id,
@@ -147,9 +166,9 @@ class ScoreKdController extends Controller
         }
         // dd($weight);
         if (session('teachers.type') == 'uas') {
-            return view('content.score_k13.v_create_student_score', compact('weight', 'basic_competencies', 'result'));
+            return view('content.score_k13.v_create_student_score', compact('weight', 'basic_competencies', 'result','biodate_siswa'));
         } else {
-            return view('content.score_k13.v_create_student_score_uts', compact('weight', 'basic_competencies', 'result'));
+            return view('content.score_k13.v_create_student_score_uts', compact('weight', 'basic_competencies', 'result','biodate_siswa'));
         }
 
         // return view('content.score_k13.v_create_student_score', compact('weight', 'basic_competencies', 'result'));
