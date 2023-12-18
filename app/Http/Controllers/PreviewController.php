@@ -60,7 +60,7 @@ class PreviewController extends Controller
                                 ['id_school_year', $year->id],
                             ])->whereIn('id_student_class', $student_classes->pluck('id'))->exists();
                             break;
-                        case 'k16':
+                        case 'k13':
                             $score = ScoreKd::where([
                                 ['id_school_year', $year->id],
                             ])->whereIn('id_student_class', $student_classes->pluck('id'))->exists();
