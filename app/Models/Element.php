@@ -29,6 +29,6 @@ class Element extends Model
 
     public function subElements()
     {
-        return $this->hasMany(Element::class, 'id_element');
+        return $this->hasMany(SubElement::class, 'id_element');
     }
 }

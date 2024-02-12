@@ -472,13 +472,16 @@ class PreviewController extends Controller
                     }
                 }
             }
-            $result_extra[] = [
-                'id_extra' => $id_extra,
-                'name' => $name,
-                'score' => $score ? $score : null,
-                'description' => $description ? $description : null
-            ];
+            if($score!="-"){
+                $result_extra[] = [
+                    'id_extra' => $id_extra,
+                    'name' => $name,
+                    'score' => $score ? $score : null,
+                    'description' => $description ? $description : null
+                ];
+            }
         }
+        //dd($result_extra);
         $attendance = AttendanceScore::where([
             ['id_student_class', $student_class->id],
             ['id_school_year', $school_year->id],

@@ -112,68 +112,125 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($dimensions as $index => $dimension)
-                                        <tr data-toggle="collapse" data-target="#sub_element_{{ $dimension->id }}"
-                                            aria-expanded="false" aria-controls="sub_element_{{ $dimension->id }}"
-                                            class="accordion-toggle">
-                                            <td class="pointer">{{ $index + 1 }}</td>
-                                            <td class="pointer">{{ $dimension->name }}</td>
-                                            <td class="pointer">
-                                                @foreach ($dimension->elements as $elemen)
-                                                    <span class="badge badge-primary my-1"> {{ $elemen->name }} </span>
-                                                @endforeach
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td colspan="3" class="p-0">
-                                                <div class="collapse" id="sub_element_{{ $dimension->id }}"
-                                                    aria-labelledby="sub_element_{{ $dimension->id }}">
-                                                    <table class="table mb-0 table-hover">
-                                                        <thead>
-                                                            <tr>
-                                                                <th class="form-check">
-                                                                    <input type="checkbox"
-                                                                        class="form-check-input parent-checkbox"
-                                                                        id="parent-checkbox-{{ $index }}"
-                                                                        data-subelement="#sub_element_{{ $dimension->id }} input[type='checkbox']">
-                                                                </th>
-                                                                <th>Sub Element</th>
-                                                            </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            @foreach ($subElements as $sub_element)
-                                                                @if ($sub_element->id_dimension == $dimension->id)
-                                                                    @php
-                                                                        $isChecked = false;
-                                                                        if (isset($p5)) {
-                                                                            $subElementArr = json_decode($p5->sub_element);
-                                                                            foreach ($subElementArr as $subElem) {
-                                                                                if ($sub_element->id == $subElem->id_sub_element && $sub_element->id_dimension == $subElem->id_dimension) {
-                                                                                    $isChecked = true;
-                                                                                    break;
+                                    <div id="myGroup">
+                                        @foreach ($dimensions as $index => $dimension)
+
+                                            <tr>
+                                                <td class="pointer">{{ $index + 1 }}</td>
+                                                <td class="pointer">{{ $dimension->name }}</td>
+                                                <td class="pointer">
+                                                    @foreach ($dimension->elements as $elemen)
+                                                        <span class="badge badge-primary my-1 collapse-trigger" data-toggle="collapse" data-parent="#myGroup" data-target="#sub_element_{{ $elemen->id }}"
+                                                            aria-expanded="false" aria-controls="sub_element_{{ $elemen->id }}"
+                                                            > {{ $elemen->name }} </span>
+                                                    @endforeach
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <div class="accordion-group">
+
+                                                    <td colspan="3" class="p-0">
+                                                        @foreach ($dimension->elements as $element)
+                                                            <div class="collapse" data-parent="#myGroup" id="sub_element_{{ $element->id }}"
+                                                                aria-labelledby="sub_element_{{ $element->id }}">
+                                                                <table class="table mb-0 table-hover">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th class="col-1" style="position: relative;">
+                                                                                <input style="position:relative" type="checkbox"
+                                                                                    class="form-check-input parent-checkbox"
+                                                                                    id="parent-checkbox-{{ $index }}"
+                                                                                    data-subelement="#sub_element_{{ $element->id }} input[type='checkbox']">
+                                                                            </th>
+                                                                            <th>Sub Element</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                        @foreach ($element->subElements as $sub_element)
+                                                                            @if ($sub_element->id_element == $element->id)
+                                                                                @php
+                                                                                    $isChecked = false;
+                                                                                    if (isset($p5)) {
+                                                                                        $subElementArr = json_decode($p5->sub_element);
+                                                                                        foreach ($subElementArr as $subElem) {
+                                                                                            if ($sub_element->id == $subElem->id_sub_element && $sub_element->id_dimension == $subElem->id_dimension) {
+                                                                                                $isChecked = true;
+                                                                                                break;
+                                                                                            }
+                                                                                        }
+                                                                                    }
+                                                                                @endphp
+                                                                                <tr>
+                                                                                    <td class="col-1" style="position: relative;">
+                                                                                        <input style="position:relative" type="checkbox"
+                                                                                            class="form-check-input"
+                                                                                            name="sub_element[]"
+                                                                                            value="{{ $sub_element->id }}-{{ $dimension->id }}"
+                                                                                            id="checkbox{{ $index }}"
+                                                                                            {{ $isChecked ? 'checked' : '' }}>
+                                                                                    </td>
+                                                                                    <td>{{ $sub_element->name }}</td>
+                                                                                </tr>
+                                                                            @endif
+                                                                        @endforeach
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        @endforeach
+                                                    </td>
+                                                </div>
+                                            </tr>
+                                            {{-- <tr>
+                                                <td colspan="3" class="p-0">
+                                                    <div class="collapse" id="sub_element_{{ $dimension->id }}"
+                                                        aria-labelledby="sub_element_{{ $dimension->id }}">
+                                                        <table class="table mb-0 table-hover">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th class="form-check">
+                                                                        <input type="checkbox"
+                                                                            class="form-check-input parent-checkbox"
+                                                                            id="parent-checkbox-{{ $index }}"
+                                                                            data-subelement="#sub_element_{{ $dimension->id }} input[type='checkbox']">
+                                                                    </th>
+                                                                    <th>Sub Element</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                @foreach ($subElements as $sub_element)
+                                                                    @if ($sub_element->id_dimension == $dimension->id)
+                                                                        @php
+                                                                            $isChecked = false;
+                                                                            if (isset($p5)) {
+                                                                                $subElementArr = json_decode($p5->sub_element);
+                                                                                foreach ($subElementArr as $subElem) {
+                                                                                    if ($sub_element->id == $subElem->id_sub_element && $sub_element->id_dimension == $subElem->id_dimension) {
+                                                                                        $isChecked = true;
+                                                                                        break;
+                                                                                    }
                                                                                 }
                                                                             }
-                                                                        }
-                                                                    @endphp
-                                                                    <tr>
-                                                                        <td class="form-check">
-                                                                            <input type="checkbox"
-                                                                                class="form-check-input child-checkbox"
-                                                                                name="sub_element[]"
-                                                                                value="{{ $sub_element->id }}-{{ $dimension->id }}"
-                                                                                id="checkbox{{ $index }}"
-                                                                                {{ $isChecked ? 'checked' : '' }}>
-                                                                        </td>
-                                                                        <td>{{ $sub_element->name }}</td>
-                                                                    </tr>
-                                                                @endif
-                                                            @endforeach
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                            </td>
-                                        </tr>
-                                    @endforeach
+                                                                        @endphp
+                                                                        <tr>
+                                                                            <td class="form-check">
+                                                                                <input type="checkbox"
+                                                                                    class="form-check-input child-checkbox"
+                                                                                    name="sub_element[]"
+                                                                                    value="{{ $sub_element->id }}-{{ $dimension->id }}"
+                                                                                    id="checkbox{{ $index }}"
+                                                                                    {{ $isChecked ? 'checked' : '' }}>
+                                                                            </td>
+                                                                            <td>{{ $sub_element->name }}</td>
+                                                                        </tr>
+                                                                    @endif
+                                                                @endforeach
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </td>
+                                            </tr> --}}
+                                        @endforeach
+                                    </div>
                                 </tbody>
                             </table>
                         </div>
@@ -210,6 +267,9 @@
         @include('package.bootstrap-select.bootstrap-select_js')
         <script>
             $(function() {
+                $('.collapse-trigger').on('click', function(){
+                    $('.collapse').collapse('hide')
+                })
                 $("form").submit(function() {
                     $('#btnLoader').removeClass('d-none');
                     $('#btnSubmit').addClass('d-none');
