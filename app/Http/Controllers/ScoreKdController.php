@@ -21,7 +21,8 @@ class ScoreKdController extends Controller
 {
     public function index(Request $request)
     {
-        session()->put('title', 'Kelola Nilai K16');
+        session()->put('title', 'Input Nilai');
+        // session()->put('title', 'Kelola Nilai K16');
         $data = StudentClass::join('users', 'student_classes.id_student', '=', 'users.id')
             ->select('student_classes.id', 'student_classes.slug', 'student_classes.id_student', 'student_classes.status', 'student_classes.year', 'users.name', 'users.gender', 'users.file', 'users.email', 'users.place_of_birth', 'users.date_of_birth')
             ->where([
@@ -114,7 +115,6 @@ class ScoreKdController extends Controller
         }
         // dd($weight);
         $student_class = StudentClass::where('slug', $slug)->first();
-
         $student_x = User::where('id', $student_class->id_student)->first();
 
         $biodate_siswa = [];
