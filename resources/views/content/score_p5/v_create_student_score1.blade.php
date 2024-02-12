@@ -23,36 +23,12 @@
                     <div class="statbox widget box box-shadow">
                         <div class="widget-header">
                             <h4>{{ session('title') }}</h4>
-                            @if (!empty($biodate_siswa))
-                                <div class="widget-content widget-content-area br-8">
-                                    <table class="table table-borderless table-sm">
-                                        <tbody>
-                                            <tr>
-                                                <td class="text-right " scope="row">Nama : </td>
-                                                <td class="text-left"> {{ $biodate_siswa['name'] }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="text-right" scope="row">NIS : </td>
-                                                <td class="text-left"> {{ $biodate_siswa['nis'] }} </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="text-right" scope="row">NISN : </td>
-                                                <td class="text-left"> {{ $biodate_siswa['nisn'] }} </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="text-right" scope="row">Kelas : </td>
-                                                <td class="text-left"> {{ $biodate_siswa['kelas'] }}</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            @endif
                         </div>
                         <form action="{{ route('setting_scores.score.storeOrUpdate') }}" method="post">
                             @csrf
                             <div class="widget-content widget-content-area br-8">
                                 <div class="table-responsive">
-                                    <input type="hidden" name="type" value="uts">
+                                    <input type="hidden" name="type" value="uas">
                                     <table class="table table-bordered">
                                         <thead>
                                             <tr>
@@ -112,6 +88,7 @@
                                                             </div>
                                                         </div>
                                                     </div>
+
                                                     <div class="formative-inputs mt-2"></div>
                                                 </td>
                                                 <td class="average-formatif">{{ $result['average_formative'] }}</td>
@@ -137,6 +114,7 @@
                                                         <thead>
                                                             <tr>
                                                                 <th>UTS</th>
+                                                                <th>UAS</th>
                                                                 <th></th>
                                                             </tr>
                                                         </thead>
@@ -145,6 +123,11 @@
                                                                 <td><input type="text" class="form-control uts"
                                                                         name="uts" placeholder="Nilai UTS"
                                                                         value="{{ old('uts', $result['score_uts']) }}"
+                                                                        {{ $result['status_form'] == false ? 'readonly' : '' }}>
+                                                                </td>
+                                                                <td><input type="text" class="form-control uas"
+                                                                        name="uas" placeholder="Nilai UAS"
+                                                                        value="{{ old('uas', $result['score_uas']) }}"
                                                                         {{ $result['status_form'] == false ? 'readonly' : '' }}>
                                                                 </td>
                                                                 <td><button class="btn btn-outline-danger remove-uas"
@@ -209,7 +192,7 @@
                 if (scoreFormative) {
                     for (var i = 1; i < scoreFormative.length; i++) {
                         var formativeInput = `
-                        <div class="row my-1">
+            <div class="row my-1">
                 <div class="col-md-6">
                     <select name="id_competency[]" class="form-control">
                         <option value="" selected disabled>Pilih Kompetensi</option>
@@ -227,7 +210,7 @@
                     </div>
                 </div>
             </div>
-      `;
+        `;
                         $('.formative-inputs').append(formativeInput);
                     }
                 }
@@ -247,43 +230,43 @@
 
                 $(document).on("click", ".add-formative", function() {
                     const formativeInput = `
-                    <div class="row input-group-x mt-2">
-                        <div class="col-md-6">
-                                <select name="id_competency[]" class="form-control input-group">
-                                    <option value="" selected disabled>Pilih Kompetensi</option>
-                                    @foreach ($competence_achievement as $competency)
-                                    <option value="{{ $competency['id'] }}">{{ $competency['achievement'] }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="input-group">
-                                  <input type="text" class="form-control formative" placeholder="Formative" name="formative[]">
-                                    <div class="input-group-append">
-                                        <button class="btn btn-outline-secondary remove-formative" type="button"><i class="fas fa-trash"></i></button>
-                                </div>
-                               </div>
-                            </div>
+        <div class="row">
+            <div class="col-md-6">
+                <select name="id_competency[]" class="form-control">
+                    <option value="" selected disabled>Pilih Kompetensi</option>
+                    @foreach ($competence_achievement as $competency)
+                    <option value="{{ $competency['id'] }}">{{ $competency['achievement'] }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="col-md-6">
+                <div class="input-group">
+                    <input type="text" class="form-control formative" placeholder="Formative" name="formative[]">
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary remove-formative" type="button"><i class="fas fa-trash"></i></button>
                     </div>
-                `;
+                </div>
+            </div>
+        </div>
+    `;
                     $(this).closest("td").find(".formative-inputs").append(formativeInput);
                 });
 
                 $(document).on("click", ".remove-formative", function() {
-                    $(this).closest(".input-group-x").remove();
+                    $(this).closest(".row").remove();
                     hitungRataRataFormatif();
                     hitungNilaiAkhir();
                 });
 
                 $(document).on("click", ".add-sumatif", function() {
                     const sumatifInput = `
-                    <div class="input-group mt-2">
-                        <input type="text" class="form-control sumatif" placeholder="Sumatif" name="sumatif[]">
-                        <div class="input-group-append">
-                        <button class="btn btn-outline-secondary remove-sumatif" type="button"><i class="fas fa-trash"></i></button>
-                        </div>
-                    </div>
-                    `;
+      <div class="input-group mt-2">
+        <input type="text" class="form-control sumatif" placeholder="Sumatif" name="sumatif[]">
+        <div class="input-group-append">
+          <button class="btn btn-outline-secondary remove-sumatif" type="button"><i class="fas fa-trash"></i></button>
+        </div>
+      </div>
+    `;
                     $(this).closest("tbody").find(".sumatif-inputs").append(sumatifInput);
                 });
 
@@ -294,6 +277,7 @@
                 });
 
                 $(document).on("click", ".remove-uas", function() {
+                    $('.uas').val('');
                     $('.uts').val('');
                     hitungRataRataSumatif();
                     hitungNilaiAkhir();
@@ -304,7 +288,7 @@
                     hitungNilaiAkhir();
                 });
 
-                $(document).on("keyup", ".sumatif, .uts", function() {
+                $(document).on("keyup", ".sumatif, .uts, .uas", function() {
                     hitungRataRataSumatif();
                     hitungNilaiAkhir();
                 });
@@ -341,6 +325,7 @@
             }
 
             function hitungNilaiAkhir() {
+                console.log("tes");
                 let sumFormative = 0;
                 let countFormative = 0;
                 $(".formative").each(function() {
@@ -370,7 +355,9 @@
                 let bobotFormative = '{{ $weight['formative_weight'] }}' * 0.01;
                 let bobotSumative = '{{ $weight['sumative_weight'] }}' * 0.01;
                 let bobotUts = '{{ $weight['uts_weight'] }}' * 0.01;
-                let nilaiAkhir = (bobotFormative * averageFormatif) + (bobotSumative * averageSumatif) + (bobotUts * uts);
+                let bobotUas = '{{ $weight['uas_weight'] }}' * 0.01;
+                let nilaiAkhir = (bobotFormative * averageFormatif) + (bobotSumative * averageSumatif) + (bobotUts * uts) + (
+                    bobotUas * uas);
                 if (isNaN(nilaiAkhir)) {
                     nilaiAkhir = 0;
                 }

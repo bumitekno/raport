@@ -23,30 +23,6 @@
                     <div class="statbox widget box box-shadow">
                         <div class="widget-header">
                             <h4>{{ session('title') }}</h4>
-                            @if (!empty($biodate_siswa))
-                                <div class="widget-content widget-content-area br-8">
-                                    <table class="table table-borderless table-sm">
-                                        <tbody>
-                                            <tr>
-                                                <td class="text-right " scope="row">Nama : </td>
-                                                <td class="text-left"> {{ $biodate_siswa['name'] }}</td>
-                                            </tr>
-                                            <tr>
-                                                <td class="text-right" scope="row">NIS : </td>
-                                                <td class="text-left"> {{ $biodate_siswa['nis'] }} </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="text-right" scope="row">NISN : </td>
-                                                <td class="text-left"> {{ $biodate_siswa['nisn'] }} </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="text-right" scope="row">Kelas : </td>
-                                                <td class="text-left"> {{ $biodate_siswa['kelas'] }}</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            @endif
                         </div>
                         <form action="{{ route('setting_scores.score.storeOrUpdate') }}" method="post">
                             @csrf
@@ -123,13 +99,10 @@
                                                     <div class="input-group">
                                                         <input type="text" class="form-control sumatif"
                                                             placeholder="Sumatif 1" name="sumatif[]"
-                                                            value="{{ $result['score_summative'] != null ? $result['score_summative'][0] : '0' }}"
-                                                            {{ $result['status_form'] == false ? 'readonly' : '' }}>
+                                                            value="{{ $result['score_summative'] != null ? $result['score_summative'][0] : '0' }}" {{ $result['status_form'] == false ? 'readonly' : '' }}>
                                                         <div class="input-group-append">
                                                             <button class="btn btn-outline-secondary add-sumatif"
-                                                                type="button"
-                                                                {{ $result['status_form'] == false ? 'disabled' : '' }}><i
-                                                                    class="fas fa-plus"></i></button>
+                                                                type="button" {{ $result['status_form'] == false ? 'disabled' : '' }}><i class="fas fa-plus"></i></button>
                                                         </div>
                                                     </div>
                                                     <div class="sumatif-inputs mt-2"></div>
@@ -144,13 +117,10 @@
                                                             <tr>
                                                                 <td><input type="text" class="form-control uts"
                                                                         name="uts" placeholder="Nilai UTS"
-                                                                        value="{{ old('uts', $result['score_uts']) }}"
-                                                                        {{ $result['status_form'] == false ? 'readonly' : '' }}>
+                                                                        value="{{ old('uts', $result['score_uts']) }}" {{ $result['status_form'] == false ? 'readonly' : '' }}>
                                                                 </td>
                                                                 <td><button class="btn btn-outline-danger remove-uas"
-                                                                        type="button"
-                                                                        {{ $result['status_form'] == false ? 'disabled' : '' }}><i
-                                                                            class="fas fa-trash"></i></button>
+                                                                        type="button" {{ $result['status_form'] == false ? 'disabled' : '' }}><i class="fas fa-trash"></i></button>
                                                                 </td>
                                                             </tr>
                                                         </tbody>
@@ -247,43 +217,43 @@
 
                 $(document).on("click", ".add-formative", function() {
                     const formativeInput = `
-                    <div class="row input-group-x mt-2">
-                        <div class="col-md-6">
-                                <select name="id_competency[]" class="form-control input-group">
-                                    <option value="" selected disabled>Pilih Kompetensi</option>
-                                    @foreach ($competence_achievement as $competency)
-                                    <option value="{{ $competency['id'] }}">{{ $competency['achievement'] }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="input-group">
-                                  <input type="text" class="form-control formative" placeholder="Formative" name="formative[]">
-                                    <div class="input-group-append">
-                                        <button class="btn btn-outline-secondary remove-formative" type="button"><i class="fas fa-trash"></i></button>
-                                </div>
-                               </div>
-                            </div>
+                    <div class="row">
+            <div class="col-md-6">
+                <select name="id_competency[]" class="form-control">
+                    <option value="" selected disabled>Pilih Kompetensi</option>
+                    @foreach ($competence_achievement as $competency)
+                    <option value="{{ $competency['id'] }}">{{ $competency['achievement'] }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div class="col-md-6">
+                <div class="input-group">
+                    <input type="text" class="form-control formative" placeholder="Formative" name="formative[]">
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary remove-formative" type="button"><i class="fas fa-trash"></i></button>
                     </div>
-                `;
+                </div>
+            </div>
+        </div>
+    `;
                     $(this).closest("td").find(".formative-inputs").append(formativeInput);
                 });
 
                 $(document).on("click", ".remove-formative", function() {
-                    $(this).closest(".input-group-x").remove();
+                    $(this).closest(".input-group").remove();
                     hitungRataRataFormatif();
                     hitungNilaiAkhir();
                 });
 
                 $(document).on("click", ".add-sumatif", function() {
                     const sumatifInput = `
-                    <div class="input-group mt-2">
-                        <input type="text" class="form-control sumatif" placeholder="Sumatif" name="sumatif[]">
-                        <div class="input-group-append">
-                        <button class="btn btn-outline-secondary remove-sumatif" type="button"><i class="fas fa-trash"></i></button>
-                        </div>
-                    </div>
-                    `;
+      <div class="input-group mt-2">
+        <input type="text" class="form-control sumatif" placeholder="Sumatif" name="sumatif[]">
+        <div class="input-group-append">
+          <button class="btn btn-outline-secondary remove-sumatif" type="button"><i class="fas fa-trash"></i></button>
+        </div>
+      </div>
+    `;
                     $(this).closest("tbody").find(".sumatif-inputs").append(sumatifInput);
                 });
 

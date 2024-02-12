@@ -16,9 +16,8 @@ class ScoreCompetencyController extends Controller
 {
     public function index(Request $request)
     {
-        session()->put('title', 'Kelola Deskripsi');
         $data = StudentClass::join('users', 'student_classes.id_student', '=', 'users.id')
-            ->select('student_classes.id', 'student_classes.slug', 'student_classes.id_student', 'student_classes.status', 'student_classes.year', 'users.name', 'users.gender', 'users.file', 'users.email', 'users.place_of_birth', 'users.date_of_birth')
+            ->select('student_classes.id', 'student_classes.slug', 'student_classes.id_student', 'student_classes.status',  'student_classes.year', 'users.name', 'users.gender', 'users.file', 'users.email', 'users.place_of_birth', 'users.date_of_birth')
             ->where([
                 ['id_study_class', session('teachers.id_study_class')],
                 ['year', session('year')],
@@ -100,7 +99,6 @@ class ScoreCompetencyController extends Controller
     public function storeOrUpdate(ScoreCompetencyRequest $request)
     {
         $counts = $request->input('count_each');
-
         foreach ($counts as $index => $count) {
             $archieved = [];
             if ($request->has('competency_achieved_' . ($index + 1))) {

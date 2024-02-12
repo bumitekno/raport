@@ -127,7 +127,7 @@
         @endif
         <tr>
             <td colspan="8" style="font-size: 14pt !important" class="b-0 text-bold text-uppercase text-center">
-                RAPOR PESERTA DIDIK DAN PROFIL PESERTA DIDIK
+                LAPORAN HASIL BELAJAR
             </td>
         </tr>
         <thead>
@@ -135,43 +135,44 @@
                 <td colspan="8" class="b-0">
                     <table class="table b-0">
                         <tr class="b-0">
-                            <td class="b-0" style="padding: 0px; vertical-align: top">Nama Peserta Didik</td>
+                            <td class="b-0" style="padding: 0px; vertical-align: top; font-weight: bold;" width="25%">Nama Peserta Didik</td>
                             <td class="b-0" style="padding: 0px; vertical-align: top">:</td>
-                            <td class="b-0" style="padding: 0px">
+                            <td class="b-0" style="padding: 0px;" width="40%">
                                 {{ $result_profile['name'] }}
                             </td>
-                            <td class="b-0" style="padding: 0px; vertical-align: top">Kelas</td>
+                            <td class="b-0" style="padding: 0px; vertical-align: top; font-weight: bold;" width="20%">Kelas</td>
                             <td class="b-0" style="padding: 0px; vertical-align: top">:</td>
-                            <td class="b-0" style="padding: 0px; vertical-align: top">
+                            <td class="b-0" style="padding: 0px; vertical-align: top" width="15%">
                                 {{ $result_profile['study_class'] }}
-                            </td>
+                            </td>	
                         </tr>
                         <tr>
-                            <td class="b-0" style="padding: 0px">NISN</td>
+                            <td class="b-0" style="padding: 0px; font-weight: bold;">NISN</td>
                             <td class="b-0" style="padding: 0px">:</td>
                             <td class="b-0" style="padding: 0px">
                                 {{ $result_profile['nisn'] }}
                             </td>
-                            <td class="b-0" style="padding: 0px;">Semester</td>
+                            <td class="b-0" style="padding: 0px; font-weight: bold;">Semester</td>
                             <td class="b-0" style="padding: 0px;">:</td>
                             <td class="b-0" style="padding: 0px;">
                                 {{ $result_profile['semester_number'] . ' (' . $result_profile['semester'] . ')' }}
                             </td>
                         </tr>
                         <tr>
-                            <td class="b-0" style="padding: 0px; vertical-align: top">Sekolah</td>
+                            <td class="b-0" style="padding: 0px; vertical-align: top; font-weight: bold;">Sekolah</td>
                             <td class="b-0" style="padding: 0px; vertical-align: top">:</td>
                             <td class="b-0" style="padding: 0px; vertical-align: top">
                                 {{ $result_profile['school'] }}
                             </td>
-                            <td class="b-0" style="padding: 0px; vertical-align: top">Tahun Pelajaran</td>
+                            <td class="b-0" style="padding: 0px; vertical-align: top; font-weight: bold;">Tahun Pelajaran</td>
                             <td class="b-0" style="padding: 0px; vertical-align: top">:</td>
-                            <td class="b-0" style="padding: 0px; vertical-align: top">2022/2023</td>
+                            <td class="b-0" style="padding: 0px; vertical-align: top">
+                                {{ $result_profile['school_year'] }}</td>
                         </tr>
                         <tr>
-                            <td class="b-0" style="padding: 0px; vertical-align: top">Alamat</td>
+                            <td class="b-0" style="padding: 0px; vertical-align: top; font-weight: bold;">Alamat</td>
                             <td class="b-0" style="padding: 0px; vertical-align: top">:</td>
-                            <td class="b-0" style="padding: 0px;" colspan="4">
+                            <td class="b-0" style="padding: 0px;">
                                 {{ $result_profile['address_school'] }}
                             </td>
                         </tr>
@@ -220,11 +221,11 @@
             <tr>
                 <td class="b-0" colspan="8" style="font-size: 12pt">B. PENGETAHUAN DAN KETERAMPILAN</td>
             </tr>
-            <tr>
-                <td class="b-0" colspan="8" style="font-size: 12pt">Kriteria Ketuntasan Minimal Satuan
-                    Pendidikan=
-                    65</td>
-            </tr>
+            <!--<tr>-->
+            <!--    <td class="b-0" colspan="8" style="font-size: 12pt">Kriteria Ketuntasan Minimal Satuan-->
+            <!--        Pendidikan=-->
+            <!--        65</td>-->
+            <!--</tr>-->
             <tr>
                 <th class="text-center vertical-middle" rowspan="2">
                     No
@@ -327,7 +328,7 @@
                 <td colspan="8" class="b-0" style="padding: 0px !important">
                     <table class="table">
                         <tr>
-                            <td class="b-0" style="font-size: 12pt">D. SARAN-SARAN</td>
+                            <td class="b-0" style="font-size: 12pt">D. CATATAN WALIKELAS</td>
                         </tr>
                         <tr>
                             <td class="text-left vertical-middle">
@@ -340,6 +341,90 @@
                     </table>
                 </td>
             </tr>
+            <!--<tr>-->
+            <!--    <td style="height: 10px" colspan="8" class="b-0"></td>-->
+            <!--</tr>-->
+            <!--<tr>-->
+            <!--    <td colspan="8" class="b-0" style="padding: 0px !important">-->
+            <!--        <table class="table">-->
+            <!--            <tr>-->
+            <!--                <td class="b-0" colspan="3" style="font-size: 12pt">E. TINGGI DAN BERAT BADAN-->
+            <!--                </td>-->
+            <!--            </tr>-->
+            <!--            <tr>-->
+            <!--                <th class="text-center" rowspan="2" style="width: 50px">-->
+            <!--                    No</th>-->
+            <!--                <th class="text-center" rowspan="2" style="width: 150px">-->
+            <!--                    Aspek Yang Dinilai</th>-->
+            <!--                <th class="text-center" colspan="2">-->
+            <!--                    Semester</th>-->
+            <!--            </tr>-->
+            <!--            <tr>-->
+            <!--                <th class="text-center">1 (Satu)</th>-->
+            <!--                <th class="text-center">2 (Dua)</th>-->
+            <!--            </tr>-->
+            <!--            <tr>-->
+            <!--                <td class="text-center">-->
+            <!--                    1</td>-->
+            <!--                <td>Tinggi Badan</td>-->
+            <!--                <td class="text-center"></td>-->
+            <!--                <td class="text-center"></td>-->
+            <!--            </tr>-->
+            <!--            <tr>-->
+            <!--                <td class="text-center">-->
+            <!--                    2</td>-->
+            <!--                <td>Berat Badan</td>-->
+            <!--                <td class="text-center"></td>-->
+            <!--                <td class="text-center"></td>-->
+            <!--            </tr>-->
+            <!--        </table>-->
+            <!--    </td>-->
+            <!--</tr>-->
+            <!--<tr>-->
+            <!--    <td style="height: 10px" colspan="8" class="b-0"></td>-->
+            <!--</tr>-->
+            <!--<tr>-->
+            <!--    <td colspan="8" class="b-0" style="padding: 0px !important">-->
+            <!--        <table class="table">-->
+            <!--            <tr>-->
+            <!--                <td class="b-0" colspan="3" style="font-size: 12pt">F. KONDISI KESEHATAN-->
+            <!--                </td>-->
+            <!--            </tr>-->
+            <!--            <tr>-->
+            <!--                <th class="text-center" style="width: 50px">-->
+            <!--                    No</th>-->
+            <!--                <th class="text-center" style="width: 150px">-->
+            <!--                    Aspek Yang Dinilai</th>-->
+            <!--                <th class="text-center">-->
+            <!--                    Keterangan</th>-->
+            <!--            </tr>-->
+            <!--            <tr>-->
+            <!--                <td class="text-center">-->
+            <!--                    1</td>-->
+            <!--                <td>Pendengaran</td>-->
+            <!--                <td></td>-->
+            <!--            </tr>-->
+            <!--            <tr>-->
+            <!--                <td class="text-center">-->
+            <!--                    2</td>-->
+            <!--                <td>Penglihatan</td>-->
+            <!--                <td></td>-->
+            <!--            </tr>-->
+            <!--            <tr>-->
+            <!--                <td class="text-center">-->
+            <!--                    3</td>-->
+            <!--                <td>Gigi</td>-->
+            <!--                <td></td>-->
+            <!--            </tr>-->
+            <!--            <tr>-->
+            <!--                <td class="text-center">-->
+            <!--                    4</td>-->
+            <!--                <td>Lainnya</td>-->
+            <!--                <td></td>-->
+            <!--            </tr>-->
+            <!--        </table>-->
+            <!--    </td>-->
+            <!--</tr>-->
             <tr>
                 <td style="height: 10px" colspan="8" class="b-0"></td>
             </tr>
@@ -347,91 +432,7 @@
                 <td colspan="8" class="b-0" style="padding: 0px !important">
                     <table class="table">
                         <tr>
-                            <td class="b-0" colspan="3" style="font-size: 12pt">E. TINGGI DAN BERAT BADAN
-                            </td>
-                        </tr>
-                        <tr>
-                            <th class="text-center" rowspan="2" style="width: 50px">
-                                No</th>
-                            <th class="text-center" rowspan="2" style="width: 150px">
-                                Aspek Yang Dinilai</th>
-                            <th class="text-center" colspan="2">
-                                Semester</th>
-                        </tr>
-                        <tr>
-                            <th class="text-center">1 (Satu)</th>
-                            <th class="text-center">2 (Dua)</th>
-                        </tr>
-                        <tr>
-                            <td class="text-center">
-                                1</td>
-                            <td>Tinggi Badan</td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
-                        </tr>
-                        <tr>
-                            <td class="text-center">
-                                2</td>
-                            <td>Berat Badan</td>
-                            <td class="text-center"></td>
-                            <td class="text-center"></td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
-            <tr>
-                <td style="height: 10px" colspan="8" class="b-0"></td>
-            </tr>
-            <tr>
-                <td colspan="8" class="b-0" style="padding: 0px !important">
-                    <table class="table">
-                        <tr>
-                            <td class="b-0" colspan="3" style="font-size: 12pt">F. KONDISI KESEHATAN
-                            </td>
-                        </tr>
-                        <tr>
-                            <th class="text-center" style="width: 50px">
-                                No</th>
-                            <th class="text-center" style="width: 150px">
-                                Aspek Yang Dinilai</th>
-                            <th class="text-center">
-                                Keterangan</th>
-                        </tr>
-                        <tr>
-                            <td class="text-center">
-                                1</td>
-                            <td>Pendengaran</td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td class="text-center">
-                                2</td>
-                            <td>Penglihatan</td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td class="text-center">
-                                3</td>
-                            <td>Gigi</td>
-                            <td></td>
-                        </tr>
-                        <tr>
-                            <td class="text-center">
-                                4</td>
-                            <td>Lainnya</td>
-                            <td></td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
-            <tr>
-                <td style="height: 10px" colspan="8" class="b-0"></td>
-            </tr>
-            <tr>
-                <td colspan="8" class="b-0" style="padding: 0px !important">
-                    <table class="table">
-                        <tr>
-                            <td class="b-0" colspan="3" style="font-size: 12pt">G. PRESTASI
+                            <td class="b-0" colspan="3" style="font-size: 12pt">E. PRESTASI
                             </td>
                         </tr>
                         <tr>
@@ -460,7 +461,7 @@
                 <td colspan="5" class="b-0" style="padding: 0px !important">
                     <table class="table">
                         <tr>
-                            <td class="b-0" colspan="2" style="font-size: 12pt">H. KETIDAKHADIRAN</td>
+                            <td class="b-0" colspan="2" style="font-size: 12pt">F. KETIDAKHADIRAN</td>
                         </tr>
                         <tr>
                             <td>
@@ -493,50 +494,50 @@
             <tr>
                 <td>
                     <div style="height: 10px"></div>
-                    <table class="table">
-                        <tr>
-                            <td class="b-0">Diberikan di</td>
-                            <td class="b-0">: {{ $result_other['place'] ?? 'Tidak diketahui' }}</td>
-                            <td class="b-0" style="width: 50px"></td>
-                            <td class="b-0" colspan="2">KEPUTUSAN</td>
-                        </tr>
-                        <tr>
-                            <td class="b-0">tanggal</td>
-                            <td class="b-0">:
-                                {{ isset($result_other['date']) ? DateHelper::getTanggal($result_other['date']) : '' }}
-                            </td>
-                            <td class="b-0"></td>
-                            <td class="b-0" colspan="2">Dengan memperhatikan hasil yang dicapai</td>
-                        </tr>
-                        <tr>
-                            <td colspan="3" class="b-0"></td>
-                            <td class="b-0" colspan="2">semester 1 dan 2, maka peserta didik ini ditetapkan
-                            </td>
-                        </tr>
-                        @if ($result_other['promotion'] == 'Y')
-                            <tr>
-                                <td colspan="3" class="b-0"></td>
-                                <td class="b-0" style="width: 80px">Naik kelas</td>
-                                <td class="b-0">: {{ $result_profile['level'] + 1 }}</td>
-                            </tr>
-                            <tr>
-                                <td colspan="3" class="b-0"></td>
-                                <td class="b-0" colspan="2"><s>Tinggal di Kelas</s></td>
-                            </tr>
-                        @else
-                            <tr>
-                                <td colspan="3" class="b-0"></td>
-                                <td class="b-0" style="width: 80px"><s>Naik kelas</s></td>
-                                <td class="b-0">: </td>
-                            </tr>
-                            <tr>
-                                <td colspan="3" class="b-0"></td>
-                                <td class="b-0">Tinggal di Kelas</td>
-                                <td class="b-0">: {{ $result_profile['level'] }}</td>
-                            </tr>
-                        @endif
+                    <!--<table class="table">-->
+                    <!--    <tr>-->
+                    <!--        <td class="b-0">Diberikan di</td>-->
+                    <!--        <td class="b-0">: {{ $result_other['place'] ?? 'Tidak diketahui' }}</td>-->
+                    <!--        <td class="b-0" style="width: 50px"></td>-->
+                    <!--        <td class="b-0" colspan="2">KEPUTUSAN</td>-->
+                    <!--    </tr>-->
+                    <!--    <tr>-->
+                    <!--        <td class="b-0">tanggal</td>-->
+                    <!--        <td class="b-0">:-->
+                    <!--            {{ isset($result_other['date']) ? DateHelper::getTanggal($result_other['date']) : '' }}-->
+                    <!--        </td>-->
+                    <!--        <td class="b-0"></td>-->
+                    <!--        <td class="b-0" colspan="2">Dengan memperhatikan hasil yang dicapai</td>-->
+                    <!--    </tr>-->
+                    <!--    <tr>-->
+                    <!--        <td colspan="3" class="b-0"></td>-->
+                    <!--        <td class="b-0" colspan="2">semester 1 dan 2, maka peserta didik ini ditetapkan-->
+                    <!--        </td>-->
+                    <!--    </tr>-->
+                    <!--    @if ($result_other['promotion'] == 'Y')-->
+                    <!--        <tr>-->
+                    <!--            <td colspan="3" class="b-0"></td>-->
+                    <!--            <td class="b-0" style="width: 80px">Naik kelas</td>-->
+                    <!--            <td class="b-0">: {{ $result_profile['level'] + 1 }}</td>-->
+                    <!--        </tr>-->
+                    <!--        <tr>-->
+                    <!--            <td colspan="3" class="b-0"></td>-->
+                    <!--            <td class="b-0" colspan="2"><s>Tinggal di Kelas</s></td>-->
+                    <!--        </tr>-->
+                    <!--    @else-->
+                    <!--        <tr>-->
+                    <!--            <td colspan="3" class="b-0"></td>-->
+                    <!--            <td class="b-0" style="width: 80px"><s>Naik kelas</s></td>-->
+                    <!--            <td class="b-0">: </td>-->
+                    <!--        </tr>-->
+                    <!--        <tr>-->
+                    <!--            <td colspan="3" class="b-0"></td>-->
+                    <!--            <td class="b-0">Tinggal di Kelas</td>-->
+                    <!--            <td class="b-0">: {{ $result_profile['level'] }}</td>-->
+                    <!--        </tr>-->
+                    <!--    @endif-->
 
-                    </table>
+                    <!--</table>-->
                 </td>
             </tr>
         @endif
@@ -558,11 +559,12 @@
                         <p style="margin-bottom: 0; margin-top: 80px">
                             {{ $result_other['teacher'] }}</p>
                         <p style="margin-top : -15px">______________________</p>
-                        <p>NIP {{ $result_other['nip_teacher'] }}</p>
+                        <p>NAK {{ $result_other['nip_teacher'] }}</p>
                     </div>
 
                     <div style="margin: 0 auto; width: 40%;">
-                        <p class="text-uppercase text-center">Kepala Sekolah</p>
+                        <p class="text-center">Mengetahui,</p>
+                        <p class="text-center">Kepala Sekolah</p>
                         @if ($result_other['signature'] != null)
                             <center>
                                 <img src="{{ $result_other['signature'] }}" alt="" srcset=""
@@ -573,7 +575,7 @@
                             style="text-align: center; margin-bottom: 0; {{ $result_other['signature'] == null ? 'margin-top: 80px;' : '' }}">
                             {{ $result_other['headmaster'] }}</p>
                         <p style="text-align: center; margin-top : -15px">___________________</p>
-                        <p style="text-align: center">NIP {{ $result_other['nip_headmaster'] }}</p>
+                        <p style="text-align: center">NAK {{ $result_other['nip_headmaster'] }}</p>
                     </div>
                 </div>
             </td>

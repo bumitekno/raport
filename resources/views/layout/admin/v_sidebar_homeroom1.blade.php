@@ -61,24 +61,38 @@
 
                 </ul>
             </li>
-
-            @if (!empty($side_extra->slug))
-                <li class="menu">
-                    <a href="{{ route('score_extras.index', $side_extra->slug) }}" aria-expanded="false"
-                        class="dropdown-toggle">
+            <li class="menu">
+                @if(empty($side_extra)) {
+                    <a href="javascript:void(0);" aria-expanded="false" class="dropdown-toggle">
                         <div class="">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                 stroke-linejoin="round">
-                                <rect x="4" y="2" width="16" height="20" rx="2" ry="2"></rect>
+                                <rect x="4" y="2" width="16" height="20" rx="2"
+                                    ry="2"></rect>
                                 <circle cx="12" cy="14" r="4"></circle>
                                 <line x1="12" y1="6" x2="12.01" y2="6"></line>
                             </svg>
                             <span> Ekstrakurikuler</span>
                         </div>
                     </a>
-                </li>
-            @endif
+                @else
+                <a href="{{ route('score_extras.index', $side_extra->slug) }}" aria-expanded="false" class="dropdown-toggle">
+                    <div class="">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round">
+                            <rect x="4" y="2" width="16" height="20" rx="2"
+                                ry="2"></rect>
+                            <circle cx="12" cy="14" r="4"></circle>
+                            <line x1="12" y1="6" x2="12.01" y2="6"></line>
+                        </svg>
+                        <span> Ekstrakurikuler</span>
+                    </div>
+                </a>
+                @endif
+                
+            </li>
 
             <li class="menu">
                 <a href="{{ route('teacher_notes.index') }}" aria-expanded="false" class="dropdown-toggle">
@@ -87,7 +101,8 @@
                             fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                             stroke-linejoin="round">
                             <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
-                            <rect x="8" y="2" width="8" height="4" rx="1" ry="1"></rect>
+                            <rect x="8" y="2" width="8" height="4" rx="1"
+                                ry="1"></rect>
                         </svg>
                         <span> Catatan</span>
                     </div>
@@ -152,9 +167,7 @@
                 <ul class="collapse submenu list-unstyled {{ Route::is('previews.*') || Route::is('legers.*') ? 'recent-submenu mini-recent-submenu show' : '' }}"
                     id="side-user" data-parent="#accordionExample">
                     <li class="{{ Route::is('previews.*') ? 'active' : '' }}">
-                        <a
-                            href="{{ route('previews.index', ['template' => 'k13', 'year' => session('slug_year')]) }}">
-                            Cetak Raport</a>
+                        <a href="{{ route('previews.index', ['template' => 'k13', 'year' => session('slug_year')]) }}"> Cetak Raport</a>
                     </li>
                     <li class="{{ Route::is('legers.*') ? 'active' : '' }}">
                         <a href="{{ route('legers.by_classes', session('slug_class')) }}"> Cetak Leger </a>
@@ -162,10 +175,8 @@
 
                 </ul>
             </li>
-            <li
-                class="menu {{ session()->has('templates') && session('templates.template') != 'merdeka' ? 'd-none' : '' }}">
-                <a href="{{ route('previews.index', ['template' => 'merdeka', 'year' => session('slug_year')]) }}"
-                    aria-expanded="false" class="dropdown-toggle">
+            <li class="menu {{ session()->has('templates') && session('templates.template') != 'merdeka' ? 'd-none' : '' }}">
+                <a href="{{ route('previews.index', ['template' => 'merdeka', 'year' => session('slug_year')]) }}" aria-expanded="false" class="dropdown-toggle">
                     <div class="">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                             fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"

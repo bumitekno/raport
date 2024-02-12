@@ -23,6 +23,32 @@
                     <div class="statbox widget box box-shadow">
                         <div class="widget-header">
                             <h4>{{ session('title') }}</h4>
+                            
+                            @if (!empty($biodate_siswa))
+                                <div class="widget-content widget-content-area br-8">
+                                    <table class="table table-borderless table-sm">
+                                        <tbody>
+                                            <tr>
+                                                <td class="text-right " scope="row">Nama : </td>
+                                                <td class="text-left"> {{ $biodate_siswa['name'] }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-right" scope="row">NIS : </td>
+                                                <td class="text-left"> {{ $biodate_siswa['nis'] }} </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-right" scope="row">NISN : </td>
+                                                <td class="text-left"> {{ $biodate_siswa['nisn'] }} </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="text-right" scope="row">Kelas : </td>
+                                                <td class="text-left"> {{ $biodate_siswa['kelas'] }}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            @endif
+                            
                         </div>
                         <form action="{{ route('k13.scores.update') }}" method="post">
                             @csrf
