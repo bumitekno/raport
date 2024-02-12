@@ -9,6 +9,8 @@ use App\Models\CompetenceAchievement;
 use App\Models\Config;
 use App\Models\ScoreMerdeka;
 use App\Models\StudentClass;
+use App\Models\User;
+use App\Models\StudyClass;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -20,6 +22,9 @@ class ScoreMerdekaController extends Controller
     public function index(Request $request)
     {
         // dd(session()->all());
+
+        session()->put('title', 'Input Nilai');
+
         $data = StudentClass::join('users', 'student_classes.id_student', '=', 'users.id')
             ->select('student_classes.id', 'student_classes.slug', 'student_classes.id_student', 'student_classes.status', 'student_classes.year', 'users.name', 'users.gender', 'users.file', 'users.email', 'users.place_of_birth', 'users.date_of_birth')
             ->where([
@@ -106,6 +111,21 @@ class ScoreMerdekaController extends Controller
 
         $student_class = StudentClass::where('slug', $slug)->latest()->first();
 
+        $student_x = User::where('id', $student_class->id_student)->first();
+
+        $biodate_siswa = [];
+
+        if (!empty($student_x) && !empty($student_class)) {
+            if (!empty($student_class->id_study_class)) {
+                $biodate_siswa = [
+                    'name' => $student_x->name,
+                    'nis' => $student_x->nis,
+                    'nisn' => $student_x->nisn,
+                    'kelas' => StudyClass::where('id', $student_class->id_study_class)->first()?->name
+                ];
+            }
+        }
+
         $score = ScoreMerdeka::where([
             ['id_student_class', $student_class->id],
             ['id_study_class', session('teachers.id_study_class')],
@@ -114,8 +134,6 @@ class ScoreMerdekaController extends Controller
             ['type', session('teachers.type')],
             ['id_school_year', session('id_school_year')]
         ])->first();
-
-
 
         $config = Config::where([
             ['id_school_year', session('id_school_year')],
@@ -155,10 +173,10 @@ class ScoreMerdekaController extends Controller
         // dd($result);
         if (session('teachers.type') == 'uas') {
             // dd('tes');
-            return view('content.score_p5.v_create_student_score', compact('weight', 'result', 'competence_achievement'));
+            return view('content.score_p5.v_create_student_score', compact('weight', 'result', 'competence_achievement', 'biodate_siswa'));
         } else {
             // dd('hallo');
-            return view('content.score_p5.v_create_student_score_uts', compact('weight', 'result', 'competence_achievement'));
+            return view('content.score_p5.v_create_student_score_uts', compact('weight', 'result', 'competence_achievement', 'biodate_siswa'));
         }
     }
 

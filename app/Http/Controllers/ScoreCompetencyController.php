@@ -16,6 +16,7 @@ class ScoreCompetencyController extends Controller
 {
     public function index(Request $request)
     {
+        session()->put('title', 'Kelola Deskripsi');
         $data = StudentClass::join('users', 'student_classes.id_student', '=', 'users.id')
             ->select('student_classes.id', 'student_classes.slug', 'student_classes.id_student', 'student_classes.status', 'student_classes.year', 'users.name', 'users.gender', 'users.file', 'users.email', 'users.place_of_birth', 'users.date_of_birth')
             ->where([
