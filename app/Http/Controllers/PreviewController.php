@@ -383,13 +383,8 @@ class PreviewController extends Controller
         $competencies = CompetenceAchievement::where('status', 1)->get();
 
         $result_score = [];
-<<<<<<< HEAD
-        $result_score_before = [];
-        // dd($student_class);
-=======
         //dd($student_class);
 
->>>>>>> c83b9740c7346814cb4d16b2c68d27bbc5aeece6
         foreach ($subjects as $subject) {
 
             $score = ScoreMerdeka::where([
@@ -444,35 +439,20 @@ class PreviewController extends Controller
             $result_score_before[] = [
                 'id_course' => $subject->id_course,
                 'course' => $subject->course->name,
-<<<<<<< HEAD
-                'number' => (int)$subject->course->number,
-                'score' => empty($nilai) ? null : $nilai->final_score,
-=======
                 'score' => empty($nilai) ? 0 : $nilai->final_score,
->>>>>>> c83b9740c7346814cb4d16b2c68d27bbc5aeece6
                 'competence_archieved' => $competency_archieved ? $competency_archieved->toArray() : [],
                 'competency_improved' => $competency_improved ? $competency_improved->toArray() : [],
 
             ];
         }
-<<<<<<< HEAD
-        // dd(collect($result_score_before)->sortBy('number')->toArray());
-        $result_score = collect($result_score_before)->sortBy('number')->toArray();
-=======
 
         //dd($result_score);
 
->>>>>>> c83b9740c7346814cb4d16b2c68d27bbc5aeece6
         $result_extra = [];
 
-        $extras = Extracurricular::where('status', 1)->get();
-
-        foreach ($extras as $extra) {
-            $score_extra = ScoreExtracurricular::where([
                 ['id_study_class', $student_class->id_study_class],
                 ['id_school_year', $school_year->id],
                 ['id_extra', $extra->id],
-            ])->first();
 
             $id_extra = $extra->id;
             $name = $extra->name;
@@ -502,12 +482,12 @@ class PreviewController extends Controller
             ['id_student_class', $student_class->id],
             ['id_school_year', $school_year->id],
         ])->first();
-        
+
         $achievements = Achievement::where([
             ['id_student_class', $student_class->id],
             ['id_school_year', $school_year->id],
         ])->get();
-        
+
 
         $result_attendance = [
             'ill' => $attendance ? $attendance->ill : 0,
