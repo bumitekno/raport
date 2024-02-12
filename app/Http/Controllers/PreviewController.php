@@ -453,10 +453,11 @@ class PreviewController extends Controller
         $extras = Extracurricular::where('status', 1)->get();
 
         foreach ($extras as $extra) {
-            ['id_study_class', $student_class->id_study_class],
-            ['id_school_year', $school_year->id],
-            ['id_extra', $extra->id],
-            ])->first();
+            $score_extra = ScoreExtracurricular::where([
+                ['id_study_class', $student_class->id_study_class],
+                ['id_school_year', $school_year->id],
+                ['id_extra', $extra->id],
+                ])->first();
 
             $id_extra = $extra->id;
             $name = $extra->name;
