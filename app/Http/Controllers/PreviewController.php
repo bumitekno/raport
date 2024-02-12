@@ -383,8 +383,13 @@ class PreviewController extends Controller
         $competencies = CompetenceAchievement::where('status', 1)->get();
 
         $result_score = [];
+<<<<<<< HEAD
+        $result_score_before = [];
+        // dd($student_class);
+=======
         //dd($student_class);
 
+>>>>>>> c83b9740c7346814cb4d16b2c68d27bbc5aeece6
         foreach ($subjects as $subject) {
 
             $score = ScoreMerdeka::where([
@@ -414,6 +419,7 @@ class PreviewController extends Controller
                     ->Where('id_teacher', $subject->id_teacher)
                     ->where('id_study_class', $student_class->id_study_class)
                     ->where('id_course', $subject->id_course)
+                    ->where('id_student_class', $student_class->id)
                     ->where('type', $type_template)
                     ->where('id_school_year', intval($subject->id_school_year))->first();
             }
@@ -435,18 +441,28 @@ class PreviewController extends Controller
 
             //dd($nilai);
 
-            $result_score[] = [
+            $result_score_before[] = [
                 'id_course' => $subject->id_course,
                 'course' => $subject->course->name,
+<<<<<<< HEAD
+                'number' => (int)$subject->course->number,
+                'score' => empty($nilai) ? null : $nilai->final_score,
+=======
                 'score' => empty($nilai) ? 0 : $nilai->final_score,
+>>>>>>> c83b9740c7346814cb4d16b2c68d27bbc5aeece6
                 'competence_archieved' => $competency_archieved ? $competency_archieved->toArray() : [],
                 'competency_improved' => $competency_improved ? $competency_improved->toArray() : [],
 
             ];
         }
+<<<<<<< HEAD
+        // dd(collect($result_score_before)->sortBy('number')->toArray());
+        $result_score = collect($result_score_before)->sortBy('number')->toArray();
+=======
 
         //dd($result_score);
 
+>>>>>>> c83b9740c7346814cb4d16b2c68d27bbc5aeece6
         $result_extra = [];
 
         $extras = Extracurricular::where('status', 1)->get();
@@ -486,6 +502,12 @@ class PreviewController extends Controller
             ['id_student_class', $student_class->id],
             ['id_school_year', $school_year->id],
         ])->first();
+        
+        $achievements = Achievement::where([
+            ['id_student_class', $student_class->id],
+            ['id_school_year', $school_year->id],
+        ])->get();
+        
 
         $result_attendance = [
             'ill' => $attendance ? $attendance->ill : 0,
@@ -521,7 +543,7 @@ class PreviewController extends Controller
             'nip_teacher' => $teacher ? $teacher->nip : '',
             'signature' => $config && $config['signature'] != null ? public_path($config->signature) : null,
         ];
-        $pdf = PDF::loadView('content.previews.merdeka.v_print_pas', compact('result_score', 'result_extra', 'result_attendance', 'result_kop', 'result_profile', 'result_other', 'type_template'));
+        $pdf = PDF::loadView('content.previews.merdeka.v_print_pas', compact('result_score', 'result_extra', 'result_attendance', 'result_kop', 'result_profile', 'result_other', 'type_template', 'achievements'));
         return $pdf->stream();
     }
 

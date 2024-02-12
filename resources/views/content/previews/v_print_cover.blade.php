@@ -24,9 +24,9 @@
         }
 
         .logo img {
-            max-height: 59px;
+            max-height: 200px;
             display: block;
-            margin: auto;
+            /*margin: auto;*/
         }
 
         h5, h6 {
@@ -35,11 +35,11 @@
         }
 
         h5 {
-            font-size: 20px;
+            font-size: 25px;
         }
 
         h6 {
-            font-size: 16px;
+            font-size: 20px;
         }
 
         .nama-peserta-didik {
@@ -77,7 +77,6 @@
 <body>
     <div class="card-body">
         <div class="card">
-            <br>
             <center>
                 <div class="logo">
                     <img src="{{ !empty($cover) ? $cover['top_logo'] : asset('asset/img/sma.png') }}" alt="Logo">
@@ -91,12 +90,12 @@
                 </div>
                 <br><br>
                 <h6><b>Nama Peserta Didik</b></h6>
-                <div style="border: 1px solid black; padding: 12px">
+                <div style="border: 1px solid black; padding: 12px; margin-left:50px; margin-right:50px">
                     <h6 class="m-0"><b>{{ $student_class->student->name }}</b></h6>
                 </div>
                 <br>
                 <h6><b>NISN/NIS</b></h6>
-                <div style="border: 1px solid black; padding: 12px">
+                <div style="border: 1px solid black; padding: 12px; margin-left:50px; margin-right:50px">
                     <h6 class="m-0"><b>{{ $student_class->student->nisn ?? '-' }}/{{ $student_class->student->nis ?? '-' }}</b></h6>
                 </div>
                 <br><br><br>
@@ -114,63 +113,63 @@
         <div style="page-break-before: always;"></div>
     @endif
     <div class="sampul-awal">
-        <div style="font-family: Arial, sans-serif; font-size: 16px;">
-            <div style="vertical-align: top; margin-right: 5%;">
-                <h2 style="margin: 0;">RAPOR SISWA</h2>
-                <h2 style="margin: 0;">{!! $cover['sub_title'] !!}</h2>
+        <div style="font-family: Arial, sans-serif;">
+            <div style="vertical-align: top; font-size: 14px;">
+                <h2 style="margin: 0; text-align:center">RAPOR</h2>
+                <h2 style="margin: 0; text-align:center">{!! $cover['sub_title'] !!}</h2>
             </div>
-            <div style="vertical-align: top; margin-top: 20px">
+            <div style="vertical-align: top; font-size: 16px; margin-top: 50px; margin-left: 8%;">
                 <table style="border-collapse: collapse;">
                     <tr>
-                        <td style="width: 170px; padding-right: 10px; vertical-align: top;">Nama Sekolah</td>
-                        <td style="padding-right: 10px; vertical-align: top;">:</td>
+                        <td style="width: 170px; padding-right: 20px; vertical-align: top;">Nama Sekolah</td>
+                        <td style="padding-right: 20px; vertical-align: top;">:</td>
                         <td>{{ strtoupper($setting['name_school']) }}</td>
-                    </tr>
+                    </tr><br>
                     <tr>
                         <td style="padding-right: 10px; vertical-align: top;">NPSN</td>
                         <td style="padding-right: 10px; vertical-align: top;">:</td>
                         <td>{{ $setting['npsn'] ?? '-' }}</td>
-                    </tr>
+                    </tr><br>
                     <tr>
                         <td style="padding-right: 10px; vertical-align: top;">NIS/NSS/NDS</td>
                         <td style="padding-right: 10px; vertical-align: top;">:</td>
-                        <td></td>
-                    </tr>
+                        <td>202036002024</td>
+                    </tr><br>
                     <tr>
                         <td style="padding-right: 10px; vertical-align: top;">Alamat Sekolah</td>
                         <td style="padding-right: 10px; vertical-align: top;">:</td>
-                        <td>{{ $sekolah['address'] ?? '-' }}</td>
-                    </tr>
+                        <td>{{ $setting['address'] ?? '-' }}</td>
+                    </tr><br>
                     <tr>
                         <td style="padding-right: 10px; vertical-align: top;">Kelurahan / Desa</td>
                         <td style="padding-right: 10px; vertical-align: top;">:</td>
-                        <td>-</td>
-                    </tr>
+                        <td>Kramat Selatan</td>
+                    </tr><br>
                     <tr>
                         <td style="padding-right: 10px; vertical-align: top;">Kecamatan</td>
                         <td style="padding-right: 10px; vertical-align: top;">:</td>
-                        <td>-</td>
-                    </tr>
+                        <td>Kec. Magelang Utara</td>
+                    </tr><br>
                     <tr>
                         <td style="padding-right: 10px; vertical-align: top;">Kota/Kabupaten</td>
                         <td style="padding-right: 10px; vertical-align: top;">:</td>
-                        <td>-</td>
-                    </tr>
+                        <td>Kota Magelang</td>
+                    </tr><br>
                     <tr>
                         <td style="padding-right: 10px; vertical-align: top;">Provinsi</td>
                         <td style="padding-right: 10px; vertical-align: top;">:</td>
-                        <td>-</td>
-                    </tr>
+                        <td>Prov. Jawa Tengah</td>
+                    </tr><br>
                     <tr>
                         <td style="padding-right: 10px; vertical-align: top;">Website</td>
                         <td style="padding-right: 10px; vertical-align: top;">:</td>
                         <td>{{ $setting['website'] ?? '-' }}</td>
-                    </tr>
+                    </tr><br>
                     <tr>
                         <td style="padding-right: 10px; vertical-align: top;">Email</td>
                         <td style="padding-right: 10px; vertical-align: top;">:</td>
                         <td>{{ $setting['email'] ?? '-' }}</td>
-                    </tr>
+                    </tr><br>
                 </table>
             </div>
         </div>
@@ -178,7 +177,7 @@
     <div style="page-break-before: always;"></div>
     <div class="sampul-awal">
         <div>
-            <h3 class="text-center">KETERANGAN TENTANG DIRI SISWA</h3>
+            <h3 class="text-center" style="text-align:center">IDENTITAS PESERTA DIDIK</h3>
             <div class="data-diri" style="text-align: justify">
                 <table style="border-collapse: separate; border-spacing: 0 9px;">
                     <tr>
@@ -334,7 +333,7 @@
 
                                 <br><br><br><br><br>
                                 <b>{{ $result_other['headmaster'] }}</b> <br>
-                                NIP. {{ $result_other['nip_headmaster'] }}
+                                NAK. {{ $result_other['nip_headmaster'] }}
                             </div>
 
                         </td>
@@ -444,6 +443,145 @@
             </tbody>
         </table>
     </div>
+    
+    <div style="page-break-before: always;"></div>
+    {{-- <div class="sampul-awal"> --}}
+    <div>
+        <h3 style="text-align: center;">KETERANGAN PINDAH SEKOLAH</h3>
+        <p>Nama Peserta Didik : .....................................</p>
+        <table style="width: 100%; border-collapse: collapse;">
+            <thead>
+                <tr>
+                    <th colspan="1" style="border: 2px solid black; text-align: center;">NO</th>
+                    <th colspan="3" style="border: 2px solid black; text-align: center;">MASUK</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="width: 5%; border: 2px solid black; border-bottom:0; border-top:0; text-align:center">1.</td>
+                    <td style="width: 35%; border: 2px solid black; border-bottom:0; border-top:0"> Nama Siswa</td>
+                    <td style="width: 5%; border: 2px solid black; border-bottom:0; border-top:0"> ___________________________ </td>
+                    <td style="width: 40%; border: 2px solid black; border-bottom:0; border-top:0"> .................................</td>
+                </tr>
+                <tr>
+                    <td style="width: 5%; border: 2px solid black; border-bottom:0; border-top:0; text-align:center">2.</td>
+                    <td style="width: 35%; border: 2px solid black; border-bottom:0; border-top:0"> Nomor Induk</td>
+                    <td style="width: 5%; border: 2px solid black; border-bottom:0; border-top:0"> ___________________________ </td>
+                    <td style="width: 30%; border: 2px solid black; border-bottom:0; border-top:0"> Kepala Sekolah,</td>
+                </tr>
+                <tr>
+                    <td style="width: 5%; border: 2px solid black; border-bottom:0; border-top:0; text-align:center">3.</td>
+                    <td style="width: 35%; border: 2px solid black; border-bottom:0; border-top:0"> Nama Sekolah</td>
+                    <td style="width: 5%; border: 2px solid black; border-bottom:0; border-top:0"> ___________________________ </td>
+                    <td style="width: 30%; border: 2px solid black; border-bottom:0; border-top:0"></td>
+                </tr>
+                <tr>
+                    <td style="width: 5%; border: 2px solid black; border-bottom:0; border-top:0; text-align:center">4.</td>
+                    <td style="width: 35%; border: 2px solid black; border-bottom:0; border-top:0"> Masuk di Sekolah ini:</td>
+                    <td style="width: 30%; border: 2px solid black; border-bottom:0; border-top:0"></td>
+                    <td style="width: 30%; border: 2px solid black; border-bottom:0; border-top:0"></td>
+                </tr>
+                <tr>
+                    <td style="width: 5%; border: 2px solid black; border-bottom:0; border-top:0"></td>
+                    <td style="width: 35%; border: 2px solid black; border-bottom:0; border-top:0">a. Tanggal</td>
+                    <td style="width: 5%; border: 2px solid black; border-bottom:0; border-top:0"> ___________________________ </td>
+                    <td style="width: 30%; border: 2px solid black; border-bottom:0; border-top:0"></td>
+                </tr>
+                <tr>
+                    <td style="width: 5%; border: 2px solid black; border-bottom:0; border-top:0"></td>
+                    <td style="width: 35%; border: 2px solid black; border-bottom:0; border-top:0">b. Di kelas</td>
+                    <td style="width: 5%; border: 2px solid black; border-bottom:0; border-top:0"> ___________________________ </td>
+                    <td style="width: 30%; border: 2px solid black; border-bottom:0; border-top:0"> ___________________________ </td>
+                </tr>
+                <tr>
+                    <td style="width: 5%; border: 2px solid black; border-bottom:0; border-top:0; text-align:center">5.</td>
+                    <td style="width: 35%; border: 2px solid black; border-bottom:0; border-top:0"> Tahun Pelajaran</td>
+                    <td style="width: 5%; border: 2px solid black; border-bottom:0; border-top:0"> ___________________________ </td>
+                    <td style="width: 30%; border: 2px solid black; border-bottom:0; border-top:0"> NIP. </td>
+                </tr>
+                
+                <tr>
+                    <td style="border: 2px solid black;"></td>
+                    <td style="border: 2px solid black;"></td>
+                    <td style="border: 2px solid black;"></td>
+                    <td style="border: 2px solid black; padding: 10px;">
+                        <div>
+                            ................, .............................
+                            <br>
+                            Kepala Sekolah<br>
+                            <br>
+                            <br>
+                            <br>
+                            <b><u>....................................................</u></b><br>
+                            NIP.
+                        </div>
+                        <div>
+                            ................, .............................
+                            <br>
+                            Orang Tua/Wali<br>
+                            <br>
+                            <br>
+                            <br>
+                            <b><u>....................................................</u></b><br>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="border: 2px solid black;"></td>
+                    <td style="border: 2px solid black;"></td>
+                    <td style="border: 2px solid black;"></td>
+                    <td style="border: 2px solid black; padding: 10px;">
+                        <div>
+                            ................, .............................
+                            <br>
+                            Kepala Sekolah<br>
+                            <br>
+                            <br>
+                            <br>
+                            <b><u>....................................................</u></b><br>
+                            NIP.
+                        </div>
+                        <div>
+                            ................, .............................
+                            <br>
+                            Orang Tua/Wali<br>
+                            <br>
+                            <br>
+                            <br>
+                            <b><u>....................................................</u></b><br>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="border: 2px solid black;"></td>
+                    <td style="border: 2px solid black;"></td>
+                    <td style="border: 2px solid black;"></td>
+                    <td style="border: 2px solid black; padding: 10px;">
+                        <div>
+                            ................, .............................
+                            <br>
+                            Kepala Sekolah<br>
+                            <br>
+                            <br>
+                            <br>
+                            <b><u>....................................................</u></b><br>
+                            NIP.
+                        </div>
+                        <div>
+                            ................, .............................
+                            <br>
+                            Orang Tua/Wali<br>
+                            <br>
+                            <br>
+                            <br>
+                            <b><u>....................................................</u></b><br>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    
 </body>
 
 </html>

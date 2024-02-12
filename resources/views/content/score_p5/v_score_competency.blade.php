@@ -21,7 +21,7 @@
             <div class="row" id="cancel-row">
 
                 <div class="col-xl-12 col-lg-12 col-sm-12 layout-top-spacing layout-spacing">
-                    <div class="statbox widget box box-shadow">
+                    <div class="statbox widget box box-shadow card">
                         <div class="widget-header">
                             <div class="row">
                                 <div class="col-xl-12 col-md-12 col-sm-12 col-12 d-flex justify-content-between">
@@ -136,31 +136,45 @@
                                 </div>
                             </div>
                         </form>
+                        <div class="text-center mb-4">
+                            <button id="multiple-reset" class="btn btn-warning">Reset All</button>
+                            <div class="blockui-growl-message">
+                                <i class="flaticon-double-check"></i>&nbsp; Settings Saved Successfully
+                            </div>
+                            
+                            <button class="btn btn-primary d-none" id="btnLoader">
+                                <div class="spinner-grow text-white mr-2 align-self-center loader-sm">
+                                    Loading...</div>
+                                Loading
+                            </button>
+                            <button class="btn btn-primary" id="btnSubmit" onclick="submitForm()">Simpan
+                                Data</button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="account-settings-footer">
+        <!--<div class="account-settings-footer">-->
 
-            <div class="as-footer-container">
+        <!--    <div class="as-footer-container">-->
 
-                <button id="multiple-reset" class="btn btn-warning">Reset All</button>
-                <div class="blockui-growl-message">
-                    <i class="flaticon-double-check"></i>&nbsp; Settings Saved Successfully
-                </div>
+        <!--        <button id="multiple-reset" class="btn btn-warning">Reset All</button>-->
+        <!--        <div class="blockui-growl-message">-->
+        <!--            <i class="flaticon-double-check"></i>&nbsp; Settings Saved Successfully-->
+        <!--        </div>-->
 
 
-                <button class="btn btn-primary d-none" id="btnLoader">
-                    <div class="spinner-grow text-white mr-2 align-self-center loader-sm">
-                        Loading...</div>
-                    Loading
-                </button>
-                <button class="btn btn-primary" id="btnSubmit" onclick="submitForm()">Simpan
-                    Data</button>
+        <!--        <button class="btn btn-primary d-none" id="btnLoader">-->
+        <!--            <div class="spinner-grow text-white mr-2 align-self-center loader-sm">-->
+        <!--                Loading...</div>-->
+        <!--            Loading-->
+        <!--        </button>-->
+        <!--        <button class="btn btn-primary" id="btnSubmit" onclick="submitForm()">Simpan-->
+        <!--            Data</button>-->
 
-            </div>
+        <!--    </div>-->
 
-        </div>
+        <!--</div>-->
     </div>
     @push('scripts')
         @include('package.datatable.datatable_js')
