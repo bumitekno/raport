@@ -450,7 +450,7 @@ class PreviewController extends Controller
         $result_extra = [];
 
         $extras = Extracurricular::where('status', 1)->get();
-
+        
         foreach ($extras as $extra) {
             $score_extra = ScoreExtracurricular::where([
                 ['id_study_class', $student_class->id_study_class],
@@ -479,7 +479,7 @@ class PreviewController extends Controller
                     'score' => $score ? $score : null,
                     'description' => $description ? $description : null
                 ];
-            }
+            }  
         }
         //dd($result_extra);
         $attendance = AttendanceScore::where([
