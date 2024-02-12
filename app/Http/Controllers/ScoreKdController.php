@@ -24,7 +24,7 @@ class ScoreKdController extends Controller
         session()->put('title', 'Input Nilai');
         // session()->put('title', 'Kelola Nilai K16');
         $data = StudentClass::join('users', 'student_classes.id_student', '=', 'users.id')
-            ->select('student_classes.id', 'student_classes.slug', 'student_classes.id_student', 'student_classes.status',  'student_classes.year', 'users.name', 'users.gender', 'users.file', 'users.email', 'users.place_of_birth', 'users.date_of_birth')
+            ->select('student_classes.id', 'student_classes.slug', 'student_classes.id_student', 'student_classes.status', 'student_classes.year', 'users.name', 'users.gender', 'users.file', 'users.email', 'users.place_of_birth', 'users.date_of_birth')
             ->where([
                 ['id_study_class', session('teachers.id_study_class')],
                 ['year', session('year')],
@@ -115,23 +115,21 @@ class ScoreKdController extends Controller
         }
         // dd($weight);
         $student_class = StudentClass::where('slug', $slug)->first();
-        
         $student_x = User::where('id', $student_class->id_student)->first();
 
         $biodate_siswa = [];
 
         if (!empty($student_x) && !empty($student_class)) {
             if (!empty($student_class->id_study_class)) {
-                $kelasx = StudyClass::where('id', $student_class->id_study_class)->first();
                 $biodate_siswa = [
                     'name' => $student_x->name,
                     'nis' => $student_x->nis,
                     'nisn' => $student_x->nisn,
-                    'kelas' => $kelasx->name ?? '-'
+                    'kelas' => StudyClass::where('id', $student_class->id_study_class)->first()?->name
                 ];
             }
         }
-        
+
         $subject_teacher = SubjectTeacher::whereRaw('JSON_CONTAINS(id_study_class, \'["' . session('teachers.id_study_class') . '"]\')')
             ->where([
                 ['id_teacher', Auth::guard('teacher')->user()->id],
@@ -145,6 +143,7 @@ class ScoreKdController extends Controller
             ['id_school_year', session('id_school_year')],
             ['type', session('teachers.type')]
         ])->first();
+
         $result = [
             'id_study_class' => session('teachers.id_study_class'),
             'id_subject_teacher' => $subject_teacher->id,
@@ -167,7 +166,7 @@ class ScoreKdController extends Controller
         }
         // dd($weight);
         if (session('teachers.type') == 'uas') {
-            return view('content.score_k13.v_create_student_score', compact('weight', 'basic_competencies', 'result','biodate_siswa'));
+            return view('content.score_k13.v_create_student_score', compact('weight', 'basic_competencies', 'result', 'biodate_siswa'));
         } else {
             return view('content.score_k13.v_create_student_score_uts', compact('weight', 'basic_competencies', 'result', 'biodate_siswa'));
         }
@@ -187,14 +186,14 @@ class ScoreKdController extends Controller
                 'type' => $data['type'],
             ],
             [
-                'assessment_score' =>  $data['assesment_score'],
-                'averege_assesment' =>  $data['average_assesment'],
-                'skill_score' =>  $data['skill_score'],
-                'averege_skill' =>  $data['average_skill'],
-                'score_uts' =>  $data['uts'],
+                'assessment_score' => $data['assesment_score'],
+                'averege_assesment' => $data['average_assesment'],
+                'skill_score' => $data['skill_score'],
+                'averege_skill' => $data['average_skill'],
+                'score_uts' => $data['uts'],
                 'score_uas' => $data['type'] == 'uas' ? $data['uas'] : null,
-                'final_assesment' =>  $data['final_assesment'],
-                'final_skill' =>  $data['final_skill'],
+                'final_assesment' => $data['final_assesment'],
+                'final_skill' => $data['final_skill'],
             ]
         );
         Helper::toast('Berhasil menyimpan data', 'success');

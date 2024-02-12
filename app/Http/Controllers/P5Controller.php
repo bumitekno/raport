@@ -77,9 +77,8 @@ class P5Controller extends Controller
         $temas = Tema::where('status', 1)->get();
         $classes = StudyClass::where('status', 1)->get();
 
-        $dimensions = Dimension::with('elements')->get();
-        $subElements = SubElement::all();
-        return view('content.p5.v_create_p5', compact('temas', 'classes', 'dimensions', 'subElements'));
+        $dimensions = Dimension::with('elements.subElements')->get();
+        return view('content.p5.v_create_p5', compact('temas', 'classes', 'dimensions', ));
     }
 
     public function edit($slug)

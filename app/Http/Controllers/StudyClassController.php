@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\Helper;
-use App\Http\Requests\Class\ClassRequest;
+use App\Http\Requests\Classses\ClassRequest;
 use App\Models\Level;
 use App\Models\Major;
 use App\Models\StudyClass;
