@@ -26,7 +26,7 @@
             width: 100%;
             border-collapse: collapse;
         }
-        
+
 
         .table th,
         .table td {
@@ -34,7 +34,7 @@
             padding: 5px;
             text-align: left;
         }
-        
+
 
         .table td p {
             margin: 0px;
@@ -78,11 +78,11 @@
         .signature p {
             margin: 0;
         }
-        
+
         table tr.page-break{
           page-break-after:always
-        } 
-        
+        }
+
     </style>
 </head>
 
@@ -98,7 +98,7 @@
                                         src="{{ public_path($result_kop['left_logo']) }}" style="width: 85%;">
                                 </td>
                             @endif
-    
+
                             <td style="width:70%; text-align: center;" class="b-0">
                                 <div class="text-uppercase" style="line-height: 1.1; font-family: 'Arial'; font-size: 12pt">
                                     {{ $result_kop['text1'] }}
@@ -121,7 +121,7 @@
                                 </td>
                             @endif
                         </tr>
-    
+
                     </table>
                 </td>
             </tr>
@@ -138,7 +138,7 @@
                 </td>
             </tr>
         <thead>
-            
+
             <tr>
                  <td colspan="4" class="b-0" style="padding: 0px !important">
                      <table width="100%">
@@ -195,7 +195,7 @@
             </tr>
         </thead>
         <tbody>
-            
+
             <tr>
                 <td colspan="4" class="b-0" style="padding: 0px !important">
                     <table class="table">
@@ -221,7 +221,7 @@
                         @else
                             @foreach ($result_score as $score)
                                 <tr>
-                                    
+
                                     <td class="text-center">{{ $loop->iteration }}</td>
                                     <td class="">{{ $score['course'] }}</td>
                                     <td class="text-center">{{ $score['score'] }}</td>
@@ -239,12 +239,12 @@
                         @endif
                     </table>
                 </td>
-                
+
             </tr>
             <tr>
                 <td style="height: 10px" colspan="4" class="b-0"></td>
             </tr>
-        
+
             <tr>
                 <td colspan="4" class="b-0" style="padding: 0px !important">
                     <table class="table">
@@ -279,13 +279,13 @@
                     </table>
                 </td>
             </tr>
-            
+
             <tr>
                 <td style="height: 10px" colspan="8" class="b-0"></td>
             </tr>
-            
+
             <tr class="page-break"></tr>
-            
+
             <tr>
                 <td colspan="8" class="b-0" style="padding: 0px !important">
                     <table class="table">
@@ -321,7 +321,7 @@
                     </table>
                 </td>
             </tr>
-            
+
             <tr>
                 <td style="height: 10px" colspan="4" class="b-0"></td>
             </tr>
@@ -389,7 +389,7 @@
                     <!--@endif-->
                 </td>
             </tr>
-            
+
             <tr>
                 <td style="height: 10px" colspan="4" class="b-0"></td>
             </tr>
@@ -424,7 +424,7 @@
                     </table>
                 </td>
             </tr>
-            
+
         </tbody>
     </table>
     <table style="width: 100%">

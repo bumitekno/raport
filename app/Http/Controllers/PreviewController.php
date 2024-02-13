@@ -380,6 +380,8 @@ class PreviewController extends Controller
             ['id_class', $student_class->study_class->id],
         ])->latest()->first();
 
+        $achievements = $student_class->achievements;
+
         $competencies = CompetenceAchievement::where('status', 1)->get();
 
         $result_score = [];
@@ -450,7 +452,7 @@ class PreviewController extends Controller
         $result_extra = [];
 
         $extras = Extracurricular::where('status', 1)->get();
-        
+
         foreach ($extras as $extra) {
             $score_extra = ScoreExtracurricular::where([
                 ['id_study_class', $student_class->id_study_class],
@@ -479,7 +481,7 @@ class PreviewController extends Controller
                     'score' => $score ? $score : null,
                     'description' => $description ? $description : null
                 ];
-            }  
+            }
         }
         //dd($result_extra);
         $attendance = AttendanceScore::where([
@@ -521,7 +523,7 @@ class PreviewController extends Controller
             'nip_teacher' => $teacher ? $teacher->nip : '',
             'signature' => $config && $config['signature'] != null ? public_path($config->signature) : null,
         ];
-        $pdf = PDF::loadView('content.previews.merdeka.v_print_pas', compact('result_score', 'result_extra', 'result_attendance', 'result_kop', 'result_profile', 'result_other', 'type_template'));
+        $pdf = PDF::loadView('content.previews.merdeka.v_print_pas', compact('result_score', 'result_extra', 'result_attendance', 'result_kop', 'result_profile', 'result_other', 'type_template', 'achievements'));
         return $pdf->stream();
     }
 
