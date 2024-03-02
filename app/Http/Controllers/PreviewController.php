@@ -511,7 +511,7 @@ class PreviewController extends Controller
             ['id_school_year', $school_year->id]
         ])->first();
         $config = Config::where('id_school_year', $school_year->id)->first();
-        // dd($config);
+         dd($result_score);
         $result_other = [
             'note_teacher' => $note ? $note->description : '',
             'promotion' => $note ? $note->promotion : 'Y',
