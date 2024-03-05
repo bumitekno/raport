@@ -32,6 +32,7 @@
         h5, h6 {
             margin: 0;
             font-weight: normal;
+
         }
 
         h5 {
@@ -443,7 +444,7 @@
             </tbody>
         </table>
     </div>
-    
+
     <div style="page-break-before: always;"></div>
     {{-- <div class="sampul-awal"> --}}
     <div>
@@ -499,7 +500,7 @@
                     <td style="width: 5%; border: 2px solid black; border-bottom:0; border-top:0"> ___________________________ </td>
                     <td style="width: 30%; border: 2px solid black; border-bottom:0; border-top:0"> NIP. </td>
                 </tr>
-                
+
                 <tr>
                     <td style="border: 2px solid black;"></td>
                     <td style="border: 2px solid black;"></td>
@@ -581,7 +582,7 @@
             </tbody>
         </table>
     </div>
-    
+
 </body>
 
 </html>
