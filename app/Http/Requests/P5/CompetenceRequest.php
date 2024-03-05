@@ -30,7 +30,7 @@ class CompetenceRequest extends FormRequest
             'id_type_competence' => 'required|numeric',
             'code' => 'required|string|max:255',
             'achievement' => 'required|string|max:255',
-            'description' => 'required|string|max:255',
+            'description' => 'max:255',
         ];
     }
 }

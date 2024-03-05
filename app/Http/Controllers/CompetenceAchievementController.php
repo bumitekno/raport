@@ -152,19 +152,20 @@ class CompetenceAchievementController extends Controller
 
     public function edit(Request $request)
     {
-        session()->put('title', 'Tambah Data');
+        session()->put('title', 'Edit Data');
         $course = Course::where('slug', $request->course)->first();
         $study_class = StudyClass::with('major', 'level')->where('slug', $request->study_class)->first();
         $teacher = Teacher::where('slug', $request->teacher)->first();
         $types = TypeCompetenceAchievement::all();
         $competence = CompetenceAchievement::where('slug', $request->slug)->first();
+       
         return view('content.score_p5.v_create_competence', compact('course', 'teacher', 'study_class', 'types', 'competence'));
     }
 
     public function storeOrUpdate(CompetenceRequest $request, $id = null)
     {
         $data = $request->validated();
-
+        //dd(session()->all());
         CompetenceAchievement::updateOrCreate(
             ['id' => $id],
             [
@@ -179,6 +180,79 @@ class CompetenceAchievementController extends Controller
                 'description' => $data['description']
             ]
         );
+
+        // Ambil rombel yang ada
+        $rombel_sekarang = StudyClass::find($id);
+        //dd($id);
+        // Ambil rombel yg memili kelas dan jurusan yg sama
+        $rombel = StudyClass::where([
+            'id_level' => session('teachers.id_level'),
+            'id_major' => $rombel_sekarang->id_major,
+        ])
+        ->where('id','!=', $data['id_study_class'])
+        ->get()->pluck('id')->toArray();
+        // dd($rombel);
+        
+        
+        //Cari rombel yang diampu guru lain
+        $subject_teacher = SubjectTeacher::select('id_teacher','id_study_class')
+        ->where([
+            'id_course' => $data['id_course'],
+            'id_school_year' => session('id_school_year'),
+        ])->get();
+        
+        // Loop rombel guru
+        foreach ($subject_teacher as $item) {
+            // Decode rombel yg diampu guru karena array
+            $array_rombel_guru = json_decode($item->id_study_class);
+            // cari rombel guru yang ada didalam semua rombel
+            $rombel_guru = array_intersect($array_rombel_guru,$rombel);
+
+                // Looping id_rombel untuk membuat tujuan pembelajaran
+                foreach ($rombel_guru as $id_rombel){
+                    CompetenceAchievement::updateOrCreate(
+                        [
+                            'id_study_class' => $id_rombel,
+                            'id_school_year' => session('id_school_year'),
+                            'id_teacher' => $item->id_teacher,
+                            'id_course' => $data['id_course'],
+                        ],
+                        [
+                            'id_type_competence' => $data['id_type_competence'],
+                            'code' => $data['code'],
+                            'achievement' => $data['achievement'],
+                            'slug' => str_slug($data['achievement']) . '-' . Helper::str_random(5),
+                            'description' => $data['description']
+                        ]
+                    );
+            
+                }
+
+
+        }
+        
+
+        // Datapkan semua rombel yang memiliki jurusan dan
+
+        // // Cek rombel mana saja yang diajar guru tsb
+        // $subject_teacher = SubjectTeacher::where([
+        //     'id_course' => $data['id_course'],
+        //     'id_school_year' => session('id_school_year'),
+        //     'id_teacher' => $data['id_teacher']
+        // ])->get();
+        
+        // $study_class = json_decode($subject_teacher->id_study_class);
+            
+        // // Cari rombel yang diampu
+        // // Yang memiliki level kelas yang sama
+        // $study_class = StudyClass::whereIn('id', $study_class)
+        // ->where('id','!=', $id)
+        // ->where('id_level',session('teachers.id_level'))
+        // ->get()->pluck('id');
+
+        // dd($study_class);
+
+
         Helper::toast('Berhasil mengupdate kompetensi', 'success');
         if (session('role') == 'teacher') {
             return redirect()->route('setting_scores.list_competence');

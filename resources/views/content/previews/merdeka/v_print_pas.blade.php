@@ -227,11 +227,11 @@
                                     <td class="text-center">{{ $score['score'] }}</td>
                                     <td>
                                         @if ($score['competence_archieved'])
-                                            <p> {{ implode(', ', $score['competence_archieved']) }}
+                                            <p>{{ $kalimat_desc[0]->description}}  {{ implode(', '. $kalimat_desc[0]->description .' ', $score['competence_archieved']) }}, 
                                             </p>
                                         @endif
                                         @if ($score['competency_improved'])
-                                            <p> {{ implode(', ', $score['competency_improved']) }}</p>
+                                            <p> {{ $kalimat_desc[1]->description}} {{ implode(', '. $kalimat_desc[1]->description .' ', $score['competency_improved']) }}</p>
                                         @endif
                                     </td>
                                 </tr>

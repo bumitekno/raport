@@ -49,12 +49,13 @@ class ScoreCompetencyController extends Controller
             ])->first();
             $archieved = [];
 
+            // Cek yang terlampaui
             foreach ($competencies as $competency) {
                 if ($score_competencies == null) {
                     $checked = false;
                 } else {
-                    $competency_archieved = json_decode($score_competencies->competency_archieved);
-                    $checked = in_array($competency->id, $competency_archieved);
+                    $competency_archieved = json_decode($score_competencies->competency_archieved); // Array berisi competency achived
+                    $checked = in_array($competency->id, $competency_archieved);    // Cek apakah id_competensi ada di array competency achived
                 }
                 $archieved[] = [
                     'id' => $competency->id,
@@ -65,6 +66,7 @@ class ScoreCompetencyController extends Controller
             }
             $improved = [];
 
+            // Cek yang tidak terlampaui
             foreach ($competencies as $competency) {
                 if ($score_competencies == null) {
                     $checked = false;
