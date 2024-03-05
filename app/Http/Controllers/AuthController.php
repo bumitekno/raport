@@ -22,7 +22,6 @@ class AuthController extends Controller
             'username' => 'required',
             'password' => 'required'
         ]);
-        // dd($request);
 
         if (Auth::guard('admin')->attempt($this->check_credentials($request), $request->filled('remember'))) {
             Helper::alert('success', 'Selamat Datang !', 'Berhasil Login');
@@ -74,5 +73,20 @@ class AuthController extends Controller
         Session::flush();
         Helper::alert('error', 'Anda sudah Logout', '');
         return redirect()->route('auth.login');
+    }
+
+    public function loginAsyn(){
+        $data = [
+            'email' => 'brigitte.schuppe@example.com',
+            'password' => 12345
+        ];
+
+        if (Auth::guard('admin')->attempt($data)){
+            dd('berhasil');
+
+        }else{
+            dd('Gagal');
+        }
+
     }
 }
