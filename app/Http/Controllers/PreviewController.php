@@ -11,6 +11,7 @@ use App\Models\BasicCompetency;
 use App\Models\CompetenceAchievement;
 use App\Models\Config;
 use App\Models\Cover;
+use App\Models\DescriptionCompetence;
 use App\Models\Dimension;
 use App\Models\Extracurricular;
 use App\Models\Letterhead;
@@ -424,10 +425,10 @@ class PreviewController extends Controller
 
             $competency_archieved = [];
             $competency_improved = [];
+            //dd($score_competencies);
 
             foreach ($score_competencies as $score_competency) {
                 $archieved_ids = json_decode($score_competency->competency_archieved);
-
                 $improved_ids = json_decode($score_competency->competency_improved);
 
                 $archieved_names = $competencies->whereIn('id', $archieved_ids)->pluck('achievement');
@@ -436,8 +437,6 @@ class PreviewController extends Controller
                 $competency_archieved = collect($competency_archieved)->merge($archieved_names);
                 $competency_improved = collect($competency_improved)->merge($improved_names);
             }
-
-            //dd($nilai);
 
             $result_score[] = [
                 'id_course' => $subject->id_course,
@@ -448,8 +447,6 @@ class PreviewController extends Controller
 
             ];
         }
-
-        //dd($result_score);
 
         $result_extra = [];
 
@@ -513,7 +510,10 @@ class PreviewController extends Controller
             ['id_school_year', $school_year->id]
         ])->first();
         $config = Config::where('id_school_year', $school_year->id)->first();
-        // dd($config);
+
+        $kalimat_desc = DescriptionCompetence::all();
+
+        
         $result_other = [
             'note_teacher' => $note ? $note->description : '',
             'promotion' => $note ? $note->promotion : 'Y',
@@ -525,7 +525,8 @@ class PreviewController extends Controller
             'nip_teacher' => $teacher ? $teacher->nip : '',
             'signature' => $config && $config['signature'] != null ? public_path($config->signature) : null,
         ];
-        $pdf = PDF::loadView('content.previews.merdeka.v_print_pas', compact('result_score', 'result_extra', 'result_attendance', 'result_kop', 'result_profile', 'result_other', 'type_template', 'achievements'));
+
+        $pdf = PDF::loadView('content.previews.merdeka.v_print_pas', compact('result_score', 'result_extra', 'result_attendance', 'result_kop', 'result_profile', 'result_other', 'type_template', 'achievements','kalimat_desc'));
         return $pdf->stream();
     }
 

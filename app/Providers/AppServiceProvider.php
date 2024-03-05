@@ -8,6 +8,7 @@ use App\Models\SubjectTeacher;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Schema;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -28,6 +29,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        Schema::defaultStringLength(191);
         View()->composer('layout.admin.v_sidebar_teacher', function ($view) {
             $mapelData = SubjectTeacher::with(['teacher', 'course' => function ($query) {
                 $query->select(['id', 'name']);
