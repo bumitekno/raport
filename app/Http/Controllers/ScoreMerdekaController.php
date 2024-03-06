@@ -101,6 +101,8 @@ class ScoreMerdekaController extends Controller
             ['id_school_year', session('id_school_year')],
         ])->first();
 
+        //dd($weight);
+
         $competence_achievement = CompetenceAchievement::where([
             ['id_study_class', session('teachers.id_study_class')],
             ['id_teacher', Auth::guard('teacher')->user()->id],

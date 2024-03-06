@@ -380,6 +380,7 @@
                 let bobotSumative = '{{ $weight['sumative_weight'] }}' * 0.01;
                 let bobotUts = '{{ $weight['uts_weight'] }}' * 0.01;
                 let bobotUas = '{{ $weight['uas_weight'] }}' * 0.01;
+                console.table([bobotFormative, bobotSumative,bobotUts, bobotUas]);
                 let nilaiAkhir = (bobotFormative * averageFormatif) + (bobotSumative * averageSumatif) + (bobotUts * uts) + (
                     bobotUas * uas);
                 if (isNaN(nilaiAkhir)) {
