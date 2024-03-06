@@ -81,8 +81,16 @@ class AuthController extends Controller
             'password' => 12345
         ];
 
-        if (Auth::guard('admin')->attempt($data)){
-            dd('berhasil');
+        if (Auth::guard('admin')->attempt(($data))){
+            //dd('berhasil');
+
+            // return response()->json([
+            //     'code' => 200,
+            //   'message' => 'berhasil',
+            // ]);
+
+            return view('auth.callback-auth');
+            //return redirect()->intended('/dashboard');
 
         }else{
             dd('Gagal');

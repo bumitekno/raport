@@ -199,15 +199,21 @@ class PreviewController extends Controller
 
       
         //Jika uts only
-        if($_GET['type'] == 'uts-only' && session('templates.template') == "merdeka") {
-            return $this->print_uts_murni($student_class, $setting, $school_year, $subjects, $template->type);
+        if(isset($_GET['type'])){
+
+            if($_GET['type'] == 'uts-only' && session('templates.template') == "merdeka") {
+                return $this->print_uts_murni($student_class, $setting, $school_year, $subjects, $template->type);
+            }
         }
+
         
         switch ($template->template) {
             case 'k13':
                 return $this->preview_k13($student_class, $setting, $school_year, $subjects, $template->type);
             case 'merdeka':
-                $type = (session('role') == 'admin') ? $template->type : $_GET['type'];
+                // Request type dihapus karena pada admin tidak ada request type
+                //$type = (session('role') == 'admin') ? $template->type : $_GET['type'];
+                $type = $template->type;
                 return $this->preview_merdeka($student_class, $setting, $school_year, $subjects, $type);
             case 'manual2':
                 return $this->preview_manual2($student_class, $setting, $school_year, $subjects, $template->type);
