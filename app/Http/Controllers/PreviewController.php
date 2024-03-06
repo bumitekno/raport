@@ -339,6 +339,7 @@ class PreviewController extends Controller
 
             $description = $score_p5->description;
 
+            if($score!="-"){
             $result_score[] = [
                 'title' => $title,
                 'tema' => $tema,
@@ -346,7 +347,7 @@ class PreviewController extends Controller
                 'description' => $description,
             ];
         }
-
+    }
         $note = TeacherNote::where([
             ['id_student_class', $student_class->id],
             ['id_school_year', $school_year->id]
@@ -448,6 +449,7 @@ class PreviewController extends Controller
             'semester_number' => substr($school_year->name, -1),
             'semester' => substr($school_year->name, -1) == 1 ? 'Ganjil' : 'Genap',
             'school_year' => substr($school_year->name, 0, 9),
+            
         ];
         $teacher = Teacher::where([
             ['type', 'homeroom'],
@@ -665,6 +667,7 @@ class PreviewController extends Controller
 
         $result_extra = [];
 
+
         $extras = Extracurricular::where('status', 1)->get();
 
         foreach ($extras as $extra) {
@@ -689,6 +692,7 @@ class PreviewController extends Controller
                     }
                 }
             }
+            if($score!="-"){
             $result_extra[] = [
                 'id_extra' => $id_extra,
                 'name' => $name,
@@ -696,6 +700,7 @@ class PreviewController extends Controller
                 'description' => $description ? $description : null
             ];
         }
+    }
 
         $note = TeacherNote::where([
             ['id_student_class', $student_class->id],
@@ -715,6 +720,7 @@ class PreviewController extends Controller
             'nip_teacher' => $teacher ? $teacher->nip : '',
             'signature' => $config && $config->signature != null ? public_path($config->signature) : null,
         ];
+
 
         $result_achievement = Achievement::where([
             ['id_student_class', $student_class->id],
@@ -834,12 +840,12 @@ class PreviewController extends Controller
             ])->first();
 
 
-            if ($score_extra) {
+
                 $id_extra = $extra->id;
                 $name = $extra->name;
                 $score = null;
                 $description = null;
-
+                if ($score_extra) {
                 $scoreData = json_decode($score_extra->score);
                 foreach ($scoreData as $data) {
                     if ($data->id_student_class == $student_class->id) {
@@ -848,17 +854,18 @@ class PreviewController extends Controller
                         break;
                     }
                 }
+            }
 
-                if ($score !== null && $score !== '-') {
+                if($score!="-"){
                     $result_extra[] = [
                         'id_extra' => $id_extra,
                         'name' => $name,
-                        'score' => $score,
-                        'description' => $description,
+                        'score' => $score ? $score : null,
+                        'description' => $description ? $description: null
                     ];
                 }
             }
-        }
+
 
         $note = TeacherNote::where([
             ['id_student_class', $student_class->id],
@@ -982,6 +989,10 @@ class PreviewController extends Controller
         ])->get();
 
         $result_attitude = [];
+        $achievements = $student_class->achievements;
+
+        $competencies = CompetenceAchievement::where('status', 1)->get();
+
 
         foreach ($score_attitude as $score) {
             $type = $score['type'];
@@ -1113,6 +1124,7 @@ class PreviewController extends Controller
                     }
                 }
             }
+            if($score!="-"){
             $result_extra[] = [
                 'id_extra' => $id_extra,
                 'name' => $name,
@@ -1120,6 +1132,7 @@ class PreviewController extends Controller
                 'description' => $description ? $description : null
             ];
         }
+    }
 
         $note = TeacherNote::where([
             ['id_student_class', $student_class->id],

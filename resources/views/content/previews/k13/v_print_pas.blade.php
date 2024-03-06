@@ -37,7 +37,7 @@
         .table td p {
             margin: 0px;
             text-align: justify;
-            font-size: 9pt;
+            font-size: 10pt;
         }
 
         .table th {
@@ -144,7 +144,7 @@
                             <td class="b-0" style="padding: 0px; vertical-align: top">:</td>
                             <td class="b-0" style="padding: 0px; vertical-align: top" width="15%">
                                 {{ $result_profile['study_class'] }}
-                            </td>	
+                            </td>
                         </tr>
                         <tr>
                             <td class="b-0" style="padding: 0px; font-weight: bold;">NISN</td>

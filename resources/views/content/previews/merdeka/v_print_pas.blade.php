@@ -16,7 +16,7 @@
             width: 100%;
             text-align: center;
             font-weight: 500;
-            font-size: 16pt;
+            font-size: 14pt;
             margin-bottom: 10px;
             border-bottom: 3px solid #333;
             padding-bottom: 5px;
@@ -25,6 +25,7 @@
         .table {
             width: 100%;
             border-collapse: collapse;
+
         }
 
 
@@ -79,10 +80,6 @@
             margin: 0;
         }
 
-        table tr.page-break{
-          page-break-after:always
-        }
-
     </style>
 </head>
 
@@ -103,10 +100,10 @@
                                 <div class="text-uppercase" style="line-height: 1.1; font-family: 'Arial'; font-size: 12pt">
                                     {{ $result_kop['text1'] }}
                                 </div>
-                                <div style="line-height: 1.1; font-family: 'Arial'; font-size: 16pt" class="text-uppercase">
+                                <div style="line-height: 1.1; font-family: 'Arial'; font-size: 14pt" class="text-uppercase">
                                     {{ $result_kop['text2'] }}
                                 </div>
-                                <div style="line-height: 1.2; font-family: 'Arial'; font-size: 16pt"
+                                <div style="line-height: 1.2; font-family: 'Arial'; font-size: 14pt"
                                     class="text-uppercase text-bold">
                                     {{ $result_kop['text3'] }}
                                 </div>
@@ -227,11 +224,11 @@
                                     <td class="text-center">{{ $score['score'] }}</td>
                                     <td>
                                         @if ($score['competence_archieved'])
-                                            <p>{{ $kalimat_desc[0]->description}}  {{ implode(', '. $kalimat_desc[0]->description .' ', $score['competence_archieved']) }}, 
+                                            <p>{{ $kalimat_desc[0]->description}}  {{ implode(', '. $kalimat_desc[0]->description .' ', $score['competence_archieved']) }},
                                             </p>
                                         @endif
                                         @if ($score['competency_improved'])
-                                            <p> {{ $kalimat_desc[1]->description}} {{ implode(', '. $kalimat_desc[1]->description .' ', $score['competency_improved']) }}</p>
+                                            <p> {{ $kalimat_desc[0]->description}} {{ implode(', '. $kalimat_desc[0]->description .' ', $score['competency_improved']) }}</p>
                                         @endif
                                     </td>
                                 </tr>
@@ -301,11 +298,9 @@
                             <th class="text-center">
                                 Keterangan</th>
                         </tr>
-                        @php($no = 1)
-                        @php($i = 0)
                         @forelse($achievements as $achievement)
                             <tr>
-                                <td class="text-center">{{ $no }}</td>
+                                <td class="text-center">{{ $loop->iteration }}</td>
                                 <td>Juara {{ $achievement->ranking }} Tingkat {{ $achievement->level }} {{ $achievement->name }}</td>
                                 <td>{{ $achievement->description }}</td>
                             </tr>
@@ -333,9 +328,9 @@
                             <td class="b-0" style="font-size: 12pt">D. CATATAN WALIKELAS</td>
                         </tr>
                         <tr>
-                            <td class="text-left vertical-middle">
+                            <td class="text-left vertical-middle ">
                                 <div style="width: 100%; min-height: 60px">
-                                    <p class="m-0">{!! $result_other['note_teacher'] !!}
+                                    <p class="m-0" style="font-size: 11pt">{!! $result_other['note_teacher'] !!}
                                     </p>
                                 </div>
                             </td>
