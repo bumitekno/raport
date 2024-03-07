@@ -260,6 +260,7 @@
                                 Keterangan</th>
                         </tr>
                         @if (empty($result_extra))
+
                             <tr>
                                 <td colspan="4" class="text-center">Ekstrakurikuler tidak ada yang tersedia</td>
                             </tr>
@@ -280,8 +281,6 @@
             <tr>
                 <td style="height: 10px" colspan="8" class="b-0"></td>
             </tr>
-
-            <tr class="page-break"></tr>
 
             <tr>
                 <td colspan="8" class="b-0" style="padding: 0px !important">

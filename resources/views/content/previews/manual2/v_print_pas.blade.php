@@ -37,7 +37,6 @@
         .table td p {
             margin: 0px;
             text-align: justify;
-            /* font-size: 9pt; */
         }
 
         .table th {
