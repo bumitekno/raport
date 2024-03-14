@@ -450,7 +450,7 @@ class PreviewController extends Controller
             'address_school' => $setting['address'],
             'study_class' => $student_class->study_class->name,
             'level' => $student_class->study_class->level->name,
-            'fase' => $student_class->study_class->level->fase,
+            'fase' => $student_class->study_class->level->fase, 
             'semester_number' => substr($school_year->name, -1),
             'semester' => substr($school_year->name, -1) == 1 ? 'Ganjil' : 'Genap',
             'school_year' => substr($school_year->name, 0, 9),

@@ -131,7 +131,7 @@
         </tr>
         <thead>
             <tr>
-                <td colspan="7" class="b-0">
+                <td colspan="7 " class="b-0">
                     <table class="table b-0">
                         <tr class="b-0">
                             <td class="b-0" style="padding: 0px; vertical-align: top">Nama Peserta Didik</td>
