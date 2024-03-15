@@ -60,7 +60,6 @@
                         <div class="user-profile-section">
                             <div class="media mx-auto">
                                 @php
-                                    $user = Auth::user();
                                     $name = $user->name;
                                     $file = $user->file;
                                     $role = session('role');

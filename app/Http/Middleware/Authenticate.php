@@ -23,6 +23,6 @@ class Authenticate extends Middleware
             return redirect('/dashboard');
         } else if (Auth::guard('parent')->check()) {
             return redirect('/dashboard');
-        }
-    }
+        } 
+    }  
 }

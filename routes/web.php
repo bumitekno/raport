@@ -58,6 +58,7 @@ Route::prefix('auth')->name('auth.')->group(function () {
     Route::get('login-asyn', [AuthController::class, 'loginAsyn'])->name('login-asyn');
 });
 
+//Route::middleware(['global','auth:user,admin,parent,teacher'])->group(function () {
 Route::middleware('auth:user,admin,parent,teacher')->group(function () {
     Route::get('dashboard', [DashboardController::class, 'admin'])->name('dashboard');
     Route::get('home', [DashboardController::class, 'user'])->name('user.dashboard');

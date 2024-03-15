@@ -199,7 +199,7 @@ class LegerController extends Controller
             $nilai_map[$nmv]['score'] = $arr;
         }
 
-        // dd($nilai_map);
+        dd($nilai_map);
         unset($nmv);
         
         $results = array(
