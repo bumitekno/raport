@@ -101,7 +101,7 @@ class PreviewController extends Controller
                 $students = $students->where('year', session('year'));
                 $view = 'content.previews.v_list_students';
             }
-         
+
 
             return view($view, compact('students', 'years'));
         }
@@ -138,6 +138,7 @@ class PreviewController extends Controller
 
     public function print($year)
     {
+
         $school_year = SchoolYear::where('slug', $year)->first();
 
         $student_class = StudentClass::with('student', 'study_class', 'study_class.level', 'study_class.major')->where([
@@ -176,6 +177,7 @@ class PreviewController extends Controller
 
     public function print_other()
     {
+
         $school_year = SchoolYear::where('slug', $_GET['year'])->first();
 
         $student_class = StudentClass::with('student', 'study_class', 'study_class.level', 'study_class.major')->where([
@@ -197,22 +199,20 @@ class PreviewController extends Controller
 
         $setting = json_decode(Storage::get('settings.json'), true);
 
-      
-        //Jika uts only
-        if(isset($_GET['type'])){
 
-            if($_GET['type'] == 'uts-only' && session('templates.template') == "merdeka") {
+        //Jika uts only
+        if (isset($_GET['type'])) {
+
+            if ($_GET['type'] == 'uts-only' && session('templates.template') == "merdeka") {
                 return $this->print_uts_murni($student_class, $setting, $school_year, $subjects, $template->type);
             }
         }
 
-        
+
         switch ($template->template) {
             case 'k13':
                 return $this->preview_k13($student_class, $setting, $school_year, $subjects, $template->type);
             case 'merdeka':
-                // Request type dihapus karena pada admin tidak ada request type
-                //$type = (session('role') == 'admin') ? $template->type : $_GET['type'];
                 $type = $template->type;
                 return $this->preview_merdeka($student_class, $setting, $school_year, $subjects, $type);
             case 'manual2':
@@ -230,12 +230,12 @@ class PreviewController extends Controller
             ['slug', $_GET['student']],
             ['status', 1]
         ])->with([
-                    'student',
-                    'student.study_class',
-                    'student.families' => function ($query) {
-                        $query->whereIn('type', ['father', 'mother', 'guardian']);
-                    }
-                ])->first();
+            'student',
+            'student.study_class',
+            'student.families' => function ($query) {
+                $query->whereIn('type', ['father', 'mother', 'guardian']);
+            }
+        ])->first();
 
         // Mendapatkan data parents yang bertype 'father' atau 'mother' jika ada, atau mengembalikan null jika tidak ada
         $families = $student_class->student->families->first(function ($family) {
@@ -339,15 +339,15 @@ class PreviewController extends Controller
 
             $description = $score_p5->description;
 
-            if($score!="-"){
-            $result_score[] = [
-                'title' => $title,
-                'tema' => $tema,
-                'dimensi' => $dimension_data,
-                'description' => $description,
-            ];
+            if ($score != "-") {
+                $result_score[] = [
+                    'title' => $title,
+                    'tema' => $tema,
+                    'dimensi' => $dimension_data,
+                    'description' => $description,
+                ];
+            }
         }
-    }
         $note = TeacherNote::where([
             ['id_student_class', $student_class->id],
             ['id_school_year', $school_year->id]
@@ -373,8 +373,9 @@ class PreviewController extends Controller
         return $pdf->stream();
     }
 
-    public function print_uts_murni($student_class, $setting, $school_year, $subjects, $type_template){
-       
+    public function print_uts_murni($student_class, $setting, $school_year, $subjects, $type_template)
+    {
+
         $result_profile = [
             'name' => strtoupper($student_class->student->name),
             'nisn' => $student_class->student->nisn,
@@ -393,11 +394,11 @@ class PreviewController extends Controller
         ])->latest()->first();
 
         $result_score = DB::table('score_merdekas')
-        ->select('courses.name', 'score_merdekas.score_uts')
-        ->join('courses', 'score_merdekas.id_course','courses.id')
-        ->where('score_merdekas.id_student_class', $student_class->id)
-        ->where('score_merdekas.id_school_year', $school_year->id)
-        ->get();
+            ->select('courses.name', 'score_merdekas.score_uts')
+            ->join('courses', 'score_merdekas.id_course', 'courses.id')
+            ->where('score_merdekas.id_student_class', $student_class->id)
+            ->where('score_merdekas.id_school_year', $school_year->id)
+            ->get();
 
         //dd($result_score);
 
@@ -427,13 +428,17 @@ class PreviewController extends Controller
             'signature' => $config && $config['signature'] != null ? public_path($config->signature) : null,
         ];
 
-        $pdf = PDF::loadView('content.previews.merdeka.v_print_uts_murni', 
-        compact('result_score', 'result_kop', 'result_profile', 'result_other', 
-        'type_template'));
+        $pdf = PDF::loadView(
+            'content.previews.merdeka.v_print_uts_murni',
+            compact(
+                'result_score',
+                'result_kop',
+                'result_profile',
+                'result_other',
+                'type_template'
+            )
+        );
         return $pdf->stream();
-
-
-      
     }
 
     function preview_merdeka($student_class, $setting, $school_year, $subjects, $type_template)
@@ -445,11 +450,11 @@ class PreviewController extends Controller
             'address_school' => $setting['address'],
             'study_class' => $student_class->study_class->name,
             'level' => $student_class->study_class->level->name,
-            'fase' => $student_class->study_class->level->fase,
+            'fase' => $student_class->study_class->level->fase, 
             'semester_number' => substr($school_year->name, -1),
             'semester' => substr($school_year->name, -1) == 1 ? 'Ganjil' : 'Genap',
             'school_year' => substr($school_year->name, 0, 9),
-            
+
         ];
         $teacher = Teacher::where([
             ['type', 'homeroom'],
@@ -461,7 +466,6 @@ class PreviewController extends Controller
         $competencies = CompetenceAchievement::where('status', 1)->get();
 
         $result_score = [];
-        
         // $subject berisi rombel yang diampu guru
         foreach ($subjects as $subject) {
 
@@ -512,12 +516,16 @@ class PreviewController extends Controller
             $result_score[] = [
                 'id_course' => $subject->id_course,
                 'course' => $subject->course->name,
+                'number' => $subject->course->number,
                 'score' => empty($nilai) ? 0 : $nilai->final_score,
                 'competence_archieved' => $competency_archieved ? $competency_archieved->toArray() : [],
                 'competency_improved' => $competency_improved ? $competency_improved->toArray() : [],
-
             ];
         }
+
+        usort($result_score, function ($a, $b) {
+            return $a['number'] <=> $b['number'];
+        });
 
         $result_extra = [];
 
@@ -544,7 +552,7 @@ class PreviewController extends Controller
                     }
                 }
             }
-            if($score!="-"){
+            if ($score != "-" && $score) {
                 $result_extra[] = [
                     'id_extra' => $id_extra,
                     'name' => $name,
@@ -596,7 +604,7 @@ class PreviewController extends Controller
             'signature' => $config && $config['signature'] != null ? public_path($config->signature) : null,
         ];
 
-        $pdf = PDF::loadView('content.previews.merdeka.v_print_pas', compact('result_score', 'result_extra', 'result_attendance', 'result_kop', 'result_profile', 'result_other', 'type_template', 'achievements','kalimat_desc'));
+        $pdf = PDF::loadView('content.previews.merdeka.v_print_pas', compact('result_score', 'result_extra', 'result_attendance', 'result_kop', 'result_profile', 'result_other', 'type_template', 'achievements', 'kalimat_desc'));
         return $pdf->stream();
     }
 
@@ -692,15 +700,15 @@ class PreviewController extends Controller
                     }
                 }
             }
-            if($score!="-"){
-            $result_extra[] = [
-                'id_extra' => $id_extra,
-                'name' => $name,
-                'score' => $score ? $score : null,
-                'description' => $description ? $description : null
-            ];
+            if ($score != "-") {
+                $result_extra[] = [
+                    'id_extra' => $id_extra,
+                    'name' => $name,
+                    'score' => $score ? $score : null,
+                    'description' => $description ? $description : null
+                ];
+            }
         }
-    }
 
         $note = TeacherNote::where([
             ['id_student_class', $student_class->id],
@@ -841,11 +849,11 @@ class PreviewController extends Controller
 
 
 
-                $id_extra = $extra->id;
-                $name = $extra->name;
-                $score = null;
-                $description = null;
-                if ($score_extra) {
+            $id_extra = $extra->id;
+            $name = $extra->name;
+            $score = null;
+            $description = null;
+            if ($score_extra) {
                 $scoreData = json_decode($score_extra->score);
                 foreach ($scoreData as $data) {
                     if ($data->id_student_class == $student_class->id) {
@@ -856,15 +864,15 @@ class PreviewController extends Controller
                 }
             }
 
-                if($score!="-"){
-                    $result_extra[] = [
-                        'id_extra' => $id_extra,
-                        'name' => $name,
-                        'score' => $score ? $score : null,
-                        'description' => $description ? $description: null
-                    ];
-                }
+            if ($score != "-") {
+                $result_extra[] = [
+                    'id_extra' => $id_extra,
+                    'name' => $name,
+                    'score' => $score ? $score : null,
+                    'description' => $description ? $description : null
+                ];
             }
+        }
 
 
         $note = TeacherNote::where([
@@ -1124,15 +1132,15 @@ class PreviewController extends Controller
                     }
                 }
             }
-            if($score!="-"){
-            $result_extra[] = [
-                'id_extra' => $id_extra,
-                'name' => $name,
-                'score' => $score ? $score : null,
-                'description' => $description ? $description : null
-            ];
+            if ($score != "-") {
+                $result_extra[] = [
+                    'id_extra' => $id_extra,
+                    'name' => $name,
+                    'score' => $score ? $score : null,
+                    'description' => $description ? $description : null
+                ];
+            }
         }
-    }
 
         $note = TeacherNote::where([
             ['id_student_class', $student_class->id],

@@ -3,9 +3,43 @@
     @push('styles')
         <link rel="stylesheet" type="text/css" href="{{ asset('asset/custom/dashboard.css') }}">
     @endpush
-    <div class="layout-px-spacing">
+
+   <br><br> <div class="layout-px-spacing">
+        <div class="widget widget-account-invoice-one">
+            <div class="widget-content">
+                <div class="invoice-box">
+
+                    <div class="acc-total-info text-center">
+                        <h5>Selamat Datang, {{ Auth::user()->name }}!</h5>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"
+                            viewBox="0 0 24 24" fill="none" stroke="#67d321" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                        </svg>
+
+                    </div>
+
+                    <div class="inv-detail">
+                        <div class="info-detail-1">
+                            <p>Tahun Ajaran</p>
+                            <p>{{ session('school_year') }}</p>
+                        </div>
+                        <div class="info-detail-2">
+                            <p>Semester</p>
+                            <p>{{ session('semester') == 1 ? 'Ganjil' : 'Genap' }}</p>
+                        </div>
+                        <div class="info-detail-3 info-sub">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
         <div class="row layout-top-spacing">
+
             <div class="col-xl-4 col-lg-6 col-md-6 col-sm-6 col-12 layout-spacing">
+
                 <div class="infobox-3 widget widget-account-invoice-one">
                     <div class="info-icon">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -17,6 +51,7 @@
                             <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
                         </svg>
                     </div>
+
                     <h5 class="info-heading text-center">Jumlah Siswa Aktif</h5>
                     <div class="invoice-box ">
                         <p class="acc-amount">{{ $statistic['students'] }}</p>
