@@ -7,6 +7,8 @@ use App\Http\Requests\P5\ScoreRequest;
 use App\Models\AssesmentWeighting;
 use App\Models\CompetenceAchievement;
 use App\Models\Config;
+use App\Models\DescriptionCompetenceScore;
+use App\Models\ScoreCompetency;
 use App\Models\ScoreMerdeka;
 use App\Models\StudentClass;
 use App\Models\User;
@@ -99,6 +101,8 @@ class ScoreMerdekaController extends Controller
             ['id_school_year', session('id_school_year')],
         ])->first();
 
+        //dd($weight);
+
         $competence_achievement = CompetenceAchievement::where([
             ['id_study_class', session('teachers.id_study_class')],
             ['id_teacher', Auth::guard('teacher')->user()->id],
@@ -184,6 +188,7 @@ class ScoreMerdekaController extends Controller
     {
         //dd($request);
         $data = $request->validated();
+        // Input nilai score merdeka
         ScoreMerdeka::updateOrCreate(
             [
                 'id_student_class' => $data['id_student_class'],
@@ -203,6 +208,42 @@ class ScoreMerdekaController extends Controller
                 'final_score' => $data['final_score'],
             ]
         );
+
+        //Buat score competencies untuk menunjukkan terlampaui atau tidak
+
+        // Ambil nilai setting kkm
+        $score_kkm = DescriptionCompetenceScore::where([
+            'id_course' => $data['id_course'],
+            'id_study_class' => $data['id_study_class'],
+            'id_teacher' => $data['id_teacher'],
+        ])->first();
+
+        $archieved = [];
+        $improved = [];
+
+        foreach ($request->formative as $index => $score) {
+            if($score >= $score_kkm->score_kkm){
+                $archieved[] = $request->id_competency[$index];
+            }else{
+                $improved[] = $request->id_competency[$index];
+            }
+        }
+
+        ScoreCompetency::updateOrCreate(
+            [
+                'id_student_class' => $request->id_student_class,
+                'id_teacher' => $request->id_teacher,
+                'id_course' => $request->id_course,
+                'id_study_class' => $request->id_study_class,
+                'id_school_year' => $request->id_school_year,
+            ],
+            [
+                'competency_archieved' => json_encode($archieved),
+                'competency_improved' => json_encode($improved),
+            ]
+        );
+
+
         Helper::toast('Berhasil menyimpan data', 'success');
         return redirect()->back();
     }

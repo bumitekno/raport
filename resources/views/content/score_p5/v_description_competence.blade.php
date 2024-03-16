@@ -27,6 +27,24 @@
                         <form action="{{ route('setting_scores.description.storeOrUpdate') }}" method="post">
                             @csrf
                             <div class="widget-content widget-content-area br-8">
+                                <div class="row mt-2 mb-4">
+                                    <div class="col-6">
+                                        <h5>Setting Nilai KKM</h5>
+                                        <p>Dengan mengatur nilai kkm maka capaian kompetensi siswa akan otomatis
+                                            ditentukan apakah masukke dalam <strong>"perlu penguatan"</strong> atau <strong>"perlu perbaikan"</strong>
+                                            pada tampilan raport berdasarkan nilai masing-masing kompetensi yang diinput pada menu
+                                            <a class="text-primary font-bolder" href="{{ route('setting_scores.score') }}">Input Nilai</a>
+                                        </p>
+                                    </div>
+                                    <div class="col-5">
+                                        <label class="fw-bold text-primary" for="">KKM</label>
+                                        <input type="text" name="id_sdc" class="form-control"
+                                                                    value="{{ $score_competencies['id'] }}" hidden>
+                                        <input type="text" name="score_kkm" class="form-control"
+                                                                    value="{{ $score_competencies['score_kkm'] != null ? $score_competencies['score_kkm'] : 70 }}">
+                                    </div>
+                                </div>
+
                                 <table id="table-list" class="table dt-table-hover w-100">
                                     <thead>
                                         <tr>
@@ -85,7 +103,7 @@
                                                     <td>{{ $index + 1 }}</td>
                                                     <td>
                                                         <input type="text" name="criteria[]" class="form-control"
-                                                            value="{{ $criteria->criteria }}">
+                                                            value="{{ $criteria->criteria }}" readonly>
                                                     </td>
                                                     <td>
                                                         <input type="text" name="description[]" class="form-control"

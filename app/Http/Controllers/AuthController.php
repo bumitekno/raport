@@ -6,12 +6,19 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Alert;
 use App\Helpers\Helper;
+use App\Models\Admin;
+use App\Models\Teacher;
+use App\Models\User;
+use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Session;
 
 class AuthController extends Controller
 {
     public function login()
     {
+        //Cookie::forever('login', 'feri');
+        //Cookie::forever('login1', 'feri1');
+        setcookie("name", "value", time() + (86400 * 30));
         session()->put('title', 'Login');
         return view('content.auth.v_login');
     }
@@ -22,7 +29,6 @@ class AuthController extends Controller
             'username' => 'required',
             'password' => 'required'
         ]);
-        // dd($request);
 
         if (Auth::guard('admin')->attempt($this->check_credentials($request), $request->filled('remember'))) {
             Helper::alert('success', 'Selamat Datang !', 'Berhasil Login');
@@ -74,5 +80,38 @@ class AuthController extends Controller
         Session::flush();
         Helper::alert('error', 'Anda sudah Logout', '');
         return redirect()->route('auth.login');
+    }
+
+    public function loginAsyn(Request $request){
+       
+        $credential = $request->credential;
+        $role = 'admin';
+        $email = 'brigitte.schuppe@example.com';
+
+        if($role == 'admin'){
+            $user = Admin::where('email', $email)->first();
+            Auth::guard('admin')->login($user);
+        }elseif($role == 'guru'){
+            $user = Teacher::where('email', $email)->first();
+            Auth::guard('teacher')->login($user);
+        }else{
+            $user = User::where('email', $email)->first();
+            Auth::guard('user')->login($user);
+        }
+
+        return view('auth.callback-auth');
+
+        // $encryptedData = "U2FsdGVkX18j48vxXfWFdZudi2XHsBDNeRCVbO4mhJ3uDPKhdpX5RAPGny4q30KT";
+
+        // // Kunci enkripsi yang sama dengan yang digunakan di JavaScript
+        // $secretKey = "KunciEnkripsiSaya";
+
+        // // Dekripsi data
+        // $decryptedData = openssl_decrypt($encryptedData, 'AES-256-CBC', $secretKey);
+        // dd($decryptedData);
+        
+        dd($user);
+
+
     }
 }

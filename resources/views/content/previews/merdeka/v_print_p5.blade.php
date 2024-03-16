@@ -84,7 +84,7 @@
     <table class="table">
 
         {{-- <thead>
-            
+
         </thead> --}}
         <tbody>
             @foreach ($result_score as $index => $score)

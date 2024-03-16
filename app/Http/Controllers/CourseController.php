@@ -157,8 +157,9 @@ class CourseController extends Controller
             ->leftJoin('teachers', 'subject_teachers.id_teacher', '=', 'teachers.id')
             ->where('subject_teachers.id_course', $course->id)
             ->whereNull('subject_teachers.deleted_at');
-
+        
         $idStudyClasses = json_decode($subjectTeachers->pluck('id_study_class'), true);
+        
         if ($idStudyClasses) {
             foreach ($idStudyClasses as $index => $idStudyClass) {
                 $studyClassAlias = 'study_classes_' . $index;
@@ -167,6 +168,7 @@ class CourseController extends Controller
                 });
             }
         }
+        
 
         $subjectTeachers = $subjectTeachers->get();
 
@@ -190,7 +192,7 @@ class CourseController extends Controller
             $resultTeacher[] = $subjectTeacher;
         }
         // dd($course);
-        // dd($resultTeacher);
+        //dd($resultTeacher);
         return view('content.courses.v_info_course', compact('course', 'classes', 'teachers', 'years', 'resultTeacher'));
     }
 

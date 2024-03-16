@@ -5,10 +5,11 @@
     <title>Laporan Hasil Belajar</title>
     <style type="text/css">
         @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap');
+        @import url('https://fonts.cdnfonts.com/css/aguafina-script');
 
         body {
             font-family: 'Roboto', sans-serif;
-            font-size: 11pt;
+            font-size: 10pt;
             color: #333;
         }
 
@@ -16,7 +17,7 @@
             width: 100%;
             text-align: center;
             font-weight: 500;
-            font-size: 16pt;
+            font-size: 11pt;
             margin-bottom: 20px;
             border-bottom: 3px solid #333;
             padding-bottom: 10px;
@@ -25,6 +26,7 @@
         .table {
             width: 100%;
             border-collapse: collapse;
+
         }
 
         .table th,
@@ -32,17 +34,19 @@
             border: 1px solid #333;
             padding: 5px;
             text-align: left;
+            font-size: 11pt;
         }
 
         .table td p {
             margin: 0px;
             text-align: justify;
-            font-size: 9pt;
+            font-size: 10pt;
         }
 
         .table th {
             background-color: #f2f2f2;
             font-weight: 500;
+            font-size: 11pt;
         }
 
         .table-striped tbody tr:nth-of-type(odd) {
@@ -51,6 +55,7 @@
 
         .text-center {
             text-align: center !important;
+            font-size: 11pt;
         }
 
         .text-uppercase {
@@ -67,10 +72,12 @@
 
         .signature {
             margin-top: 30px;
+            font-size: 12px;
         }
 
         .b-0 {
             border: 0 !important;
+            font-size: 10px;
         }
 
         .signature p {
@@ -96,14 +103,14 @@
                             <div class="text-uppercase" style="line-height: 1.1; font-family: 'Arial'; font-size: 12pt">
                                 {{ $result_kop['text1'] }}
                             </div>
-                            <div style="line-height: 1.1; font-family: 'Arial'; font-size: 16pt" class="text-uppercase">
+                            <div style="line-height: 1.1; font-family: 'Arial'; font-size: 13pt" class="text-uppercase">
                                 {{ $result_kop['text2'] }}
                             </div>
-                            <div style="line-height: 1.2; font-family: 'Arial'; font-size: 16pt"
+                            <div style="line-height: 1.2; font-family: 'Arial'; font-size: 13pt"
                                 class="text-uppercase text-bold">
                                 {{ $result_kop['text3'] }}
                             </div>
-                            <div style="line-height: 1.2; font-family: 'Arial'; font-size: 8pt">
+                            <div style="line-height: 1.2; font-family: 'Arial, sans serif'; font-size: 7pt">
                                 {{ $result_kop['text5'] }}
                             </div>
                         </td>
@@ -126,7 +133,7 @@
             </tr>
         @endif
         <tr>
-            <td colspan="8" style="font-size: 14pt !important" class="b-0 text-bold text-uppercase text-center">
+            <td colspan="8" style="font-size: 12pt !important" class="b-0 text-bold text-uppercase text-center">
                 LAPORAN HASIL BELAJAR
             </td>
         </tr>
@@ -135,7 +142,7 @@
                 <td colspan="8" class="b-0">
                     <table class="table b-0">
                         <tr class="b-0">
-                            <td class="b-0" style="padding: 0px; vertical-align: top; font-weight: bold;" width="25%">Nama Peserta Didik</td>
+                            <td class="b-0" style="padding: 0px; vertical-align: top; font-weight: bold; " width="25%">Nama Peserta Didik</td>
                             <td class="b-0" style="padding: 0px; vertical-align: top">:</td>
                             <td class="b-0" style="padding: 0px;" width="40%">
                                 {{ $result_profile['name'] }}
@@ -144,7 +151,7 @@
                             <td class="b-0" style="padding: 0px; vertical-align: top">:</td>
                             <td class="b-0" style="padding: 0px; vertical-align: top" width="15%">
                                 {{ $result_profile['study_class'] }}
-                            </td>	
+                            </td>
                         </tr>
                         <tr>
                             <td class="b-0" style="padding: 0px; font-weight: bold;">NISN</td>
@@ -190,16 +197,16 @@
                     <td colspan="8" class="b-0" style="padding: 0px !important">
                         <table class="table">
                             <tr>
-                                <td class="b-0" colspan="2" style="font-size: 12pt">A. SIKAP
+                                <td class="b-0" colspan="2" style="font-size: 11pt">A. SIKAP
                                 </td>
                             </tr>
                             <tr>
-                                <th class="text-center" colspan="2">
+                                <th class="text-center" colspan="2" style="font-size: 11pt">
                                     Deskripsi</th>
                             </tr>
                             @foreach ($result_attitude as $index => $attitude)
                                 <tr>
-                                    <td class="text-center" style="width: 150px">
+                                    <td class="text-center" style="width: 150px; font-size: 11pt" >
                                         <b>{{ $loop->iteration }}. Sikap
                                             {{ $attitude['type'] == 'social' ? 'Sosial' : 'Spiritual' }}</b>
                                     </td>
@@ -214,12 +221,12 @@
                     </td>
                 </tr>
                 <tr>
-                    <td style="height: 10px" colspan="4" class="b-0"></td>
+                    <td style="height: 10px" colspan="4" class="b-0" style="font-size: 11pt"></td>
                 </tr>
             @endif
 
             <tr>
-                <td class="b-0" colspan="8" style="font-size: 12pt">B. PENGETAHUAN DAN KETERAMPILAN</td>
+                <td class="b-0" colspan="8" style="font-size: 11pt">B. PENGETAHUAN DAN KETERAMPILAN</td>
             </tr>
             <!--<tr>-->
             <!--    <td class="b-0" colspan="8" style="font-size: 12pt">Kriteria Ketuntasan Minimal Satuan-->
@@ -227,29 +234,29 @@
             <!--        65</td>-->
             <!--</tr>-->
             <tr>
-                <th class="text-center vertical-middle" rowspan="2">
+                <th class="text-center vertical-middle" rowspan="2" font-size= "11pt">
                     No
                 </th>
-                <th class="text-center" rowspan="2">
+                <th class="text-center" rowspan="2" font-size= "11pt">
                     Mata Pelajaran</th>
-                <th class="text-center" colspan="3">
+                <th class="text-center" colspan="3" font-size= "11pt">
                     Pengetahuan</th>
-                <th class="text-center" colspan="3">
+                <th class="text-center" colspan="3" font-size= "11pt">
                     Ketrampilan</th>
 
             </tr>
             <tr>
-                <th class="text-center">
+                <th class="text-center" font-size= "11pt">
                     Angka</th>
-                <th class="text-center">
+                <th class="text-center" font-size= "11pt">
                     Predikat</th>
-                <th class="text-center">
+                <th class="text-center" font-size= "11pt">
                     Deskripsi</th>
-                <th class="text-center">
+                <th class="text-center" font-size= "11pt">
                     Angka</th>
-                <th class="text-center">
+                <th class="text-center" font-size= "11pt">
                     Predikat</th>
-                <th class="text-center">
+                <th class="text-center" font-size= "11pt">
                     Deskripsi</th>
             </tr>
             @if (!empty($result_score))
@@ -290,18 +297,18 @@
             </tr>
 
             <tr>
-                <td colspan="8" class="b-0" style="padding: 0px !important">
+                <td colspan="8" class="b-0" style="padding: 0px !important; font-size: 10pt">
                     <table class="table">
                         <tr>
-                            <td class="b-0" colspan="3" style="font-size: 12pt">C. EKSTRAKURIKULER
+                            <td class="b-0" colspan="3" style="font-size: 11pt">C. EKSTRAKURIKULER
                             </td>
                         </tr>
                         <tr>
-                            <th class="text-center">
+                            <th class="text-center" style="font-size: 11pt">
                                 No</th>
-                            <th class="text-center">
+                            <th class="text-center" style="font-size: 11pt">
                                 Kegiatan Ekstrakurikuler</th>
-                            <th class="text-center">
+                            <th class="text-center" style="font-size: 11pt">
                                 Keterangan</th>
                         </tr>
                         @if (!empty($result_extra))
@@ -321,14 +328,14 @@
                 </td>
             </tr>
             <tr>
-                <td style="height: 10px" colspan="4" class="b-0"></td>
+                <td style="height: 10px; font-size: 10pt" colspan="4" class="b-0"></td>
             </tr>
 
             <tr>
                 <td colspan="8" class="b-0" style="padding: 0px !important">
                     <table class="table">
                         <tr>
-                            <td class="b-0" style="font-size: 12pt">D. CATATAN WALIKELAS</td>
+                            <td class="b-0" style="font-size: 11pt">D. CATATAN WALIKELAS</td>
                         </tr>
                         <tr>
                             <td class="text-left vertical-middle">
@@ -426,26 +433,26 @@
             <!--    </td>-->
             <!--</tr>-->
             <tr>
-                <td style="height: 10px" colspan="8" class="b-0"></td>
+                <td style="height: 10px; font-size: 10pt" colspan="8" class="b-0"></td>
             </tr>
             <tr>
-                <td colspan="8" class="b-0" style="padding: 0px !important">
+                <td colspan="8" class="b-0" style="padding: 0px !important; font-size: 10pt">
                     <table class="table">
                         <tr>
-                            <td class="b-0" colspan="3" style="font-size: 12pt">E. PRESTASI
+                            <td class="b-0" colspan="3" style="font-size: 11pt">E. PRESTASI
                             </td>
                         </tr>
                         <tr>
-                            <th class="text-center">
+                            <th class="text-center" style="font-size: 11pt">
                                 No</th>
-                            <th class="text-center">
+                            <th class="text-center" style="font-size: 11pt">
                                 Jenis Prestasi</th>
-                            <th class="text-center">
+                            <th class="text-center" style="font-size: 11pt">
                                 Keterangan</th>
                         </tr>
                         @for ($i = 1; $i <= 3; $i++)
                             <tr>
-                                <td class="text-center">{{ $i }}</td>
+                                <td class="text-center" style="font-size: 11pt">{{ $i }}</td>
                                 <td>{{ $result_achievement[$i - 1]['name'] ?? '' }}</td>
                                 <td>{{ $result_achievement[$i - 1]['description'] ?? '' }}</td>
                             </tr>
@@ -454,31 +461,31 @@
                 </td>
             </tr>
             <tr>
-                <td style="height: 10px" colspan="8" class="b-0"></td>
+                <td style="height: 10px; font-size: 11pt" colspan="8" class="b-0"></td>
             </tr>
 
             <tr>
-                <td colspan="5" class="b-0" style="padding: 0px !important">
+                <td colspan="5" class="b-0" style="padding: 0px !important; font-size: 10pt">
                     <table class="table">
                         <tr>
-                            <td class="b-0" colspan="2" style="font-size: 12pt">F. KETIDAKHADIRAN</td>
+                            <td class="b-0" colspan="2" style="font-size: 11pt">F. KETIDAKHADIRAN</td>
                         </tr>
                         <tr>
-                            <td>
+                            <td style="font-size: 11pt">
                                 Sakit</td>
                             <td class="text-center">
                                 {{ $result_attendance['ill'] }} Hari
                             </td>
                         </tr>
                         <tr>
-                            <td>
+                            <td style="font-size: 11pt">
                                 Izin</td>
                             <td class="text-center">
                                 {{ $result_attendance['excused'] }} Hari
                             </td>
                         </tr>
                         <tr>
-                            <td>
+                            <td style="font-size: 11pt">
                                 Tanpa Keterangan</td>
                             <td class="text-center">
                                 {{ $result_attendance['unexcused'] }} Hari

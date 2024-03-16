@@ -37,7 +37,7 @@
         .table td p {
             margin: 0px;
             text-align: justify;
-            font-size: 9pt;
+            font-size: 12pt;
         }
 
         .table th {
@@ -685,13 +685,13 @@ Olahraga, dan Kesehatan</td>
                         <p>Orang tua peserta didik</p>
                         <p style="margin-top: 80px;">___________________</p>
                     </div>
-            
+
                     <div style="float: right; width: 40%;">
                         <p>Kab Temanggung, 20 Desember 2023</p>
                         <p>TTD Wali Kelas</p>
                         <p style="margin-top: 80px;">___________________</p>
                     </div>
-            
+
                     <div style="margin: 0 auto; width: 40%;">
                         <p class="text-uppercase text-center">TTD Kepala Sekolah</p>
                         <p style="margin-top: 80px; text-align: center;">___________________</p>

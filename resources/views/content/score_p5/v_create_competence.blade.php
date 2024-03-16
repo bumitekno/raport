@@ -217,9 +217,11 @@
                             <input type="hidden" name="id_course" value="{{ $course->id }}">
                             <input type="hidden" name="id_study_class" value="{{ $study_class->id }}">
                             <input type="hidden" name="id_teacher" value="{{ $teacher->id }}">
-                            <div class="form-group">
+                            <input type="hidden" name="id_type_competence" value="2"> 
+                            {{-- Hardcode untuk Tujuan Pembelajaran --}}
+                            {{-- <div class="form-group">
                                 <label for="country">Tipe Capaian Kompetensi</label>
-                                <select class="form-control" name="id_type_competence">
+                                <select class="form-control disabled" name="id_type_competence">
                                     <option selected disabled>Pilih Tipe Kompetensi</option>
                                     @foreach ($types as $type)
                                         <option value="{{ $type->id }}"
@@ -230,7 +232,7 @@
                                 @error('id_type_competence')
                                     <div class="invalid-feedback d-block">{{ $message }}</div>
                                 @enderror
-                            </div>
+                            </div> --}}
                             <div class="form-group">
                                 <label for="country">Kode</label>
                                 <input type="text" class="form-control" name="code"
