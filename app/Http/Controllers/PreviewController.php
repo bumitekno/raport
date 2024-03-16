@@ -713,7 +713,7 @@ class PreviewController extends Controller
             }
 
         }
-    }
+    
 
         $note = TeacherNote::where([
             ['id_student_class', $student_class->id],
@@ -1150,7 +1150,7 @@ class PreviewController extends Controller
             }
 
         }
-    }
+    
 
         $note = TeacherNote::where([
             ['id_student_class', $student_class->id],
