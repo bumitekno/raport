@@ -350,6 +350,7 @@ Route::middleware('auth:user,admin,parent,teacher')->group(function () {
     Route::prefix('leger')->name('legers.')->group(function () {
         Route::get('prev-classes/{slug}', [LegerController::class, 'byClass'])->name('by_classes');
         Route::get('list-classes', [LegerController::class, 'listClass'])->name('list_classes');
+        Route::get('all/{slug}', [LegerController::class, 'allLeger'])->name('all_leger');
     });
 
     Route::prefix('raport')->name('raports.')->group(function () {
