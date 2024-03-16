@@ -113,7 +113,7 @@ class LegerController extends Controller
         $nilai_map = collect($arr_student_class)->map(function ($a) {
             return (array) $a;
         })->toArray();
-        // dd($nilai_map);
+        //dd($nilai_map);
 
         // foreach ($nilai_map as $nmv) {
         //     if ($template['template'] == 'k13') {
@@ -199,7 +199,7 @@ class LegerController extends Controller
             $nilai_map[$nmv]['score'] = $arr;
         }
 
-        dd($nilai_map);
+        //dd($nilai_map);
         unset($nmv);
         
         $results = array(
@@ -216,7 +216,7 @@ class LegerController extends Controller
             $pdf->setPaper('A4', 'landscape');
             return $pdf->stream();
         }
-        // dd($results);
+        //dd($results);
         if ($template['template'] == 'manual2') {
             return view('content.legers.v_list_leger_skill', compact('results', 'slug'));
         } else {
@@ -249,5 +249,24 @@ class LegerController extends Controller
         }
         // dd($result);
         return view('content.legers.v_list_classes', compact('results'));
+    }
+
+    public function allLeger($slug){
+        $setting = json_decode(Storage::get('settings.json'), true);
+        $study_class = StudyClass::where('slug', $slug)->first();
+        $setting['study_class'] = $study_class->name;
+        //dd($study_class);
+
+        $score = ScoreMerdeka::where('id_study_class', $study_class->id)
+        ->select(['courses.name','id_course','final_score','id_school_year',
+        'id_study_class','id_student_class'
+        ])
+        ->join('courses','courses.id','score_merdekas.id_course')
+        ->get();
+
+        dd($score);
+        
+        //Data siswa
+        $user = '';
     }
 }
