@@ -327,6 +327,7 @@ class PreviewController extends Controller
 
             $description = $score_p5->description;
 
+            if($score!="-"){
             $result_score[] = [
                 'title' => $title,
                 'tema' => $tema,
@@ -334,6 +335,7 @@ class PreviewController extends Controller
                 'description' => $description,
             ];
         }
+    }
 
         $note = TeacherNote::where([
             ['id_student_class', $student_class->id],
@@ -618,6 +620,7 @@ class PreviewController extends Controller
                     }
                 }
             }
+            if($score!="-"){
             $result_extra[] = [
                 'id_extra' => $id_extra,
                 'name' => $name,
@@ -625,6 +628,7 @@ class PreviewController extends Controller
                 'description' => $description ? $description : null
             ];
         }
+    }
 
         $note = TeacherNote::where([
             ['id_student_class', $student_class->id],
@@ -777,15 +781,14 @@ class PreviewController extends Controller
                         break;
                     }
                 }
-
-                if ($score !== null && $score !== '-') {
+            }
+                if($score!="-"){
                     $result_extra[] = [
                         'id_extra' => $id_extra,
                         'name' => $name,
                         'score' => $score,
                         'description' => $description,
                     ];
-                }
             }
         }
 
@@ -1042,6 +1045,7 @@ class PreviewController extends Controller
                     }
                 }
             }
+            if($score!="-"){
             $result_extra[] = [
                 'id_extra' => $id_extra,
                 'name' => $name,
@@ -1049,6 +1053,7 @@ class PreviewController extends Controller
                 'description' => $description ? $description : null
             ];
         }
+    }
 
         $note = TeacherNote::where([
             ['id_student_class', $student_class->id],
