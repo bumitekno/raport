@@ -18,13 +18,15 @@ class DescriptionCompetenceController extends Controller
             'id_teacher' => auth()->user()->id,
             'id_study_class' => session('id_study_class')
         ])->first();
+
+        //dd(session()->all());
         
         // Jika belum ada dibuat
         if($score_competencies == null){
             $score_competencies = DescriptionCompetenceScore::create([
                 'id_course' => session('teachers.id_course'),
                 'id_teacher' => auth()->user()->id,
-                'id_study_class' => session('id_study_class'),
+                'id_study_class' => session('teachers.id_study_class'),
                 'score_kkm' => 70
             ]);
         }
