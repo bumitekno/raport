@@ -226,7 +226,7 @@
                                     <label for="inputEmail4">Tahun Ajaran</label>
                                     <select name="id_school_year" id="id_school_year" class="form-control">
                                         @foreach ($years as $year)
-                                            <option value="{{ $year['id'] }}">{{ $year['school_year'] }}</option>
+                                            <option value="{{ $year['id'] }}">{{ $year['school_year'] }} {{ $year['semester']['name']}}</option>
                                         @endforeach
                                     </select>
                                 </div>

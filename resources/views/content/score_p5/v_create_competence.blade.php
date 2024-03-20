@@ -214,9 +214,9 @@
                             action="{{ route('setting_scores.competence.storeOrUpdate', ['id' => isset($competence) ? $competence->id : null]) }}"
                             method="POST">
                             @csrf
-                            <input type="hidden" name="id_course" value="{{ $course->id }}">
-                            <input type="hidden" name="id_study_class" value="{{ $study_class->id }}">
-                            <input type="hidden" name="id_teacher" value="{{ $teacher->id }}">
+                            <input type="text" name="id_course" value="{{ $course->id }}">
+                            <input type="text" name="id_study_class" value="{{ $study_class->id }}">
+                            <input type="text" name="id_teacher" value="{{ $teacher->id }}">
                             <input type="hidden" name="id_type_competence" value="2"> 
                             {{-- Hardcode untuk Tujuan Pembelajaran --}}
                             {{-- <div class="form-group">

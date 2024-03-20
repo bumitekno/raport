@@ -182,8 +182,8 @@ class CompetenceAchievementController extends Controller
         );
 
         // Ambil rombel yang ada
-        $rombel_sekarang = StudyClass::find($id);
-        //dd($id);
+        $rombel_sekarang = StudyClass::find($data['id_study_class']);
+        
         // Ambil rombel yg memili kelas dan jurusan yg sama
         $rombel = StudyClass::where([
             'id_level' => session('teachers.id_level'),

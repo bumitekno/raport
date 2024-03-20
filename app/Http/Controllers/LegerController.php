@@ -36,13 +36,13 @@ class LegerController extends Controller
             ->orderBy('us.nis', 'ASC')
             ->select('student_classes.id', 'us.nis', 'us.name')
             ->get();
-
+        //dd($student_class);
         $subject_teachers = SubjectTeacher::join('courses as c', 'c.id', '=', 'subject_teachers.id_course')
             ->whereRaw('JSON_CONTAINS(id_study_class, \'["' . $study_class->id . '"]\')')
             ->where('subject_teachers.id_school_year', session('id_school_year'))
             ->select('subject_teachers.id', 'c.name', 'subject_teachers.id_course', 'subject_teachers.id_teacher')
             ->get();
-        // dd($subject_teachers);
+        //dd($subject_teachers);
         $code_course = SubjectTeacher::join('courses as c', 'c.id', '=', 'subject_teachers.id_course')
             ->leftJoin('kkms', function ($join) use ($study_class) {
                 $join->on('kkms.id_school_year', '=', 'subject_teachers.id_school_year')
@@ -109,6 +109,7 @@ class LegerController extends Controller
                 'score' => $subject_teachers,
             ];
         }
+        //dd($arr_student_class);
 
         $nilai_map = collect($arr_student_class)->map(function ($a) {
             return (array) $a;
@@ -156,7 +157,7 @@ class LegerController extends Controller
             
         //     // dd($nmv['score']);
         // }
-        
+        //dd($nilai_map);
         
         foreach ($nilai_map as $nmv => $nmmv) {
             if ($template['template'] == 'k13') {
@@ -256,6 +257,42 @@ class LegerController extends Controller
         $study_class = StudyClass::where('slug', $slug)->first();
         $setting['study_class'] = $study_class->name;
         //dd($study_class);
+
+        // Dapatkan siswa pada kelas tsb
+        $siswa = DB::table('student_classes')
+        ->where('id_study_class',$study_class->id)
+        ->pluck('id_student');
+        //dd($siswa);
+
+        // $kelas_siswa = DB::table('student_classes')
+        // ->join('score_merdekas','score_merdekas.id_study_class','student_classes.id')
+        // ->select(['score_merdekas.id_student_class','score_merdekas.final_score',
+        // 'student_classes.id_study_class'])
+        // ->whereIn('student_classes.id_student',$siswa)
+        // ->get();
+
+        $kelas_siswa = DB::table('student_classes')
+        ->whereIn('student_classes.id_student',$siswa)
+        ->pluck('id');
+        dd($kelas_siswa);
+
+        // $student_class = DB::table('student_classes')
+        // ->join('study_classes','study_classes.id','student_classes.id_study_class')
+        // ->join('score_merdekas','score_merdekas.id_study_class','student_classes.id')
+        // ->select(['score_merdekas.id_student_class','study_classes.name',
+        // 'study_classes.id_major','student_classes.id_student',
+        // 'score_merdekas.final_score','score_merdekas.id_course'])
+        // ->whereIn('student_classes.id_student',$siswa)
+        // ->get();
+
+        $student_class = DB::table('score_merdekas')
+        ->join('study_classes','study_classes.id','score_merdekas.id_study_class')
+        //->select(['study_classes.name'])
+        ->whereIn('score_merdekas.id_study_class',$kelas_siswa)
+        ->get();
+
+        dd($student_class);
+
 
         $score = ScoreMerdeka::where('id_study_class', $study_class->id)
         ->select(['courses.name','id_course','final_score','id_school_year',

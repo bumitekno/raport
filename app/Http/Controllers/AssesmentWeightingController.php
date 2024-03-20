@@ -17,7 +17,7 @@ class AssesmentWeightingController extends Controller
 {
     public function index($type)
     {
-        // dd($type);
+        //dd(session()->all());
         session()->put('title', 'Bobot Penilaian');
         if (session('role') == 'admin') {
             $template = TemplateConfiguration::where([
@@ -45,7 +45,8 @@ class AssesmentWeightingController extends Controller
             $study_class = StudyClass::where('slug', $_GET['study_class'])->first();
             $datas = SubjectTeacher::with('teacher', 'course')
                 ->whereRaw('JSON_CONTAINS(id_study_class, \'["' . $study_class->id . '"]\')')
-                ->where('status', 1);
+                ->where('status', 1)
+                ->where('id_school_year',session('id_school_year'));
             if (Auth::guard('teacher')->check()) {
                 $datas = $datas->where('subject_teachers.id_teacher', Auth::guard('teacher')->user()->id);
             }
@@ -93,7 +94,7 @@ class AssesmentWeightingController extends Controller
         } else {
             $result = [];
         }
-        // dd($datas);
+        //dd($datas);
         return view('content.score_p5.v_assesment_weighting', compact('classes', 'result', 'type'));
     }
 

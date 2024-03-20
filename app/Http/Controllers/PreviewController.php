@@ -179,11 +179,14 @@ class PreviewController extends Controller
     {
 
         $school_year = SchoolYear::where('slug', $_GET['year'])->first();
+        dd($_GET['year']);
 
         $student_class = StudentClass::with('student', 'study_class', 'study_class.level', 'study_class.major')->where([
             ['slug', $_GET['student']],
             ['year', substr($school_year->name, 0, 4)]
         ])->latest()->first();
+
+        dd($student_class);
 
 
         $template = TemplateConfiguration::where([

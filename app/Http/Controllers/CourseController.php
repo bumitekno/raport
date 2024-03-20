@@ -191,7 +191,7 @@ class CourseController extends Controller
             $subjectTeacher->class_names = $classNames;
             $resultTeacher[] = $subjectTeacher;
         }
-        // dd($course);
+        //dd($years);
         //dd($resultTeacher);
         return view('content.courses.v_info_course', compact('course', 'classes', 'teachers', 'years', 'resultTeacher'));
     }
