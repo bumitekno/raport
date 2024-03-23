@@ -14,12 +14,10 @@ class DescriptionCompetenceController extends Controller
         // Ambil data kkm
         session()->put('title', 'Kelola Deskirpsi Capaian Kompetensi');
         $score_competencies = DescriptionCompetenceScore::where([
-            'id_course' => session('teachers.id_course'),
-            'id_teacher' => auth()->user()->id,
-            'id_study_class' => session('id_study_class')
+            'id_course' => (int)session('teachers.id_course'),
+            'id_teacher' => (int)auth()->user()->id,
+            'id_study_class' => (int)session('teachers.id_study_class')
         ])->first();
-
-        //dd(session()->all());
         
         // Jika belum ada dibuat
         if($score_competencies == null){
