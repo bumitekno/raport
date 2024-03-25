@@ -33,6 +33,7 @@ class AuthController extends Controller
         if (Auth::guard('admin')->attempt($this->check_credentials($request), $request->filled('remember'))) {
             Helper::alert('success', 'Selamat Datang !', 'Berhasil Login');
             session()->put('role', 'admin');
+            session()->put('is_supervisor', Auth::guard('admin')->user()->is_supervisor);
             return redirect()->intended('/dashboard');
         } else if (Auth::guard('teacher')->attempt($this->check_credentials($request), $request->filled('remember'))) {
             // dd(Auth::guard('teacher')->user()->type);

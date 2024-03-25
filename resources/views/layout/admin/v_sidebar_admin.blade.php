@@ -171,8 +171,7 @@
                 </ul>
             </li>
 
-            <li
-                class="menu k13 d-none {{ Route::is('basic_competencies*') || Route::is('general_weights*') ? 'active' : '' }}">
+            <li class="menu k13 d-none {{ Route::is('basic_competencies*') || Route::is('general_weights*') ? 'active' : '' }}">
                 <a href="#setting-other" data-toggle="collapse"
                     aria-expanded="{{ Route::is('basic_competencies*') || Route::is('general_weights*') ? 'true' : 'false' }}"
                     class="dropdown-toggle">
@@ -329,6 +328,7 @@
                     </li>
                 </ul>
             </li>
+
             <li
                 class="menu {{ Route::is('admins.*') || Route::is('teachers.*') || Route::is('users.*') ? 'active' : '' }}">
                 <a href="#side-user" data-toggle="collapse"
@@ -367,6 +367,7 @@
                     </li>
                 </ul>
             </li>
+
             <li class="menu {{ Route::is('legers.*') || Route::is('raports.*') ? 'active' : '' }}">
                 <a href="#print-raport" data-toggle="collapse"
                     aria-expanded="{{ Route::is('legers.*') || Route::is('raports.*') ? 'true' : 'false' }}"
@@ -400,6 +401,143 @@
                     </li>
                 </ul>
             </li>
+
+            {{-- <li
+                    class="menu {{ session()->has('teachers') && session('teachers.template') != 'merdeka' ? 'd-none' : '' }}">
+                    <a href="#submenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                        <div class="">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <path d="M14 2H6a2 2 0 0 0-2 2v16c0 1.1.9 2 2 2h12a2 2 0 0 0 2-2V8l-6-6z" />
+                                <path d="M14 3v5h5M12 18v-6M9 15h6" />
+                            </svg>
+                            <span> Tujuan Pembelajaran</span>
+                        </div>
+                        <div>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round" class="feather feather-chevron-right">
+                                <polyline points="9 18 15 12 9 6"></polyline>
+                            </svg>
+                        </div>
+                    </a>
+                    <ul class="collapse submenu list-unstyled" id="submenu" data-parent="#accordionExample">
+                        <li>
+                            <a href="{{ route('setting_scores.list_competence') }}"> Capaian Kompetensi </a>
+                        </li>
+                        <li>
+                            <a href="{{ route('setting_scores.description') }}"> Pengaturan Deskripsi </a>
+                        </li>
+                    </ul>
+                </li>
+                <li
+                    class="menu {{ session()->has('teachers') && session('teachers.template') != 'merdeka' ? 'd-none' : '' }}">
+                    <a href="#submenu2" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                        <div class="">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <polygon points="16 3 21 8 8 21 3 21 3 16 16 3"></polygon>
+                            </svg>
+                            <span> Penilaian Siswa 1</span>
+                        </div>
+                        <div>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
+                                <polyline points="9 18 15 12 9 6"></polyline>
+                            </svg>
+                        </div>
+                    </a>
+                    <ul class="collapse submenu list-unstyled" id="submenu2" data-parent="#accordionExample">
+                        <li>
+                            <a href="{{ route('setting_scores.score') }}"> Input Nilai</a>
+                        </li>
+                        <li>
+                            <a href="{{ route('setting_scores.score_competency') }}"> Kelola Deskripsi</a>
+                        </li>
+                        <li>
+                            <a
+                                href="{{ url('/setting-score/assesment-weight/' . session('teachers.type') . '?study_class=' . session('teachers.slug_classes')) }}">
+                                Bobot Penilaian</a>
+                        </li>
+                    </ul>
+                </li>
+                <li
+                    class="menu {{ session()->has('teachers') && session('teachers.template') != 'k13' ? 'd-none' : '' }}">
+                    <a href="#score-k16" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                        <div class="">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <polygon points="14 2 18 6 7 17 3 17 3 13 14 2"></polygon>
+                                <line x1="3" y1="22" x2="21" y2="22"></line>
+                            </svg>
+                            <span> Penilaian Siswa</span>
+                        </div>
+                        <div>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
+                                <polyline points="9 18 15 12 9 6"></polyline>
+                            </svg>
+                        </div>
+                    </a>
+                    <ul class="collapse submenu list-unstyled" id="score-k16" data-parent="#accordionExample">
+                        <li>
+                            <a href="{{ route('k13.scores.index') }}"> Nilai</a>
+                        </li>
+                        <li>
+                            <a href="{{ route('basic_competencies.index') }}"> Kompetensi Dasar</a>
+                        </li>
+                    </ul>
+                </li>
+                <li
+                    class="menu {{ session()->has('teachers') && session('teachers.template') != 'merdeka' ? 'd-none' : '' }}">
+                    <a href="{{ route('manages.index') }}" aria-expanded="false" class="dropdown-toggle">
+                        <div class="">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <polygon points="14 2 18 6 7 17 3 17 3 13 14 2"></polygon>
+                                <line x1="3" y1="22" x2="21" y2="22"></line>
+                            </svg>
+                            <span> Penilaian P5</span>
+                        </div>
+                    </a>
+                </li>
+                <li
+                    class="menu {{ session()->has('teachers') && session('teachers.template') != 'manual' ? 'd-none' : '' }}">
+                    <a href="{{ route('manuals.scores.index') }}" aria-expanded="false" class="dropdown-toggle">
+                        <div class="">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <polygon points="14 2 18 6 7 17 3 17 3 13 14 2"></polygon>
+                                <line x1="3" y1="22" x2="21" y2="22"></line>
+                            </svg>
+                            <span> Penilaian Siswa</span>
+                        </div>
+                    </a>
+                </li>
+                <li
+                    class="menu {{ session()->has('teachers') && session('teachers.template') != 'manual2' ? 'd-none' : '' }}">
+                    <a href="{{ route('manual2s.scores.index') }}" aria-expanded="false" class="dropdown-toggle">
+                        <div class="">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <polygon points="14 2 18 6 7 17 3 17 3 13 14 2"></polygon>
+                                <line x1="3" y1="22" x2="21" y2="22"></line>
+                            </svg>
+                            <span> Penilaian Siswa</span>
+                        </div>
+                    </a>
+            </li> --}}
+
+
+
         </ul>
     </nav>
 </div>
