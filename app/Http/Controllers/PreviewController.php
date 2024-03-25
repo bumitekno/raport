@@ -210,7 +210,7 @@ class PreviewController extends Controller
                 return $this->print_uts_murni($student_class, $setting, $school_year, $subjects, $template->type);
             }
         }
-
+        //dd($template->template);
 
         switch ($template->template) {
             case 'k13':
@@ -606,6 +606,8 @@ class PreviewController extends Controller
             'nip_teacher' => $teacher ? $teacher->nip : '',
             'signature' => $config && $config['signature'] != null ? public_path($config->signature) : null,
         ];
+
+        //dd($result_score);
 
         $pdf = PDF::loadView('content.previews.merdeka.v_print_pas', compact('result_score', 'result_extra', 'result_attendance', 'result_kop', 'result_profile', 'result_other', 'type_template', 'achievements', 'kalimat_desc'));
         return $pdf->stream();
