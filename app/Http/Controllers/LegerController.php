@@ -349,14 +349,14 @@ class LegerController extends Controller
             'setting' => $setting
         );
 
-        if ($request->pdf) {
+        // if ($request->pdf) {
            
-            $pdf = PDF::loadView('content.legers.v_print_all_leger', compact('mapel','semester',
-            'results','dataBaru'));
+        //     $pdf = PDF::loadView('content.legers.v_print_all_leger', compact('mapel','semester',
+        //     'results','dataBaru'));
            
-            $pdf->setPaper('A4', 'landscape');
-            return $pdf->stream();
-        }
+        //     $pdf->setPaper('A4', 'landscape');
+        //     return $pdf->stream();
+        // }
 
         return view('content.legers.v_print_all_leger', compact('mapel','semester',
         'results','dataBaru'));
