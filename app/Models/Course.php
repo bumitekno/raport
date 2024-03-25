@@ -15,7 +15,7 @@ class Course extends Model
     protected $table = "courses";
 
     protected $fillable = [
-        'slug', 'name', 'group', 'code', 'status'
+        'slug', 'name', 'group', 'code', 'status','sub_group'
     ];
 
     protected $dates = ['deleted_at'];

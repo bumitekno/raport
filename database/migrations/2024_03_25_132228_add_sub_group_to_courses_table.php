@@ -13,8 +13,8 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('admins', function (Blueprint $table) {
-            $table->enum('is_supervisor', ['true', 'false'])->default('false');
+        Schema::table('courses', function (Blueprint $table) {
+            $table->string('sub_group')->nullable();
         });
     }
 
@@ -25,8 +25,8 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('admins', function (Blueprint $table) {
-            $table->dropColumn('is_supervisor');
+        Schema::table('courses', function (Blueprint $table) {
+            $table->dropColumn('sub_group');
         });
     }
 };

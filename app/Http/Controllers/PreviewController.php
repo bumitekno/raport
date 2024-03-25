@@ -518,6 +518,8 @@ class PreviewController extends Controller
 
             $result_score[] = [
                 'id_course' => $subject->id_course,
+                'group' => $subject->course->group,
+                'sub_group' => $subject->course->sub_group,
                 'course' => $subject->course->name,
                 'number' => $subject->course->number,
                 'score' => empty($nilai) ? 0 : $nilai->final_score,
@@ -606,6 +608,12 @@ class PreviewController extends Controller
             'nip_teacher' => $teacher ? $teacher->nip : '',
             'signature' => $config && $config['signature'] != null ? public_path($config->signature) : null,
         ];
+
+        $result_score = collect($result_score);
+
+        $result_score = $result_score->groupBy('group')->map(function ($score) {
+            return $score->groupBy('sub_group');
+        });
 
         //dd($result_score);
 
@@ -1087,6 +1095,8 @@ class PreviewController extends Controller
 
                 $result_score[] = [
                     'course' => $course,
+                    'group' => $subject->course->group,
+                    'sub_group' => $subject->course->sub_group,
                     'final_assessment' => $final_assessment,
                     'predicate_assessment' => $predicate_assessment,
                     'description_assessment' => $description_assessment,
@@ -1099,6 +1109,8 @@ class PreviewController extends Controller
             } else {
                 $result_score[] = [
                     'course' => $subject->course->name,
+                    'group' => $subject->course->group,
+                    'sub_group' => $subject->course->sub_group,
                     'final_assessment' => null,
                     'predicate_assessment' => null,
                     'description_assessment' => null,
@@ -1181,7 +1193,7 @@ class PreviewController extends Controller
             'excused' => $attendance ? $attendance->excused : 0,
             'unexcused' => $attendance ? $attendance->unexcused : 0,
         ];
-        // dd($result_achievement);
+        //dd($result_score);
 
         $pdf = PDF::loadView('content.previews.k13.v_print_pas', compact('result_profile', 'result_kop', 'result_attitude', 'result_score', 'result_extra', 'result_other', 'result_achievement', 'result_attendance', 'type_template'));
         return $pdf->stream();

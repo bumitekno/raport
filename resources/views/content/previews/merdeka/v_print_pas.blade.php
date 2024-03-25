@@ -227,23 +227,46 @@
                                 <td colspan="4" class="text-center">Data saat ini tidak tersedia</td>
                             </tr>
                         @else
-                            @foreach ($result_score as $score)
+                            @forelse ( $result_score as $key => $group )
                                 <tr>
-
-                                    <td class="text-center">{{ $loop->iteration }}</td>
-                                    <td class="">{{ $score['course'] }}</td>
-                                    <td class="text-center">{{ $score['score'] }}</td>
-                                    <td>
-                                        @if ($score['competence_archieved'])
-                                            <p>{{ $kalimat_desc[0]->description}}  {{ implode(', '. $kalimat_desc[0]->description .' ', $score['competence_archieved']) }},
-                                            </p>
-                                        @endif
-                                        @if ($score['competency_improved'])
-                                            <p> {{ $kalimat_desc[0]->description}} {{ implode(', '. $kalimat_desc[0]->description .' ', $score['competency_improved']) }}</p>
-                                        @endif
-                                    </td>
+                                    <td class="text-bold" colspan="4">Kelompok {{$key}} {{ $key == 'C' ? '(Peminatan)' : '(Umum)'}}</td>
                                 </tr>
-                            @endforeach
+
+                                @forelse ( $group as $keys => $sub_group )
+                                    @if ($keys != '')
+                                        <tr>
+                                            <td colspan="4">{{$loop->iteration}}. {{$keys}}</td>
+                                        </tr>
+                                    @endif
+
+                                    @foreach ($sub_group as $score)
+                                    <tr>
+
+                                        <td class="text-center">{{ $loop->iteration }}</td>
+                                        <td class="">{{ $score['course'] }}</td>
+                                        <td class="text-center">{{ $score['score'] }}</td>
+                                        <td>
+                                            @if ($score['competence_archieved'])
+                                                <p>{{ $kalimat_desc[0]->description}}  {{ implode(', '. $kalimat_desc[0]->description .' ', $score['competence_archieved']) }},
+                                                </p>
+                                            @endif
+                                            @if ($score['competency_improved'])
+                                                <p> {{ $kalimat_desc[0]->description}} {{ implode(', '. $kalimat_desc[0]->description .' ', $score['competency_improved']) }}</p>
+                                            @endif
+                                        </td>
+                                    </tr>
+                                    @endforeach
+
+                                @empty
+                                @endforelse
+
+                                
+                            @empty
+                                
+                            @endforelse
+
+                            
+                            
                         @endif
                     </table>
                 </td>

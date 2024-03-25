@@ -19,16 +19,16 @@
                 @else
                     {{ Form::open(['route' => 'courses.store']) }}
                 @endif
-                <div class="form-group mb-4">
-                    <label for="inputAddress">Nama Mata Pelajaran</label>
-                    <input type="text" placeholder="Nama Mata Pelajaran" class="form-control" name="name"
-                        value="{{ isset($course) ? old('name', $course->name) : old('name') }}">
-                    @error('name')
-                        <div class="invalid-feedback d-block">{{ $message }}</div>
-                    @enderror
-                </div>
                 <div class="form-row mb-4">
-                    <div class="form-group col-md-6">
+                    <div class="form-group col-md-8">
+                        <label for="inputAddress">Nama Mata Pelajaran</label>
+                        <input type="text" placeholder="Nama Mata Pelajaran" class="form-control" name="name"
+                            value="{{ isset($course) ? old('name', $course->name) : old('name') }}">
+                        @error('name')
+                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    <div class="form-group col-md-4">
                         <label for="inputEmail4">Kode Mapel</label>
                         <input type="text" class="form-control" name="code" placeholder="Kode Mapel"
                             value="{{ isset($course) ? old('code', $course->code) : old('code') }}">
@@ -36,14 +36,36 @@
                             <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror
                     </div>
-                    <div class="form-group col-md-6">
+                </div>
+                <div class="form-row mb-4">
+                    <div class="form-group col-md-4">
                         <label for="inputPassword4">Kelompok Mapel</label>
-                        <input type="text" class="form-control" name="group" placeholder="Kelompok Mapel"
-                            value="{{ isset($course) ? old('group', $course->group) : old('group') }}">
+                        <select class="form-control" name="group" id="">
+                            @if (isset($course))
+                                
+                            <option value="{{$course->group}}" selected>{{$course->group}}</option>
+                            @endif
+                            <option value="A">A (umum)</option>
+                            <option value="B">B (umum)</option>
+                            <option value="C">C (peminatan)</option>
+                        </select>
+                        {{-- <input type="text" class="form-control" name="group" placeholder="Kelompok Mapel"
+                            value="{{ isset($course) ? old('group', $course->group) : old('group') }}"> --}}
                         @error('group')
                             <div class="invalid-feedback d-block">{{ $message }}</div>
                         @enderror
                     </div>
+
+                    <div class="form-group col-md-8">
+                        <label for="inputEmail4">Sub Kelompok Mapel</label>
+                        <input type="text" class="form-control" name="sub_group" placeholder="Sub Kelompok Mapel"
+                            value="{{ isset($course) ? old('sub_group', $course->sub_group) : old('sub_group') }}">
+                        <small class="text-danger">Sub kelompok mapel hanya diisi saat Anda memilih Kelompok Mapel C</small>
+                        @error('sub_group')
+                            <div class="invalid-feedback d-block">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    
                 </div>
                 <button class="btn btn-primary mt-2 d-none" id="btnLoader">
                     <div class="spinner-grow text-white mr-2 align-self-center loader-sm">
@@ -65,6 +87,8 @@
                     $('#btnSubmit').addClass('d-none');
                 });
             });
+
+
         </script>
     @endpush
 @endsection
