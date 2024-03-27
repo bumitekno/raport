@@ -225,40 +225,34 @@
                 </tr>
             @endif
 
+            {{-- PENGETAHUAN --}}
+
             <tr>
-                <td class="b-0" colspan="8" style="font-size: 11pt">B. PENGETAHUAN DAN KETERAMPILAN</td>
+                
+                <td class="b-0" colspan="8" style="font-size: 11pt">B. PENGETAHUAN</td>
+                
             </tr>
-            <!--<tr>-->
-            <!--    <td class="b-0" colspan="8" style="font-size: 12pt">Kriteria Ketuntasan Minimal Satuan-->
-            <!--        Pendidikan=-->
-            <!--        65</td>-->
-            <!--</tr>-->
+
+            
             <tr>
-                <th class="text-center vertical-middle" rowspan="2" font-size= "11pt">
+                <td class="b-0" colspan="8" style="font-size: 12pt">Kriteria Ketuntasan Minimal Satuan
+                    Pendidikan
+                    70</td>
+                </tr>
+            <tr>
+                <th class="text-center vertical-middle" font-size= "11pt">
                     No
                 </th>
-                <th class="text-center" rowspan="2" font-size= "11pt">
+                <th class="text-center" font-size= "11pt">
                     Mata Pelajaran</th>
-                <th class="text-center" colspan="3" font-size= "11pt">
-                    Pengetahuan</th>
-                <th class="text-center" colspan="3" font-size= "11pt">
-                    Ketrampilan</th>
-
+                    <th class="text-center" font-size= "11pt">
+                        Angka</th>
+                    <th class="text-center" font-size= "11pt">
+                        Predikat</th>
+                    <th colspan="8" class="text-center" font-size= "11pt">
+                        Deskripsi</th>
             </tr>
-            <tr>
-                <th class="text-center" font-size= "11pt">
-                    Angka</th>
-                <th class="text-center" font-size= "11pt">
-                    Predikat</th>
-                <th class="text-center" font-size= "11pt">
-                    Deskripsi</th>
-                <th class="text-center" font-size= "11pt">
-                    Angka</th>
-                <th class="text-center" font-size= "11pt">
-                    Predikat</th>
-                <th class="text-center" font-size= "11pt">
-                    Deskripsi</th>
-            </tr>
+           
             @if (!empty($result_score))
                 @foreach ($result_score as $score)
                     <tr>
@@ -270,15 +264,59 @@
                         <td class="text-center">
                             {{ $score['predicate_assessment'] }}
                         </td>
-                        <td>
+                        <td colspan="8">
                             @if ($score['description_assessment'])
                                 <p>Penguasaan pengetahuan {{ $score['description_assessment'] }}
                                     dalam {{ implode(', ', $score['kd_assessment']) }}</p>
                             @endif
                         </td>
+                        
+                    </tr>
+                @endforeach
+            @else
+                <tr>
+                    <td class="text-center">Belum ada mapel yang dinilai</td>
+                </tr>
+            @endif
+            
+
+            <tr>
+                <td style="height: 10px" class="b-0"></td>
+            </tr>
+
+            {{-- KETERAMPILAN --}}
+
+            <tr>
+                <td class="b-0" colspan="8" style="font-size: 11pt">C. KETERAMPILAN</td>
+            </tr>
+            <tr>
+                <td class="b-0" colspan="8" style="font-size: 12pt">Kriteria Ketuntasan Minimal Satuan
+                    Pendidikan
+                    70</td>
+                </tr>
+            <tr>
+                <th class="text-center vertical-middle" font-size="11pt">
+                    No
+                </th>
+                <th class="text-center" font-size= "11pt">
+                    Mata Pelajaran</th>
+                    <th class="text-center" font-size= "11pt">
+                        Angka</th>
+                    <th class="text-center" font-size= "11pt">
+                        Predikat</th>
+                    <th class="text-center" colspan="8" font-size= "11pt">
+                        Deskripsi</th>
+            </tr>
+           
+            @if (!empty($result_score))
+                @foreach ($result_score as $score)
+                    <tr>
+                        <td class="text-center">{{ $loop->iteration }}</td>
+                        <td>
+                            {{ $score['course'] }}</td>
                         <td class="text-center">{{ $score['final_skill'] }}</td>
                         <td class="text-center">{{ $score['predicate_skill'] }}</td>
-                        <td>
+                        <td colspan="8">
                             @if ($score['description_skill'])
                                 <p>Penguasaan ketrampilan {{ $score['description_skill'] }}
                                     dalam {{ implode(', ', $score['kd_skill']) }}</p>
@@ -296,11 +334,59 @@
                 <td style="height: 10px" colspan="8" class="b-0"></td>
             </tr>
 
+            
+
+            {{-- Predikat Nilai --}}
+            <tr>
+                <td colspan="10" class="b-0" style="padding: 0px !important; font-size: 10pt">
+                    <table class="table">
+                        <tr>
+                            <td class="b-0" colspan="3" style="font-size: 11pt">Tabel interval predikat berdasarkan KKM
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th class="text-center vertical-middle" rowspan="2" font-size= "11pt">
+                                KKM
+                            </th>
+                            <th  class="text-center" colspan="{{ count($predicate_score) }}">Predikat</th>
+                            
+                        </tr>
+                        <tr>
+                            @forelse ($predicate_score as $ps)
+                                <th class="text-center" font-size= "11pt">
+                                {{$ps->description}} 
+                                ({{$ps->name}})</th>
+                            @empty
+                                
+                            @endforelse
+                           
+                        </tr>
+                        <tr>
+                            <td class="text-center">70</td>
+                            @forelse ($predicate_score as $ps)
+                                <td class="text-center" font-size= "11pt">
+                                {{$ps->score}}</td>
+                            @empty
+                                
+                            @endforelse
+                        </tr>
+
+
+                        
+                    </table>
+                </td>
+            </tr>
+
+
+
+
+            {{-- Ekstrakulikuler --}}
             <tr>
                 <td colspan="8" class="b-0" style="padding: 0px !important; font-size: 10pt">
                     <table class="table">
                         <tr>
-                            <td class="b-0" colspan="3" style="font-size: 11pt">C. EKSTRAKURIKULER
+                            <td class="b-0" colspan="3" style="font-size: 11pt">D. EKSTRAKURIKULER
                             </td>
                         </tr>
                         <tr>
@@ -335,7 +421,7 @@
                 <td colspan="8" class="b-0" style="padding: 0px !important">
                     <table class="table">
                         <tr>
-                            <td class="b-0" style="font-size: 11pt">D. CATATAN WALIKELAS</td>
+                            <td class="b-0" style="font-size: 11pt">F. CATATAN WALIKELAS</td>
                         </tr>
                         <tr>
                             <td class="text-left vertical-middle">

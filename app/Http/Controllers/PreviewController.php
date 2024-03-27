@@ -1193,9 +1193,22 @@ class PreviewController extends Controller
             'excused' => $attendance ? $attendance->excused : 0,
             'unexcused' => $attendance ? $attendance->unexcused : 0,
         ];
+
+        // Predikat Score
+        $predicate_score = PredicatedScore::all();
+
+        $result_score = collect($result_score);
+
+        // $result_score = $result_score->groupBy('group')->map(function ($score) {
+        //     return $score->groupBy('sub_group');
+        // });
         //dd($result_score);
 
-        $pdf = PDF::loadView('content.previews.k13.v_print_pas', compact('result_profile', 'result_kop', 'result_attitude', 'result_score', 'result_extra', 'result_other', 'result_achievement', 'result_attendance', 'type_template'));
+        // return view('content.previews.k13.v_print_pas', compact('result_profile', 'result_kop',
+        //  'result_attitude', 'result_score', 'result_extra', 'result_other',
+        //   'result_achievement', 'result_attendance', 'type_template','predicate_score'));
+
+        $pdf = PDF::loadView('content.previews.k13.v_print_pas', compact('result_profile', 'result_kop', 'result_attitude', 'result_score', 'result_extra', 'result_other', 'result_achievement', 'result_attendance', 'type_template','predicate_score'));
         return $pdf->stream();
     }
 }
