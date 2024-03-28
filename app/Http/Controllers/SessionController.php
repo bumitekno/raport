@@ -41,7 +41,7 @@ class SessionController extends Controller
             'id_subject_teacher' => $subject_teacher->id,
         ];
 
-        dd($array_session);
+        //dd($array_session);
 
         session(['teachers' => $array_session]);
         return redirect()->back();
