@@ -138,25 +138,29 @@ class PreviewController extends Controller
 
     public function print($year)
     {
-        // dd(session()->all());
+        //dd(session()->all());
         $school_year = SchoolYear::where('slug', $year)->first();
+        //dd($school_year);
 
         $student_class = StudentClass::with('student', 'study_class', 'study_class.level', 'study_class.major')->where([
             ['id_student', session('id_student')],
             ['year', substr($school_year->name, 0, 4)],
         ])->latest()->first();
+        //dd($student_class);
 
         $template = TemplateConfiguration::where([
             ['id_major', $student_class->study_class->major->id],
             ['id_school_year', $school_year->id],
         ])->first();
+        //dd($template);
 
-
+        
         $subjects = SubjectTeacher::whereRaw('JSON_CONTAINS(id_study_class, \'["' . $student_class->id_study_class . '"]\')')
             ->where([
                 ['status', 1],
                 ['id_school_year', $school_year->id],
             ])->get();
+        //dd($subjects);
 
         $setting = json_decode(Storage::get('settings.json'), true);
         switch ($template->template) {
@@ -805,53 +809,80 @@ class PreviewController extends Controller
             'excused' => $attendance ? $attendance->excused : 0,
             'unexcused' => $attendance ? $attendance->unexcused : 0,
         ];
+        //dd($student_class->id);
+
 
         $result_score = [];
-        foreach ($subjects as $subject) {
-            $score_manual2 = ScoreManual2::where([
-                ['id_student_class', $student_class->id],
-                ['id_school_year', $school_year->id],
-                ['id_teacher', $subject->id_teacher],
-                ['id_course', $subject->id_course]
-            ])->first();
 
-            $result_score[$subject->course->group][] = [
-                'course' => $subject->course->name,
-                'final_assegment' => $score_manual2 ? $score_manual2->final_assegment : null,
-                'final_skill' => $score_manual2 ? $score_manual2->final_skill : null,
-                'predicate_assegment' => $score_manual2 ? $score_manual2->predicate_assegment : null,
-                'predicate_skill' => $score_manual2 ? $score_manual2->predicate_skill : null,
-                'kkm' => $score_manual2 ? $score_manual2->kkm : null,
-            ];
+        // SEMENTARA
+        // Yang akan diprint adalah raport yang sekarang, maka ambil dari SubjectTeacher
 
-            usort($result_score[$subject->course->group], function ($a, $b) {
-                $aParts = explode(' ', $a['course']);
-                $bParts = explode(' ', $b['course']);
-
-                $aNumber = $aParts[0];
-                $bNumber = $bParts[0];
-
-                $aNumberParts = explode('.', $aNumber);
-                $bNumberParts = explode('.', $bNumber);
-
-                $aMainNumber = intval($aNumberParts[0]);
-                $bMainNumber = intval($bNumberParts[0]);
-
-                if ($aMainNumber === $bMainNumber) {
-                    $aSubNumber = isset($aNumberParts[1]) ? intval($aNumberParts[1]) : 0;
-                    $bSubNumber = isset($bNumberParts[1]) ? intval($bNumberParts[1]) : 0;
-
-                    if ($aSubNumber === $bSubNumber) {
-                        return strnatcasecmp($a['course'], $b['course']);
+        if( $school_year->id == session('id_school_year')){
+            //result score lama, diambil dari SubjectTeacher
+            foreach ($subjects as $subject) {
+                $score_manual2 = ScoreManual2::where([
+                    ['id_student_class', $student_class->id],
+                    ['id_school_year', $school_year->id],
+                    ['id_teacher', $subject->id_teacher],
+                    ['id_course', $subject->id_course]
+                ])->first();
+                //dd($score_manual2);
+    
+                $result_score[$subject->course->group][] = [
+                    'course' => $subject->course->name,
+                    'final_assegment' => $score_manual2 ? $score_manual2->final_assegment : null,
+                    'final_skill' => $score_manual2 ? $score_manual2->final_skill : null,
+                    'predicate_assegment' => $score_manual2 ? $score_manual2->predicate_assegment : null,
+                    'predicate_skill' => $score_manual2 ? $score_manual2->predicate_skill : null,
+                    'kkm' => $score_manual2 ? $score_manual2->kkm : null,
+                ];
+    
+                usort($result_score[$subject->course->group], function ($a, $b) {
+                    $aParts = explode(' ', $a['course']);
+                    $bParts = explode(' ', $b['course']);
+    
+                    $aNumber = $aParts[0];
+                    $bNumber = $bParts[0];
+    
+                    $aNumberParts = explode('.', $aNumber);
+                    $bNumberParts = explode('.', $bNumber);
+    
+                    $aMainNumber = intval($aNumberParts[0]);
+                    $bMainNumber = intval($bNumberParts[0]);
+    
+                    if ($aMainNumber === $bMainNumber) {
+                        $aSubNumber = isset($aNumberParts[1]) ? intval($aNumberParts[1]) : 0;
+                        $bSubNumber = isset($bNumberParts[1]) ? intval($bNumberParts[1]) : 0;
+    
+                        if ($aSubNumber === $bSubNumber) {
+                            return strnatcasecmp($a['course'], $b['course']);
+                        } else {
+                            return $aSubNumber - $bSubNumber;
+                        }
                     } else {
-                        return $aSubNumber - $bSubNumber;
+                        return $aMainNumber - $bMainNumber;
                     }
-                } else {
-                    return $aMainNumber - $bMainNumber;
-                }
+                });
+            }
+        }else{ // Jika tahun berbeda ambil dari data nilai asli
+            $score = ScoreManual2::join('courses','score_manual2s.id_course','courses.id')
+            ->select('courses.group','courses.name as course','score_manual2s.*')
+            ->where([
+                'score_manual2s.id_student_class' => $student_class->id,
+                'score_manual2s.id_school_year' => $school_year->id
+            ])->get();
+    
+            $result_score = collect($score);
+            
+            $result_score = $result_score->sortBy('group')->groupBy('group')->map(function ($posts) {
+                return $posts->sortBy('course');
             });
+            $result_score = $result_score->sort();
         }
-        // dd($result_score);
+            
+
+
+    
         $pdf = PDF::loadView('content.previews.manual2.v_print_pas', compact('result_profile', 'result_kop', 'result_attitude', 'result_score', 'result_extra', 'result_other', 'result_achievement', 'result_attendance', 'type_template'));
         return $pdf->stream();
     }
