@@ -37,10 +37,12 @@ class AppServiceProvider extends ServiceProvider
                 ->where('id_teacher', Auth::guard('teacher')->user()->id)
                 ->where('id_school_year', session('id_school_year'))
                 ->get(['id_course', 'id_study_class']);
+            //dd($mapelData);
 
             $studyClassIds = $mapelData->pluck('id_study_class')->flatMap(function ($item) {
                 return json_decode($item);
             })->unique();
+            //dd($studyClassIds);
 
             $studyClassData = StudyClass::whereIn('id', $studyClassIds)
                 ->select(['id', 'name'])
@@ -81,7 +83,7 @@ class AppServiceProvider extends ServiceProvider
                 'course' => $mapel,
                 'study_class' => $kelas
             ];
-            // dd($data);
+            //dd($data);
             $view->with('class_course', $data);
         });
 

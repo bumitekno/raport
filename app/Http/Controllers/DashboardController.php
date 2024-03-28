@@ -19,6 +19,7 @@ class DashboardController extends Controller
     public function admin()
     {
         //dd(session()->all());
+        //dd(isset(Auth::guard('teacher')->user()->id));
         session()->put('title', 'Dashboard Admin');
         $settings = json_decode(Storage::get('settings.json'), true);
         session()->put('logo', isset($setting['logo']) ? asset($setting['logo']) : asset('asset/img/90x90.jpg'));
@@ -74,7 +75,7 @@ class DashboardController extends Controller
 
     public function teacher()
     {
-        // dd(session()->all());
+        //dd(session()->all());
         session()->put('title', 'Dashboard Guru');
         $settings = json_decode(Storage::get('settings.json'), true);
         session()->put('logo', isset($setting['logo']) ? asset($setting['logo']) : asset('asset/img/90x90.jpg'));

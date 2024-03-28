@@ -357,4 +357,10 @@ Route::middleware('auth:user,admin,parent,teacher')->group(function () {
         Route::get('prev-classes', [RaportController::class, 'byClass'])->name('by_classes');
         Route::get('list-classes', [RaportController::class, 'listClass'])->name('list_classes');
     });
+
+    Route::prefix('penilaian')->name('penilaian.')->group(function () {
+
+    });
+
+
 });
