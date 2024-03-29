@@ -218,7 +218,7 @@ class LegerController extends Controller
         $study_class = StudyClass::where('slug', $slug)->first();
         $setting['study_class'] = $study_class->name;
         $setting['teacher'] = '';
-        //dd(session('year'));
+        //dd(session()->all());
 
         // Dapatkan siswa pada kelas tsb
         $siswa = DB::table('student_classes')
