@@ -111,7 +111,7 @@
                             <div style="line-height: 1.1; font-family: 'Arial'; font-size: 13pt" class="text-uppercase">
                                 {{ $result_kop['text2'] }}
                             </div>
-                            <div style="line-height: 1.2; font-family: font-family: 'Aguafina Script, sans-serif'; font-size: 13pt" class="text-uppercase text-bold">
+                            <div style="line-height: 1.2; font-family: font-family: 'Aguafina Script, sans-serif' ; font-size: 13pt" class="text-uppercase text-bold">
                                 {{ $result_kop['text3'] }}
                             </div>
                             <div style="line-height: 1.2; font-family: 'Arial, sans-serif'; font-size: 7pt">
@@ -206,7 +206,7 @@
 
             <tr>
                 <td colspan="4" class="b-0" style="padding: 0px !important">
-                    <table class="table" style="margin-bottom: 100px;">
+                    <table class="table" style="margin-bottom: 120px;">
                         <tr>
                             <td class="b-0" colspan="2" style="font-size: 10pt"></td>
                         </tr>
@@ -282,8 +282,9 @@
             @endif
             <tr>
                 <td style="height: 10px" colspan="4" class="b-0"></td>
+                <div style="page-break-before: always;"></div>
             </tr>
-            <div style="page-break-before: always;"></div>
+
             <tr>
                 <td colspan="4" class="b-0" style="padding: 0px !important">
                     <table class="table">
