@@ -137,6 +137,7 @@
 
         @php
             $guard = Auth::getDefaultDriver();
+            //dd($guard);
         @endphp
         @switch($guard)
             @case('admin')
@@ -144,6 +145,7 @@
             @break
 
             @case('user')
+
             @case('parent')
                 @include('layout.admin.v_sidebar_user')
             @break

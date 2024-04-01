@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        .widget-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .widget-header h4 {
+            font-size: 20px;
+            font-weight: bold;
+            margin: 0;
+        }
+
+        .widget-header p {
+            font-size: 16px;
+            margin: 5px 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th,
+        td {
+            border: 1px solid #000;
+            padding: 4px;
+            text-align: center;
+            height: 30px;
+            /* Tinggi baris */
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .vertical-text {
+            text-align: center;
+            white-space: nowrap;
+        }
+
+        .vertical-text span {
+            display: inline-block;
+            transform: rotate(90deg);
+            width: 13px;
+            writing-mode: vertical-lr;
+        }
+
+        /* Mengurangi ukuran font pada kolom nilai dan nama mata pelajaran */
+        td.score,
+        th.vertical-text span {
+            font-size: 8px;
+        }
+
+        /* Mengatur lebar kolom agar tidak terpotong */
+        .student-column {
+            width: 100px;
+            /* Sesuaikan lebar kolom siswa */
+        }
+
+        .score-column {
+            width: 15px;
+            /* Sesuaikan lebar kolom nilai */
+        }
+    </style>
+</head>
+
+<body>
+    <div class="widget-header">
+        <h4>LEGER SEMUA SEMESTER</h4>
+        <p>{{ strtoupper($results['setting']['name_school']) }}</p>
+        <p>TAHUN AJARAN {{ session('school_year') }}</p>
+    </div>
+
+    <div class="widget-content">
+        <table>
+            <tr>
+                <td>Kelas</td>
+                <td>: {{ $results['setting']['study_class'] }}</td>
+            </tr>
+            <tr>
+                <td>Wali Kelas</td>
+                <td>: {{ $results['setting']['teacher'] }}</td>
+            </tr>
+        </table>
+
+        <table>
+            <thead>
+                <tr>
+                    <th rowspan="2">Nama</th>
+                    <th rowspan="2">NIS</th>
+
+                    @forelse ( $mapel as $mpl )    
+                    <th colspan="{{ count($semester) }}">{{ $mpl }}</th>
+                    @empty   
+                    @endforelse
+
+                </tr>
+                <tr>
+                    @forelse ( $mapel as $mp2)
+                        @forelse ($semester as $sem)
+                        <th>{{$sem}}</th>    
+                        @empty 
+                        @endforelse    
+                    @empty  
+                    @endforelse
+                </tr>
+
+                @forelse ($dataBaru as $siswa)
+                <tr>
+                        <th>{{ $siswa['nama']}}</th>
+                        <th>{{ $siswa['nis']}}</th>
+                        @php
+                            //Index pertama dari list mapel default
+                            $indexMapel = 0;
+                        @endphp
+
+                        @for( $i = 0; $i < count($mapel); $i++ )
+                            @php
+                                $indexMapelSiswa = array_search($mapel[$i], array_column($siswa['mapel'],'mapel'));
+
+                            @endphp
+
+                            @for ($j = 0; $j < count($semester); $j++)
+                                @php
+                                    $indexSemesterSiswa = array_search($semester[$j], array_column($siswa['mapel'][$indexMapelSiswa]['semester'],'semester'));
+
+                                @endphp
+
+                                {{-- <th>{{ implode(",",array_column($siswa['mapel'][$indexMapelSiswa]['semester'],'semester')) }}</th> --}}
+                                {{-- <th>{{ $semester[$j] }}</th> --}}
+                                {{-- <th>{{ var_dump($indexSemesterSiswa) }}</th> --}}
+                                {{-- <th>{{ $siswa['mapel'][$indexMapelSiswa]['semester'][$indexSemesterSiswa]['nilai'] }}</th> --}}
+
+                                @if (is_int($indexSemesterSiswa))
+                                    <th>{{ $siswa['mapel'][$indexMapelSiswa]['semester'][$indexSemesterSiswa]['nilai'] }}</th>
+                                @else
+                                    <th></th>
+                                    {{-- @if ($indexSemesterSiswa == 0)
+                                        <th>h{{ var_dump($indexSemesterSiswa) }}</th>
+                                    @else
+                                        
+                                        <th></th>
+                                    @endif --}}
+                                @endif
+
+                                {{-- @if ($indexSemesterSiswa == 0)
+                                    <th>{{ $siswa['mapel'][$indexMapelSiswa]['semester'][$indexSemesterSiswa]['nilai'] }}</th>
+                                @elseif ($indexSemesterSiswa == null)
+                                    <th><th>
+                                @else
+                                    <th>{{ $siswa['mapel'][$indexMapelSiswa]['semester'][$indexSemesterSiswa]['nilai'] }}</th>
+                                @endif --}}
+                            @endfor
+
+                            {{-- @foreach ( $siswa['mapel'][$indexMapelSiswa]['semester'] as $semester )
+
+                                <th>{{ $semester['nilai']}}</th>
+                                
+                            @endforeach --}}
+                            
+                        @endfor
+                           
+                      
+
+                @empty     
+                </tr>
+                @endforelse
+                   
+
+                {{-- <tr>
+                    <th class="text-center">No</th>
+                    <th>NIS</th>
+                    <th class="student-column">Nama</th>
+                    
+                    @foreach ($mapel as $sem)
+                        <th class="text-center">
+                            <span style="font-size: 8px;">{{ $sem }}</span>
+                        </th>
+                    @endforeach
+                </tr> --}}
+
+                <tr>
+                    
+                    
+                </tr>
+            </thead>
+            <tbody>
+                
+            </tbody>
+        </table>
+    </div>
+</body>
+
+</html>

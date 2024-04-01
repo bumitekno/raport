@@ -171,8 +171,7 @@
                 </ul>
             </li>
 
-            <li
-                class="menu k13 d-none {{ Route::is('basic_competencies*') || Route::is('general_weights*') ? 'active' : '' }}">
+            <li class="menu k13 d-none {{ Route::is('basic_competencies*') || Route::is('general_weights*') ? 'active' : '' }}">
                 <a href="#setting-other" data-toggle="collapse"
                     aria-expanded="{{ Route::is('basic_competencies*') || Route::is('general_weights*') ? 'true' : 'false' }}"
                     class="dropdown-toggle">
@@ -329,6 +328,7 @@
                     </li>
                 </ul>
             </li>
+
             <li
                 class="menu {{ Route::is('admins.*') || Route::is('teachers.*') || Route::is('users.*') ? 'active' : '' }}">
                 <a href="#side-user" data-toggle="collapse"
@@ -367,6 +367,7 @@
                     </li>
                 </ul>
             </li>
+
             <li class="menu {{ Route::is('legers.*') || Route::is('raports.*') ? 'active' : '' }}">
                 <a href="#print-raport" data-toggle="collapse"
                     aria-expanded="{{ Route::is('legers.*') || Route::is('raports.*') ? 'true' : 'false' }}"
@@ -400,6 +401,7 @@
                     </li>
                 </ul>
             </li>
+
         </ul>
     </nav>
 </div>

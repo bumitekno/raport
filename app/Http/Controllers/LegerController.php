@@ -36,13 +36,13 @@ class LegerController extends Controller
             ->orderBy('us.nis', 'ASC')
             ->select('student_classes.id', 'us.nis', 'us.name')
             ->get();
-
+        //dd($student_class);
         $subject_teachers = SubjectTeacher::join('courses as c', 'c.id', '=', 'subject_teachers.id_course')
             ->whereRaw('JSON_CONTAINS(id_study_class, \'["' . $study_class->id . '"]\')')
             ->where('subject_teachers.id_school_year', session('id_school_year'))
             ->select('subject_teachers.id', 'c.name', 'subject_teachers.id_course', 'subject_teachers.id_teacher')
             ->get();
-        // dd($subject_teachers);
+        //dd($subject_teachers);
         $code_course = SubjectTeacher::join('courses as c', 'c.id', '=', 'subject_teachers.id_course')
             ->leftJoin('kkms', function ($join) use ($study_class) {
                 $join->on('kkms.id_school_year', '=', 'subject_teachers.id_school_year')
@@ -62,7 +62,7 @@ class LegerController extends Controller
             ['id_major', $study_class->id_major],
             ['id_school_year', session('id_school_year')],
         ])->first();
-        // dd($template);
+        //dd($template);
 
         $scores = [];
 
@@ -99,6 +99,7 @@ class LegerController extends Controller
                 ->where('id_school_year', session('id_school_year'))
                 ->get();
         }
+        //dd($scores);
         // dd(collect($subject_teachers->pluck('id_course')->unique()->toArray()));
         $arr_student_class = [];
         foreach ($student_class as $student) {
@@ -109,54 +110,14 @@ class LegerController extends Controller
                 'score' => $subject_teachers,
             ];
         }
+        //dd($arr_student_class);
 
         $nilai_map = collect($arr_student_class)->map(function ($a) {
             return (array) $a;
         })->toArray();
+
         //dd($nilai_map);
-
-        // foreach ($nilai_map as $nmv) {
-        //     if ($template['template'] == 'k13') {
-        //         $scoresFiltered = collect($scores)->whereIn('id_subject_teacher', collect($nmv['score'])->pluck('id')->unique())
-        //             ->where('id_student_class', $nmv['id'])
-        //             ->where('id_school_year', session('id_school_year'));
-        //     } else {
-        //         $scoresFiltered = collect($scores)->where('id_student_class', $nmv['id'])
-        //             ->where('id_school_year', session('id_school_year'));
-
-        //         if (!empty($nmv['score'])) {
-        //             $scoresFiltered = $scoresFiltered->whereIn('id_course', collect($nmv['score'])->pluck('id_course')->unique())
-        //                 ->whereIn('id_teacher', collect($nmv['score'])->pluck('id_teacher')->unique());
-        //         }
-
-        //         // dd($scoresFiltered);
-        //     }
-
-        //     $nmv['score'] = collect($nmv['score'])->map(function ($nmn) use ($template, $scoresFiltered) {
-        //         if ($template['template'] == 'k13') {
-        //             $raport_ = $scoresFiltered->where('id_subject_teacher', $nmn->id)->first();
-        //             $final_score = $raport_ ? $raport_['final_assesment'] : [];
-        //         } else {
-        //             $raport_ = $scoresFiltered->where('id_course', $nmn['id_course'])
-        //                 ->where('id_teacher', $nmn['id_teacher'])
-        //                 ->first();
-        //             if ($template['template'] == 'manual2') {
-        //                 $final_score = $raport_ ? ['assigment' => $raport_['final_assegment'], 'skill' => $raport_['final_skill']] : ['assigment' => null, 'skill' => null];
-        //             } else {
-        //                 $final_score = $raport_ ? ($template['template'] == 'merdeka' ? $raport_['final_score'] : $raport_['score_final']) : [];
-        //             }
-        //         }
-
-        //         return [
-        //             'id' => $nmn['id'],
-        //             'name' => $nmn['name'],
-        //             'score' => $final_score,
-        //         ];
-        //     })->toArray();
-            
-        //     // dd($nmv['score']);
-        // }
-        
+     
         
         foreach ($nilai_map as $nmv => $nmmv) {
             if ($template['template'] == 'k13') {
@@ -172,7 +133,7 @@ class LegerController extends Controller
                         ->whereIn('id_teacher', collect($nmmv['score'])->pluck('id_teacher')->unique());
                 }
 
-                // dd($scoresFiltered);
+                //dd($scoresFiltered);
             }
             
             $arr = [];
@@ -207,6 +168,7 @@ class LegerController extends Controller
             'course' => $code_course,
             'setting' => $setting
         );
+        //dd($results['score']);
         if ($request->pdf) {
             if ($template['template'] == 'manual2') {
                 $pdf = PDF::loadView('content.legers.v_print_leger_skill', compact('results'));
@@ -247,26 +209,157 @@ class LegerController extends Controller
                 'amount' => $studentCount
             ];
         }
-        // dd($result);
         return view('content.legers.v_list_classes', compact('results'));
     }
 
-    public function allLeger($slug){
+    public function allLeger(Request $request,$slug){
         $setting = json_decode(Storage::get('settings.json'), true);
         $study_class = StudyClass::where('slug', $slug)->first();
         $setting['study_class'] = $study_class->name;
-        //dd($study_class);
+        $setting['teacher'] = '';
+        //dd(session()->all());
 
-        $score = ScoreMerdeka::where('id_study_class', $study_class->id)
-        ->select(['courses.name','id_course','final_score','id_school_year',
-        'id_study_class','id_student_class'
-        ])
+        // Dapatkan siswa pada kelas tsb
+        $siswa = DB::table('student_classes')
+        ->where('id_study_class',$study_class->id)
+        ->pluck('id_student');
+ 
+        $student_class = DB::table('student_classes')
+        ->join('study_classes','study_classes.id','student_classes.id_study_class')
+        ->whereIn('student_classes.id_student',$siswa)
+        ->pluck('student_classes.id');
+
+        //dd($student_class);
+
+        $score_merdeka = DB::table('score_merdekas')
+        ->join('student_classes','student_classes.id','score_merdekas.id_student_class')
+        ->join('users','users.id','student_classes.id_student')
+        ->join('study_classes','study_classes.id','student_classes.id_study_class')
+        ->join('school_years','school_years.id','score_merdekas.id_school_year')
         ->join('courses','courses.id','score_merdekas.id_course')
+        ->whereIn('id_student_class',$student_class)
+        ->where('score_merdekas.deleted_at',null)
+        ->select(['score_merdekas.id','school_years.name as semester','courses.name as mapel','student_classes.year',
+        'users.name as siswa','study_classes.name','users.nis','student_classes.id_student',
+        'score_merdekas.final_score'])
+        ->orderBy('school_years.name','asc')
         ->get();
+        //dd($score_merdeka);
 
-        dd($score);
+        $score_merdeka = collect($score_merdeka)->map(function ($a) {
+            return (array) $a;
+        })->toArray();
+
+
+        //Coba
+        // Original array
+        // Array data awal
+        $data = [
+            [
+                "id" => 1,
+                "semester" => "2023/20241",
+                "siswa" => "Alfa",
+                "nis" => 123,
+                "mapel" => "Tajwid",
+                "final_score" => 80
+            ],
+            [
+                "id" => 5,
+                "semester" => "2023/20242",
+                "siswa" => "Alfa",
+                "nis" => 123,
+                "mapel" => "Tajwid",
+                "final_score" => 70
+            ],
+            [
+                "id" => 6,
+                "semester" => "2023/20241",
+                "siswa" => "feri",
+                "nis" => 1234,
+                "mapel" => "Tajwid",
+                "final_score" => 80
+            ]
+        ];
+
+        // Inisialisasi array baru
+        $dataBaru = [];
+
+        // Looping data
+        foreach ($score_merdeka as $siswa) {
+            // Mencari index data yang sama
+            $indexSiswa = array_search($siswa["nis"], array_column($dataBaru, "nis"));
+
+            // Jika siswa belum ada di array baru
+            if ($indexSiswa === false) {
+                // Menambahkan data siswa baru
+                $dataBaru[] = [
+                    "nama" => $siswa["siswa"],
+                    "nis" => $siswa["nis"],
+                    "mapel" => []
+                ];
+
+                // Menentukan indexSiswa baru
+                $indexSiswa = count($dataBaru) - 1;
+
+                // Menambahkan data mapel dan nilai
+                $dataBaru[$indexSiswa]["mapel"][] = [
+                    "mapel" => $siswa["mapel"],
+                    "semester" => [
+                        [
+                            "semester" => $siswa["semester"],
+                            "nilai" => $siswa["final_score"]
+                        ]
+                    ]
+                ];
+
+            }else{  // Jika sudah ada nama siswa sebelumnya
+                //dd($dataBaru[$indexSiswa]);
+                $indexMapelSiswa = array_search($siswa["mapel"],array_column($dataBaru[$indexSiswa]["mapel"],"mapel"));
+                //dd($indexMapelSiswa);
+
+                $dataBaru[$indexSiswa]["mapel"][$indexMapelSiswa]["semester"][] = [
+                    "semester" => $siswa["semester"],
+                    "nilai" => $siswa["final_score"]    
+                ];
+                
+            }
+
+
+
+            //dd($dataBaru);
+
+            
+
+            //dd($dataBaru);
+        }
+
+        //dd($dataBaru);
+
+        //
+
+        $score_merdeka = collect($score_merdeka);
+
+        $semester = $score_merdeka->pluck('semester')->unique();
+        $mapel = $score_merdeka->pluck('mapel')->unique();
+        $siswas = $score_merdeka->pluck('siswa')->unique();
+        //dd(count($semester));
+    
+        $results = array(
+            'setting' => $setting
+        );
+
+        // if ($request->pdf) {
+           
+        //     $pdf = PDF::loadView('content.legers.v_print_all_leger', compact('mapel','semester',
+        //     'results','dataBaru'));
+           
+        //     $pdf->setPaper('A4', 'landscape');
+        //     return $pdf->stream();
+        // }
+
+        return view('content.legers.v_print_all_leger', compact('mapel','semester',
+        'results','dataBaru'));
         
-        //Data siswa
-        $user = '';
+       
     }
 }
