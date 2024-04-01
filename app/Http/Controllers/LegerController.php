@@ -324,26 +324,13 @@ class LegerController extends Controller
                 ];
                 
             }
-
-
-
-            //dd($dataBaru);
-
-            
-
-            //dd($dataBaru);
         }
-
-        //dd($dataBaru);
-
-        //
 
         $score_merdeka = collect($score_merdeka);
 
         $semester = $score_merdeka->pluck('semester')->unique();
         $mapel = $score_merdeka->pluck('mapel')->unique();
         $siswas = $score_merdeka->pluck('siswa')->unique();
-        //dd(count($semester));
     
         $results = array(
             'setting' => $setting
