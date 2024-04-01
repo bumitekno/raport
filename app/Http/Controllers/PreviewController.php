@@ -342,6 +342,7 @@ class PreviewController extends Controller
 
             $description = $score_p5->description;
 
+
             if ($score != "-") {
                 $result_score[] = [
                     'title' => $title,
@@ -351,6 +352,7 @@ class PreviewController extends Controller
                 ];
             }
         }
+
         $note = TeacherNote::where([
             ['id_student_class', $student_class->id],
             ['id_school_year', $school_year->id]
@@ -705,6 +707,7 @@ class PreviewController extends Controller
                     }
                 }
             }
+
             if ($score != "-") {
                 $result_extra[] = [
                     'id_extra' => $id_extra,
@@ -713,7 +716,9 @@ class PreviewController extends Controller
                     'description' => $description ? $description : null
                 ];
             }
+
         }
+    
 
         $note = TeacherNote::where([
             ['id_student_class', $student_class->id],
@@ -869,6 +874,7 @@ class PreviewController extends Controller
                 }
             }
 
+
             if ($score != "-") {
                 $result_extra[] = [
                     'id_extra' => $id_extra,
@@ -876,6 +882,7 @@ class PreviewController extends Controller
                     'score' => $score ? $score : null,
                     'description' => $description ? $description : null
                 ];
+
             }
         }
 
@@ -1137,6 +1144,7 @@ class PreviewController extends Controller
                     }
                 }
             }
+
             if ($score != "-") {
                 $result_extra[] = [
                     'id_extra' => $id_extra,
@@ -1145,7 +1153,9 @@ class PreviewController extends Controller
                     'description' => $description ? $description : null
                 ];
             }
+
         }
+    
 
         $note = TeacherNote::where([
             ['id_student_class', $student_class->id],
