@@ -209,7 +209,6 @@ class LegerController extends Controller
                 'amount' => $studentCount
             ];
         }
-        // dd($result);
         return view('content.legers.v_list_classes', compact('results'));
     }
 
