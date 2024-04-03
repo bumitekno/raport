@@ -106,8 +106,8 @@
                             <div style="line-height: 1.1; font-family: 'Arial'; font-size: 13pt" class="text-uppercase">
                                 {{ $result_kop['text2'] }}
                             </div>
-                            <div style="line-height: 1.2; font-family: 'Arial'; font-size: 13pt"
-                                class="text-uppercase text-bold">
+                            <div style="line-height: 1.2; font-family: 'Aguafina Script'; font-size: 13pt"
+                                class="text-uppercase">
                                 {{ $result_kop['text3'] }}
                             </div>
                             <div style="line-height: 1.2; font-family: 'Arial, sans serif'; font-size: 7pt">
