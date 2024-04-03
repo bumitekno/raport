@@ -1198,6 +1198,7 @@ class PreviewController extends Controller
         $predicate_score = PredicatedScore::all();
 
         $result_score = collect($result_score);
+        //dd($result_score);
 
         // $result_score = $result_score->groupBy('group')->map(function ($score) {
         //     return $score->groupBy('sub_group');

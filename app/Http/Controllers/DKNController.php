@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Kkm;
+use App\Exports\DknExport;
+use App\Models\AttitudeGrade;
 use App\Models\ScoreKd;
 use App\Models\ScoreManual;
 use App\Models\ScoreManual2;
@@ -12,13 +13,41 @@ use App\Models\StudyClass;
 use App\Models\SubjectTeacher;
 use App\Models\Teacher;
 use App\Models\TemplateConfiguration;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 use PDF;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
+use Maatwebsite\Excel\Facades\Excel;
 
-class LegerController extends Controller
+class DKNController extends Controller
 {
+    public function listClass()
+    {
+        session()->put('title', 'Daftar Kelas');
+        $classes = StudyClass::where('status', 1)->get();
+
+        $results = [];
+        foreach ($classes as $class) {
+            $major = $class->major;
+            $level = $class->level;
+            $studentCount = StudentClass::where('id_study_class', $class->id)
+                ->where([
+                    ['status', 1],
+                    ['year', session('year')]
+                ])->count();
+
+            $results[] = [
+                'slug' => $class->slug,
+                'name' => $class->name,
+                'major' => $major ? $major->name : '',
+                'level' => $level ? $level->name : '',
+                'amount' => $studentCount
+            ];
+        }
+        //dd($results);
+        return view('content.dkns.v_list_classes', compact('results'));
+    }
+
     public function byClass(Request $request, $slug)
     {
         $setting = json_decode(Storage::get('settings.json'), true);
@@ -30,12 +59,25 @@ class LegerController extends Controller
         ])->first();
         $setting['teacher'] = $teacher ? $teacher->name : '-';
         $student_class = StudentClass::join('users as us', 'us.id', '=', 'student_classes.id_student')
+            // ->join('attitude_grades','attitude_grades.id_student_class','student_classes.id')
             ->where('student_classes.year', session('year'))
             ->where('student_classes.status', 1)
             ->where('student_classes.id_study_class', $study_class->id)
             ->orderBy('us.nis', 'ASC')
-            ->select('student_classes.id', 'us.nis', 'us.name')
+            ->select('student_classes.id', 'us.nis', 'us.name','us.id as id_student')
             ->get();
+        //dd($student_class);
+
+        $attitude = AttitudeGrade::join('student_classes','student_classes.id','attitude_grades.id_student_class')
+        ->join('study_classes','study_classes.id','student_classes.id_study_class')
+        ->where('study_classes.id',$study_class->id)
+        ->where('student_classes.year',session('year'))
+        ->select('student_classes.id_student','attitude_grades.type','attitude_grades.predicate')
+        ->get();
+        $attitude = collect($attitude)->groupBy('id_student')->toArray();
+        //dd($attitude);
+
+
         //dd($student_class);
         $subject_teachers = SubjectTeacher::join('courses as c', 'c.id', '=', 'subject_teachers.id_course')
             ->whereRaw('JSON_CONTAINS(id_study_class, \'["' . $study_class->id . '"]\')')
@@ -62,14 +104,13 @@ class LegerController extends Controller
             ['id_major', $study_class->id_major],
             ['id_school_year', session('id_school_year')],
         ])->first();
-        //dd($template);
+
+        if($template['template'] != 'k13'){
+            session()->put('message', 'Fitur ini hanya untuk kelas yang menggunakan kurikulum 13');
+           return view('pages.v_error');
+        }
 
         $scores = [];
-
-        $template = TemplateConfiguration::where([
-            ['id_major', $study_class->id_major],
-            ['id_school_year', session('id_school_year')],
-        ])->first();
 
         if ($template['template'] == 'merdeka') {
             // dd($subject_teachers->pluck('id_course')->unique()->toArray());
@@ -99,6 +140,8 @@ class LegerController extends Controller
                 ->where('id_school_year', session('id_school_year'))
                 ->get();
         }
+
+        //dd($student_class);
         
         $arr_student_class = [];
         foreach ($student_class as $student) {
@@ -107,6 +150,7 @@ class LegerController extends Controller
                 'name' => $student->name,
                 'nis' => $student->nis,
                 'score' => $subject_teachers,
+                'sikap' => array_key_exists($student->id_student, $attitude) ? $attitude[$student->id_student] : []
             ];
         }
         //dd($arr_student_class);
@@ -131,14 +175,22 @@ class LegerController extends Controller
                         ->whereIn('id_teacher', collect($nmmv['score'])->pluck('id_teacher')->unique());
                 }
 
-                //dd($scoresFiltered);
             }
+            //dd($scoresFiltered);
             
             $arr = [];
+            $jml_score = 0;
+            $jml_keterampilan = 0;
             foreach($nmmv['score'] as $nll){
                 if ($template['template'] == 'k13') {
                     $raport_ = $scoresFiltered->where('id_subject_teacher', $nll->id)->first();
-                    $final_score = $raport_ ? $raport_['final_assesment'] : [];
+                    $pengetahuan = $raport_ ? $raport_['final_assesment'] : 0;
+                    $keterampilan = $raport_ ? $raport_['final_skill'] : 0;
+
+                    //Akumulasi
+                    $jml_score = $jml_score + $pengetahuan;
+                    $jml_keterampilan = $jml_keterampilan + $keterampilan;
+
                 } else {
                     $raport_ = $scoresFiltered->where('id_course', $nll->id_course)
                         ->where('id_teacher', $nll->id_teacher)
@@ -149,203 +201,42 @@ class LegerController extends Controller
                         $final_score = $raport_ ? ($template['template'] == 'merdeka' ? $raport_['final_score'] : $raport_['score_final']) : [];
                     }
                 }
+
                 $arr[] = [
                     'id' => $nll->id,
                     'name' => $nll->name,
-                    'score' => $final_score,
-                    ];
+                    'score' => $pengetahuan,
+                    'keterampilan' => $keterampilan,
+                ];
             }
+
             $nilai_map[$nmv]['score'] = $arr;
+            $nilai_map[$nmv]['jml_score'] = $jml_score;
+            $nilai_map[$nmv]['jml_keterampilan'] = $jml_keterampilan;
+            $nilai_map[$nmv]['jml_nilai'] = $jml_keterampilan + $jml_score;
         }
 
         //dd($nilai_map);
         unset($nmv);
+
+        array_multisort(array_column($nilai_map, 'jml_nilai'), SORT_DESC, $nilai_map);
+
         
         $results = array(
             'score' => $nilai_map,
             'course' => $code_course,
             'setting' => $setting
         );
-        //dd($results['score']);
+        
         if ($request->pdf) {
-            if ($template['template'] == 'manual2') {
-                $pdf = PDF::loadView('content.legers.v_print_leger_skill', compact('results'));
-            } else {
-                $pdf = PDF::loadView('content.legers.v_print_leger', compact('results'));
-            }
-            $pdf->setPaper('A4', 'landscape');
-            return $pdf->stream();
+            return Excel::download(new DknExport($slug), 'invoices.xlsx');
         }
         //dd($results);
         if ($template['template'] == 'manual2') {
-            return view('content.legers.v_list_leger_skill', compact('results', 'slug'));
+            return view('content.dkns.v_list_leger_skill', compact('results', 'slug'));
         } else {
-            return view('content.legers.v_list_leger', compact('results', 'slug'));
+            return view('content.dkns.v_list_leger', compact('results', 'slug'));
         }
     }
 
-    public function listClass()
-    {
-        session()->put('title', 'Daftar Kelas');
-        $classes = StudyClass::where('status', 1)->get();
-
-        $results = [];
-        foreach ($classes as $class) {
-            $major = $class->major;
-            $level = $class->level;
-            $studentCount = StudentClass::where('id_study_class', $class->id)
-                ->where([
-                    ['status', 1],
-                    ['year', session('year')]
-                ])->count();
-
-            $results[] = [
-                'slug' => $class->slug,
-                'name' => $class->name,
-                'major' => $major ? $major->name : '',
-                'level' => $level ? $level->name : '',
-                'amount' => $studentCount
-            ];
-        }
-        // dd($result);
-        return view('content.legers.v_list_classes', compact('results'));
-    }
-
-    public function allLeger(Request $request,$slug){
-        $setting = json_decode(Storage::get('settings.json'), true);
-        $study_class = StudyClass::where('slug', $slug)->first();
-        $setting['study_class'] = $study_class->name;
-        $setting['teacher'] = '';
-        //dd(session('year'));
-
-        // Dapatkan siswa pada kelas tsb
-        $siswa = DB::table('student_classes')
-        ->where('id_study_class',$study_class->id)
-        ->pluck('id_student');
- 
-        $student_class = DB::table('student_classes')
-        ->join('study_classes','study_classes.id','student_classes.id_study_class')
-        ->whereIn('student_classes.id_student',$siswa)
-        ->pluck('student_classes.id');
-
-        //dd($student_class);
-
-        $score_merdeka = DB::table('score_merdekas')
-        ->join('student_classes','student_classes.id','score_merdekas.id_student_class')
-        ->join('users','users.id','student_classes.id_student')
-        ->join('study_classes','study_classes.id','student_classes.id_study_class')
-        ->join('school_years','school_years.id','score_merdekas.id_school_year')
-        ->join('courses','courses.id','score_merdekas.id_course')
-        ->whereIn('id_student_class',$student_class)
-        ->where('score_merdekas.deleted_at',null)
-        ->select(['score_merdekas.id','school_years.name as semester','courses.name as mapel','student_classes.year',
-        'users.name as siswa','study_classes.name','users.nis','student_classes.id_student',
-        'score_merdekas.final_score'])
-        ->orderBy('school_years.name','asc')
-        ->get();
-        //dd($score_merdeka);
-
-        $score_merdeka = collect($score_merdeka)->map(function ($a) {
-            return (array) $a;
-        })->toArray();
-
-
-        //Coba
-        // Original array
-        // Array data awal
-        $data = [
-            [
-                "id" => 1,
-                "semester" => "2023/20241",
-                "siswa" => "Alfa",
-                "nis" => 123,
-                "mapel" => "Tajwid",
-                "final_score" => 80
-            ],
-            [
-                "id" => 5,
-                "semester" => "2023/20242",
-                "siswa" => "Alfa",
-                "nis" => 123,
-                "mapel" => "Tajwid",
-                "final_score" => 70
-            ],
-            [
-                "id" => 6,
-                "semester" => "2023/20241",
-                "siswa" => "feri",
-                "nis" => 1234,
-                "mapel" => "Tajwid",
-                "final_score" => 80
-            ]
-        ];
-
-        // Inisialisasi array baru
-        $dataBaru = [];
-
-        // Looping data
-        foreach ($score_merdeka as $siswa) {
-            // Mencari index data yang sama
-            $indexSiswa = array_search($siswa["nis"], array_column($dataBaru, "nis"));
-
-            // Jika siswa belum ada di array baru
-            if ($indexSiswa === false) {
-                // Menambahkan data siswa baru
-                $dataBaru[] = [
-                    "nama" => $siswa["siswa"],
-                    "nis" => $siswa["nis"],
-                    "mapel" => []
-                ];
-
-                // Menentukan indexSiswa baru
-                $indexSiswa = count($dataBaru) - 1;
-
-                // Menambahkan data mapel dan nilai
-                $dataBaru[$indexSiswa]["mapel"][] = [
-                    "mapel" => $siswa["mapel"],
-                    "semester" => [
-                        [
-                            "semester" => $siswa["semester"],
-                            "nilai" => $siswa["final_score"]
-                        ]
-                    ]
-                ];
-
-            }else{  // Jika sudah ada nama siswa sebelumnya
-                //dd($dataBaru[$indexSiswa]);
-                $indexMapelSiswa = array_search($siswa["mapel"],array_column($dataBaru[$indexSiswa]["mapel"],"mapel"));
-                //dd($indexMapelSiswa);
-
-                $dataBaru[$indexSiswa]["mapel"][$indexMapelSiswa]["semester"][] = [
-                    "semester" => $siswa["semester"],
-                    "nilai" => $siswa["final_score"]    
-                ];
-                
-            }
-        }
-
-        $score_merdeka = collect($score_merdeka);
-
-        $semester = $score_merdeka->pluck('semester')->unique();
-        $mapel = $score_merdeka->pluck('mapel')->unique();
-        $siswas = $score_merdeka->pluck('siswa')->unique();
-    
-        $results = array(
-            'setting' => $setting
-        );
-
-        if ($request->pdf) {
-           
-            $pdf = PDF::loadView('content.legers.v_print_all_leger', compact('mapel','semester',
-            'results','dataBaru'));
-           
-            $pdf->setPaper('A4', 'landscape');
-            return $pdf->stream();
-        }
-
-        return view('content.legers.v_print_all_leger', compact('mapel','semester',
-        'results','dataBaru'));
-        
-       
-    }
 }

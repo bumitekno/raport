@@ -368,9 +368,9 @@
                 </ul>
             </li>
 
-            <li class="menu {{ Route::is('legers.*') || Route::is('raports.*') ? 'active' : '' }}">
+            <li class="menu {{ Route::is('legers.*') || Route::is('raports.*') || Route::is('dkns.*') ? 'active' : '' }}">
                 <a href="#print-raport" data-toggle="collapse"
-                    aria-expanded="{{ Route::is('legers.*') || Route::is('raports.*') ? 'true' : 'false' }}"
+                    aria-expanded="{{ Route::is('legers.*') || Route::is('raports.*') || Route::is('dkns.*') ? 'true' : 'false' }}"
                     class="dropdown-toggle">
                     <div class="">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -391,13 +391,16 @@
                         </svg>
                     </div>
                 </a>
-                <ul class="collapse submenu list-unstyled {{ Route::is('legers.*') || Route::is('raports.*') ? 'recent-submenu mini-recent-submenu show' : '' }}"
+                <ul class="collapse submenu list-unstyled {{ Route::is('legers.*') || Route::is('raports.*') || Route::is('dkns.*') ? 'recent-submenu mini-recent-submenu show' : '' }}"
                     id="print-raport" data-parent="#accordionExample">
                     <li class="{{ Route::is('legers.*') ? 'active' : '' }}">
                         <a href="{{ route('legers.list_classes') }}"> Leger</a>
                     </li>
                     <li class="{{ Route::is('raports.*') ? 'active' : '' }}">
                         <a href="{{ route('raports.list_classes') }}"> Raport </a>
+                    </li>
+                    <li class="{{ Route::is('dkns.*') ? 'active' : '' }}">
+                        <a href="{{ route('dkns.list_classes') }}"> DKN </a>
                     </li>
                 </ul>
             </li>

@@ -14,6 +14,7 @@ use App\Http\Controllers\CoverController;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DescriptionCompetenceController;
+use App\Http\Controllers\DKNController;
 use App\Http\Controllers\ExtracurricularController;
 use App\Http\Controllers\GeneralWeightingController;
 use App\Http\Controllers\KkmController;
@@ -351,6 +352,12 @@ Route::middleware('auth:user,admin,parent,teacher')->group(function () {
         Route::get('prev-classes/{slug}', [LegerController::class, 'byClass'])->name('by_classes');
         Route::get('list-classes', [LegerController::class, 'listClass'])->name('list_classes');
         Route::get('all/{slug}', [LegerController::class, 'allLeger'])->name('all_leger');
+    });
+
+    Route::prefix('dkn')->name('dkns.')->group(function () {
+        Route::get('list-classes', [DKNController::class, 'listClass'])->name('list_classes');
+        Route::get('prev-classes/{slug}', [DKNController::class, 'byClass'])->name('by_classes');
+        Route::get('all/{slug}', [DKNController::class, 'allLeger'])->name('all_leger');
     });
 
     Route::prefix('raport')->name('raports.')->group(function () {

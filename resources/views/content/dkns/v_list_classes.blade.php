@@ -10,7 +10,7 @@
             <div class="page-meta mt-3">
                 <nav class="breadcrumb-style-one" aria-label="breadcrumb">
                     <ol class="breadcrumb bg-transparent">
-                        <li class="breadcrumb-item"><a href="#">User</a></li>
+                        <li class="breadcrumb-item"><a href="#">Userd</a></li>
                         <li class="breadcrumb-item"><a href="{{ route('users.index') }}">Siswa</a></li>
                         <li class="breadcrumb-item active" aria-current="page">List</li>
                     </ol>
@@ -65,9 +65,7 @@
                                                                     <th class="align-middle">Tingkat</th>
                                                                     <th class="align-middle">Jurusan</th>
                                                                     <th class="align-middle text-center">Jumlah Siswa</th>
-                                                                    <th class="align-middle">Persemester</th>
-                                                                    {{-- <th class="align-middle">Semua semester</th> --}}
-
+                                                                    <th class="align-middle">Daftar Kumpulan Nilai</th>
                                                                 </tr>
                                                             </thead>
                                                             <tbody id="class-table">
@@ -79,7 +77,7 @@
                                                                         <td>{{ $result['major'] }}</td>
                                                                         <td class="text-center">{{ $result['amount'] }}</td>
                                                                         <td class="text-center">
-                                                                            <a href="{{ route('legers.by_classes', $result['slug']) }}">
+                                                                            <a href="{{ route('dkns.by_classes', $result['slug']) }}">
                                                                                 <svg xmlns="http://www.w3.org/2000/svg"
                                                                                     width="24" height="24"
                                                                                     viewBox="0 0 24 24" fill="none"
@@ -100,28 +98,7 @@
                                                                                 </svg>
                                                                             </a>
                                                                         </td>
-                                                                        {{-- <td class="text-center">
-                                                                            <a href="{{ route('legers.all_leger', ['slug' => $result['slug'], 'pdf' => 1]) }}">
-                                                                                <svg xmlns="http://www.w3.org/2000/svg"
-                                                                                    width="24" height="24"
-                                                                                    viewBox="0 0 24 24" fill="none"
-                                                                                    stroke="currentColor" stroke-width="2"
-                                                                                    stroke-linecap="round"
-                                                                                    stroke-linejoin="round">
-                                                                                    <circle cx="11" cy="11"
-                                                                                        r="8"></circle>
-                                                                                    <line x1="21" y1="21"
-                                                                                        x2="16.65" y2="16.65">
-                                                                                    </line>
-                                                                                    <line x1="11" y1="8"
-                                                                                        x2="11" y2="14">
-                                                                                    </line>
-                                                                                    <line x1="8" y1="11"
-                                                                                        x2="14" y2="11">
-                                                                                    </line>
-                                                                                </svg>
-                                                                            </a>
-                                                                        </td> --}}
+                                                                        
                                                                     </tr>
                                                                 @endforeach
                                                             </tbody>
