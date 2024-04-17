@@ -19,6 +19,7 @@ use App\Http\Controllers\ExtracurricularController;
 use App\Http\Controllers\GeneralWeightingController;
 use App\Http\Controllers\KkmController;
 use App\Http\Controllers\LegerController;
+use App\Http\Controllers\LegerNewController;
 use App\Http\Controllers\LetterheadController;
 use App\Http\Controllers\LevelController;
 use App\Http\Controllers\MajorController;
@@ -348,10 +349,20 @@ Route::middleware('auth:user,admin,parent,teacher')->group(function () {
         Route::post('update', [ScoreExtracurricularController::class, 'storeOrUpdate'])->name('storeOrUpdate');
     });
 
+    // LEGER LAMA
+
+    // Route::prefix('leger')->name('legers.')->group(function () {
+    //     Route::get('prev-classes/{slug}', [LegerController::class, 'byClass'])->name('by_classes');
+    //     Route::get('list-classes', [LegerController::class, 'listClass'])->name('list_classes');
+    //     Route::get('all/{slug}', [LegerController::class, 'allLeger'])->name('all_leger');
+    // });
+
+    // LEGER LAMA
+
     Route::prefix('leger')->name('legers.')->group(function () {
-        Route::get('prev-classes/{slug}', [LegerController::class, 'byClass'])->name('by_classes');
-        Route::get('list-classes', [LegerController::class, 'listClass'])->name('list_classes');
-        Route::get('all/{slug}', [LegerController::class, 'allLeger'])->name('all_leger');
+        Route::get('prev-classes/{slug}', [LegerNewController::class, 'byClass'])->name('by_classes');
+        Route::get('list-classes', [LegerNewController::class, 'listClass'])->name('list_classes');
+        Route::get('all/{slug}', [LegerNewController::class, 'allLeger'])->name('all_leger');
     });
 
     Route::prefix('dkn')->name('dkns.')->group(function () {
