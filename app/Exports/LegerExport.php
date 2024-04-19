@@ -4,6 +4,7 @@ namespace App\Exports;
 
 use App\Models\AttendanceScore;
 use App\Models\AttitudeGrade;
+use App\Models\PredicatedScore;
 use App\Models\ScoreExtracurricular;
 use App\Models\ScoreKd;
 use App\Models\ScoreManual;
@@ -23,10 +24,41 @@ class LegerExport implements FromView
 {
 
     protected $slug;
+    public $predicate = null;
 
     public function __construct($slug)
     {
         $this->slug = $slug;
+        $this->predicate = PredicatedScore::orderBy('score','DESC')->get()->toArray();
+    }
+
+    
+
+    public function predicateScore($target){
+        $data = $this->predicate;
+        
+        $low = 0;
+        $high = count($data) - 1;
+        
+        while ($low <= $high) {
+            $mid = floor(($low + $high) / 2);
+            
+
+            // Data predikat ditemukan ketika 'target' diantara rentan nilai
+            // Misal rentang B adalah 80-90, maka akan diexplode dahulu batas bawah dan atas
+            // Karena pada tabel score berupa string '80-90'
+            // Lalu dicocokan dengan <= dan >=
+            $datas = explode("-",$data[$mid]['score']);
+
+            if ($datas[0] <= $target && $datas[1] >= $target ) {
+                return (int) $mid; // Target ditemukan
+            } else if ($data[$mid]['score'] > $target) {
+                $low = $mid + 1; // Cari di bagian kanan
+            } else {
+                $high = $mid - 1; // Cari di bagian kiri
+            }
+        }
+        return -1; // Target tidak ditemukan
     }
 
     public function view(): View
@@ -192,10 +224,11 @@ class LegerExport implements FromView
             foreach($nmmv['score'] as $nll){
                 if ($template['template'] == 'k13') {
                     $raport_ = $scoresFiltered->where('id_subject_teacher', $nll->id)->first();
-                    $pengetahuan = $raport_ ? $raport_['final_assesment'] : 0;
+                    $pengetahuan = $raport_ ? $raport_['averege_assesment'] : 0;
                     $keterampilan = $raport_ ? $raport_['final_skill'] : 0;
                     $uts = $raport_ ? $raport_['score_uts'] : 0;
                     $uas = $raport_ ? $raport_['score_uas'] : 0;
+                    $nilai_akhir = $raport_ ? $raport_['final_assesment'] : 0;
 
                     //Akumulasi
                     $jml_score = $jml_score + $pengetahuan;
@@ -216,7 +249,10 @@ class LegerExport implements FromView
                     'score' => $pengetahuan,
                     'keterampilan' => $keterampilan,
                     'uts' => $uts,
-                    'uas' => $uas
+                    'uas' => $uas,
+                    'nilai_akhir' => $nilai_akhir,
+                    'predikat_nilai_akhir' => $this->predicate[$this->predicateScore($nilai_akhir)]['name'],
+                    'predikat_nilai_keterampilan' => $this->predicate[$this->predicateScore($keterampilan)]['name']
                 ];
             }
             
