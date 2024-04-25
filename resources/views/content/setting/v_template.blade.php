@@ -65,10 +65,10 @@
                                                
                                                     <input type="hidden" name="id_school_year[]"
                                                         value="{{ $template['id_school_year'] }}">
-                                                    <input type="hidden" name="type[]"
-                                                        value="uas">
+                                                    {{-- <input type="hidden" name="type[]"
+                                                        value="uas"> --}}
 
-                                                    {{-- <select name="type[]" class="form-control"
+                                                    <select name="type[]" class="form-control"
                                                         id="type_{{ $index + 1 }}">
                                                         <option value="" selected disabled>Pilih Jenis</option>
                                                         <option value="uts"
@@ -77,7 +77,7 @@
                                                         <option value="uas"
                                                             {{ old('type', $template['type']) == 'uas' ? 'selected' : (old('type') == 'uas' ? 'selected' : '') }}>
                                                             Penilaian Akhir Semester</option>
-                                                    </select> --}}
+                                                    </select>
                                                     @error('type.' . $index)
                                                         <div class="invalid-feedback d-block">{{ $message }}</div>
                                                     @enderror
