@@ -210,19 +210,31 @@ class PreviewController extends Controller
                 return $this->print_uts_murni($student_class, $setting, $school_year, $subjects, $template->type);
             }
         }
-        //dd($template->template);
 
-        switch ($template->template) {
-            case 'k13':
-                return $this->preview_k13($student_class, $setting, $school_year, $subjects, $template->type);
-            case 'merdeka':
-                $type = $template->type;
-                return $this->preview_merdeka($student_class, $setting, $school_year, $subjects, $type);
-            case 'manual2':
-                return $this->preview_manual2($student_class, $setting, $school_year, $subjects, $template->type);
-            default:
-                return $this->preview_manual($student_class, $setting, $school_year, $subjects, $template->type);
+        //return $this->uts_custom($student_class, $setting, $school_year, $subjects, $template->type);
+
+        // Khusus tulus bakti hanya k13
+        
+
+        if($template->template == 'k13' && $template->type == 'uas'){
+            return $this->preview_k13($student_class, $setting, $school_year, $subjects, $template->type);
+        }else if($template->template == 'k13' && $template->type == 'uts'){
+            return $this->uts_custom($student_class, $setting, $school_year, $subjects, $template->type);
+        }else{
+            dd('Template harus K13');
         }
+
+        // switch ($template->template) {
+        //     case 'k13':
+                
+        //     case 'merdeka':
+        //         $type = $template->type;
+        //         return $this->preview_merdeka($student_class, $setting, $school_year, $subjects, $type);
+        //     case 'manual2':
+        //         return $this->preview_manual2($student_class, $setting, $school_year, $subjects, $template->type);
+        //     default:
+        //         return $this->preview_manual($student_class, $setting, $school_year, $subjects, $template->type);
+        // }
     }
 
     public function coverPrint()
@@ -1049,6 +1061,7 @@ class PreviewController extends Controller
             ['id_school_year', $school_year->id],
         ])->get();
         $result_score = [];
+        //dd($result_score);
 
 
         foreach ($subjects as $subject) {
@@ -1058,6 +1071,8 @@ class PreviewController extends Controller
                 ['id_subject_teacher', $subject->id],
                 ['type', $type_template],
             ])->first();
+
+            //dd($score_kd);
 
             if ($score_kd) {
                 $course = $subject->course->name;
@@ -1124,6 +1139,7 @@ class PreviewController extends Controller
         }
 
         $result_extra = [];
+        //dd($result_score);
 
         $extras = Extracurricular::where('status', 1)->get();
 
@@ -1211,5 +1227,226 @@ class PreviewController extends Controller
 
         $pdf = PDF::loadView('content.previews.k13.v_print_pas', compact('result_profile', 'result_kop', 'result_attitude', 'result_score', 'result_extra', 'result_other', 'result_achievement', 'result_attendance', 'type_template','predicate_score'));
         return $pdf->stream();
+    }
+
+    function uts_custom($student_class, $setting, $school_year, $subjects, $type_template)
+    {
+        $letter_head = Letterhead::first();
+        $result_kop = [
+            'text1' => $letter_head ? $letter_head->text1 : null,
+            'text2' => $letter_head ? $letter_head->text2 : null,
+            'text3' => $letter_head ? $letter_head->text3 : null,
+            'text4' => $letter_head ? $letter_head->text4 : null,
+            'text5' => $letter_head ? $letter_head->text5 : null,
+            'left_logo' => $letter_head ? $letter_head->left_logo : null,
+            'right_logo' => $letter_head ? $letter_head->right_logo : null,
+        ];
+        $result_profile = [
+            'name' => strtoupper($student_class->student->name),
+            'nisn' => $student_class->student->nisn,
+            'school' => strtoupper($setting['name_school']),
+            'address_school' => $setting['address'],
+            'study_class' => $student_class->study_class->name,
+            'fase' => $student_class->study_class->level->fase,
+            'level' => $student_class->study_class->level->name,
+            'semester_number' => substr($school_year->name, -1),
+            'semester' => substr($school_year->name, -1) == 1 ? 'Ganjil' : 'Genap',
+            'school_year' => substr($school_year->name, 0, 9),
+        ];
+
+        $teacher = Teacher::where([
+            ['type', 'homeroom'],
+            ['id_class', $student_class->study_class->id],
+        ])->latest()->first();
+
+        $score_attitude = AttitudeGrade::where([
+            ['id_student_class', $student_class->id],
+            ['id_school_year', $school_year->id],
+        ])->get();
+
+        $result_attitude = [];
+        $achievements = $student_class->achievements;
+
+        $competencies = CompetenceAchievement::where('status', 1)->get();
+
+
+        foreach ($score_attitude as $score) {
+            $type = $score['type'];
+            $predicate = $score['predicate'];
+            $attitude_ids = json_decode($score['attitudes']);
+
+            $attitude_names = Attitude::whereIn('id', $attitude_ids)
+                ->pluck('name')
+                ->toArray();
+
+            $attitude_data = [
+                "type" => $type,
+                "predicate" => $predicate,
+                "attitudes" => $attitude_names
+            ];
+
+            array_push($result_attitude, $attitude_data);
+        }
+
+        $result_attitude = collect($result_attitude)->groupBy('type')->map(function ($item) {
+            $first = $item->first();
+
+            return [
+                "type" => $first["type"],
+                "predicate" => $first["predicate"],
+                "attitudes" => $item->pluck('attitudes')->flatten()->toArray()
+            ];
+        })->toArray();
+
+        $score_kd = ScoreKd::where([
+            ['id_student_class', $student_class->id],
+            ['type', $type_template],
+            ['id_school_year', $school_year->id],
+        ])->get();
+        $result_score = [];
+        //dd($result_score);
+
+
+        foreach ($subjects as $subject) {
+            $score_kd = ScoreKd::where([
+                ['id_student_class', $student_class->id],
+                ['id_school_year', $school_year->id],
+                ['id_subject_teacher', $subject->id],
+                ['type', $type_template],
+            ])->first();
+
+            //dd($score_kd);
+
+            if ($score_kd) {
+                $course = $subject->course->name;
+                $final_assessment = $score_kd->final_assesment;
+                $final_skill = $score_kd->final_skill;
+                //dd($score_kd);
+
+                // Konversi assessment_score dan skill_score dari JSON menjadi array
+                $assessment_score = json_decode($score_kd->assessment_score, true);
+                $skill_score = json_decode($score_kd->skill_score, true);
+
+                // Ambil id_kd dari assessment_score dan skill_score
+                $kd_assessment_score = collect($assessment_score)->pluck('score')->toArray();
+                $kd_skill_score = collect($skill_score)->pluck('score')->toArray();
+
+                //dd($kd_assessment_ids);
+
+                // Ambil nama kd dari id_kd
+                // $kd_assessment = BasicCompetency::whereIn('id', $kd_assessment_ids)->pluck('name')->toArray();
+                // $kd_assessment = array_map(function ($value) {
+                //     return json_decode($value)->name;
+                // }, $kd_assessment);
+                // $kd_skill = BasicCompetency::whereIn('id', $kd_skill_ids)->pluck('name')->toArray();
+                // $kd_skill = array_map(function ($value) {
+                //     return json_decode($value)->name;
+                // }, $kd_skill);
+
+                // Cari predikat dari nilai final_assessment dan final_skill
+                $predicate_score = PredicatedScore::where('score', '<=', $final_assessment)->orderBy('score', 'desc')->first();
+                if ($predicate_score == null) {
+                    session()->put('message', 'Harap admin suruh mengisi dulu nilai predikat raport');
+                    return view('pages.v_error');
+                }
+                // $predicate_assessment = PredicatedScore::where('score', '<=', $final_assessment)->orderBy('score', 'desc')->first()->name;
+                // $description_assessment = PredicatedScore::where('score', '<=', $final_assessment)->orderBy('score', 'desc')->first()->description;
+                // $predicate_skill = PredicatedScore::where('score', '<=', $final_skill)->orderBy('score', 'desc')->first()->name;
+                // $description_skill = PredicatedScore::where('score', '<=', $final_skill)->orderBy('score', 'desc')->first()->description;
+
+                $result_score[] = [
+                    'course' => $course,
+                    'group' => $subject->course->group,
+                    'sub_group' => $subject->course->sub_group,
+                    'final_assessment' => $final_assessment,
+                    'kd_assessment_score' => $kd_assessment_score,
+                    'kd_skill_score' => $kd_skill_score,
+                    'uts' => $score_kd->score_uts,
+                    // 'predicate_assessment' => $predicate_assessment,
+                    // 'description_assessment' => $description_assessment,
+                    //'kd_assessment' => $kd_assessment,
+                    'final_skill' => $final_skill,
+                    // 'predicate_skill' => $predicate_skill,
+                    // 'description_skill' => $description_skill,
+                    //'kd_skill' => $kd_skill,
+                ];
+            } else {
+                $result_score[] = [
+                    'course' => $subject->course->name,
+                    'group' => $subject->course->group,
+                    'sub_group' => $subject->course->sub_group,
+                    'final_assessment' => null,
+                    'predicate_assessment' => null,
+                    'description_assessment' => null,
+                    'kd_assessment' => [],
+                    'final_skill' => null,
+                    'predicate_skill' => null,
+                    'description_skill' => null,
+                    'kd_skill' => [],
+                ];
+            }
+        }
+
+        $result_extra = [];
+        //dd($result_score);
+
+       
+        $note = TeacherNote::where([
+            ['id_student_class', $student_class->id],
+            ['id_school_year', $school_year->id]
+        ])->first();
+        // dd($note);
+        $config = Config::where('id_school_year', $school_year->id)->first();
+        // dd($config);
+        $result_other = [
+            'note_teacher' => $note ? $note->description : '',
+            'promotion' => $note ? $note->promotion : 'Y',
+            'place' => $config ? $config->place : '',
+            'date' => $config ? $config->report_date : now(),
+            'headmaster' => $config ? $config->headmaster : '',
+            'teacher' => $teacher ? $teacher->name : '',
+            'nip_teacher' => $teacher ? $teacher->nip : '',
+            'nip_headmaster' => $config ? $config->nip_headmaster : '',
+            'signature' => $config && $config->signature != null ? public_path($config->signature) : null,
+        ];
+
+        $result_achievement = Achievement::where([
+            ['id_student_class', $student_class->id],
+            ['id_school_year', $school_year->id],
+        ])->get();
+
+        $attendance = AttendanceScore::where([
+            ['id_student_class', $student_class->id],
+            ['id_school_year', $school_year->id],
+        ])->first();
+
+        $result_attendance = [
+            'ill' => $attendance ? $attendance->ill : 0,
+            'excused' => $attendance ? $attendance->excused : 0,
+            'unexcused' => $attendance ? $attendance->unexcused : 0,
+        ];
+
+        // Predikat Score
+        $predicate_score = PredicatedScore::all();
+
+        $result_score = collect($result_score);
+
+        $result_score = $result_score->groupBy('group')->map(function ($score) {
+            return $score->groupBy('sub_group');
+        });
+
+        //dd($result_score);
+
+        // $result_score = $result_score->groupBy('group')->map(function ($score) {
+        //     return $score->groupBy('sub_group');
+        // });
+        //dd($result_score);
+        $pdf = PDF::loadView('content.previews.k13.v_print_uts_custom', compact('result_profile', 'result_kop', 'result_attitude', 'result_score', 'result_extra', 'result_other', 'result_achievement', 'result_attendance', 'type_template','predicate_score'));
+        return $pdf->stream();
+
+        // return view('content.previews.k13.v_print_uts_custom', compact('result_profile', 'result_kop',
+        //  'result_attitude', 'result_score', 'result_extra', 'result_other',
+        //   'result_achievement', 'result_attendance', 'type_template','predicate_score'));
+
     }
 }
