@@ -230,8 +230,9 @@
                                 <td>70</td>
 
                                 @for ($i = 1; $i <=5; $i++)
-                                
-                                    @if (array_key_exists($i,$score['kd_assessment_score'] ))
+                                    @if(empty($score['kd_assessment_score']))
+                                        <td></td>
+                                    @elseif (array_key_exists($i,$score['kd_assessment_score']))
                                         <td>{{ $score['kd_assessment_score'][$i] }}</td>
                                     @else
                                         <td></td>
@@ -239,15 +240,16 @@
                                 @endfor
 
                                 @for ($i = 1; $i <=5; $i++)
-                                
-                                    @if (array_key_exists($i,$score['kd_skill_score'] ))
+                                    @if(empty($score['kd_skill_score']))
+                                        <td></td>
+                                    @elseif (array_key_exists($i,$score['kd_skill_score'] ))
                                         <td>{{ $score['kd_skill_score'][$i] }}</td>
                                     @else
                                         <td></td>
                                     @endif
                                 @endfor
 
-                                <td>{{ $score['uts'] }}</td>
+                                <td>{{ $score['uts'] && '' }}</td>
 
                             </tr>
 

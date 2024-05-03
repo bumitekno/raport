@@ -83,143 +83,165 @@
         .signature p {
             margin: 0;
         }
+
+        table tr.page-break{
+            page-break-after:always
+        }
+
+       
+        tfoot {
+            position: fixed;
+            bottom: 0;
+        }
+        
+
     </style>
 </head>
 
 <body>
     <table class="table">
         <tr>
-            <td colspan="8" class="b-0">
-                <table style="width: 100%">
-                    <tr>
-                        @if ($result_kop['left_logo'] != null)
-                            <td class="b-0">
-                                <img alt="logo kiri" id="prev-logo-kiri-print"
-                                    src="{{ public_path($result_kop['left_logo']) }}" style="width: 85%;">
-                            </td>
-                        @endif
-
-                        <td style="width:70%; text-align: center;" class="b-0">
-                            <div class="text-uppercase" style="line-height: 1.1; font-family: 'Arial'; font-size: 12pt">
-                                {{ $result_kop['text1'] }}
-                            </div>
-                            <div style="line-height: 1.1; font-family: 'Arial'; font-size: 13pt" class="text-uppercase">
-                                {{ $result_kop['text2'] }}
-                            </div>
-                            <div style="line-height: 1.2; font-family: 'Arial'; font-size: 13pt"
-                                class="text-uppercase text-bold">
-                                {{ $result_kop['text3'] }}
-                            </div>
-                            <div style="line-height: 1.2; font-family: 'Arial, sans serif'; font-size: 7pt">
-                                {{ $result_kop['text5'] }}
-                            </div>
+            <td colspan="10" style="font-size: 15pt !important" class="mb-4 b-0 text-bold text-uppercase text-center">
+                PENCAPAIAN KOMPETENSI PESERTA DIDIK
+            </td>
+        </tr>
+        
+        <thead>
+        <tr>
+            <td colspan="10" class="b-0">
+                <table class="table b-0">
+                    <tr class="b-0">
+                        <td class="b-0" style="padding: 0px; vertical-align: top; font-weight: bold;" width="15%">Nama Sekolah</td>
+                        <td class="b-0" style="padding: 0px; vertical-align: top">:</td>
+                        <td class="b-0" style="padding: 0px; vertical-align: top" width="35%">
+                            {{ $result_profile['school'] }}
                         </td>
-                        @if ($result_kop['right_logo'] != null)
-                            <td class="b-0">
-                                <img alt="logo kiri" id="prev-logo-kiri-print"
-                                    src="{{ public_path($result_kop['right_logo']) }}" style="width: 85%;">
-                            </td>
-                        @endif
+                        <td class="b-0" width="15%"></td>
+                        
+                        <td class="b-0" style="padding: 0px; vertical-align: top; font-weight: bold;" width="15%">Kelas</td>
+                        <td class="b-0" style="padding: 0px; vertical-align: top">:</td>
+                        <td class="b-0" style="padding: 0px; vertical-align: top" width="25%">
+                            {{ $result_profile['study_class'] }}
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="b-0" style="padding: 0px; vertical-align: top; font-weight: bold;">Alamat</td>
+                        <td class="b-0" style="padding: 0px; vertical-align: top">:</td>
+                        <td class="b-0" style="padding: 0px;">
+                            {{ $result_profile['address_school'] }}
+                        </td>
+
+                        <td class="b-0"></td>
+
+                        
+                        <td class="b-0" style="padding: 0px; font-weight: bold; vertical-align: top;">Semester</td>
+                        <td class="b-0" style="padding: 0px;vertical-align: top;">:</td>
+                        <td class="b-0" style="padding: 0px; vertical-align: top;">
+                            {{ $result_profile['semester_number'] . ' (' . $result_profile['semester'] . ')' }}
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td class="b-0" style="padding: 0px; vertical-align: top; font-weight: bold; ">Nama</td>
+                        <td class="b-0" style="padding: 0px; vertical-align: top">:</td>
+                        <td class="b-0" style="padding: 0px;">
+                            {{ $result_profile['name'] }}
+                        </td>
+                        <td class="b-0"></td>
+                        <td class="b-0" style="padding: 0px; vertical-align: top; font-weight: bold;vertical-align: top;">Tahun Pelajaran</td>
+                        <td class="b-0" style="padding: 0px; vertical-align: top;vertical-align: top;">:</td>
+                        <td class="b-0" style="padding: 0px; vertical-align: top;vertical-align: top;">
+                            {{ $result_profile['school_year'] }}</td>
+                    </tr>
+
+                    <tr>
+                        <td class="b-0" style="padding: 0px; font-weight: bold;">NISN</td>
+                        <td class="b-0" style="padding: 0px">:</td>
+                        <td class="b-0" style="padding: 0px">
+                            {{ $result_profile['nisn'] }}
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td style="height: 10px" class="b-0"></td>
                     </tr>
 
                 </table>
             </td>
         </tr>
-        @if ($result_kop['text1'] != null)
-            <tr>
-                <td colspan="8" class="b-0" style="padding: 0px !important">
-                    <hr style="border: solid 2px #000">
-                </td>
-            </tr>
-        @endif
-        <tr>
-            <td colspan="8" style="font-size: 12pt !important" class="b-0 text-bold text-uppercase text-center">
-                LAPORAN HASIL BELAJAR
-            </td>
-        </tr>
-        <thead>
-            <tr>
-                <td colspan="8" class="b-0">
-                    <table class="table b-0">
-                        <tr class="b-0">
-                            <td class="b-0" style="padding: 0px; vertical-align: top; font-weight: bold; " width="25%">Nama Peserta Didik</td>
-                            <td class="b-0" style="padding: 0px; vertical-align: top">:</td>
-                            <td class="b-0" style="padding: 0px;" width="40%">
-                                {{ $result_profile['name'] }}
-                            </td>
-                            <td class="b-0" style="padding: 0px; vertical-align: top; font-weight: bold;" width="20%">Kelas</td>
-                            <td class="b-0" style="padding: 0px; vertical-align: top">:</td>
-                            <td class="b-0" style="padding: 0px; vertical-align: top" width="15%">
-                                {{ $result_profile['study_class'] }}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="b-0" style="padding: 0px; font-weight: bold;">NISN</td>
-                            <td class="b-0" style="padding: 0px">:</td>
-                            <td class="b-0" style="padding: 0px">
-                                {{ $result_profile['nisn'] }}
-                            </td>
-                            <td class="b-0" style="padding: 0px; font-weight: bold;">Semester</td>
-                            <td class="b-0" style="padding: 0px;">:</td>
-                            <td class="b-0" style="padding: 0px;">
-                                {{ $result_profile['semester_number'] . ' (' . $result_profile['semester'] . ')' }}
-                            </td>
-                        </tr>
-                        <tr>
-                            <td class="b-0" style="padding: 0px; vertical-align: top; font-weight: bold;">Sekolah</td>
-                            <td class="b-0" style="padding: 0px; vertical-align: top">:</td>
-                            <td class="b-0" style="padding: 0px; vertical-align: top">
-                                {{ $result_profile['school'] }}
-                            </td>
-                            <td class="b-0" style="padding: 0px; vertical-align: top; font-weight: bold;">Tahun Pelajaran</td>
-                            <td class="b-0" style="padding: 0px; vertical-align: top">:</td>
-                            <td class="b-0" style="padding: 0px; vertical-align: top">
-                                {{ $result_profile['school_year'] }}</td>
-                        </tr>
-                        <tr>
-                            <td class="b-0" style="padding: 0px; vertical-align: top; font-weight: bold;">Alamat</td>
-                            <td class="b-0" style="padding: 0px; vertical-align: top">:</td>
-                            <td class="b-0" style="padding: 0px;">
-                                {{ $result_profile['address_school'] }}
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td style="height: 10px" class="b-0"></td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
         </thead>
+
+        
+        
         <tbody>
             @if (!empty($result_attitude))
                 <tr>
-                    <td colspan="8" class="b-0" style="padding: 0px !important">
+                    <td colspan="10" class="b-0" style="padding: 0px !important">
                         <table class="table">
                             <tr>
                                 <td class="b-0" colspan="2" style="font-size: 11pt">A. SIKAP
                                 </td>
                             </tr>
+
+                            {{-- SPIRITUAL --}}
                             <tr>
-                                <th class="text-center" colspan="2" style="font-size: 11pt">
-                                    Deskripsi</th>
+                                <td class="b-0" colspan="2" style="font-size: 11pt">1. Sikap Spiritual
+                                </td>
                             </tr>
-                            @foreach ($result_attitude as $index => $attitude)
-                                <tr>
-                                    <td class="text-center" style="width: 150px; font-size: 11pt" >
-                                        <b>{{ $loop->iteration }}. Sikap
-                                            {{ $attitude['type'] == 'social' ? 'Sosial' : 'Spiritual' }}</b>
-                                    </td>
-                                    <td>{{ $result_profile['name'] }} memiliki sikap
-                                        {{ $attitude['type'] == 'social' ? 'Sosial' : 'Spiritual' }}
-                                        {{ $attitude['predicate'] }}, antara lain
-                                        {{ implode(', ', $attitude['attitudes']) }}
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </table>
+                            <tr>
+                                <th class="text-center" style="font-size: 11pt">
+                                    Predikat
+                                </th>
+                                <th class="text-center" style="font-size: 11pt">
+                                    Deskripsi
+                                </th>
+                            </tr>
+                                
+                            <tr>
+                                <td class="text-center" style="width: 150px; font-size: 11pt" >
+                                    <b>
+                                        {{ $result_attitude['spiritual']['predicate'] }}
+                                    </b>
+                                </td>
+                                <td>{{ $result_profile['name'] }} memiliki sikap
+                                    {{ $result_attitude['spiritual']['type'] == 'social' ? 'Sosial' : 'Spiritual' }}
+                                    {{ $result_attitude['spiritual']['predicate'] }}, antara lain
+                                    {{ implode(', ', $result_attitude['spiritual']['attitudes']) }}
+                                </td>
+                            </tr>
+
+                            {{-- SOSIAL --}}
+                            <tr>
+                                <td class="b-0" colspan="2" style="font-size: 11pt">2. Sikap Sosial
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="text-center" style="font-size: 11pt">
+                                    Predikat
+                                </th>
+                                <th class="text-center" style="font-size: 11pt">
+                                    Deskripsi
+                                </th>
+                            </tr>
+                            <tr>
+                                <td class="text-center" style="width: 150px; font-size: 11pt" >
+                                    <b>
+                                        {{ $result_attitude['social']['predicate'] }}
+                                    </b>
+                                </td>
+                                <td>{{ $result_profile['name'] }} memiliki sikap
+                                    {{ $result_attitude['social']['type'] == 'social' ? 'Sosial' : 'Spiritual' }}
+                                    {{ $result_attitude['social']['predicate'] }}, antara lain
+                                    {{ implode(', ', $result_attitude['social']['attitudes']) }}
+                                </td>
+                            </tr>
+                        
+                        
+                            </table>
                     </td>
                 </tr>
+
                 <tr>
                     <td style="height: 10px" colspan="4" class="b-0" style="font-size: 11pt"></td>
                 </tr>
@@ -229,14 +251,13 @@
 
             <tr>
                 
-                <td class="b-0" colspan="8" style="font-size: 11pt">B. PENGETAHUAN</td>
+                <td class="b-0" colspan="10" style="font-size: 11pt;font-weight: bold;">B. PENGETAHUAN</td>
                 
             </tr>
 
             
             <tr>
-                <td class="b-0" colspan="8" style="font-size: 12pt">Kriteria Ketuntasan Minimal Satuan
-                    Pendidikan
+                <td class="b-0" colspan="10" style="font-size: 12pt">Ketuntasan Belajar Minimal
                     70</td>
                 </tr>
             <tr>
@@ -245,44 +266,61 @@
                 </th>
                 <th class="text-center" font-size= "11pt">
                     Mata Pelajaran</th>
-                    <th class="text-center" font-size= "11pt">
-                        Angka</th>
-                    <th class="text-center" font-size= "11pt">
-                        Predikat</th>
-                    <th colspan="8" class="text-center" font-size= "11pt">
+                <th class="text-center" font-size= "11pt">
+                    Angka</th>
+                <th class="text-center" font-size= "11pt">
+                    Predikat</th>
+                <th colspan="6" class="text-center" font-size= "11pt">
                         Deskripsi</th>
             </tr>
            
             @if (!empty($result_score))
-                @foreach ($result_score as $score)
+                @foreach ( $result_score as $key => $group )
                     <tr>
-                        <td class="text-center">{{ $loop->iteration }}</td>
-                        <td>
-                            {{ $score['course'] }}</td>
-                        <td class="text-center">
-                            {{ $score['final_assessment'] }}</td>
-                        <td class="text-center">
-                            {{ $score['predicate_assessment'] }}
-                        </td>
-                        <td colspan="8">
-                            @if ($score['description_assessment'])
-                                <p>Penguasaan pengetahuan {{ $score['description_assessment'] }}
-                                    dalam {{ implode(', ', $score['kd_assessment']) }}</p>
-                            @endif
-                        </td>
-                        
+                        <td colspan="10" style="font-weight: bold;"> Kelompok {{$key}} </td>
                     </tr>
+
+                    @foreach ( $group as $keys => $groups )
+                        @if ($keys != '' || $keys != null)
+                            <tr>
+                                <td colspan="10"> {{$keys}} </td>
+                            </tr>  
+                        @endif
+
+                        @foreach ($groups as $score)
+                            <tr>
+                                <td class="text-center">{{ $loop->iteration }}</td>
+                                <td>
+                                    {{ $score['course'] }}</td>
+                                <td class="text-center">
+                                    {{ $score['final_assessment'] }}</td>
+                                <td class="text-center">
+                                    {{ $score['predicate_assessment'] }}
+                                </td>
+                                <td colspan="6">
+                                    @if ($score['description_assessment'])
+                                        <p>Penguasaan pengetahuan {{ $score['description_assessment'] }}
+                                            dalam {{ implode(', ', $score['kd_assessment']) }}</p>
+                                    @endif
+                                </td>
+                                
+                            </tr>
+                        @endforeach
+                    @endforeach
                 @endforeach
             @else
                 <tr>
-                    <td class="text-center">Belum ada mapel yang dinilai</td>
+                    <td colspan="10" class="text-center">Belum ada mapel yang dinilai</td>
                 </tr>
             @endif
             
 
             <tr>
-                <td style="height: 10px" class="b-0"></td>
+                <td style="height: 10px" colspan="10" class="b-0"></td>
             </tr>
+
+            <tr class="page-break"></tr>
+
 
             {{-- KETERAMPILAN --}}
 
@@ -304,34 +342,47 @@
                         Angka</th>
                     <th class="text-center" font-size= "11pt">
                         Predikat</th>
-                    <th class="text-center" colspan="8" font-size= "11pt">
+                    <th class="text-center" colspan="6" font-size= "11pt">
                         Deskripsi</th>
             </tr>
            
             @if (!empty($result_score))
-                @foreach ($result_score as $score)
+                @foreach ( $result_score as $key => $group )
                     <tr>
-                        <td class="text-center">{{ $loop->iteration }}</td>
-                        <td>
-                            {{ $score['course'] }}</td>
-                        <td class="text-center">{{ $score['final_skill'] }}</td>
-                        <td class="text-center">{{ $score['predicate_skill'] }}</td>
-                        <td colspan="8">
-                            @if ($score['description_skill'])
-                                <p>Penguasaan ketrampilan {{ $score['description_skill'] }}
-                                    dalam {{ implode(', ', $score['kd_skill']) }}</p>
-                            @endif
-                        </td>
+                        <td colspan="10"> Kelompok {{$key}} </td>
                     </tr>
+
+                    @foreach ( $group as $keys => $groups )
+                        @if ($keys != '' || $keys != null)
+                            <tr>
+                                <td colspan="10"> {{$keys}} </td>
+                            </tr>  
+                        @endif
+                        @foreach ($groups as $score)
+                            <tr>
+                                <td class="text-center">{{ $loop->iteration }}</td>
+                                <td>
+                                    {{ $score['course'] }}</td>
+                                <td class="text-center">{{ $score['final_skill'] }}</td>
+                                <td class="text-center">{{ $score['predicate_skill'] }}</td>
+                                <td colspan="6">
+                                    @if ($score['description_skill'])
+                                        <p>Penguasaan ketrampilan {{ $score['description_skill'] }}
+                                            dalam {{ implode(', ', $score['kd_skill']) }}</p>
+                                    @endif
+                                </td>
+                            </tr>
+                        @endforeach
+                    @endforeach
                 @endforeach
             @else
                 <tr>
-                    <td colspan="8" class="text-center">Belum ada mapel yang dinilai</td>
+                    <td colspan="10" class="text-center">Belum ada mapel yang dinilai</td>
                 </tr>
             @endif
 
             <tr>
-                <td style="height: 10px" colspan="8" class="b-0"></td>
+                <td style="height: 10px" colspan="10" class="b-0"></td>
             </tr>
 
             
@@ -383,7 +434,7 @@
 
             {{-- Ekstrakulikuler --}}
             <tr>
-                <td colspan="8" class="b-0" style="padding: 0px !important; font-size: 10pt">
+                <td colspan="10" class="b-0" style="padding: 0px !important; font-size: 10pt">
                     <table class="table">
                         <tr>
                             <td class="b-0" colspan="3" style="font-size: 11pt">D. EKSTRAKURIKULER
@@ -414,26 +465,10 @@
                 </td>
             </tr>
             <tr>
-                <td style="height: 10px; font-size: 10pt" colspan="4" class="b-0"></td>
+                <td style="height: 10px; font-size: 10pt" colspan="10" class="b-0"></td>
             </tr>
 
-            <tr>
-                <td colspan="8" class="b-0" style="padding: 0px !important">
-                    <table class="table">
-                        <tr>
-                            <td class="b-0" style="font-size: 11pt">F. CATATAN WALIKELAS</td>
-                        </tr>
-                        <tr>
-                            <td class="text-left vertical-middle">
-                                <div style="width: 100%; min-height: 60px">
-                                    <p class="m-0">{!! $result_other['note_teacher'] !!}
-                                    </p>
-                                </div>
-                            </td>
-                        </tr>
-                    </table>
-                </td>
-            </tr>
+            
             <!--<tr>-->
             <!--    <td style="height: 10px" colspan="8" class="b-0"></td>-->
             <!--</tr>-->
@@ -580,8 +615,44 @@
                     </table>
                 </td>
             </tr>
+
+            <tr>
+                <td style="height: 10px; font-size: 11pt" colspan="8" class="b-0"></td>
+            </tr>
+
+            <tr>
+                <td colspan="10" class="b-0" style="padding: 0px !important">
+                    <table class="table">
+                        <tr>
+                            <td class="b-0" style="font-size: 11pt">G. TANGGAPAN WALIKELAS</td>
+                        </tr>
+                        <tr>
+                            <td class="text-left vertical-middle">
+                                <div style="width: 100%; min-height: 60px">
+                                    <p class="m-0">{!! $result_other['note_teacher'] !!}
+                                    </p>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
         </tbody>
+
+        {{-- <tfoot>
+            <tr>
+                <td style="height: 10px" colspan="4" class="b-0" style="font-size: 11pt"></td>
+            </tr>
+            <tr>
+              <td>Sum</td>
+              <td>$180</td>
+            </tr>
+          
+        </tfoot> --}}
+
+        
     </table>
+
     <table style="width:100%">
         @if ($type_template == 'uas')
             <tr>
@@ -643,7 +714,7 @@
                         <p style="margin-top: 80px;">___________________</p>
                     </div>
 
-                    <div style="float: right; width: 40%;">
+                    <div style="float: right; width: 20%;">
                         <p>
                             {{ $result_other['place'] ?? 'Tidak diketahui' }},
                             {{ isset($result_other['date']) ? DateHelper::getTanggal($result_other['date']) : '' }}

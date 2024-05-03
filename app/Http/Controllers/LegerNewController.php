@@ -57,7 +57,7 @@ class LegerNewController extends Controller
                 $high = $mid - 1; // Cari di bagian kiri
             }
         }
-        return -1; // Target tidak ditemukan
+        return count($data)-1; // Target tidak ditemukan
     }
 
     public function byClass(Request $request, $slug)
@@ -104,6 +104,7 @@ class LegerNewController extends Controller
         ->get();
 
         $this->predicate = PredicatedScore::orderBy('score','DESC')->get()->toArray();
+        //dd($this->predicate);
         
         $subject_teachers = SubjectTeacher::join('courses as c', 'c.id', '=', 'subject_teachers.id_course')
             ->whereRaw('JSON_CONTAINS(id_study_class, \'["' . $study_class->id . '"]\')')
@@ -222,6 +223,7 @@ class LegerNewController extends Controller
             $arr = [];
             $jml_score = 0;
             $jml_keterampilan = 0;
+            //dd($scoresFiltered);
             foreach($nmmv['score'] as $nll){
                 if ($template['template'] == 'k13') {
                     $raport_ = $scoresFiltered->where('id_subject_teacher', $nll->id)->first();
@@ -230,6 +232,11 @@ class LegerNewController extends Controller
                     $uts = $raport_ ? $raport_['score_uts'] : 0;
                     $uas = $raport_ ? $raport_['score_uas'] : 0;
                     $nilai_akhir = $raport_ ? $raport_['final_assesment'] : 0;
+
+                    // if(!$raport_){
+
+                    //     dd($raport_);
+                    // }
 
                     //Akumulasi
                     $jml_score = $jml_score + $pengetahuan;
@@ -244,6 +251,8 @@ class LegerNewController extends Controller
                         $final_score = $raport_ ? ($template['template'] == 'merdeka' ? $raport_['final_score'] : $raport_['score_final']) : [];
                     }
                 }
+                //dd($this->predicate[0]);
+                //dd($this->predicateScore(0));
                 $arr[] = [
                     'id' => $nll->id,
                     'name' => $nll->name,
