@@ -214,6 +214,7 @@ class PreviewController extends Controller
         //return $this->uts_custom($student_class, $setting, $school_year, $subjects, $template->type);
 
         // Khusus tulus bakti hanya k13
+        //dd($template->type);
         
 
         if($template->template == 'k13' && $template->type == 'uas'){
@@ -1304,10 +1305,15 @@ class PreviewController extends Controller
             ['id_school_year', $school_year->id],
         ])->get();
         $result_score = [];
-        //dd($result_score);
+        //dd($score_kd);
 
-
+        if(count($score_kd) < 1){
+            session()->put('message', 'Belum ada data UTS');
+            return view('pages.v_error');  
+        }
+        //dd($subjects);
         foreach ($subjects as $subject) {
+            //dd($subject);
             $score_kd = ScoreKd::where([
                 ['id_student_class', $student_class->id],
                 ['id_school_year', $school_year->id],
@@ -1353,9 +1359,9 @@ class PreviewController extends Controller
                 // $description_assessment = PredicatedScore::where('score', '<=', $final_assessment)->orderBy('score', 'desc')->first()->description;
                 // $predicate_skill = PredicatedScore::where('score', '<=', $final_skill)->orderBy('score', 'desc')->first()->name;
                 // $description_skill = PredicatedScore::where('score', '<=', $final_skill)->orderBy('score', 'desc')->first()->description;
-
+                //dd($kd_assessment_score);
                 $result_score[] = [
-                    'course' => $course,
+                    'course' => $subject->course->name,
                     'group' => $subject->course->group,
                     'sub_group' => $subject->course->sub_group,
                     'final_assessment' => $final_assessment,
@@ -1376,13 +1382,16 @@ class PreviewController extends Controller
                     'group' => $subject->course->group,
                     'sub_group' => $subject->course->sub_group,
                     'final_assessment' => null,
-                    'predicate_assessment' => null,
-                    'description_assessment' => null,
-                    'kd_assessment' => [],
+                    'kd_assessment_score' => null,
+                    'kd_skill_score' => null,
+                    'uts' => null,
+                    // 'predicate_assessment' => $predicate_assessment,
+                    // 'description_assessment' => $description_assessment,
+                    //'kd_assessment' => $kd_assessment,
                     'final_skill' => null,
-                    'predicate_skill' => null,
-                    'description_skill' => null,
-                    'kd_skill' => [],
+                    // 'predicate_skill' => $predicate_skill,
+                    // 'description_skill' => $description_skill,
+                    //'kd_skill' => $kd_skill,
                 ];
             }
         }
