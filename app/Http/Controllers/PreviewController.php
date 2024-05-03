@@ -1217,9 +1217,9 @@ class PreviewController extends Controller
         $result_score = collect($result_score);
         //dd($result_extra);
 
-        // $result_score = $result_score->groupBy('group')->map(function ($score) {
-        //     return $score->groupBy('sub_group');
-        // });
+        $result_score = $result_score->groupBy('group')->map(function ($score) {
+            return $score->groupBy('sub_group');
+        });
         //dd($result_score);
 
         // return view('content.previews.k13.v_print_pas', compact('result_profile', 'result_kop',
