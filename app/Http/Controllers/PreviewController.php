@@ -14,6 +14,7 @@ use App\Models\Cover;
 use App\Models\Dimension;
 use App\Models\Extracurricular;
 use App\Models\Letterhead;
+use App\Models\Level;
 use App\Models\P5;
 use App\Models\PredicatedScore;
 use App\Models\SchoolYear;
@@ -199,7 +200,7 @@ class PreviewController extends Controller
             ])->get();
 
         $setting = json_decode(Storage::get('settings.json'), true);
-        // dd($template->template);
+
         switch ($template->template) {
             case 'k13':
                 return $this->preview_k13($student_class, $setting, $school_year, $subjects, $template->type);
@@ -671,6 +672,9 @@ class PreviewController extends Controller
     function preview_manual2($student_class, $setting, $school_year, $subjects, $type_template)
     {
         // dd($student_class);
+        $level = Level::all()->last();
+        $last_level = $level->id == $student_class->study_class->id_level ? 1 : 0;
+        // dd($last_level);
         $letter_head = Letterhead::first();
         $result_kop = [
             'text1' => $letter_head ? $letter_head->text1 : null,
@@ -883,7 +887,7 @@ class PreviewController extends Controller
 
 
     
-        $pdf = PDF::loadView('content.previews.manual2.v_print_pas', compact('result_profile', 'result_kop', 'result_attitude', 'result_score', 'result_extra', 'result_other', 'result_achievement', 'result_attendance', 'type_template'));
+        $pdf = PDF::loadView('content.previews.manual2.v_print_pas', compact('result_profile', 'result_kop', 'result_attitude', 'result_score', 'result_extra', 'result_other', 'result_achievement', 'result_attendance', 'type_template', 'last_level'));
         return $pdf->stream();
     }
 

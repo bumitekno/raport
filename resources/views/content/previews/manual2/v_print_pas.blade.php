@@ -495,31 +495,45 @@
                                     </td>
                                 </tr>
                                 @if ($result_other['promotion'] == 'Y')
-                                    <tr>
-                                        <td colspan="3" class="b-0"></td>
-                                        <td class="b-0" style="width: 80px">Naik kelas</td>
-                                        <td class="b-0">: {{ $result_profile['level'] + 1 }}</td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="3" class="b-0"></td>
-                                        <td class="b-0" colspan="2"><s>Tinggal di Kelas</s></td>
-                                    </tr>
+                                    @if ($last_level == 1)
+                                        <tr>
+                                            <td colspan="3" class="b-0"></td>
+                                            <td colspan="3" class="b-0" style="width: 80px"><b>LULUS / <s>TIDAK LULUS</s></b></td>
+                                        </tr>
+                                    @else
+                                        <tr>
+                                            <td colspan="3" class="b-0"></td>
+                                            <td class="b-0" style="width: 80px">Naik kelas</td>
+                                            <td class="b-0">: {{ $result_profile['level'] + 1 }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="3" class="b-0"></td>
+                                            <td class="b-0" colspan="2"><s>Tinggal di Kelas</s></td>
+                                        </tr>
+                                    @endif
                                 @else
-                                    <tr>
-                                        <td colspan="3" class="b-0"></td>
-                                        <td class="b-0" style="width: 80px"><s>Naik kelas</s></td>
-                                        <td class="b-0">: </td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="3" class="b-0"></td>
-                                        <td class="b-0">Tinggal di Kelas</td>
-                                        <td class="b-0">: {{ $result_profile['level'] }}</td>
-                                    </tr>
+                                    @if ($last_level)
+                                        <tr>
+                                            <td colspan="3" class="b-0"></td>
+                                            <td colspan="3" class="b-0" style="width: 80px"><b><s>LULUS</s> / TIDAK LULUS</b></td>
+                                        </tr>
+                                    @else
+                                        <tr>
+                                            <td colspan="3" class="b-0"></td>
+                                            <td class="b-0" style="width: 80px"><s>Naik kelas</s></td>
+                                            <td class="b-0">: </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="3" class="b-0"></td>
+                                            <td class="b-0">Tinggal di Kelas</td>
+                                            <td class="b-0">: {{ $result_profile['level'] }}</td>
+                                        </tr>
+                                    @endif
                                 @endif
                             </table>
                         @endif
 
-                    </table>
+                    </table><br>
                     <table class="table">
                         <tr>
                             <td class="b-0" style="text-align: right" colspan="7">
