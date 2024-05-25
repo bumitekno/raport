@@ -155,7 +155,7 @@ class PreviewController extends Controller
         ])->first();
         //dd($template);
 
-        
+
         $subjects = SubjectTeacher::whereRaw('JSON_CONTAINS(id_study_class, \'["' . $student_class->id_study_class . '"]\')')
             ->where([
                 ['status', 1],
@@ -226,14 +226,32 @@ class PreviewController extends Controller
         }])->first();
 
         // Mendapatkan data parents yang bertype 'father' atau 'mother' jika ada, atau mengembalikan null jika tidak ada
-        $families = $student_class->student->families->first(function ($family) {
+        $families = $student_class->student->families->all(function ($family) {
             return $family->type === 'father' || $family->type === 'mother' || $family->type === 'guardian';
         });
 
         // Jika parents ditemukan, dapatkan data-nya, jika tidak, setel menjadi null
-        $father = $families && $families->type === 'father' ? $families : null;
-        $mother = $families && $families->type === 'mother' ? $families : null;
-        $guardian = $families && $families->type === 'guardian' ? $families : null;
+        // $father = $families && $families->type === 'father' ? $families : null;
+        // $mother = $families && $families->type === 'mother' ? $families : null;
+        // $guardian = $families && $families->type === 'guardian' ? $families : null;
+        $father = null;
+        $mother = null;
+        $guardian = null;
+        foreach ($families as $family){
+            // dd($family->type);
+            switch ($family->type){
+                case 'father':
+                    $father = $family;
+                    break;
+                case 'mother':
+                    $mother = $family;
+                    break;
+                case 'guardian':
+                    $guardian = $family;
+                    break;
+                default:break;
+            }
+        }
         $familly = [
             'father' => $father,
             'mother' => $mother,
@@ -831,7 +849,7 @@ class PreviewController extends Controller
                     ['id_course', $subject->id_course]
                 ])->first();
                 //dd($score_manual2);
-    
+
                 $result_score[$subject->course->group][] = [
                     'course' => $subject->course->name,
                     'final_assegment' => $score_manual2 ? $score_manual2->final_assegment : null,
@@ -840,24 +858,24 @@ class PreviewController extends Controller
                     'predicate_skill' => $score_manual2 ? $score_manual2->predicate_skill : null,
                     'kkm' => $score_manual2 ? $score_manual2->kkm : null,
                 ];
-    
+
                 usort($result_score[$subject->course->group], function ($a, $b) {
                     $aParts = explode(' ', $a['course']);
                     $bParts = explode(' ', $b['course']);
-    
+
                     $aNumber = $aParts[0];
                     $bNumber = $bParts[0];
-    
+
                     $aNumberParts = explode('.', $aNumber);
                     $bNumberParts = explode('.', $bNumber);
-    
+
                     $aMainNumber = intval($aNumberParts[0]);
                     $bMainNumber = intval($bNumberParts[0]);
-    
+
                     if ($aMainNumber === $bMainNumber) {
                         $aSubNumber = isset($aNumberParts[1]) ? intval($aNumberParts[1]) : 0;
                         $bSubNumber = isset($bNumberParts[1]) ? intval($bNumberParts[1]) : 0;
-    
+
                         if ($aSubNumber === $bSubNumber) {
                             return strnatcasecmp($a['course'], $b['course']);
                         } else {
@@ -875,18 +893,18 @@ class PreviewController extends Controller
                 'score_manual2s.id_student_class' => $student_class->id,
                 'score_manual2s.id_school_year' => $school_year->id
             ])->get();
-    
+
             $result_score = collect($score);
-            
+
             $result_score = $result_score->sortBy('group')->groupBy('group')->map(function ($posts) {
                 return $posts->sortBy('course');
             });
             $result_score = $result_score->sort();
         }
-            
 
 
-    
+
+
         $pdf = PDF::loadView('content.previews.manual2.v_print_pas', compact('result_profile', 'result_kop', 'result_attitude', 'result_score', 'result_extra', 'result_other', 'result_achievement', 'result_attendance', 'type_template', 'last_level'));
         return $pdf->stream();
     }
