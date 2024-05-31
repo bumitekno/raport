@@ -34,7 +34,7 @@ class ScoreMerdekaController extends Controller
                 ['year', session('year')],
                 ['student_classes.status', 1],
             ])->get();
-        
+
 
         $result = [];
         foreach ($data as $student) {
@@ -57,7 +57,7 @@ class ScoreMerdekaController extends Controller
                 'score' => $score ? $score->final_score : 0
             ];
         }
-        
+
         if ($request->ajax()) {
             return DataTables::of($result)
                 ->addIndexColumn()
@@ -223,7 +223,7 @@ class ScoreMerdekaController extends Controller
         $improved = [];
 
         foreach ($request->formative as $index => $score) {
-            if($score >= $score_kkm->score_kkm){
+            if($score >= $score_kkm){
                 $archieved[] = $request->id_competency[$index];
             }else{
                 $improved[] = $request->id_competency[$index];
