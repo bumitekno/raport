@@ -92,7 +92,7 @@
             <thead>
                 <tr>
                     {{-- <th>NO</th> --}}
-                    <th rowspan="2">Nama</th>
+                    {{-- <th rowspan="2">Nama</th> --}}
                     <th rowspan="2">NIS</th>
 
                     @forelse ( $mapel as $mpl )    
@@ -102,10 +102,18 @@
 
                 </tr>
                 <tr>
-                    @forelse ( $mapel as $mp2)
-                        {{-- <th>{{$loop->iteration}}</th> --}}
+                    @forelse ( $mapel as $mp2) 
                         @forelse ($semester as $sem)
-                        <th>{{$sem}}</th>    
+                        @php
+                            $tahun = substr($sem, 0, -1);
+                            $sem = substr($sem, -1);
+                        @endphp
+                        <th>
+                            <p style="margin: 0">{{$tahun}}</p>
+                            {{ $sem == 1 ? 'ganjil' : 'genap'}}
+
+                        </th>
+                        {{-- <th>{{$sem}}</th>     --}}
                         @empty 
                         @endforelse    
                     @empty  
@@ -116,10 +124,11 @@
                 <tr>
                     <td>
                         {{$name}}
+                        
                     </td>
-                    <td>
-                        NULL
-                    </td>
+                    {{-- <td>
+                        
+                    </td> --}}
                     {{-- @forelse ( $siswa as $mapels ) --}}
 
                         @forelse ( $mapel as $mp)
