@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\AllLeger;
 use App\Models\Kkm;
 use App\Models\ScoreKd;
 use App\Models\ScoreManual;
@@ -16,6 +17,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use PDF;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
 
 class LegerController extends Controller
 {
@@ -213,160 +215,112 @@ class LegerController extends Controller
     }
 
     public function allLeger(Request $request,$slug){
-        $setting = json_decode(Storage::get('settings.json'), true);
-        $study_class = StudyClass::where('slug', $slug)->first();
-        $setting['study_class'] = $study_class->name;
-        $setting['teacher'] = '';
-        //dd($study_class);
 
-        // Dapatkan siswa pada kelas tsb
-        $siswa = DB::table('student_classes')
-        ->where('id_study_class',$study_class->id)
-        ->pluck('id_student');
+        return Excel::download(new AllLeger($slug), 'allleger.xlsx');
+
+        // $setting = json_decode(Storage::get('settings.json'), true);
+        // $study_class = StudyClass::where('slug', $slug)->first();
+        // $setting['study_class'] = $study_class->name;
+        // $setting['teacher'] = '';
+        // //dd($study_class);
+
+        // // Dapatkan siswa pada kelas tsb
+        // $siswa = DB::table('student_classes')
+        // ->where('id_study_class',$study_class->id)
+        // ->pluck('id_student');
  
-        $student_class = DB::table('student_classes')
-        ->join('study_classes','study_classes.id','student_classes.id_study_class')
-        ->whereIn('student_classes.id_student',$siswa)
-        ->pluck('student_classes.id');
-
-        //dd($student_class);
-
-        // $score_merdeka = DB::table('score_merdekas')
-        // ->join('student_classes','student_classes.id','score_merdekas.id_student_class')
-        // ->join('users','users.id','student_classes.id_student')
+        // $student_class = DB::table('student_classes')
         // ->join('study_classes','study_classes.id','student_classes.id_study_class')
-        // ->join('school_years','school_years.id','score_merdekas.id_school_year')
-        // ->join('courses','courses.id','score_merdekas.id_course')
-        // ->whereIn('id_student_class',$student_class)
-        // ->where('score_merdekas.deleted_at',null)
-        // ->select(['score_merdekas.id','school_years.name as semester','courses.name as mapel','student_classes.year',
-        // 'users.name as siswa','study_classes.name','users.nis','student_classes.id_student',
-        // 'score_merdekas.final_score'])
-        // ->orderBy('school_years.name','asc')
-        // ->get();
+        // ->whereIn('student_classes.id_student',$siswa)
+        // ->pluck('student_classes.id');
 
-
-
-        $score_merdeka = DB::table('score_merdekas as sm')
-        ->crossJoin('courses as c')
-        ->select('c.name','sm.final_score')
-        // ->select('sm.final_score','sc.name','y.name as year')
-        ->join('study_classes as sc','sc.id','sm.id_study_class')
-        ->join('student_classes as stc','stc.id','sm.id_student_class')
-        //->join('users as u','u.id','sm.user_id')
-        ->join('school_years as y','y.id','sm.id_school_year')
-        ->where('sc.id',$study_class->id) // 7a
-        // ->where('y.id',1)
-        ->get();
-
-        // $score_merdeka = DB::table('score_merdekas as sm')
+        // $score_merdeka = DB::table('users as u')
         // ->select('sm.id','y.name as semester','c.name as mapel',
         // 'u.name as siswa','u.nis','u.id as id_student',
-        // 'stc.year','sm.final_score')
-        // ->join('study_classes as sc','sc.id','sm.id_study_class')
-        // ->join('student_classes as stc','stc.id','sm.id_student_class')
-        // ->join('school_years as y','y.id','sm.id_school_year')
-        // ->join('users as u','u.id','stc.id_student')
+        // 'sc.year','sm.final_score')
+        
         // ->crossJoin('courses as c')
-        // ->where('sc.id',$study_class->id) // 7a
-        // ->whereIn('c.id', function($query) use ($study_class) {
-        //     $query->select('id_course')
-        //           ->from('score_merdekas')
-        //           ->where('id_study_class', $study_class->id);
+        // ->join('student_classes as sc','sc.id_student','u.id')
+        // ->leftJoin('score_merdekas as sm', function($join){
+        //     $join->on('sm.id_student_class','sc.id')
+        //     ->on('sm.id_course','c.id');
         // })
-        // ->limit(500)
+        // ->join('school_years as y','y.id','sm.id_school_year')
+        // //->where('sc.id_study_class',$study_class->id)
+        // ->whereIn('u.id', function($query) use ($study_class) {
+        //     $query->select('id_student')
+        //             ->from('student_classes')
+        //             ->where('id_study_class', $study_class->id);
+        // })
+        // ->orderBy('u.name','asc')
+        // ->orderBy('c.name','asc')
+        // //->orderBy('c.name','asc')
         // ->get();
-        
-        // dd($score_merdeka);
 
+        // //dd($score_merdeka);
 
-        $score_merdeka = DB::table('users as u')
-        ->select('sm.id','y.name as semester','c.name as mapel',
-        'u.name as siswa','u.nis','u.id as id_student',
-        'sc.year','sm.final_score')
-        
-        ->crossJoin('courses as c')
-        ->join('student_classes as sc','sc.id_student','u.id')
-        ->leftJoin('score_merdekas as sm', function($join){
-            $join->on('sm.id_student_class','sc.id')
-            ->on('sm.id_course','c.id');
-        })
-        ->join('school_years as y','y.id','sm.id_school_year')
-        //->where('sc.id_study_class',$study_class->id)
-        ->whereIn('u.id', function($query) use ($study_class) {
-            $query->select('id_student')
-                    ->from('student_classes')
-                    ->where('id_study_class', $study_class->id);
-        })
-        ->orderBy('u.name','asc')
-        ->orderBy('c.name','asc')
-        //->orderBy('c.name','asc')
-        ->get();
+        // $score_merdeka = collect($score_merdeka);
+        // $semester = $score_merdeka->pluck('semester')->unique()->values();
+        // $mapel = $score_merdeka->pluck('mapel')->unique();
+        // $siswas = $score_merdeka->pluck('siswa')->unique();
 
-        //dd($score_merdeka);
+        // $score_merdeka = $score_merdeka->groupBy('siswa')->map(function ($group) {
+        //     return $group->groupBy('mapel');
+        // });
 
-        $score_merdeka = collect($score_merdeka);
-        $semester = $score_merdeka->pluck('semester')->unique()->values();
-        $mapel = $score_merdeka->pluck('mapel')->unique();
-        $siswas = $score_merdeka->pluck('siswa')->unique();
-
-        $score_merdeka = $score_merdeka->groupBy('siswa')->map(function ($group) {
-            return $group->groupBy('mapel');
-        });
-
-        //dd($mapel);
+        // //dd($mapel);
 
      
-        // $score_merdeka = collect($score_merdeka)->map(function ($a) {
-        //     return (array) $a;
-        // })->toArray();
+        // // $score_merdeka = collect($score_merdeka)->map(function ($a) {
+        // //     return (array) $a;
+        // // })->toArray();
 
         
 
-        //dd($mapel);
+        // //dd($mapel);
 
 
-        //Coba
-        // Original array
-        // Array data awal
-        $data = [
-            [
-                "id" => 1,
-                "semester" => "2023/20241",
-                "siswa" => "Alfa",
-                "nis" => 123,
-                "mapel" => "Tajwid",
-                "final_score" => 80
-            ],
-            [
-                "id" => 5,
-                "semester" => "2023/20242",
-                "siswa" => "Alfa",
-                "nis" => 123,
-                "mapel" => "Tajwid",
-                "final_score" => 70
-            ],
-            [
-                "id" => 6,
-                "semester" => "2023/20241",
-                "siswa" => "feri",
-                "nis" => 1234,
-                "mapel" => "Tajwid",
-                "final_score" => 80
-            ]
-        ];
+        // //Coba
+        // // Original array
+        // // Array data awal
+        // $data = [
+        //     [
+        //         "id" => 1,
+        //         "semester" => "2023/20241",
+        //         "siswa" => "Alfa",
+        //         "nis" => 123,
+        //         "mapel" => "Tajwid",
+        //         "final_score" => 80
+        //     ],
+        //     [
+        //         "id" => 5,
+        //         "semester" => "2023/20242",
+        //         "siswa" => "Alfa",
+        //         "nis" => 123,
+        //         "mapel" => "Tajwid",
+        //         "final_score" => 70
+        //     ],
+        //     [
+        //         "id" => 6,
+        //         "semester" => "2023/20241",
+        //         "siswa" => "feri",
+        //         "nis" => 1234,
+        //         "mapel" => "Tajwid",
+        //         "final_score" => 80
+        //     ]
+        // ];
 
-        // Inisialisasi array baru
-        $dataBaru = [];
-        $dataBaru = $score_merdeka;
+        // // Inisialisasi array baru
+        // $dataBaru = [];
+        // $dataBaru = $score_merdeka;
 
-        //dd($dataBaru);
-        //dd($dataBaru['Abdul Aziz Sumanto']);
+        // //dd($dataBaru);
+        // //dd($dataBaru['Abdul Aziz Sumanto']);
 
     
-        $results = array(
-            'setting' => $setting
-        );
+        // $results = array(
+        //     'setting' => $setting
+        // );
 
         // if ($request->pdf) {
            

@@ -77,7 +77,7 @@
     </div>
 
     <div class="widget-content">
-        <table>
+        {{-- <table>
             <tr>
                 <td>Kelas</td>
                 <td>: {{ $results['setting']['study_class'] }}</td>
@@ -86,14 +86,14 @@
                 <td>Wali Kelas</td>
                 <td>: {{ $results['setting']['teacher'] }}</td>
             </tr>
-        </table>
+        </table> --}}
 
-        <table>
+        <table style="border-collapse: collapse;">
             <thead>
                 <tr>
                     {{-- <th>NO</th> --}}
-                    {{-- <th rowspan="2">Nama</th> --}}
-                    <th rowspan="2">NIS</th>
+                    <th rowspan="2">Nama</th>
+                    {{-- <th rowspan="2">NIS</th> --}}
 
                     @forelse ( $mapel as $mpl )    
                     <th colspan="{{ count($semester) }}">{{ $mpl }}</th>
@@ -109,7 +109,7 @@
                             $sem = substr($sem, -1);
                         @endphp
                         <th>
-                            <p style="margin: 0">{{$tahun}}</p>
+                            <p style="margin: 0; border: 1px black">{{$tahun}}</p><br>
                             {{ $sem == 1 ? 'ganjil' : 'genap'}}
 
                         </th>
@@ -122,7 +122,7 @@
 
                 @forelse ($dataBaru as $name => $siswa)
                 <tr>
-                    <td>
+                    <td style="border: 1px black">
                         {{$name}}
                         
                     </td>
