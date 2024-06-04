@@ -91,6 +91,7 @@
         <table>
             <thead>
                 <tr>
+                    {{-- <th>NO</th> --}}
                     <th rowspan="2">Nama</th>
                     <th rowspan="2">NIS</th>
 
@@ -102,6 +103,7 @@
                 </tr>
                 <tr>
                     @forelse ( $mapel as $mp2)
+                        {{-- <th>{{$loop->iteration}}</th> --}}
                         @forelse ($semester as $sem)
                         <th>{{$sem}}</th>    
                         @empty 
@@ -110,80 +112,44 @@
                     @endforelse
                 </tr>
 
-                @forelse ($dataBaru as $siswa)
+                @forelse ($dataBaru as $name => $siswa)
                 <tr>
-                        <th>{{ $siswa['nama']}}</th>
-                        <th>{{ $siswa['nis']}}</th>
-                        @php
-                            //Index pertama dari list mapel default
-                            $indexMapel = 0;
-                        @endphp
+                    <td>
+                        {{$name}}
+                    </td>
+                    <td>
+                        NULL
+                    </td>
+                    {{-- @forelse ( $siswa as $mapels ) --}}
 
-                        @for( $i = 0; $i < count($mapel); $i++ )
-                            @php
-                                $indexMapelSiswa = array_search($mapel[$i], array_column($siswa['mapel'],'mapel'));
+                        @forelse ( $mapel as $mp)
 
-                            @endphp
 
-                            @for ($j = 0; $j < count($semester); $j++)
-                                @php
-                                    $indexSemesterSiswa = array_search($semester[$j], array_column($siswa['mapel'][$indexMapelSiswa]['semester'],'semester'));
-
-                                @endphp
-
-                                {{-- <th>{{ implode(",",array_column($siswa['mapel'][$indexMapelSiswa]['semester'],'semester')) }}</th> --}}
-                                {{-- <th>{{ $semester[$j] }}</th> --}}
-                                {{-- <th>{{ var_dump($indexSemesterSiswa) }}</th> --}}
-                                {{-- <th>{{ $siswa['mapel'][$indexMapelSiswa]['semester'][$indexSemesterSiswa]['nilai'] }}</th> --}}
-
-                                @if (is_int($indexSemesterSiswa))
-                                    <th>{{ $siswa['mapel'][$indexMapelSiswa]['semester'][$indexSemesterSiswa]['nilai'] }}</th>
+                            @for ( $i=0; $i < count($semester); $i++ )
+                                @if(isset($siswa[$mp][$i]))
+                                <td>{{$siswa[$mp][$i]->final_score}}</td>
                                 @else
-                                    <th></th>
-                                    {{-- @if ($indexSemesterSiswa == 0)
-                                        <th>h{{ var_dump($indexSemesterSiswa) }}</th>
-                                    @else
-                                        
-                                        <th></th>
-                                    @endif --}}
+                                <td></td>
                                 @endif
+                            @endfor     
+                        @empty    
+                        @endforelse
 
-                                {{-- @if ($indexSemesterSiswa == 0)
-                                    <th>{{ $siswa['mapel'][$indexMapelSiswa]['semester'][$indexSemesterSiswa]['nilai'] }}</th>
-                                @elseif ($indexSemesterSiswa == null)
-                                    <th><th>
-                                @else
-                                    <th>{{ $siswa['mapel'][$indexMapelSiswa]['semester'][$indexSemesterSiswa]['nilai'] }}</th>
-                                @endif --}}
-                            @endfor
 
-                            {{-- @foreach ( $siswa['mapel'][$indexMapelSiswa]['semester'] as $semester )
+                        
+                        {{-- @forelse ( $mapel as $nilai )
+                            <td>{{$nilai->final_score}}</td>
+                        @empty --}}
+                        
+                        
+                    {{-- @empty   
+                    @endforelse --}}
 
-                                <th>{{ $semester['nilai']}}</th>
-                                
-                            @endforeach --}}
-                            
-                        @endfor
-                           
-                      
-
-                @empty     
                 </tr>
+                @empty     
+                
                 @endforelse
-                   
-
-                {{-- <tr>
-                    <th class="text-center">No</th>
-                    <th>NIS</th>
-                    <th class="student-column">Nama</th>
-                    
-                    @foreach ($mapel as $sem)
-                        <th class="text-center">
-                            <span style="font-size: 8px;">{{ $sem }}</span>
-                        </th>
-                    @endforeach
-                </tr> --}}
-
+  
                 <tr>
                     
                     
