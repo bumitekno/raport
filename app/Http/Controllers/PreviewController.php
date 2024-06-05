@@ -1087,11 +1087,12 @@ class PreviewController extends Controller
                     session()->put('message', 'Harap admin suruh mengisi dulu nilai predikat raport');
                     return view('pages.v_error');
                 }
+                
                 $predicate_assessment = PredicatedScore::where('score', '<=', $final_assessment)->orderBy('score', 'desc')->first()->name;
                 $description_assessment = PredicatedScore::where('score', '<=', $final_assessment)->orderBy('score', 'desc')->first()->description;
                 $predicate_skill = PredicatedScore::where('score', '<=', $final_skill)->orderBy('score', 'desc')->first()->name;
                 $description_skill = PredicatedScore::where('score', '<=', $final_skill)->orderBy('score', 'desc')->first()->description;
-
+                //dd($predicate_assessment);
                 $result_score[] = [
                     'course' => $course,
                     'final_assessment' => $final_assessment,
@@ -1145,7 +1146,7 @@ class PreviewController extends Controller
                 }
             }
 
-            if ($score != "-") {
+            if($score!="-"&&$score){
                 $result_extra[] = [
                     'id_extra' => $id_extra,
                     'name' => $name,
