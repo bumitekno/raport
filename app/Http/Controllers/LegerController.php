@@ -42,7 +42,7 @@ class LegerController extends Controller
         $subject_teachers = SubjectTeacher::join('courses as c', 'c.id', '=', 'subject_teachers.id_course')
             ->whereRaw('JSON_CONTAINS(id_study_class, \'["' . $study_class->id . '"]\')')
             ->where('subject_teachers.id_school_year', session('id_school_year'))
-            ->select('subject_teachers.id', 'c.name', 'subject_teachers.id_course', 'subject_teachers.id_teacher')
+            ->select('subject_teachers.id', 'c.name', 'c.code', 'subject_teachers.id_course', 'subject_teachers.id_teacher')
             ->get();
         //dd($subject_teachers);
         $code_course = SubjectTeacher::join('courses as c', 'c.id', '=', 'subject_teachers.id_course')
@@ -67,11 +67,6 @@ class LegerController extends Controller
         //dd($template);
 
         $scores = [];
-
-        $template = TemplateConfiguration::where([
-            ['id_major', $study_class->id_major],
-            ['id_school_year', session('id_school_year')],
-        ])->first();
 
         if ($template['template'] == 'merdeka') {
             // dd($subject_teachers->pluck('id_course')->unique()->toArray());
@@ -119,8 +114,18 @@ class LegerController extends Controller
         })->toArray();
 
         //dd($nilai_map);
-     
-        
+
+        // Urutkan subject_teachers berdasarkan new_list sebelum digunakan
+        $new_list = ["PAI", "PPKN", "BINDO", "MTK", "IPA", "IPS", "BING", "SBK", "PRA", "PJOK", "INF", "BJAWA", "BARAB"];
+
+        $subject_teachers_sorted = collect($subject_teachers)->sortBy(function ($course) use ($new_list) {
+            return array_search($course->code, $new_list);
+        })->values()->all();
+
+        $code_course_sorted = collect($code_course)->sortBy(function ($course) use ($new_list) {
+            return array_search($course['code'], $new_list);
+        })->values()->toArray();
+
         foreach ($nilai_map as $nmv => $nmmv) {
             if ($template['template'] == 'k13') {
                 $scoresFiltered = collect($scores)->whereIn('id_subject_teacher', collect($nmmv['score'])->pluck('id')->unique())
@@ -137,9 +142,9 @@ class LegerController extends Controller
 
                 //dd($scoresFiltered);
             }
-            
+
             $arr = [];
-            foreach($nmmv['score'] as $nll){
+            foreach ($subject_teachers_sorted as $nll) {
                 if ($template['template'] == 'k13') {
                     $raport_ = $scoresFiltered->where('id_subject_teacher', $nll->id)->first();
                     $final_score = $raport_ ? $raport_['final_assesment'] : [];
@@ -157,19 +162,19 @@ class LegerController extends Controller
                     'id' => $nll->id,
                     'name' => $nll->name,
                     'score' => $final_score,
-                    ];
+                ];
             }
             $nilai_map[$nmv]['score'] = $arr;
         }
 
-        //dd($nilai_map);
+        // dd($nilai_map);
         unset($nmv);
-        
-        $results = array(
+        $results = [
             'score' => $nilai_map,
-            'course' => $code_course,
-            'setting' => $setting
-        );
+            'course' => $code_course_sorted,
+            'setting' => $setting,
+        ];
+        // dd($results);
         //dd($results['score']);
         if ($request->pdf) {
             if ($template['template'] == 'manual2') {
@@ -180,7 +185,7 @@ class LegerController extends Controller
             $pdf->setPaper('A4', 'landscape');
             return $pdf->stream();
         }
-        //dd($results);
+
         if ($template['template'] == 'manual2') {
             return view('content.legers.v_list_leger_skill', compact('results', 'slug'));
         } else {

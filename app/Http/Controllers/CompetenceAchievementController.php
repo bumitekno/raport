@@ -195,8 +195,8 @@ class CompetenceAchievementController extends Controller
         
         
         //Cari rombel yang diampu guru lain
-        $subject_teacher = SubjectTeacher::select('id_teacher','id_study_class')
-        ->where([
+        $subject_teacher = SubjectTeacher::where([
+            'id_teacher' => $data['id_teacher'],
             'id_course' => $data['id_course'],
             'id_school_year' => session('id_school_year'),
         ])->get();
@@ -204,9 +204,9 @@ class CompetenceAchievementController extends Controller
         // Loop rombel guru
         foreach ($subject_teacher as $item) {
             // Decode rombel yg diampu guru karena array
-            $array_rombel_guru = json_decode($item->id_study_class);
+            $rombel_guru = json_decode($item->id_study_class);
             // cari rombel guru yang ada didalam semua rombel
-            $rombel_guru = array_intersect($array_rombel_guru,$rombel);
+            // $rombel_guru = array_intersect($array_rombel_guru,$rombel);
 
                 // Looping id_rombel untuk membuat tujuan pembelajaran
                 foreach ($rombel_guru as $id_rombel){
@@ -214,12 +214,12 @@ class CompetenceAchievementController extends Controller
                         [
                             'id_study_class' => $id_rombel,
                             'id_school_year' => session('id_school_year'),
-                            'id_teacher' => $item->id_teacher,
+                            'id_teacher' => $data['id_teacher'],
                             'id_course' => $data['id_course'],
+                            'code' => $data['code'],
                         ],
                         [
                             'id_type_competence' => $data['id_type_competence'],
-                            'code' => $data['code'],
                             'achievement' => $data['achievement'],
                             'slug' => str_slug($data['achievement']) . '-' . Helper::str_random(5),
                             'description' => $data['description']

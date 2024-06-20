@@ -544,7 +544,7 @@
                                     <p
                                         style="text-align: center; margin-bottom: 0; {{ $result_other['signature'] == null ? 'margin-top: 80px;' : '' }}">
                                         {{ $result_other['headmaster'] }}</p>
-                                    <p style="text-align: center; margin-top : -15px">___________________</p>
+                                    <p style="text-align: center; margin-top : -15px">________________________________</p>
                                     <p style="text-align: center">NIP {{ $result_other['nip_headmaster'] }}</p>
                                 </div>
 
@@ -554,7 +554,7 @@
                                     <p class="text-uppercase text-center">Wali Kelas</p>
                                     <p style="text-align: center; margin-bottom: 0; margin-top: 80px;">
                                         {{ $result_other['teacher'] }}</p>
-                                    <p style="text-align: center; margin-top : -15px">___________________</p>
+                                    <p style="text-align: center; margin-top : -15px">______________________________________</p>
                                     <p style="text-align: center">NIP {{ $result_other['nip_teacher'] }}</p>
                                 </div>
                             </td>

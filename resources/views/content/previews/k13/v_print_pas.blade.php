@@ -95,20 +95,24 @@
                         @if ($result_kop['left_logo'] != null)
                             <td class="b-0">
                                 <img alt="logo kiri" id="prev-logo-kiri-print"
-                                    src="{{ public_path($result_kop['left_logo']) }}" style="width: 85%;">
+                                    src="{{ public_path($result_kop['left_logo']) }}" style="width: 85%; margin-left: 30px;">
                             </td>
                         @endif
 
                         <td style="width:70%; text-align: center;" class="b-0">
-                            <div class="text-uppercase" style="line-height: 1.1; font-family: 'Arial'; font-size: 12pt">
+                            <div class="text-uppercase" style="line-height: 1.1; font-family: 'Arial'; font-size: 10pt">
                                 {{ $result_kop['text1'] }}
                             </div>
-                            <div style="line-height: 1.1; font-family: 'Arial'; font-size: 13pt" class="text-uppercase">
+                            <div style="line-height: 1.1; font-family: 'Arial'; font-size: 12pt" class="text-uppercase">
                                 {{ $result_kop['text2'] }}
                             </div>
-                            <div style="line-height: 1.2; font-family: 'Aguafina Script'; font-size: 13pt"
+                            <div style="line-height: 1.2; font-family: 'Arial'; font-size: 12pt"
                                 class="text-uppercase">
                                 {{ $result_kop['text3'] }}
+                            </div>
+                            <div style="line-height: 1.2; font-family: 'Arial'; font-size: 12pt"
+                                class="text-uppercase">
+                                {{ $result_kop['text4'] }}
                             </div>
                             <div style="line-height: 1.2; font-family: 'Arial, sans serif'; font-size: 7pt">
                                 {{ $result_kop['text5'] }}
@@ -117,7 +121,7 @@
                         @if ($result_kop['right_logo'] != null)
                             <td class="b-0">
                                 <img alt="logo kiri" id="prev-logo-kiri-print"
-                                    src="{{ public_path($result_kop['right_logo']) }}" style="width: 85%;">
+                                    src="{{ public_path($result_kop['right_logo']) }}" style="width: 85%; margin-right: 20px;">
                             </td>
                         @endif
                     </tr>
@@ -304,25 +308,28 @@
                             </td>
                         </tr>
                         <tr>
-                            <th class="text-center" style="font-size: 11pt">
+                            <th class="text-center">
                                 No</th>
-                            <th class="text-center" style="font-size: 11pt">
+                            <th class="text-center">
                                 Kegiatan Ekstrakurikuler</th>
-                            <th class="text-center" style="font-size: 11pt">
+                            <th class="text-center">
+                                Predikat</th>
+                            <th class="text-center">
                                 Keterangan</th>
                         </tr>
-                        @if (!empty($result_extra))
-                            @foreach ($result_extra as $extra)
-                                <tr>
-                                    <td class="text-center">{{ $loop->iteration }}</td>
-                                    <td>{{ $extra['name'] }}</td>
-                                    <td>{{ $extra['description'] }}</td>
-                                </tr>
-                            @endforeach
+                        @if (empty($result_extra))
+                        <tr>
+                            <td colspan="4" class="text-center">Ekstrakurikuler tidak ada yang tersedia</td>
+                        </tr>
                         @else
-                            <tr>
-                                <td colspan="3" class="text-center">Ekstrakurikuler belum tersedia</td>
-                            </tr>
+                        @foreach ($result_extra as $extra)
+                        <tr>
+                            <td class="text-center">{{ $loop->iteration }}</td>
+                            <td>{{ $extra['name'] }}</td>
+                            <td class="text-center">{{ ucwords($extra['score']) }}</td>
+                            <td>{{ $extra['description'] }}</td>
+                        </tr>
+                        @endforeach
                         @endif
                     </table>
                 </td>
@@ -501,50 +508,38 @@
             <tr>
                 <td>
                     <div style="height: 10px"></div>
-                    <!--<table class="table">-->
-                    <!--    <tr>-->
-                    <!--        <td class="b-0">Diberikan di</td>-->
-                    <!--        <td class="b-0">: {{ $result_other['place'] ?? 'Tidak diketahui' }}</td>-->
-                    <!--        <td class="b-0" style="width: 50px"></td>-->
-                    <!--        <td class="b-0" colspan="2">KEPUTUSAN</td>-->
-                    <!--    </tr>-->
-                    <!--    <tr>-->
-                    <!--        <td class="b-0">tanggal</td>-->
-                    <!--        <td class="b-0">:-->
-                    <!--            {{ isset($result_other['date']) ? DateHelper::getTanggal($result_other['date']) : '' }}-->
-                    <!--        </td>-->
-                    <!--        <td class="b-0"></td>-->
-                    <!--        <td class="b-0" colspan="2">Dengan memperhatikan hasil yang dicapai</td>-->
-                    <!--    </tr>-->
-                    <!--    <tr>-->
-                    <!--        <td colspan="3" class="b-0"></td>-->
-                    <!--        <td class="b-0" colspan="2">semester 1 dan 2, maka peserta didik ini ditetapkan-->
-                    <!--        </td>-->
-                    <!--    </tr>-->
-                    <!--    @if ($result_other['promotion'] == 'Y')-->
-                    <!--        <tr>-->
-                    <!--            <td colspan="3" class="b-0"></td>-->
-                    <!--            <td class="b-0" style="width: 80px">Naik kelas</td>-->
-                    <!--            <td class="b-0">: {{ $result_profile['level'] + 1 }}</td>-->
-                    <!--        </tr>-->
-                    <!--        <tr>-->
-                    <!--            <td colspan="3" class="b-0"></td>-->
-                    <!--            <td class="b-0" colspan="2"><s>Tinggal di Kelas</s></td>-->
-                    <!--        </tr>-->
-                    <!--    @else-->
-                    <!--        <tr>-->
-                    <!--            <td colspan="3" class="b-0"></td>-->
-                    <!--            <td class="b-0" style="width: 80px"><s>Naik kelas</s></td>-->
-                    <!--            <td class="b-0">: </td>-->
-                    <!--        </tr>-->
-                    <!--        <tr>-->
-                    <!--            <td colspan="3" class="b-0"></td>-->
-                    <!--            <td class="b-0">Tinggal di Kelas</td>-->
-                    <!--            <td class="b-0">: {{ $result_profile['level'] }}</td>-->
-                    <!--        </tr>-->
-                    <!--    @endif-->
-
-                    <!--</table>-->
+                    <table class="table">
+                        <tr>
+                            <td class="b-0">Diberikan di</td>
+                            <td class="b-0">: {{ $result_other['place'] ?? 'Tidak diketahui' }}</td>
+                            <td class="b-0" style="width: 50px"></td>
+                            <td class="b-0" colspan="2">KEPUTUSAN</td>
+                        </tr>
+                        <tr>
+                            <td class="b-0">tanggal</td>
+                            <td class="b-0">:
+                                {{ isset($result_other['date']) ? DateHelper::getTanggal($result_other['date']) : '' }}
+                            </td>
+                            <td class="b-0"></td>
+                            <td class="b-0" colspan="2">Dengan memperhatikan hasil yang dicapai</td>
+                        </tr>
+                        <tr>
+                            <td colspan="3" class="b-0"></td>
+                            <td class="b-0" colspan="2">semester 1 dan 2, maka peserta didik ini ditetapkan
+                            </td>
+                        </tr>
+                        @if ($result_other['promotion'] == 'Y')
+                        <tr>
+                            <td colspan="3" class="b-0"></td>
+                            <td class="b-0" style="width: 170px"><b><s>Tidak Lulus</s>/Lulus </b></td>
+                        </tr>
+                        @else
+                        <tr>
+                            <td colspan="3" class="b-0"></td>
+                            <td class="b-0" style="width: 170px"><b><s>Lulus</s>/Tidak Lulus</b></td>
+                        </tr>
+                        @endif
+                    </table>
                 </td>
             </tr>
         @endif
@@ -565,8 +560,8 @@
                         <p>Wali Kelas</p>
                         <p style="margin-bottom: 0; margin-top: 80px">
                             {{ $result_other['teacher'] }}</p>
-                        <p style="margin-top : -15px">______________________</p>
-                        <p>NAK {{ $result_other['nip_teacher'] }}</p>
+                        <!--<p style="margin-top : -15px">______________________</p>-->
+                        <p><b>NAK {{ $result_other['nip_teacher'] }}</b></p>
                     </div>
 
                     <div style="margin: 0 auto; width: 40%;">
@@ -581,8 +576,8 @@
                         <p
                             style="text-align: center; margin-bottom: 0; {{ $result_other['signature'] == null ? 'margin-top: 80px;' : '' }}">
                             {{ $result_other['headmaster'] }}</p>
-                        <p style="text-align: center; margin-top : -15px">___________________</p>
-                        <p style="text-align: center">NAK {{ $result_other['nip_headmaster'] }}</p>
+                        <!--<p style="text-align: center; margin-top : -15px">______________________________________</p>-->
+                        <p style="text-align: center"><b>NAK {{ $result_other['nip_headmaster'] }}</b></p>
                     </div>
                 </div>
             </td>

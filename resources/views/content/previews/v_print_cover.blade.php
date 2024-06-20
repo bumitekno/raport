@@ -193,7 +193,7 @@
                         <td>2.</td>
                         <td>Nomor Induk/NISN</td>
                         <td>:</td>
-                        <td>{{ $student_class->student->nis ?? '-' }}/{{ $student_class->student->nis ?? '-' }}</td>
+                        <td>{{ $student_class->student->nis ?? '-' }}/{{ $student_class->student->nisn ?? '-' }}</td>
                     </tr>
                     <tr>
                         <td>3.</td>
@@ -319,7 +319,6 @@
                         <td>15.</td>
                         <td>Nama Wali Peserta Didik</td>
                         <td>:</td>
-                        <td></td>
                         <td>{{ $familly['guardian'] == null ? '-' : strtoupper($familly['guardian']['name']) }}</td>
                     </tr>
 

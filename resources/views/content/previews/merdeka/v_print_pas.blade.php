@@ -106,19 +106,22 @@
                     <tr>
                         @if ($result_kop['left_logo'] != null)
                         <td class="b-0">
-                            <img alt="logo kiri" id="prev-logo-kiri-print" src="{{ public_path($result_kop['left_logo']) }}" style="width: 85%;">
+                            <img alt="logo kiri" id="prev-logo-kiri-print" src="{{ public_path($result_kop['left_logo']) }}" style="width: 85%; margin-left: 30px;">
                         </td>
                         @endif
 
                         <td style="width:70%; text-align: center;" class="b-0">
-                            <div class="text-uppercase" style="line-height: 1.1; font-family: 'Arial'; font-size: 12pt">
+                            <div class="text-uppercase" style="line-height: 1.1; font-family: 'Arial'; font-size: 10pt">
                                 {{ $result_kop['text1'] }}
                             </div>
-                            <div style="line-height: 1.1; font-family: 'Arial'; font-size: 13pt" class="text-uppercase">
+                            <div style="line-height: 1.1; font-family: 'Arial'; font-size: 12pt" class="text-uppercase">
                                 {{ $result_kop['text2'] }}
                             </div>
-                            <div style="line-height: 1.2; font-family: 'Aguafina Script' ; font-size: 13pt" class="text-uppercase">
+                            <div style="line-height: 1.2; font-family: 'Arial' ; font-size: 12pt" class="text-uppercase">
                                 {{ $result_kop['text3'] }}
+                            </div>
+                            <div style="line-height: 1.2; font-family: 'Arial' ; font-size: 12pt" class="text-uppercase">
+                                {{ $result_kop['text4'] }}
                             </div>
                             <div style="line-height: 1.2; font-family: 'Arial, sans-serif'; font-size: 7pt">
                                 {{ $result_kop['text5'] }}
@@ -126,7 +129,7 @@
                         </td>
                         @if ($result_kop['right_logo'] != null)
                         <td class="b-0">
-                            <img alt="logo kiri" id="prev-logo-kiri-print" src="{{ public_path($result_kop['right_logo']) }}" style="width: 85%;">
+                            <img alt="logo kiri" id="prev-logo-kiri-print" src="{{ public_path($result_kop['right_logo']) }}" style="width: 85%; margin-right: 20px">
                         </td>
                         @endif
                     </tr>
@@ -209,46 +212,58 @@
         $i = 0;
         @endphp
         <tbody>
-
             <tr>
                 <td colspan="4" class="b-0" style="padding: 0px !important">
-                    <table class="table" style="margin-bottom: 120px;">
+                    <table class="table" style="margin-bottom: 10px; width: 100%;">
                         <tr>
                             <td class="b-0" colspan="2" style="font-size: 10pt"></td>
                         </tr>
                         <tr>
-                            <th class="text-center vertical-middle ">
-                                No
-                            </th>
-                            <th class="text-center">
-                                Mata Pelajaran</th>
-                            <th class="text-center ">
-                                Nilai Akhir</th>
-                            <th class="text-center vertical-middle" style="min-width: 300px">
-                                Capaian Kompetensi
-                            </th>
+                            <th class="text-center vertical-middle">No</th>
+                            <th class="text-center">Mata Pelajaran</th>
+                            <th class="text-center">Nilai Akhir</th>
+                            <th class="text-center vertical-middle" style="min-width: 300px">Capaian Kompetensi</th>
                         </tr>
                         @if (empty($result_score))
                         <tr>
                             <td colspan="4" class="text-center">Data saat ini tidak tersedia</td>
                         </tr>
                         @else
-                        @for(;$i<6&&$i<count($result_score);$i++)
+                        @for($i = 0; $i < 6 && $i < count($result_score); $i++)
                         @php
-                        $score = $result_score[$i];
+                            $score = $result_score[$i];
                         @endphp
                         <tr>
-
                             <td class="text-center">{{ $i+1 }}</td>
                             <td class="">{{ $score['course'] }}</td>
                             <td class="text-center">{{ $score['score'] }}</td>
                             <td>
                                 @if ($score['competence_archieved'])
-                                <p>{{ $kalimat_desc[0]->description}} {{ implode(', '. $kalimat_desc[0]->description .' ', $score['competence_archieved']) }},
-                                </p>
+                                <p>{{ $kalimat_desc[0]->description }} {{ implode(', '. $kalimat_desc[0]->description .' ', $score['competence_archieved']) }},</p>
                                 @endif
                                 @if ($score['competency_improved'])
-                                <p> {{ $kalimat_desc[0]->description}} {{ implode(', '. $kalimat_desc[0]->description .' ', $score['competency_improved']) }}</p>
+                                <p>{{ $kalimat_desc[0]->description }} {{ implode(', '. $kalimat_desc[0]->description .' ', $score['competency_improved']) }}</p>
+                                @endif
+                            </td>
+                        </tr>
+                        @endfor
+                        @endif
+            
+                        @if (!empty($result_score))
+                        @for(; $i < count($result_score); $i++)
+                        @php
+                            $score = $result_score[$i];
+                        @endphp
+                        <tr>
+                            <td class="text-center">{{ $i+1 }}</td>
+                            <td class="">{{ $score['course'] }}</td>
+                            <td class="text-center">{{ $score['score'] }}</td>
+                            <td>
+                                @if ($score['competence_archieved'])
+                                <p>{{ $kalimat_desc[0]->description }} {{ implode(', '. $kalimat_desc[0]->description .' ', $score['competence_archieved']) }},</p>
+                                @endif
+                                @if ($score['competency_improved'])
+                                <p>{{ $kalimat_desc[0]->description }} {{ implode(', '. $kalimat_desc[0]->description .' ', $score['competency_improved']) }}</p>
                                 @endif
                             </td>
                         </tr>
@@ -256,36 +271,7 @@
                         @endif
                     </table>
                 </td>
-
             </tr>
-            @if (!empty($result_score))
-            <tr>
-                <td colspan="4" class="b-0" style="padding: 0px !important">
-                    <table class="table">
-                        @for(;$i<count($result_score);$i++)
-                        @php
-                        $score = $result_score[$i];
-                        @endphp
-                        <tr>
-
-                            <td class="text-center">{{ $i+1 }}</td>
-                            <td class="">{{ $score['course'] }}</td>
-                            <td class="text-center">{{ $score['score'] }}</td>
-                            <td>
-                                @if ($score['competence_archieved'])
-                                <p>{{ $kalimat_desc[0]->description}} {{ implode(', '. $kalimat_desc[0]->description .' ', $score['competence_archieved']) }},
-                                </p>
-                                @endif
-                                @if ($score['competency_improved'])
-                                <p> {{ $kalimat_desc[0]->description}} {{ implode(', '. $kalimat_desc[0]->description .' ', $score['competency_improved']) }}</p>
-                                @endif
-                            </td>
-                        </tr>
-                        @endfor
-                    </table>
-                </td>
-            </tr>
-            @endif
             <tr>
                 <td style="height: 10px" colspan="4" class="b-0"></td>
                 <div style="page-break-before: always;"></div>
@@ -309,7 +295,6 @@
                                 Keterangan</th>
                         </tr>
                         @if (empty($result_extra))
-
                         <tr>
                             <td colspan="4" class="text-center">Ekstrakurikuler tidak ada yang tersedia</td>
                         </tr>
@@ -438,23 +423,12 @@
             <!--        @if ($result_other['promotion'] == 'Y')-->
             <!--            <tr>-->
             <!--                <td colspan="3" class="b-0"></td>-->
-            <!--                <td class="b-0" style="width: 80px">Naik kelas</td>-->
-            <!--                <td class="b-0">: {{ $result_profile['level'] + 1 }}</td>-->
-            <!--            </tr>-->
-            <!--            <tr>-->
-            <!--                <td colspan="3" class="b-0"></td>-->
-            <!--                <td class="b-0" colspan="2"><s>Tinggal di Kelas</s></td>-->
+            <!--                <td class="b-0" style="width: 170px"><b><s>Tinggal di Kelas</s>/Naik Kelas : {{ $result_profile['level'] + 1 }}</b></td>-->
             <!--            </tr>-->
             <!--        @else-->
             <!--            <tr>-->
             <!--                <td colspan="3" class="b-0"></td>-->
-            <!--                <td class="b-0" style="width: 80px"><s>Naik kelas</s></td>-->
-            <!--                <td class="b-0">: </td>-->
-            <!--            </tr>-->
-            <!--            <tr>-->
-            <!--                <td colspan="3" class="b-0"></td>-->
-            <!--                <td class="b-0">Tinggal di Kelas</td>-->
-            <!--                <td class="b-0">: {{ $result_profile['level'] }}</td>-->
+            <!--                <td class="b-0" style="width: 170px"><b><s>Naik Kelas</s>/Tinggal di Kelas : {{ $result_profile['level'] }}</b></td>-->
             <!--            </tr>-->
             <!--        @endif-->
             <!--    </table>-->
@@ -487,11 +461,11 @@
                             {{ isset($result_other['date']) ? DateHelper::getTanggal($result_other['date']) : '' }}
                         </p>
                         <p>Wali Kelas</p>
-                        <p style="margin-bottom: 0; margin-top: 80px;">
+                        <p style="margin-bottom: 0; margin-top: 80px; text-transform: ucwords;">
                             {{ $result_other['teacher'] }}
                         </p>
-                        <p style="margin-top : -15px">___________________</p>
-                        <p>NAK {{ $result_other['nip_teacher'] }}</p>
+                        <!--<p style="margin-top : -15px">__________________________________________</p>-->
+                        <p><b>NAK {{ $result_other['nip_teacher'] }}</b></p>
                     </div>
 
                     <div style="margin: 0 auto; width: 40%;">
@@ -499,14 +473,14 @@
                         <p class="text-center">Kepala Sekolah</p>
                         @if ($result_other['signature'] != null)
                         <center>
-                            <img src="{{ $result_other['signature'] }}" alt="" srcset="" style="height: 150px">
+                            <img src="{{ $result_other['signature'] }}" alt="" srcset="" style="height: 150px ">
                         </center>
                         @endif
                         <p style="text-align: center; margin-bottom: 0; {{ $result_other['signature'] == null ? 'margin-top: 80px;' : '' }}">
                             {{ $result_other['headmaster'] }}
                         </p>
-                        <p style="text-align: center; margin-top : -15px">___________________</p>
-                        <p style="text-align: center">NAK {{ $result_other['nip_headmaster'] }}</p>
+                        <!--<p style="text-align: center; margin-top : -15px">______________________________________</p>-->
+                        <p style="text-align: center"><b>NAK {{ $result_other['nip_headmaster'] }}</b></p>
                     </div>
                 </div>
             </td>

@@ -46,6 +46,10 @@
                                                     class="text-uppercase text-bold" id="prev-header-3">
                                                     {{ !empty($kop) ? $kop['text3'] : 'HEADER 3' }}
                                                 </div>
+                                                    <div style="line-height: 1.2; font-family: 'Arial'; font-size: 16pt"
+                                                    class="text-uppercase text-bold" id="prev-header-4">
+                                                    {{ !empty($kop) ? $kop['text4'] : 'HEADER 4' }}
+                                                </div>
                                                 <div style="line-height: 1.2; font-family: 'Arial'; font-size: 8pt"
                                                     id="prev-header-5">
                                                     {{ !empty($kop) ? $kop['text5'] : 'HEADER 5' }}

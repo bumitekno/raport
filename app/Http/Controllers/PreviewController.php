@@ -620,7 +620,7 @@ class PreviewController extends Controller
             'promotion' => $note ? $note->promotion : 'Y',
             'place' => $config ? $config->place : '',
             'date' => $config ? $config->report_date : now(),
-            'headmaster' => $config ? $config->headmaster : '',
+            'headmaster' => $config ? capitalizeEachWord($config->headmaster) : '',
             'nip_headmaster' => $config ? $config->nip_headmaster : '',
             'teacher' => $teacher ? $teacher->name : '',
             'nip_teacher' => $teacher ? $teacher->nip : '',
@@ -1067,7 +1067,13 @@ class PreviewController extends Controller
         ])->get();
         $result_score = [];
 
+        // Urutan mapel baru yang diinginkan
+        $new_order = ["Pendidikan Agama Islam", "Pendidikan Pancasila dan Kewarganegaraan", "Bahasa Indonesia", "Matematika", "Ilmu Pengetahuan Alam", "Ilmu Pengetahuan Sosial", "Bahasa Inggris", "Seni Budaya & Keterampilan", "Prakarya", "PJOK", "Informatika", "Bahasa Jawa", "Bahasa Arab"];
 
+        // Mengurutkan ulang mata pelajaran
+        $subjects = $subjects->sortBy(function($subject) use ($new_order) {
+            return array_search($subject->course->name, $new_order);
+        });
         foreach ($subjects as $subject) {
             $score_kd = ScoreKd::where([
                 ['id_student_class', $student_class->id],
@@ -1106,11 +1112,22 @@ class PreviewController extends Controller
                     return view('pages.v_error');
                 }
                 
+                
+                
                 $predicate_assessment = PredicatedScore::where('score', '<=', $final_assessment)->orderBy('score', 'desc')->first()->name;
                 $description_assessment = PredicatedScore::where('score', '<=', $final_assessment)->orderBy('score', 'desc')->first()->description;
-                $predicate_skill = PredicatedScore::where('score', '<=', $final_skill)->orderBy('score', 'desc')->first()->name;
-                $description_skill = PredicatedScore::where('score', '<=', $final_skill)->orderBy('score', 'desc')->first()->description;
-                //dd($predicate_assessment);
+                // $predicate_skill = PredicatedScore::where('score', '<=', $final_skill)->orderBy('score', 'desc')->first()->name;
+                // $description_skill = PredicatedScore::where('score', '<=', $final_skill)->orderBy('score', 'desc')->first()->description;
+                $predicate_skill = DB::table('predicated_scores')->where('score', '<=',(int) $final_skill)->orderBy('score', 'desc')->first()->name;
+                $description_skill = DB::table('predicated_scores')->where('score', '<=',(int) $final_skill)->orderBy('score', 'desc')->first()->description;
+                
+                // if($final_skill == 100){
+                //     dd((int) $final_skill);
+                //     $data = DB::table('predicated_scores')->where('score', '<=', "100")->orderBy('score', 'desc')->first();
+                //     //$data = PredicatedScore::where('score', '<=', $final_skill)->orderBy('score', 'desc')->first();
+                //     dd($data);
+                // }
+                
                 $result_score[] = [
                     'course' => $course,
                     'final_assessment' => $final_assessment,
@@ -1188,12 +1205,13 @@ class PreviewController extends Controller
             'promotion' => $note ? $note->promotion : 'Y',
             'place' => $config ? $config->place : '',
             'date' => $config ? $config->report_date : now(),
-            'headmaster' => $config ? $config->headmaster : '',
+            'headmaster' => $config ? capitalizeEachWord($config->headmaster) : '',
             'teacher' => $teacher ? $teacher->name : '',
             'nip_teacher' => $teacher ? $teacher->nip : '',
             'nip_headmaster' => $config ? $config->nip_headmaster : '',
             'signature' => $config && $config->signature != null ? public_path($config->signature) : null,
         ];
+        // dd($result_other);
 
         $result_achievement = Achievement::where([
             ['id_student_class', $student_class->id],
@@ -1210,7 +1228,7 @@ class PreviewController extends Controller
             'excused' => $attendance ? $attendance->excused : 0,
             'unexcused' => $attendance ? $attendance->unexcused : 0,
         ];
-        // dd($result_achievement);
+        //dd($result_score);
 
         $pdf = PDF::loadView('content.previews.k13.v_print_pas', compact('result_profile', 'result_kop', 'result_attitude', 'result_score', 'result_extra', 'result_other', 'result_achievement', 'result_attendance', 'type_template'));
         return $pdf->stream();
