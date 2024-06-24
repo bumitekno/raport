@@ -627,7 +627,7 @@ class PreviewController extends Controller
             'signature' => $config && $config['signature'] != null ? public_path($config->signature) : null,
         ];
 
-        //dd($result_score);
+        // dd($result_score);
 
         $pdf = PDF::loadView('content.previews.merdeka.v_print_pas', compact('result_score', 'result_extra', 'result_attendance', 'result_kop', 'result_profile', 'result_other', 'type_template', 'achievements', 'kalimat_desc'));
         return $pdf->stream();

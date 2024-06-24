@@ -76,7 +76,7 @@
         }
 
         .signature {
-            margin-top: 30px;
+            margin-top: 10px;
             font-size: 12px;
         }
 
@@ -89,12 +89,29 @@
         .signature p {
             margin: 0;
         }
+        
+        .same-width-col-no {
+            width: 5%;
+        }
+
+        .same-width-col-mapel {
+            width: 15%;
+        }
+
+        .same-width-col-score {
+            width: 10%;
+        }
+
+        .same-width-col-cp {
+            width: 70%;
+        }
+        
         @font-face {
-    font-family: 'Aguafina Script';
-    font-style: normal;
-    font-weight: 400;
-    src: local('Aguafina Script'), url('https://fonts.cdnfonts.com/s/15623/AguafinaScript-Regular.woff') format('woff');
-}
+            font-family: 'Aguafina Script';
+            font-style: normal;
+            font-weight: 400;
+            src: local('Aguafina Script'), url('https://fonts.cdnfonts.com/s/15623/AguafinaScript-Regular.woff') format('woff');
+        }
     </style>
 </head>
 
@@ -214,56 +231,50 @@
         <tbody>
             <tr>
                 <td colspan="4" class="b-0" style="padding: 0px !important">
-                    <table class="table" style="margin-bottom: 10px; width: 100%;">
+                    <table class="table" style="margin-bottom: 120px;">
                         <tr>
                             <td class="b-0" colspan="2" style="font-size: 10pt"></td>
                         </tr>
                         <tr>
-                            <th class="text-center vertical-middle">No</th>
-                            <th class="text-center">Mata Pelajaran</th>
-                            <th class="text-center">Nilai Akhir</th>
-                            <th class="text-center vertical-middle" style="min-width: 300px">Capaian Kompetensi</th>
+                            <th class="text-center vertical-middle same-width-col-no">
+                                No
+                            </th>
+                            <th class="text-center same-width-col-mapel">
+                                Mata Pelajaran</th>
+                            <th class="text-center same-width-col-score">
+                                Nilai Akhir</th>
+                            <th class="text-center vertical-middle same-width-col-cp" style="min-width: 300px">
+                                Capaian Kompetensi
+                            </th>
                         </tr>
                         @if (empty($result_score))
                         <tr>
                             <td colspan="4" class="text-center">Data saat ini tidak tersedia</td>
                         </tr>
                         @else
-                        @for($i = 0; $i < 6 && $i < count($result_score); $i++)
-                        @php
-                            $score = $result_score[$i];
-                        @endphp
+                        @for(;$i<6&&$i<count($result_score);$i++) @php $score=$result_score[$i]; @endphp
                         <tr>
                             <td class="text-center">{{ $i+1 }}</td>
                             <td class="">{{ $score['course'] }}</td>
                             <td class="text-center">{{ $score['score'] }}</td>
                             <td>
-                                @if ($score['competence_archieved'])
-                                <p>{{ $kalimat_desc[0]->description }} {{ implode(', '. $kalimat_desc[0]->description .' ', $score['competence_archieved']) }},</p>
-                                @endif
-                                @if ($score['competency_improved'])
-                                <p>{{ $kalimat_desc[0]->description }} {{ implode(', '. $kalimat_desc[0]->description .' ', $score['competency_improved']) }}</p>
-                                @endif
-                            </td>
-                        </tr>
-                        @endfor
-                        @endif
-            
-                        @if (!empty($result_score))
-                        @for(; $i < count($result_score); $i++)
-                        @php
-                            $score = $result_score[$i];
-                        @endphp
-                        <tr>
-                            <td class="text-center">{{ $i+1 }}</td>
-                            <td class="">{{ $score['course'] }}</td>
-                            <td class="text-center">{{ $score['score'] }}</td>
-                            <td>
-                                @if ($score['competence_archieved'])
-                                <p>{{ $kalimat_desc[0]->description }} {{ implode(', '. $kalimat_desc[0]->description .' ', $score['competence_archieved']) }},</p>
-                                @endif
-                                @if ($score['competency_improved'])
-                                <p>{{ $kalimat_desc[0]->description }} {{ implode(', '. $kalimat_desc[0]->description .' ', $score['competency_improved']) }}</p>
+                                @if ($score['competence_archieved'] && $score['competency_improved'])
+                                <p>
+                                    {{ ucfirst(strtolower($kalimat_desc[0]->description)) }} {{ strtolower(implode('; ',
+                                    $score['competence_archieved'])) }}
+                                    namun {{ ($kalimat_desc[1]->description) }} {{ strtolower(implode('; ',
+                                    $score['competency_improved'])) }}
+                                </p>
+                                @elseif ($score['competence_archieved'])
+                                <p>
+                                    {{ ucfirst(strtolower($kalimat_desc[0]->description)) }} {{ strtolower(implode('; ',
+                                    $score['competence_archieved'])) }}
+                                </p>
+                                @elseif ($score['competency_improved'])
+                                <p>
+                                    {{ ucfirst(strtolower($kalimat_desc[1]->description)) }} {{ strtolower(implode('; ',
+                                    $score['competency_improved'])) }}
+                                </p>
                                 @endif
                             </td>
                         </tr>
@@ -272,6 +283,59 @@
                     </table>
                 </td>
             </tr>
+           <tr>
+                <td colspan="4" class="b-0" style="padding: 0px !important">
+                    <table class="table" style="margin-bottom: 120px;">
+                        <tr>
+                            <td class="b-0" colspan="2" style="font-size: 10pt"></td>
+                        </tr>
+                        <tr>
+                            <th class="text-center vertical-middle same-width-col-no">
+                                No
+                            </th>
+                            <th class="text-center same-width-col-mapel">
+                                Mata Pelajaran</th>
+                            <th class="text-center same-width-col-score">
+                                Nilai Akhir</th>
+                            <th class="text-center vertical-middle same-width-col-cp" style="min-width: 300px">
+                                Capaian Kompetensi
+                            </th>
+                        </tr>
+                        @if (!empty($result_score))
+                        <tr>
+                            @for(;$i<count($result_score);$i++) @php $score=$result_score[$i]; @endphp <tr>
+                                <td class="text-center">{{ $i+1 }}</td>
+                                <td class="">{{ $score['course'] }}</td>
+                                <td class="text-center">{{ $score['score'] }}</td>
+                                <td>
+                                    @if ($score['competence_archieved'] && $score['competency_improved'])
+                                    <p>
+                                        {{ ucfirst(strtolower($kalimat_desc[0]->description)) }} {{
+                                        strtolower(implode('; ',
+                                        $score['competence_archieved'])) }}
+                                        namun {{ ($kalimat_desc[1]->description) }} {{ strtolower(implode('; ',
+                                        $score['competency_improved'])) }}
+                                    </p>
+                                    @elseif ($score['competence_archieved'])
+                                    <p>
+                                        {{ ucfirst(strtolower($kalimat_desc[0]->description)) }} {{
+                                        strtolower(implode('; ',
+                                        $score['competence_archieved'])) }}
+                                    </p>
+                                    @elseif ($score['competency_improved'])
+                                    <p>
+                                        {{ ucfirst(strtolower($kalimat_desc[1]->description)) }} {{
+                                        strtolower(implode('; ',
+                                        $score['competency_improved'])) }}
+                                    </p>
+                                    @endif
+                                </td>
+                        </tr>
+                        @endfor
+                    </table>
+                </td>
+            </tr>
+            @endif
             <tr>
                 <td style="height: 10px" colspan="4" class="b-0"></td>
                 <div style="page-break-before: always;"></div>
@@ -313,7 +377,7 @@
             </tr>
 
             <tr>
-                <td style="height: 10px" colspan="8" class="b-0"></td>
+                <td style="height: 5px" colspan="8" class="b-0"></td>
             </tr>
 
             <tr>
@@ -350,7 +414,7 @@
     </tr>
 
     <tr>
-        <td style="height: 10px" colspan="4" class="b-0"></td>
+        <td style="height: 5px" colspan="4" class="b-0"></td>
     </tr>
     <tr>
         <td colspan="3" class="b-0" style="padding: 0px !important">
@@ -398,50 +462,48 @@
                     </td>
                 </tr>
             </table>
-            <!--@if ($type_template == 'uas')-->
-            <!--    <div style="height: 10px"></div>-->
-            <!--    <table class="table">-->
-            <!--        <tr>-->
-            <!--            <td class="b-0">Diberikan di</td>-->
-            <!--            <td class="b-0">: {{ $result_other['place'] ?? 'Tidak diketahui' }}</td>-->
-            <!--            <td class="b-0" style="width: 50px"></td>-->
-            <!--            <td class="b-0" colspan="2">KEPUTUSAN</td>-->
-            <!--        </tr>-->
-            <!--        <tr>-->
-            <!--            <td class="b-0">tanggal</td>-->
-            <!--            <td class="b-0">:-->
-            <!--                {{ isset($result_other['date']) ? DateHelper::getTanggal($result_other['date']) : '' }}-->
-            <!--            </td>-->
-            <!--            <td class="b-0"></td>-->
-            <!--            <td class="b-0" colspan="2">Dengan memperhatikan hasil yang dicapai</td>-->
-            <!--        </tr>-->
-            <!--        <tr>-->
-            <!--            <td colspan="3" class="b-0"></td>-->
-            <!--            <td class="b-0" colspan="2">semester 1 dan 2, maka peserta didik ini ditetapkan-->
-            <!--            </td>-->
-            <!--        </tr>-->
-            <!--        @if ($result_other['promotion'] == 'Y')-->
-            <!--            <tr>-->
-            <!--                <td colspan="3" class="b-0"></td>-->
-            <!--                <td class="b-0" style="width: 170px"><b><s>Tinggal di Kelas</s>/Naik Kelas : {{ $result_profile['level'] + 1 }}</b></td>-->
-            <!--            </tr>-->
-            <!--        @else-->
-            <!--            <tr>-->
-            <!--                <td colspan="3" class="b-0"></td>-->
-            <!--                <td class="b-0" style="width: 170px"><b><s>Naik Kelas</s>/Tinggal di Kelas : {{ $result_profile['level'] }}</b></td>-->
-            <!--            </tr>-->
-            <!--        @endif-->
-            <!--    </table>-->
-            <!--@endif-->
+            @if ($type_template == 'uas')
+            @if ($result_profile['semester_number'] % 2 == 0)
+                <div style="height: 5px"></div>
+                <table class="table">
+                    <tr>
+                        <td class="b-0">Diberikan di</td>
+                        <td class="b-0">: {{ $result_other['place'] ?? 'Tidak diketahui' }}</td>
+                        <td class="b-0" style="width: 50px"></td>
+                        <td class="b-0" colspan="2">KEPUTUSAN</td>
+                    </tr>
+                    <tr>
+                        <td class="b-0">tanggal</td>
+                        <td class="b-0">:
+                            {{ isset($result_other['date']) ? DateHelper::getTanggal($result_other['date']) : '' }}
+                        </td>
+                        <td class="b-0"></td>
+                        <td class="b-0" colspan="2">Dengan memperhatikan hasil yang dicapai</td>
+                    </tr>
+                    <tr>
+                        <td colspan="3" class="b-0"></td>
+                        <td class="b-0" colspan="2">semester 1 dan 2, maka peserta didik ini ditetapkan
+                        </td>
+                    </tr>
+                    @if ($result_other['promotion'] == 'Y')
+                        <tr>
+                            <td colspan="3" class="b-0"></td>
+                            <td class="b-0" style="width: 170px"><b><s>Tinggal di Kelas</s>/Naik Kelas : {{ $result_profile['level'] + 1 }}</b></td>
+                        </tr>
+                    @else
+                        <tr>
+                            <td colspan="3" class="b-0"></td>
+                            <td class="b-0" style="width: 170px"><b><s>Naik Kelas</s>/Tinggal di Kelas : {{ $result_profile['level'] }}</b></td>
+                        </tr>
+                    @endif
+                </table>
+            @endif
+            @endif
         </td>
     </tr>
-
-    <tr>
-        <td style="height: 10px" colspan="4" class="b-0"></td>
-    </tr>
-
-
-
+    <!--<tr>-->
+    <!--    <td style="height: 10px" colspan="4" class="b-0"></td>-->
+    <!--</tr>-->
     </tbody>
     </table>
 
@@ -455,7 +517,7 @@
                         <p style="margin-top: 80px;">___________________</p>
                     </div>
 
-                    <div style="float: right; width: 40%;">
+                    <div style="float: right; width: 35%;">
                         <p>
                             {{ $result_other['place'] ?? 'Tidak diketahui' }},
                             {{ isset($result_other['date']) ? DateHelper::getTanggal($result_other['date']) : '' }}

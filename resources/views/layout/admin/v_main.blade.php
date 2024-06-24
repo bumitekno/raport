@@ -174,6 +174,26 @@
     </div>
     @stack('modals')
     @include('layout.admin.v_foot')
+    <script>
+        setTimeout(function() {
+        const parentElement = document.querySelector('tbody');
+        console.log(parentElement.childElementCount);
+        if (parentElement.childElementCount == 1) {
+            console.log('Elemen ini memiliki child elements.');
+            const elements = document.querySelectorAll('.dropdown-item');
+            console.log(elements);// Memilih semua elemen dengan class 'box'
+            elements.forEach(elem => {
+                elem.style.padding = '5px 0';
+                //elem.style.backgroundColor = 'black';
+                //console.log('ubah'1;
+            });
+            // Lakukan sesuatu di sini jika elemen memiliki child elements
+        } else {
+            console.log('Elemen ini tidak memiliki child elements.');
+            // Lakukan sesuatu di sini jika elemen tidak memiliki child elements
+        }
+        }, 2000);
+    </script>
 </body>
 
 </html>
