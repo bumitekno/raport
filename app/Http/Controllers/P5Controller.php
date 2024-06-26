@@ -17,6 +17,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\DataTables;
+use Illuminate\Support\Facades\Storage;
 
 class P5Controller extends Controller
 {
@@ -105,6 +106,9 @@ class P5Controller extends Controller
 
     public function detail(Request $request, $slug)
     {
+        // Membaca data sekolah dari file JSON
+        $schoolData = json_decode(Storage::get('school.json'), true);
+        $schoolName = $schoolData['school_name'];
         // dd(session()->all());
         $p5 = P5::where('slug', $slug)->with('study_class.level', 'tema')->first();
         // dd($p5);
@@ -171,6 +175,7 @@ class P5Controller extends Controller
         $data = [
             'subElements' => $subElements,
             'description' => $description,
+            'schoolName' => $schoolName,
         ];
         // dd($data);
         return view('content.p5.v_modify_p5', compact('p5', 'students', 'data', 'detail_student'));
