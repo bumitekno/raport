@@ -49,6 +49,7 @@ class ScoreExtracurricularController extends Controller
                 ['id_extra', $detail_extra->id],
             ])->first();
 
+            $description = null;
             if ($score) {
                 $scoreData = json_decode($score->score);
 
