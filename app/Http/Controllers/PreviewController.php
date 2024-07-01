@@ -313,6 +313,10 @@ class PreviewController extends Controller
             'semester' => substr($school_year->name, -1) == 1 ? 'Ganjil' : 'Genap',
             'school_year' => substr($school_year->name, 0, 9),
         ];
+        $teacher = Teacher::where([
+            ['type', 'homeroom'],
+            ['id_class', $student_class->study_class->id],
+        ])->latest()->first();
         $scores_p5 = ScoreP5::where([
             ['id_student_class', $student_class->id],
             ['id_school_year', $school_year->id],
@@ -383,7 +387,9 @@ class PreviewController extends Controller
             'promotion' => $note ? $note->promotion : 'Y',
             'place' => $config ? $config->place : '',
             'date' => $config ? $config->report_date : now(),
-            'headmaster' => $config ? $config->headmaster : '',
+            'teacher' => $teacher ? $teacher->name : '',
+            'nip_teacher' => $teacher ? $teacher->nip : '',
+            'headmaster' => $config ? capitalizeEachWord($config->headmaster) : '',
             'nip_headmaster' => $config ? $config->nip_headmaster : '',
             'signature' => $config && $config->signature != null ? public_path($config->signature) : null,
         ];
@@ -1111,23 +1117,23 @@ class PreviewController extends Controller
                     session()->put('message', 'Harap admin suruh mengisi dulu nilai predikat raport');
                     return view('pages.v_error');
                 }
-                
-                
-                
+
+
+
                 $predicate_assessment = PredicatedScore::where('score', '<=', $final_assessment)->orderBy('score', 'desc')->first()->name;
                 $description_assessment = PredicatedScore::where('score', '<=', $final_assessment)->orderBy('score', 'desc')->first()->description;
                 // $predicate_skill = PredicatedScore::where('score', '<=', $final_skill)->orderBy('score', 'desc')->first()->name;
                 // $description_skill = PredicatedScore::where('score', '<=', $final_skill)->orderBy('score', 'desc')->first()->description;
                 $predicate_skill = DB::table('predicated_scores')->where('score', '<=',(int) $final_skill)->orderBy('score', 'desc')->first()->name;
                 $description_skill = DB::table('predicated_scores')->where('score', '<=',(int) $final_skill)->orderBy('score', 'desc')->first()->description;
-                
+
                 // if($final_skill == 100){
                 //     dd((int) $final_skill);
                 //     $data = DB::table('predicated_scores')->where('score', '<=', "100")->orderBy('score', 'desc')->first();
                 //     //$data = PredicatedScore::where('score', '<=', $final_skill)->orderBy('score', 'desc')->first();
                 //     dd($data);
                 // }
-                
+
                 $result_score[] = [
                     'course' => $course,
                     'final_assessment' => $final_assessment,

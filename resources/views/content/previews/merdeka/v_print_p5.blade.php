@@ -153,137 +153,144 @@
                     </table>
                 </th>
             </tr>
-                <tr>
-                    <td colspan="5" class="b-0" style="padding: 0px !important">
-                        <table class="table">
-                            <tr>
-                                <td class="text-left vertical-middle">
-                                    <div style="width: 100%; min-height: 60px">
-                                        <b style="font-size: 13pt">Projek Profil 2 | {{ $score['tema'] }}</b>
-                                        <p style="margin-top: 15px; margin-bottom: 0px">{{ $score['title'] }}
-                                        </p>
-                                    </div>
-                                </td>
-                            </tr>
-                        </table>
-                    </td>
-                </tr>
-                <tr>
-                    <td style="height: 10px" colspan="5" class="b-0"></td>
-                </tr>
-                <tr>
-                    <td class="text-center">{{ $score['tema'] }}</td>
-                    <td class="text-center" style="width: 40px">Belum Berkembang</td>
-                    <td class="text-center" style="width: 40px">Mulai Berkembang</td>
-                    <td class="text-center" style="width: 40px">Berkembang Sesuai Harapan</td>
-                    <td class="text-center" style="width: 40px">Sangat Berkembang</td>
-                </tr>
-                <tr>
-                    <td colspan="5" style="height: 10px"></td>
-                </tr>
-                @foreach ($score['dimensi'] as $dimensi)
-                    @if (count($dimensi['sub_elements']) > 0)
-                        <tr class="bg-color">
-                            <td style="font-weight: bold;">{{ $dimensi['name'] }}</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
+            <tr>
+                <td colspan="5" class="b-0" style="padding: 0px !important">
+                    <table class="table">
+                        <tr>
+                            <td class="text-left vertical-middle">
+                                <div style="width: 100%; min-height: 60px">
+                                    <b style="font-size: 13pt">Projek Profil 2 | {{ $score['tema'] }}</b>
+                                    <p style="margin-top: 15px; margin-bottom: 0px">{{ $score['title'] }}
+                                    </p>
+                                </div>
+                            </td>
                         </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td style="height: 10px" colspan="5" class="b-0"></td>
+            </tr>
+            <tr>
+                <td class="text-center">{{ $score['tema'] }}</td>
+                <td class="text-center" style="width: 40px">Belum Berkembang</td>
+                <td class="text-center" style="width: 40px">Mulai Berkembang</td>
+                <td class="text-center" style="width: 40px">Berkembang Sesuai Harapan</td>
+                <td class="text-center" style="width: 40px">Sangat Berkembang</td>
+            </tr>
+            <tr>
+                <td colspan="5" style="height: 10px"></td>
+            </tr>
+            @foreach ($score['dimensi'] as $dimensi)
+            @if (count($dimensi['sub_elements']) > 0)
+            <tr class="bg-color">
+                <td style="font-weight: bold;">{{ $dimensi['name'] }}</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            @endif
+            @foreach ($dimensi['sub_elements'] as $sub_element)
+            @if ($sub_element['score'] != '')
+            <tr>
+                <td>
+                    <span>&bull;</span> {{ $sub_element['name'] }}
+                </td>
+                <td class="text-center">
+                    @if ($sub_element['score'] == 'belum')
+                    <i class="fa fa-check"></i>
                     @endif
-                    @foreach ($dimensi['sub_elements'] as $sub_element)
-                        @if ($sub_element['score'] != '')
-                            <tr>
-                                <td>
-                                    <span>&bull;</span> {{ $sub_element['name'] }}
-                                </td>
-                                <td class="text-center">
-                                    @if ($sub_element['score'] == 'belum')
-                                        <i class="fa fa-check"></i>
-                                    @endif
-                                </td>
-                                <td class="text-center">
-                                    @if ($sub_element['score'] == 'mulai')
-                                        <i class="fa fa-check"></i>
-                                    @endif
-                                </td>
-                                <td class="text-center">
-                                    @if ($sub_element['score'] == 'berkembang')
-                                        <i class="fa fa-check"></i>
-                                    @endif
-                                </td>
-                                <td class="text-center">
-                                    @if ($sub_element['score'] == 'sangat')
-                                        <i class="fa fa-check"></i>
-                                    @endif
-                                </td>
-                            </tr>
-                        @endif
-                    @endforeach
-                @endforeach
-                <tr>
-                    <td style="height: 10px" colspan="5" class="b-0"></td>
-                </tr>
-                <tr>
-                    <td colspan="5" class="b-0" style="padding: 0px !important">
-                        <table class="table">
-                            <tr>
-                                <td class="text-left vertical-middle">
-                                    <div style="width: 100%; min-height: 60px">
-                                        <b style="font-size: 13pt">Catatan Proses</b>
-                                        <p style="margin-top: 15px; margin-bottom: 0px">{{ $score['description'] }}
-                                        </p>
-                                    </div>
-                                </td>
-                            </tr>
-                        </table>
-                    </td>
-                </tr>
-                <tr>
-                    <td style="height: 10px" colspan="5" class="b-0"></td>
-                </tr>
-                <tr>
-                    <td colspan="5" class="b-0">
-                        <div class="signature">
-                            <div style="float: left; width: 40%;">
-                                <p>Mengetahui,</p>
-                                <p>Orang tua peserta didik</p>
-                                <p style="margin-top: 80px;">___________________</p>
-                            </div>
-
-                            <div style="float: right; width: 40%;">
-                                <p>{{ $result_other['place'] ?? 'Tidak diketahui' . ', ' . (isset($result_other['date']) ? DateHelper::getTanggal($result_other['date']) : '') }}
-                                </p>
-                                <p>TTD Wali Kelas</p>
-                                <p style="margin-top: 80px;">___________________</p>
-                            </div>
-
-                            <div style="margin: 0 auto; width: 40%;">
-                                <p class="text-uppercase text-center">TTD Kepala Sekolah</p>
-                                @if ($result_other['signature'] != null)
-                                    <center>
-                                        <img src="{{ $result_other['signature'] }}" alt="" srcset=""
-                                            style="height: 150px">
-                                    </center>
-                                @endif
-                                <p
-                                    style="text-align: center; margin-bottom: 0; {{ $result_other['signature'] == null ? 'margin-top: 80px;' : '' }}">
-                                    {{ $result_other['headmaster'] }}</p>
-                                <p style="text-align: center; margin-top : -15px">___________________</p>
-                                <p style="text-align: center">NIP {{ $result_other['nip_headmaster'] }}</p>
-                            </div>
+                </td>
+                <td class="text-center">
+                    @if ($sub_element['score'] == 'mulai')
+                    <i class="fa fa-check"></i>
+                    @endif
+                </td>
+                <td class="text-center">
+                    @if ($sub_element['score'] == 'berkembang')
+                    <i class="fa fa-check"></i>
+                    @endif
+                </td>
+                <td class="text-center">
+                    @if ($sub_element['score'] == 'sangat')
+                    <i class="fa fa-check"></i>
+                    @endif
+                </td>
+            </tr>
+            @endif
+            @endforeach
+            @endforeach
+            <tr>
+                <td style="height: 10px" colspan="5" class="b-0"></td>
+            </tr>
+            <tr>
+                <td colspan="5" class="b-0" style="padding: 0px !important">
+                    <table class="table">
+                        <tr>
+                            <td class="text-left vertical-middle">
+                                <div style="width: 100%; min-height: 60px">
+                                    <b style="font-size: 13pt">Catatan Proses</b>
+                                    <p style="margin-top: 15px; margin-bottom: 0px">{{ $score['description'] }}
+                                    </p>
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td style="height: 10px" colspan="5" class="b-0"></td>
+            </tr>
+            <tr>
+                <td colspan="8" class="b-0">
+                    <div class="signature">
+                        <div style="float: left; width: 40%;">
+                            <p>Mengetahui,</p>
+                            <p>Orang tua peserta didik</p>
+                            <p style="margin-top: 80px;">___________________</p>
                         </div>
-                    </td>
-                </tr>
-                @if ($loop->last && $index == count($result_score) - 1)
-                    {{-- Kondisi untuk menghilangkan baris kosong pada akhir pengulangan --}}
-                @else
-                    <tr>
-                        <td colspan="5" class="b-0">
-                            <div style="page-break-before: always;"></div>
-                        </td>
-                    </tr>
-                @endif
+
+                        <div style="float: right; width: 35%;">
+                            <p>
+                                {{ $result_other['place'] ?? 'Tidak diketahui' }},
+                                {{ isset($result_other['date']) ? DateHelper::getTanggal($result_other['date']) : '' }}
+                            </p>
+                            <p>Wali Kelas</p>
+                            <p style="margin-bottom: 0; margin-top: 80px; text-transform: ucwords;">
+                                {{ $result_other['teacher'] }}
+                            </p>
+                            <!--<p style="margin-top : -15px">__________________________________________</p>-->
+                            <p><b>NAK {{ $result_other['nip_teacher'] }}</b></p>
+                        </div>
+
+                        <div style="margin: 0 auto; width: 45%;">
+                            <p class="text-center">Mengetahui,</p>
+                            <p class="text-center">Kepala Sekolah</p>
+                            @if ($result_other['signature'] != null)
+                            <center>
+                                <img src="{{ $result_other['signature'] }}" alt="" srcset="" style="height: 150px ">
+                            </center>
+                            @endif
+                            <p
+                                style="text-align: center; margin-bottom: 0; {{ $result_other['signature'] == null ? 'margin-top: 80px;' : '' }}">
+                                {{ $result_other['headmaster'] }}
+                            </p>
+                            <!--<p style="text-align: center; margin-top : -15px">______________________________________</p>-->
+                            <p style="text-align: center"><b>NAK {{ $result_other['nip_headmaster'] }}</b></p>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            @if ($loop->last && $index == count($result_score) - 1)
+            {{-- Kondisi untuk menghilangkan baris kosong pada akhir pengulangan --}}
+            @else
+            <tr>
+                <td colspan="5" class="b-0">
+                    <div style="page-break-before: always;"></div>
+                </td>
+            </tr>
+            @endif
             @endforeach
 
         </tbody>
