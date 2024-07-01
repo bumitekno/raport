@@ -243,7 +243,7 @@
                 <td style="height: 10px" colspan="5" class="b-0"></td>
             </tr>
             <tr>
-                <td colspan="8" class="b-0">
+                <td colspan="5" class="b-0">
                     <div class="signature">
                         <div style="float: left; width: 40%;">
                             <p>Mengetahui,</p>
@@ -292,10 +292,8 @@
             </tr>
             @endif
             @endforeach
-
         </tbody>
     </table>
 </body>
-
 
 </html>
