@@ -339,7 +339,7 @@
     </tr>
     @endif
     <tr>
-        <td style="height: 10px" colspan="4" class="b-0"></td>
+        <td style="height: 5px" colspan="4" class="b-0"></td>
         <div style="page-break-before: always;"></div>
     </tr>
 
@@ -458,7 +458,7 @@
                 </tr>
                 <tr>
                     <td class="text-left vertical-middle ">
-                        <div style="width: 100%; min-height: 60px">
+                        <div style="width: 100%; min-height: 45px">
                             <p class="m-0" style="font-size: 10pt ">{!! $result_other['note_teacher'] !!}
                             </p>
                         </div>
