@@ -11,7 +11,7 @@
 
         body {
             font-family: 'Roboto', sans-serif;
-            font-size: 10pt;
+            font-size: 11pt;
             color: #333;
         }
 
@@ -82,7 +82,7 @@
 
         .b-0 {
             border: 0 !important;
-            font-size: 12px;
+            font-size: 10pt;
 
         }
 
@@ -168,7 +168,7 @@
         </tr>
         @endif
         <tr>
-            <td colspan="4" style="font-size: 13pt !important" class="b-0 text-bold text-uppercase text-center">
+            <td colspan="4" style="font-size: 12pt !important" class="b-0 text-bold text-uppercase text-center">
                 LAPORAN HASIL BELAJAR
             </td>
         </tr>
@@ -242,41 +242,42 @@
                             <td class="b-0" colspan="2" style="font-size: 10pt"></td>
                         </tr>
                         <tr>
-                            <th class="text-center vertical-middle same-width-col-no">
+                            <th class="text-center vertical-middle same-width-col-no" style="font-size: 10pt">
                                 No
                             </th>
-                            <th class="text-center same-width-col-mapel">
+                            <th class="text-center same-width-col-mapel" style="font-size: 10pt">
                                 Mata Pelajaran</th>
-                            <th class="text-center same-width-col-score">
+                            <th class="text-center same-width-col-score" style="font-size: 10pt">
                                 Nilai Akhir</th>
-                            <th class="text-center vertical-middle same-width-col-cp" style="min-width: 300px">
+                            <th class="text-center vertical-middle same-width-col-cp"
+                                style="min-width: 300px; font-size: 10pt;">
                                 Capaian Kompetensi
                             </th>
                         </tr>
                         @if (empty($result_score))
-                        <tr>
+                        <tr style="font-size: 10pt">
                             <td colspan="4" class="text-center">Data saat ini tidak tersedia</td>
                         </tr>
                         @else
                         @for(;$i<6&&$i<count($result_score);$i++) @php $score=$result_score[$i]; @endphp <tr>
-                            <td class="text-center">{{ $i+1 }}</td>
-                            <td class="">{{ $score['course'] }}</td>
-                            <td class="text-center">{{ $score['score'] }}</td>
-                            <td>
+                            <td class="text-center" style="font-size: 10pt">{{ $i+1 }}</td>
+                            <td class="" style="font-size: 10pt">{{ $score['course'] }}</td>
+                            <td class="text-center" style="font-size: 10pt">{{ $score['score'] }}</td>
+                            <td style="font-size: 10pt">
                                 @if ($score['competence_archieved'] && $score['competency_improved'])
-                                <p>
+                                <p style="font-size: 10pt">
                                     {{ ucfirst(strtolower($kalimat_desc[0]->description)) }}
                                     {{ implode('; ',$score['competence_archieved']) }}
                                     namun {{ ($kalimat_desc[1]->description) }}
                                     {{ implode('; ',$score['competency_improved']) }}
                                 </p>
                                 @elseif ($score['competence_archieved'])
-                                <p>
+                                <p style="font-size: 10pt">
                                     {{ ucfirst(strtolower($kalimat_desc[0]->description)) }}
                                     {{ implode('; ',$score['competence_archieved']) }}
                                 </p>
                                 @elseif ($score['competency_improved'])
-                                <p>
+                                <p style="font-size: 10pt">
                                     {{ ucfirst(strtolower($kalimat_desc[1]->description)) }}
                                     {{ implode('; ',$score['competency_improved']) }}
                                 </p>
@@ -295,38 +296,39 @@
                     <td class="b-0" colspan="2" style="font-size: 10pt"></td>
                 </tr>
                 <tr>
-                    <th class="text-center vertical-middle same-width-col-no">
+                    <th class="text-center vertical-middle same-width-col-no" style="font-size: 10pt">
                         No
                     </th>
-                    <th class="text-center same-width-col-mapel">
+                    <th class="text-center same-width-col-mapel" style="font-size: 10pt">
                         Mata Pelajaran</th>
-                    <th class="text-center same-width-col-score">
+                    <th class="text-center same-width-col-score" style="font-size: 10pt">
                         Nilai Akhir</th>
-                    <th class="text-center vertical-middle same-width-col-cp" style="min-width: 300px">
+                    <th class="text-center vertical-middle same-width-col-cp"
+                        style="min-width: 300px; font-size: 10pt;">
                         Capaian Kompetensi
                     </th>
                 </tr>
                 @if (!empty($result_score))
-                <tr>
+                <tr style="font-size: 10pt">
                     @for(;$i<count($result_score);$i++) @php $score=$result_score[$i]; @endphp <tr>
-                        <td class="text-center">{{ $i+1 }}</td>
-                        <td class="">{{ $score['course'] }}</td>
-                        <td class="text-center">{{ $score['score'] }}</td>
-                        <td>
+                        <td class="text-center" style="font-size: 10pt">{{ $i+1 }}</td>
+                        <td class="" style="font-size: 10pt">{{ $score['course'] }}</td>
+                        <td class="text-center" style="font-size: 10pt">{{ $score['score'] }}</td>
+                        <td style="font-size: 10pt">
                             @if ($score['competence_archieved'] && $score['competency_improved'])
-                            <p>
+                            <p style="font-size: 10pt">
                                 {{ ucfirst(strtolower($kalimat_desc[0]->description)) }}
                                 {{ implode('; ',$score['competence_archieved']) }}
                                 namun {{ ($kalimat_desc[1]->description) }}
                                 {{ implode('; ',$score['competency_improved']) }}
                             </p>
                             @elseif ($score['competence_archieved'])
-                            <p>
+                            <p style="font-size: 10pt">
                                 {{ ucfirst(strtolower($kalimat_desc[0]->description)) }}
                                 {{ implode('; ',$score['competence_archieved']) }}
                             </p>
                             @elseif ($score['competency_improved'])
-                            <p>
+                            <p style="font-size: 10pt">
                                 {{ ucfirst(strtolower($kalimat_desc[1]->description)) }}
                                 {{ implode('; ',$score['competency_improved']) }}
                             </p>
@@ -334,6 +336,40 @@
                         </td>
                 </tr>
                 @endfor
+                <tr>
+                    <td colspan="4" class="b-0" style="padding: 0px !important">
+                        <table class="table">
+                            <tr>
+                                <td class="b-0" colspan="4" style="font-size: 10pt">B. KEGIATAN EKSTRAKURIKULER
+                                </td>
+                            </tr>
+                            <tr>
+                                <th class="text-center" style="font-size: 10pt">
+                                    No</th>
+                                <th class="text-center" style="font-size: 10pt">
+                                    Kegiatan Ekstrakurikuler</th>
+                                <th class="text-center" style="font-size: 10pt">
+                                    Predikat</th>
+                                <th class="text-center" style="font-size: 10pt">
+                                    Keterangan</th>
+                            </tr>
+                            @if (empty($result_extra))
+                            <tr style="font-size: 10pt">
+                                <td colspan="4" class="text-center">Ekstrakurikuler tidak ada yang tersedia</td>
+                            </tr>
+                            @else
+                            @foreach ($result_extra as $extra)
+                            <tr style="font-size: 10pt">
+                                <td class="text-center">{{ $loop->iteration }}</td>
+                                <td>{{ $extra['name'] }}</td>
+                                <td class="text-center">{{ ucwords($extra['score']) }}</td>
+                                <td>{{ $extra['description'] }}</td>
+                            </tr>
+                            @endforeach
+                            @endif
+                        </table>
+                    </td>
+                </tr>
             </table>
         </td>
     </tr>
@@ -343,40 +379,6 @@
         <div style="page-break-before: always;"></div>
     </tr>
 
-    <tr>
-        <td colspan="4" class="b-0" style="padding: 0px !important">
-            <table class="table">
-                <tr>
-                    <td class="b-0" colspan="4" style="font-size: 10pt">B. KEGIATAN EKSTRAKURIKULER
-                    </td>
-                </tr>
-                <tr>
-                    <th class="text-center">
-                        No</th>
-                    <th class="text-center">
-                        Kegiatan Ekstrakurikuler</th>
-                    <th class="text-center">
-                        Predikat</th>
-                    <th class="text-center">
-                        Keterangan</th>
-                </tr>
-                @if (empty($result_extra))
-                <tr>
-                    <td colspan="4" class="text-center">Ekstrakurikuler tidak ada yang tersedia</td>
-                </tr>
-                @else
-                @foreach ($result_extra as $extra)
-                <tr>
-                    <td class="text-center">{{ $loop->iteration }}</td>
-                    <td>{{ $extra['name'] }}</td>
-                    <td class="text-center">{{ ucwords($extra['score']) }}</td>
-                    <td>{{ $extra['description'] }}</td>
-                </tr>
-                @endforeach
-                @endif
-            </table>
-        </td>
-    </tr>
 
     <tr>
         <td style="height: 5px" colspan="8" class="b-0"></td>
@@ -389,7 +391,7 @@
                     <td class="b-0" colspan="3" style="font-size: 10pt">C. PRESTASI
                     </td>
                 </tr>
-                <tr>
+                <tr style="font-size: 10pt">
                     <th class="text-center">
                         No</th>
                     <th class="text-center">
@@ -399,10 +401,11 @@
                 </tr>
                 @forelse($achievements as $achievement)
                 <tr>
-                    <td class="text-center">{{ $loop->iteration }}</td>
-                    <td>Juara {{ $achievement->ranking }} Tingkat {{ $achievement->level }} {{ $achievement->name }}
+                    <td class="text-center" style="font-size: 10pt">{{ $loop->iteration }}</td>
+                    <td style="font-size: 10pt">Juara {{ $achievement->ranking }} Tingkat {{ $achievement->level }} {{
+                        $achievement->name }}
                     </td>
-                    <td>{{ $achievement->description }}</td>
+                    <td style="font-size: 10pt">{{ $achievement->description }}</td>
                 </tr>
                 @empty
                 @for ($i = 1; $i <= 3; $i++) <tr>
@@ -472,7 +475,7 @@
                 <tr>
                     {{-- <td class="b-0">Diberikan di</td>
                     <td class="b-0">: {{ $result_other['place'] ?? 'Tidak diketahui' }}</td> --}}
-                    <td class="b-0" style="width: 50px;"></td>
+                    {{-- <td class="b-0" style="width: 50px;"></td> --}}
                     <td class="b-0" style="width: 50px;"></td>
                     <td class="b-0" style="width: 50px;"></td>
                     <td class="b-0" colspan="2">KEPUTUSAN</td>
@@ -482,26 +485,26 @@
                     <td class="b-0">:
                         {{ isset($result_other['date']) ? DateHelper::getTanggal($result_other['date']) : '' }}
                     </td> --}}
-                    <td class="b-0"></td>
-                    <td class="b-0"></td>
-                    <td class="b-0"></td>
+                    {{-- <td class="b-0"></td>
+                    <td class="b-0"></td> --}}
+                    <td class="b-0" colspan="2"></td>
                     <td class="b-0" colspan="2">Dengan memperhatikan hasil yang dicapai</td>
                 </tr>
                 <tr>
-                    <td colspan="3" class="b-0"></td>
+                    <td colspan="2" class="b-0"></td>
                     <td class="b-0" colspan="2">semester 1 dan 2, maka peserta didik ini ditetapkan
                     </td>
                 </tr>
                 @if ($result_other['promotion'] == 'Y')
                 <tr>
-                    <td colspan="3" class="b-0"></td>
-                    <td class="b-0" style="width: 170px"><b><s>Tinggal di Kelas</s>/Naik Kelas : {{
+                    <td colspan="2" class="b-0"></td>
+                    <td class="b-0" style="width: 200px"><b><s>Tinggal di Kelas</s>/Naik Kelas : {{
                             $result_profile['level'] + 1 }}</b></td>
                 </tr>
                 @else
                 <tr>
-                    <td colspan="3" class="b-0"></td>
-                    <td class="b-0" style="width: 170px"><b><s>Naik Kelas</s>/Tinggal di Kelas : {{
+                    <td colspan="2" class="b-0"></td>
+                    <td class="b-0" style="width: 200px"><b><s>Naik Kelas</s>/Tinggal di Kelas : {{
                             $result_profile['level'] }}</b></td>
                 </tr>
                 @endif
@@ -520,13 +523,13 @@
         <tr>
             <td>
                 <div class="signature">
-                    <div style="float: left; width: 40%;">
+                    <div style="float: left; width: 40%; font-size: 10pt;">
                         <p>Mengetahui,</p>
                         <p>Orang tua peserta didik</p>
                         <p style="margin-top: 80px;">___________________</p>
                     </div>
 
-                    <div style="float: right; width: 35%;">
+                    <div style="float: right; width: 35%; font-size: 10pt;">
                         <p>
                             {{ $result_other['place'] ?? 'Tidak diketahui' }},
                             {{ isset($result_other['date']) ? DateHelper::getTanggal($result_other['date']) : '' }}
@@ -539,7 +542,7 @@
                         <p><b>NAK {{ $result_other['nip_teacher'] }}</b></p>
                     </div>
 
-                    <div style="margin: 0 auto; width: 40%;">
+                    <div style="margin: 0 auto; width: 40%; font-size: 10pt">
                         <p class="text-center">Mengetahui,</p>
                         <p class="text-center">Kepala Sekolah</p>
                         @if ($result_other['signature'] != null)
